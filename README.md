@@ -1,4 +1,4 @@
-# tcc
+# TCC
 
 A new Flutter project.
 
