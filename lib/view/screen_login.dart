@@ -12,7 +12,7 @@ class ScreenLogin extends StatefulWidget {
 
 class _ScreenLoginState extends State<ScreenLogin> {
   var txtEmail = TextEditingController();
-  var txtSenha = TextEditingController();
+  var txtPassword = TextEditingController();
 
   final String assetRegister = 'lib/images/imgRegister.svg';
 
@@ -32,7 +32,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
 
             SizedBox(height: 50,),
             textField('E-mail', txtEmail),
-            textField('Senha', txtSenha),
+            textField('Senha', txtPassword),
             button('Entrar', context, 'home'),
             SizedBox(height: 50,),
 
