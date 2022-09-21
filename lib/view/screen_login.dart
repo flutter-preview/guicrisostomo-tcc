@@ -14,7 +14,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
   var txtEmail = TextEditingController();
   var txtPassword = TextEditingController();
 
-  final String assetRegister = 'lib/images/imgRegister.svg';
+  final String assetRegister = 'lib/images/imgLogin.svg';
 
   @override
   Widget build(BuildContext context) {
