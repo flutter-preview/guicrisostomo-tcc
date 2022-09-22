@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 
-class ScreenHome extends StatelessWidget {
+class ScreenHome extends StatefulWidget {
   const ScreenHome({super.key});
+
+  @override
+  State<ScreenHome> createState() => _ScreenHomeState();
+}
+
+class _ScreenHomeState extends State<ScreenHome> {
 
   final String iconOrder = 'lib/images/iconOrder.svg';
   final String iconMenu = 'lib/images/iconMenu.svg';
+
+  int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +52,30 @@ class ScreenHome extends StatelessWidget {
             label: 'Perfil',
           ),
         ],
+
+        currentIndex: _selectedIndex,
+        onTap: (int index) {
+          switch (index) {
+            case 0:
+              // only scroll to top when current index is selected.
+              Navigator.pushNamed(context, 'home');
+              break;
+            case 1:
+              Navigator.pushNamed(context, 'order');
+              break;
+            case 2:
+              Navigator.pushNamed(context, 'product');
+              break;
+            case 3:
+              Navigator.pushNamed(context, 'profile');
+              break;
+          }
+          setState(
+            () {
+              _selectedIndex = index;
+            },
+          );
+        },
       ),
     );
   }
