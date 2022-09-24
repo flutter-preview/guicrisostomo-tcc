@@ -4,7 +4,7 @@ button(text, context, screen) {
     return Container(
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          minimumSize: Size(300, 50),
+          minimumSize: Size(100, 50),
           primary: Color.fromRGBO(50, 62, 64, 1),
           
         ),
