@@ -4,8 +4,10 @@ import 'package:tcc/view/screen_add_product.dart';
 import 'package:tcc/view/screen_home.dart';
 import 'package:tcc/view/screen_info_product.dart';
 import 'package:tcc/view/screen_login.dart';
+import 'package:tcc/view/screen_order.dart';
 import 'package:tcc/view/screen_presentation.dart';
 import 'package:tcc/view/screen_products.dart';
+import 'package:tcc/view/screen_profile.dart';
 import 'package:tcc/view/screen_register.dart';
 
 void main() {
@@ -23,6 +25,8 @@ void main() {
         'products' :(context) => ScreenProducts(),
         'product' :(context) => ScreenInfoProduct(),
         'add_product' :(context) => ScreenAddProduct(),
+        'profile' :(context) => ScreenProfile(),
+        'order' :(context) => ScreenOrder(),
       },
     )
   );
