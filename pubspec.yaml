@@ -69,6 +69,7 @@ flutter:
     - lib/images/imgPresentation.svg
     - lib/images/imgRegister.svg
     - lib/images/imgLogin.svg
+    - lib/images/imgHomeCustomer.svg
     - lib/images/iconOrder.svg
     - lib/images/iconMenu.svg
 
