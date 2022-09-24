@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../modal/button.dart';
+import '../modal/imageMainScreens.dart';
 import '../modal/textField.dart';
 
 class ScreenRegister extends StatefulWidget {
@@ -12,7 +13,7 @@ class ScreenRegister extends StatefulWidget {
 }
 
 class _ScreenRegisterState extends State<ScreenRegister> {
-  final String assetRegister = 'lib/images/imgRegister.svg';
+  final String imgRegister = 'lib/images/imgRegister.svg';
   
   @override
   Widget build(BuildContext context) {
@@ -27,11 +28,7 @@ class _ScreenRegisterState extends State<ScreenRegister> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center ,
           children: [
-            SvgPicture.asset(
-              assetRegister,
-              height: 220,
-              fit: BoxFit.fill,
-            ),
+            imgCenter(imgRegister),
 
             SizedBox(height: 50,),
             textField('E-mail', txtEmail),

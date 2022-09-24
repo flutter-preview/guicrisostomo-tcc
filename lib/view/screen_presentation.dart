@@ -1,13 +1,14 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tcc/modal/button.dart';
+
+import '../modal/imageMainScreens.dart';
 
 class ScreenPresentation extends StatelessWidget {
   const ScreenPresentation({super.key});
 
-  final String assetPresentation = 'lib/images/imgPresentation.svg';
+  final String imgPresentation = 'lib/images/imgPresentation.svg';
   
   @override
   Widget build(BuildContext context) {
@@ -23,11 +24,7 @@ class ScreenPresentation extends StatelessWidget {
                   Container(
                     child: Column(
                       children: [
-                        SvgPicture.asset(
-                          assetPresentation,
-                          height: 220,
-                          fit: BoxFit.fill,
-                        ),
+                        imgCenter(imgPresentation),
                         SizedBox(height: 14,),
                         Text(
                           'Peça sua pizza de onde quiser e divida com quem você ama',

@@ -3,6 +3,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:tcc/modal/button.dart';
 import 'package:tcc/modal/textField.dart';
 
+import '../modal/imageMainScreens.dart';
+
 class ScreenLogin extends StatefulWidget {
   const ScreenLogin({super.key});
 
@@ -14,7 +16,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
   var txtEmail = TextEditingController();
   var txtPassword = TextEditingController();
 
-  final String assetRegister = 'lib/images/imgLogin.svg';
+  final String imgLogin = 'lib/images/imgLogin.svg';
 
   @override
   Widget build(BuildContext context) {
@@ -24,11 +26,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center ,
           children: [
-            SvgPicture.asset(
-              assetRegister,
-              height: 220,
-              fit: BoxFit.fill,
-            ),
+            imgCenter(imgLogin),
 
             SizedBox(height: 50,),
             textField('E-mail', txtEmail),
