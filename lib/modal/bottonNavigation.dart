@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import '../globals.dart' as globals;
 
 class Bottom extends StatefulWidget {
   const Bottom({super.key});
@@ -16,7 +17,6 @@ class _BottomState extends State<Bottom> {
     @override
   State<Bottom> createState() => _BottomState();
 
-  int _selectedIndex = 0;
   final String iconOrder = 'lib/images/iconOrder.svg';
   final String iconMenu = 'lib/images/iconMenu.svg';
 
@@ -25,6 +25,7 @@ class _BottomState extends State<Bottom> {
     backgroundColor: Color.fromRGBO(50, 62, 64, 1),
     unselectedItemColor: Colors.white,
     selectedItemColor: Color.fromRGBO(242, 169, 34, 1),
+
     items: <BottomNavigationBarItem>[
       BottomNavigationBarItem(
         icon: Icon(Icons.home, color: Color.fromRGBO(242, 169, 34, 1),),
@@ -44,26 +45,29 @@ class _BottomState extends State<Bottom> {
       ),
     ],
 
-    currentIndex: _selectedIndex,
+    currentIndex: globals.globalSelectedIndexBotton,
     onTap: (int index) {
       switch (index) {
         case 0:
-          // only scroll to top when current index is selected.
+          Navigator.of(context).pop();
           Navigator.pushNamed(context, 'home');
           break;
         case 1:
+          Navigator.of(context).pop();
           Navigator.pushNamed(context, 'order');
           break;
         case 2:
-          Navigator.pushNamed(context, 'product');
+          Navigator.of(context).pop();
+          Navigator.pushNamed(context, 'products');
           break;
         case 3:
+          Navigator.of(context).pop();
           Navigator.pushNamed(context, 'profile');
           break;
       }
       setState(
         () {
-          _selectedIndex = index;
+          globals.globalSelectedIndexBotton = index;
         },
       );
     },
