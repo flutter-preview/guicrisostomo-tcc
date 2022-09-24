@@ -23,7 +23,7 @@ class _ScreenRegisterState extends State<ScreenRegister> {
     var txtPhone = TextEditingController();
     
     return Scaffold(
-      body: Padding(
+      body: SingleChildScrollView(
         padding: EdgeInsets.all(20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center ,
@@ -31,8 +31,12 @@ class _ScreenRegisterState extends State<ScreenRegister> {
             imgCenter(imgRegister),
 
             SizedBox(height: 50,),
+
+            textField('Nome', txtName),
             textField('E-mail', txtEmail),
+            textField('Telefone', txtPhone),
             textField('Senha', txtSenha),
+            
             button('Entrar', context, 'home'),
             SizedBox(height: 50,),
 
