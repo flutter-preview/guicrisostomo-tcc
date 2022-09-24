@@ -17,6 +17,7 @@ button(text, context, screen) {
 
         //COMPORTAMENTO
         onPressed: () {
+          Navigator.of(context).pop();
           Navigator.pushNamed(
             context,
             screen,
