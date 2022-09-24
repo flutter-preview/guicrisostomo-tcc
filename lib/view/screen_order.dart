@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../modal/bottonNavigation.dart';
+
 class ScreenOrder extends StatefulWidget {
   const ScreenOrder({super.key});
 
@@ -12,6 +14,8 @@ class _ScreenOrderState extends State<ScreenOrder> {
   Widget build(BuildContext context) {
     return Scaffold(
 
+
+      bottomNavigationBar: Bottom(),
     );
   }
 }

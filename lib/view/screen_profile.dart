@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../modal/bottonNavigation.dart';
+
 class ScreenProfile extends StatefulWidget {
   const ScreenProfile({super.key});
 
@@ -12,6 +14,8 @@ class _ScreenProfileState extends State<ScreenProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
 
+
+      bottomNavigationBar: Bottom(),
     );
   }
 }
