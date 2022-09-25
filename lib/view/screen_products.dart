@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../modal/bottonNavigation.dart';
+import '../modal/bottonNavigationCustomer.dart';
 
 class ScreenProducts extends StatefulWidget {
   const ScreenProducts({super.key});

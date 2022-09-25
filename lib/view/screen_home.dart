@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:tcc/modal/bottonNavigation.dart';
+import 'package:tcc/modal/bottonNavigationCustomer.dart';
 import 'package:tcc/modal/imageMainScreens.dart';
 
 class ScreenHome extends StatefulWidget {
