@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:tcc/modal/bottonNavigationCustomer.dart';
 import 'package:tcc/modal/imageMainScreens.dart';
+import 'package:tcc/modal/productItem.dart';
 
 class ScreenHome extends StatefulWidget {
   const ScreenHome({super.key});
@@ -20,18 +21,31 @@ class _ScreenHomeState extends State<ScreenHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
+      body: Padding(
+        padding: EdgeInsets.all(16),
         child: Container(
-          margin: EdgeInsets.all(16.0),
+          margin: EdgeInsets.all(16),
           
           child: Column(
             children: [
-              imgCenter(imgHome)
-            ],
-          )
-        ),
-
-        
+              imgCenter(imgHome),
+              
+              Text(
+                'Itens mais pedidos',
+                style: TextStyle(
+                  fontFamily: 'Roboto',
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              
+              Expanded(
+                child: (
+                  productItem()
+                )
+            ),
+          ])
+        )
       ),
 
       bottomNavigationBar: Bottom(),
