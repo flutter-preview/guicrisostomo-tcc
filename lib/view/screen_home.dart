@@ -29,7 +29,8 @@ class _ScreenHomeState extends State<ScreenHome> {
           child: Column(
             children: [
               imgCenter(imgHome),
-              
+              SizedBox(height: 10,),
+
               Text(
                 'Itens mais pedidos',
                 style: TextStyle(
@@ -43,8 +44,27 @@ class _ScreenHomeState extends State<ScreenHome> {
                 child: (
                   productItem()
                 )
-            ),
-          ])
+              ),
+
+              SizedBox(height: 10,),
+
+              Text(
+                'Informações da sua mesa',
+                style: TextStyle(
+                  fontFamily: 'Roboto',
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              
+              Container(
+                child :Column(children: [
+                  Icon(Icons.timer_outlined, size: 20, color: Color.fromRGBO(242, 169, 34, 1)),
+                ],)
+              )
+              
+            ]
+          )
         )
       ),
 
