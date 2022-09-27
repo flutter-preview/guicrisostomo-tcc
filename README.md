@@ -1,6 +1,6 @@
 # TCC
 
-A new Flutter project.
+A project of TCC
 
 ## Getting Started
 
