@@ -57,22 +57,6 @@ class _ScreenHomeState extends State<ScreenHome> {
               SizedBox(height: 10,),
 
               
-              Container(
-                child :Column(children: [
-                  Icon(Icons.timer_outlined, size: 20, color: Color.fromRGBO(242, 169, 34, 1)),
-                ],)
-              )
-              
-            ]
-          )
-        )
-      ),
-
-      bottomNavigationBar: Bottom(),
-    );
-  }
-}
-
 Container(
                 child :Column(children: [
                   Container(
@@ -130,3 +114,12 @@ Container(
                   productItem(),
                 ],)
               ),
+            ]
+          )
+        )
+      ),
+
+      bottomNavigationBar: Bottom(),
+    );
+  }
+}
