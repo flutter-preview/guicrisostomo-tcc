@@ -21,13 +21,14 @@ class _ScreenHomeState extends State<ScreenHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.all(16),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(5),
         child: Container(
           margin: EdgeInsets.all(16),
           
           child: Column(
             children: [
+              
               imgCenter(imgHome),
               SizedBox(height: 10,),
 
@@ -38,12 +39,6 @@ class _ScreenHomeState extends State<ScreenHome> {
                   fontSize: 20,
                   fontWeight: FontWeight.w700,
                 ),
-              ),
-              
-              Expanded(
-                child: (
-                  productItem()
-                )
               ),
 
               SizedBox(height: 10,),
@@ -56,6 +51,11 @@ class _ScreenHomeState extends State<ScreenHome> {
                   fontWeight: FontWeight.w700,
                 ),
               ),
+              
+              productItem(),
+
+              SizedBox(height: 10,),
+
               
               Container(
                 child :Column(children: [
@@ -72,3 +72,61 @@ class _ScreenHomeState extends State<ScreenHome> {
     );
   }
 }
+
+Container(
+                child :Column(children: [
+                  Container(
+                    child: Row(
+                      children: [
+                        Icon(Icons.timer_outlined, size: 20, color: Color.fromRGBO(242, 169, 34, 1)),
+                        Text(
+                          'Criado \às 19:49 do dia 27/05/2022'
+                        )
+                      ],
+                    ),
+                  ),
+                  
+                  SizedBox(height: 5,),
+
+                  Container(
+                    child: Row(
+                      children: [
+                        Icon(Icons.people_rounded, size: 20, color: Color.fromRGBO(242, 169, 34, 1)),
+                        Text(
+                          'Mesa criada pelo garçom José'
+                        )
+                      ],
+                    ),
+                  ),
+
+                  SizedBox(height: 5,),
+
+                  Container(
+                    child: Row(
+                      children: [
+                        Icon(Icons.attach_money, size: 20, color: Color.fromRGBO(242, 169, 34, 1)),
+                        Text(
+                          'TOTAL: R\$ 91,00'
+                        )
+                      ],
+                    ),
+                  ),
+
+                  SizedBox(height: 10,),
+
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Itens pedidos hoje',
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        fontFamily: 'Roboto',
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    )
+                  ),
+
+                  productItem(),
+                ],)
+              ),
