@@ -4,6 +4,8 @@ productItem() {
   return (
     ListView.builder(
       itemCount: 2,
+      shrinkWrap:true,
+      scrollDirection: Axis.vertical,
       itemBuilder: (context, index) {
       return Card(
         color: Color.fromRGBO(50, 62, 64, 1),
