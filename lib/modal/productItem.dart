@@ -35,16 +35,49 @@ productItem() {
                 style: TextStyle(
                   color: Colors.white,
                 ),
-              ),
-            ]
+              )],
             )
             
           ),
 
           trailing: Column(
             children: [
-              Icon(Icons.add_circle, size: 20, color: Colors.white),
-              Icon(Icons.help, size: 20, color: Colors.white),
+              
+              
+              SizedBox(height: 0,),
+              ElevatedButton(
+                //constraints: BoxConstraints(maxWidth: 20, maxHeight: 20),
+                onPressed: () {
+                
+                },
+                
+                style: ElevatedButton.styleFrom(
+                  fixedSize: const Size(8, 8),
+                  backgroundColor: Color.fromRGBO(242, 169, 34, 1),
+                  shape: CircleBorder(),
+                  primary: Colors.white,
+                ),
+                
+                child: Icon(Icons.add, size: 5, color: Colors.white,),
+                
+              ),
+              
+              ElevatedButton(
+                //constraints: BoxConstraints(maxWidth: 20, maxHeight: 20),
+                onPressed: () {
+                
+                },
+                
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color.fromRGBO(242, 169, 34, 1),
+                  shape: CircleBorder(),
+                  primary: Colors.white,
+                  fixedSize: const Size(8, 8),
+                ),
+                
+                child: Icon(Icons.question_mark, size: 5, color: Colors.white,),
+                
+              ),
             ]
           ),
           //EVENTO DE CLIQUE
