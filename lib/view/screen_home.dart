@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:tcc/modal/bottonNavigationCustomer.dart';
 import 'package:tcc/modal/imageMainScreens.dart';
 import 'package:tcc/modal/productItem.dart';
@@ -57,7 +56,7 @@ class _ScreenHomeState extends State<ScreenHome> {
               SizedBox(height: 10,),
 
               
-Container(
+              Container(
                 child :Column(children: [
                   Container(
                     child: Row(
