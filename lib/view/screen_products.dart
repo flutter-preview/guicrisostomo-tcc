@@ -39,6 +39,21 @@ class _ScreenProductsState extends State<ScreenProducts> {
                   ),
                 ),
               ),
+
+              SizedBox(height: 10,),
+
+              Text(
+                'Produtos',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                  fontFamily: 'Roboto',
+                ),
+              ),
+
+              SizedBox(height: 10,),
+              
+              productItem(),
             ],
           )
           
