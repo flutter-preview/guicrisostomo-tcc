@@ -23,7 +23,6 @@ class _ScreenHomeState extends State<ScreenHome> {
       body: SingleChildScrollView(
         padding: EdgeInsets.all(20),
         child: Container(
-          margin: EdgeInsets.all(16),
           
           child: Column(
             children: [
