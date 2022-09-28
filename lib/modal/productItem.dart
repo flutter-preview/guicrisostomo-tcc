@@ -21,10 +21,9 @@ productItem() {
             ),
           ),
 
-          subtitle: Align(
-            alignment: Alignment.centerLeft,
-            child: Column(
-              children: [
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
               Text(
                 'PIZZA - GIGANTE',
                 style: TextStyle(
@@ -45,9 +44,7 @@ productItem() {
                   color: Colors.white,
                 ),
               )
-              ],
-            )
-            
+            ]
           ),
 
           trailing: Container(
