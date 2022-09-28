@@ -21,7 +21,7 @@ class _ScreenHomeState extends State<ScreenHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(5),
+        padding: EdgeInsets.all(20),
         child: Container(
           margin: EdgeInsets.all(16),
           
