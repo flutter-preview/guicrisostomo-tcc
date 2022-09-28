@@ -68,7 +68,14 @@ listViewOrder() {
 
         //EVENTO DE CLIQUE
         onTap: () {
-          
+          Navigator.pushNamed(
+            context,
+            'order/info',
+
+            //Passagem de parâmetro
+            arguments: index,
+
+          );
         },
         
       ),
