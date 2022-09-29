@@ -17,6 +17,7 @@ class _ScreenProfileState extends State<ScreenProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
+        padding: EdgeInsets.all(20),
         child: Container(
           child: Column(
             children: [
@@ -48,7 +49,25 @@ class _ScreenProfileState extends State<ScreenProfile> {
                 ),
               ),
 
-              
+              SizedBox(height: 10,),
+
+              Column(
+                children: [
+                  Card(
+                    child: ListTile(
+                      title: Text('Editar dados'),
+                    ),
+                  ),
+
+                  SizedBox(height: 10,),
+
+                  Card(
+                    child: ListTile(
+                      title: Text('Sobre'),
+                    ),
+                  )
+                ]
+              )
             ]
           )
         )
