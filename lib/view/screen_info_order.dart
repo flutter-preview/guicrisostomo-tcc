@@ -115,7 +115,7 @@ productItem() {
         color: Color.fromRGBO(50, 62, 64, 1),
         child: ListTile(
           contentPadding: EdgeInsets.fromLTRB(10, 10, 20, 10),
-          leading: Icon(Icons.public, size: 20, color: Colors.white),
+          leading: Icon(Icons.local_pizza, size: 40, color: Colors.white),
 
           title: Text(
             'TENTAÇÃO',
