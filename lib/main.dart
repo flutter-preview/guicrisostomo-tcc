@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tcc/view/screen_about.dart';
 import 'package:tcc/view/screen_add_product.dart';
+import 'package:tcc/view/screen_edit_datas.dart';
 import 'package:tcc/view/screen_home.dart';
 import 'package:tcc/view/screen_info_order.dart';
 import 'package:tcc/view/screen_info_product.dart';
@@ -22,11 +23,12 @@ void main() {
         'login' :(context) => ScreenLogin(),
         'register' :(context) => ScreenRegister(),
         'home' :(context) => ScreenHome(),
-        'about' :(context) => ScreenAbout(),
         'products' :(context) => ScreenProducts(),
         'product' :(context) => ScreenInfoProduct(),
         'add_product' :(context) => ScreenAddProduct(),
         'profile' :(context) => ScreenProfile(),
+        'profile/edit_data' :(context) => ScreenEditDatas(),
+        'profile/about' :(context) => ScreenAbout(),
         'order' :(context) => ScreenOrder(),
         'order/info' :(context) => ScreenInfoOrder(),
       },
