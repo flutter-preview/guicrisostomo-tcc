@@ -10,13 +10,13 @@ productItem() {
       return Card(
         color: Color.fromRGBO(50, 62, 64, 1),
         child: ListTile(
-
-          leading: Icon(Icons.public, size: 20, color: Colors.white),
-
+          contentPadding: EdgeInsets.fromLTRB(10, 10, 20, 10),
+          leading: Icon(Icons.local_pizza, size: 50, color: Colors.white),
+          
           title: Text(
             'TENTAÇÃO',
             style: TextStyle(
-              fontSize: 28,
+              fontSize: 24,
               color: Colors.white,
             ),
           ),
