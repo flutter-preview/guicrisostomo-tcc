@@ -27,7 +27,7 @@ void main() {
         'product' :(context) => ScreenInfoProduct(),
         'add_product' :(context) => ScreenAddProduct(),
         'profile' :(context) => ScreenProfile(),
-        'profile/edit_data' :(context) => ScreenEditDatas(),
+        'profile/edit_datas' :(context) => ScreenEditDatas(),
         'profile/about' :(context) => ScreenAbout(),
         'order' :(context) => ScreenOrder(),
         'order/info' :(context) => ScreenInfoOrder(),
