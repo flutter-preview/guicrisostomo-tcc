@@ -61,7 +61,10 @@ class _ScreenProfileState extends State<ScreenProfile> {
                       trailing: Icon(Icons.arrow_right, size: 20),
 
                       onTap: () => {
-                        
+                        Navigator.pushNamed(
+                          context,
+                          'profile/edit_datas',
+                        )
                       },
                     ),
                   ),
@@ -76,7 +79,10 @@ class _ScreenProfileState extends State<ScreenProfile> {
                       trailing: Icon(Icons.arrow_right, size: 20),
 
                       onTap: () => {
-
+                        Navigator.pushNamed(
+                          context,
+                          'profile/about',
+                        )
                       },
                     ),
                   )
