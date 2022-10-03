@@ -57,6 +57,12 @@ class _ScreenProfileState extends State<ScreenProfile> {
                     child: ListTile(
                       contentPadding: EdgeInsets.all(10),
                       title: Text('Editar dados'),
+
+                      trailing: Icon(Icons.arrow_right, size: 20),
+
+                      onTap: () => {
+                        
+                      },
                     ),
                   ),
 
@@ -66,6 +72,12 @@ class _ScreenProfileState extends State<ScreenProfile> {
                     child: ListTile(
                       contentPadding: EdgeInsets.all(10),
                       title: Text('Sobre'),
+
+                      trailing: Icon(Icons.arrow_right, size: 20),
+
+                      onTap: () => {
+
+                      },
                     ),
                   )
                 ]
