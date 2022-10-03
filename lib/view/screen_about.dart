@@ -15,7 +15,16 @@ class ScreenAbout extends StatelessWidget {
 
       body: Container(
         padding: EdgeInsets.all(20),
-        
+        child: Column(
+          children: [
+            Text(
+              'Projeto de TCC',
+              style: TextStyle(
+                fontSize: 24,
+              ),
+            ),
+          ],
+        ),
       ),
 
       bottomNavigationBar: Bottom(),
