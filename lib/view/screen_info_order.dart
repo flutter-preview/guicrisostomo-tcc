@@ -120,7 +120,7 @@ productItem() {
           title: Text(
             'TENTAÇÃO',
             style: TextStyle(
-              fontSize: 28,
+              fontSize: 24,
               color: Colors.white,
             ),
           ),
