@@ -14,7 +14,8 @@ class ScreenAbout extends StatelessWidget {
       ),
 
       body: Container(
-
+        padding: EdgeInsets.all(20),
+        
       ),
 
       bottomNavigationBar: Bottom(),
