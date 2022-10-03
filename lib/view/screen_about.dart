@@ -23,11 +23,36 @@ class ScreenAbout extends StatelessWidget {
                 fontSize: 24,
               ),
             ),
+
+            SizedBox(height: 10,),
+
+            listViewStuff('Rodrigro Plotze', 'Desenvolvedor'),
+            listViewStuff('Guilherme Crisostomo', 'Desenvolvedor'),
           ],
         ),
       ),
 
       bottomNavigationBar: Bottom(),
+    );
+  }
+
+  listViewStuff(name, func) {
+    return Card(
+      child: ListTile(
+        contentPadding: EdgeInsets.all(10),
+
+        title: Text(
+          name,
+          style: TextStyle(
+            fontSize: 24,
+          ),
+        ),
+
+        subtitle: Text(
+          func,
+        ),
+
+      ),
     );
   }
 }
