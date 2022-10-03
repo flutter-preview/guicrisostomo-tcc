@@ -55,6 +55,7 @@ class _ScreenProfileState extends State<ScreenProfile> {
                 children: [
                   Card(
                     child: ListTile(
+                      contentPadding: EdgeInsets.all(10),
                       title: Text('Editar dados'),
                     ),
                   ),
@@ -63,6 +64,7 @@ class _ScreenProfileState extends State<ScreenProfile> {
 
                   Card(
                     child: ListTile(
+                      contentPadding: EdgeInsets.all(10),
                       title: Text('Sobre'),
                     ),
                   )
