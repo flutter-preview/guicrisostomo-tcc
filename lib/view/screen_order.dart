@@ -38,7 +38,7 @@ listViewOrder() {
     return Card(
       color: Color.fromRGBO(50, 62, 64, 1),
       child: ListTile(
-
+        contentPadding: EdgeInsets.all(15),
         title: Text(
           'Data: 01/12/2022 às 21:35',
           style: TextStyle(
