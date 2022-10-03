@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tcc/modal/bottonNavigationCustomer.dart';
 
 class ScreenAbout extends StatelessWidget {
   const ScreenAbout({super.key});
@@ -14,7 +15,9 @@ class ScreenAbout extends StatelessWidget {
 
       body: Container(
 
-      )
+      ),
+
+      bottomNavigationBar: Bottom(),
     );
   }
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../modal/bottonNavigationCustomer.dart';
+
 class ScreenEditDatas extends StatefulWidget {
   const ScreenEditDatas({super.key});
 
@@ -19,7 +21,9 @@ class _ScreenEditDatasState extends State<ScreenEditDatas> {
 
       body: Container(
 
-      )
+      ),
+
+      bottomNavigationBar: Bottom(),
     );
   }
 }
