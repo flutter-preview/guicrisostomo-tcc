@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-textField(rotulo, variavel) {
+textFieldPassword(rotulo, variavel) {
   return Container(
     margin: EdgeInsets.only(bottom: 15),
     child: TextFormField(
       obscureText: true,
       enableSuggestions: false,
       autocorrect: false,
-      
+
       controller: variavel,
       style: TextStyle(
         fontSize: 28,
