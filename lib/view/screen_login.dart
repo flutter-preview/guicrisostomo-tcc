@@ -27,7 +27,8 @@ class _ScreenLoginState extends State<ScreenLogin> {
         padding: EdgeInsets.all(20),
         child: Form(
           key: formKey,
-
+          autovalidateMode: AutovalidateMode.always,
+          
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center ,
             children: [
