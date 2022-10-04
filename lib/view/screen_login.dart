@@ -3,6 +3,7 @@ import 'package:tcc/modal/button.dart';
 import 'package:tcc/modal/textField.dart';
 
 import '../modal/imageMainScreens.dart';
+import '../modal/textFieldEmail.dart';
 import '../modal/textFieldPassword.dart';
 
 class ScreenLogin extends StatefulWidget {
@@ -28,14 +29,14 @@ class _ScreenLoginState extends State<ScreenLogin> {
         child: Form(
           key: formKey,
           autovalidateMode: AutovalidateMode.always,
-          
+
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center ,
             children: [
               imgCenter(imgLogin),
 
               SizedBox(height: 50,),
-              textField('E-mail', txtEmail),
+              textFieldEmail('E-mail', txtEmail),
               textFieldPassword('Senha', txtPassword),
               buttonLogin(),
               SizedBox(height: 50,),
