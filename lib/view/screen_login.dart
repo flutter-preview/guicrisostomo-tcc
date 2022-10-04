@@ -16,37 +16,80 @@ class _ScreenLoginState extends State<ScreenLogin> {
   var txtEmail = TextEditingController();
   var txtPassword = TextEditingController();
 
+  var formKey = GlobalKey<FormState>();
+  
   final String imgLogin = 'lib/images/imgLogin.svg';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
+      body: SingleChildScrollView(
         padding: EdgeInsets.all(20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center ,
-          children: [
-            imgCenter(imgLogin),
+        child: Form(
+          key: formKey,
 
-            SizedBox(height: 50,),
-            textField('E-mail', txtEmail),
-            textField('Senha', txtPassword),
-            button('Entrar', context, 'home'),
-            SizedBox(height: 50,),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center ,
+            children: [
+              imgCenter(imgLogin),
 
-            Text(
-              'Ainda não se registrou ?',
-              style: TextStyle(
-                fontSize: 16,
+              SizedBox(height: 50,),
+              textField('E-mail', txtEmail),
+              textField('Senha', txtPassword),
+              buttonLogin(),
+              SizedBox(height: 50,),
+
+              Text(
+                'Ainda não se registrou ?',
+                style: TextStyle(
+                  fontSize: 16,
+                ),
               ),
-            ),
 
-            button('Registrar agora', context, 'register')
-        ],),
+              button('Registrar agora', context, 'register')
+          ],),
+        )
       ),
     );
   }
-  
+
+  buttonLogin() {
+    return Container(
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          minimumSize: Size(100, 50),
+          primary: Color.fromRGBO(50, 62, 64, 1),
+          
+        ),
+        
+        child: Text('Entrar',
+          style: TextStyle(
+          fontSize: 24,
+        )
+        ),
+
+        //COMPORTAMENTO
+        onPressed: () {
+
+          //DISPARAR O PROCESSO DE VALIDAÇÃO
+          if (formKey.currentState!.validate()) {
+            //Se o formulário foi VALIDADO
+          
+            Navigator.of(context).pop();
+            Navigator.pushNamed(
+              context,
+              'home',
+            );
+
+          } else {
+            dialogField("Informe os campos corretamente");
+          }
+          
+        },
+      ),
+    );
+  }
+
   dialogField(msg) {
     return showDialog(
       context: context, 
