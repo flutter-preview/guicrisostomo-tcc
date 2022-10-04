@@ -46,4 +46,32 @@ class _ScreenLoginState extends State<ScreenLogin> {
       ),
     );
   }
+  
+  dialogField(msg) {
+    return showDialog(
+      context: context, 
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Pizzaria'),
+          content: Text(
+            msg,
+            style: TextStyle(
+              fontSize: 28,
+            ),
+          ),
+
+          actions: [
+            TextButton(
+              onPressed: () {
+                //fechar caixa de dialogo
+                Navigator.of(context).pop();
+              },
+
+              child: Text('Fechar'),
+            )
+          ],
+        );
+      }
+    );
+  }
 }
