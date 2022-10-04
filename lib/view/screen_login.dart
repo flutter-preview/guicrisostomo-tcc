@@ -3,6 +3,7 @@ import 'package:tcc/modal/button.dart';
 import 'package:tcc/modal/textField.dart';
 
 import '../modal/imageMainScreens.dart';
+import '../modal/textFieldPassword.dart';
 
 class ScreenLogin extends StatefulWidget {
   const ScreenLogin({super.key});
@@ -34,7 +35,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
 
               SizedBox(height: 50,),
               textField('E-mail', txtEmail),
-              textField('Senha', txtPassword),
+              textFieldPassword('Senha', txtPassword),
               buttonLogin(),
               SizedBox(height: 50,),
 
