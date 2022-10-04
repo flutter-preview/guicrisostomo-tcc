@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:tcc/modal/button.dart';
-import 'package:tcc/modal/textField.dart';
-
 import '../modal/imageMainScreens.dart';
 import '../modal/textFieldEmail.dart';
 import '../modal/textFieldPassword.dart';
