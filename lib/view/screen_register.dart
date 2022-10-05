@@ -15,6 +15,8 @@ class ScreenRegister extends StatefulWidget {
 class _ScreenRegisterState extends State<ScreenRegister> {
   final String imgRegister = 'lib/images/imgRegister.svg';
   
+  var formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     var txtEmail = TextEditingController();
@@ -25,35 +27,41 @@ class _ScreenRegisterState extends State<ScreenRegister> {
     return Scaffold(
       body: SingleChildScrollView(
         padding: EdgeInsets.all(20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center ,
-          children: [
-            imgCenter(imgRegister),
 
-            SizedBox(height: 50,),
+        child: Form(
+          key: formKey,
+          autovalidateMode: AutovalidateMode.always,
+          
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center ,
+            children: [
+              imgCenter(imgRegister),
 
-            textFieldGeneral('Nome', txtName, context),
-            SizedBox(height: 10,),
-            textFieldGeneral('E-mail', txtEmail, context),
-            SizedBox(height: 10,),
-            textFieldGeneral('Telefone', txtPhone, context),
-            SizedBox(height: 10,),
-            textFieldGeneral('Senha', txtSenha, context),
-            
-            SizedBox(height: 50,),
+              SizedBox(height: 50,),
 
-            button('Entrar', context, 'home'),
-            SizedBox(height: 50,),
+              textFieldGeneral('Nome', txtName, context),
+              SizedBox(height: 10,),
+              textFieldGeneral('E-mail', txtEmail, context),
+              SizedBox(height: 10,),
+              textFieldGeneral('Telefone', txtPhone, context),
+              SizedBox(height: 10,),
+              textFieldGeneral('Senha', txtSenha, context),
+              
+              SizedBox(height: 50,),
 
-            Text(
-              'Já possui cadastro ?',
-              style: TextStyle(
-                fontSize: 16,
+              button('Entrar', context, 'home'),
+              SizedBox(height: 50,),
+
+              Text(
+                'Já possui cadastro ?',
+                style: TextStyle(
+                  fontSize: 16,
+                ),
               ),
-            ),
 
-            button('Entrar agora', context, 'login')
-        ],),
+              button('Entrar agora', context, 'login')
+          ],),
+        )
       ),
     );
   }
