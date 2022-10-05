@@ -56,7 +56,7 @@ textField(rotulo, variavel, context, fieldPassword) {
             color: Colors.white,
           ),
 
-          enabledBorder: new OutlineInputBorder(
+          enabledBorder: new UnderlineInputBorder(
             borderRadius: new BorderRadius.circular(20.0),
             borderSide:  BorderSide(color: Colors.transparent ),
           ),
