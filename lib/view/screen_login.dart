@@ -34,8 +34,14 @@ class _ScreenLoginState extends State<ScreenLogin> {
               imgCenter(imgLogin),
 
               SizedBox(height: 50,),
-              textFieldEmail('E-mail', txtEmail),
+              textFieldEmail('E-mail', txtEmail, context),
+              
+              SizedBox(height: 10,),
+
               textFieldPassword('Senha', txtPassword, context),
+              
+              SizedBox(height: 50,),
+
               buttonLogin(),
               SizedBox(height: 50,),
 

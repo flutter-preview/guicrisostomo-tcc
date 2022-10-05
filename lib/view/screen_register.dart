@@ -32,11 +32,16 @@ class _ScreenRegisterState extends State<ScreenRegister> {
 
             SizedBox(height: 50,),
 
-            textField('Nome', txtName),
-            textField('E-mail', txtEmail),
-            textField('Telefone', txtPhone),
-            textField('Senha', txtSenha),
+            textFieldGeneral('Nome', txtName, context),
+            SizedBox(height: 10,),
+            textFieldGeneral('E-mail', txtEmail, context),
+            SizedBox(height: 10,),
+            textFieldGeneral('Telefone', txtPhone, context),
+            SizedBox(height: 10,),
+            textFieldGeneral('Senha', txtSenha, context),
             
+            SizedBox(height: 50,),
+
             button('Entrar', context, 'home'),
             SizedBox(height: 50,),
 
