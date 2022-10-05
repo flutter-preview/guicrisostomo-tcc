@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-textFieldPassword(rotulo, variavel, context, fieldPassword) {
+textFieldConfirmPassword(rotulo, variavel, context, fieldPassword) {
   final String assetIconSeePassword = 'lib/images/iconSeePassword.svg';
 
   return Container(
