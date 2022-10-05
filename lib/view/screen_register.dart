@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:tcc/modal/textFieldEmail.dart';
+import 'package:tcc/modal/textFieldPassword.dart';
 
 import '../modal/button.dart';
 import '../modal/imageMainScreens.dart';
@@ -41,11 +43,11 @@ class _ScreenRegisterState extends State<ScreenRegister> {
 
               textFieldGeneral('Nome', txtName, context),
               SizedBox(height: 10,),
-              textFieldGeneral('E-mail', txtEmail, context),
+              textFieldEmail('E-mail', txtEmail, context),
               SizedBox(height: 10,),
               textFieldGeneral('Telefone', txtPhone, context),
               SizedBox(height: 10,),
-              textFieldGeneral('Senha', txtSenha, context),
+              textFieldPassword('Senha', txtSenha, context),
               
               SizedBox(height: 50,),
 
