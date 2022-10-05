@@ -73,6 +73,7 @@ flutter:
     - lib/images/imgProfile.svg
     - lib/images/iconOrder.svg
     - lib/images/iconMenu.svg
+    - lib/images/iconSeePasword.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
