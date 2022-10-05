@@ -71,8 +71,8 @@ textField(rotulo, variavel, context, fieldPassword) {
             return 'Preencha o campo com as informações necessárias';
           }
 
-          if (value == fieldPassword) {
-            return 'As senhas devem ser iguais!';
+          if (value != fieldPassword) {
+            return 'As senhas devem ser iguais';
           }
         },
       )
