@@ -22,7 +22,8 @@ class _ScreenRegisterState extends State<ScreenRegister> {
   @override
   Widget build(BuildContext context) {
     var txtEmail = TextEditingController();
-    var txtSenha = TextEditingController();
+    var txtPassword = TextEditingController();
+    var txtConfirmPassword = TextEditingController();
     var txtName = TextEditingController();
     var txtPhone = TextEditingController();
     
@@ -47,8 +48,10 @@ class _ScreenRegisterState extends State<ScreenRegister> {
               SizedBox(height: 10,),
               textFieldGeneral('Telefone', txtPhone, context),
               SizedBox(height: 10,),
-              textFieldPassword('Senha', txtSenha, context),
-              
+              textFieldPassword('Senha', txtPassword, context),
+              SizedBox(height: 10,),
+              textFieldPassword('Confirmar senha', txtConfirmPassword, context),
+
               SizedBox(height: 50,),
 
               button('Entrar', context, 'home'),
