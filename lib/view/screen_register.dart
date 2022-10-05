@@ -6,6 +6,7 @@ import 'package:tcc/modal/textFieldPassword.dart';
 import '../modal/button.dart';
 import '../modal/imageMainScreens.dart';
 import '../modal/textField.dart';
+import '../modal/textFieldConfirmPassword.dart';
 
 class ScreenRegister extends StatefulWidget {
   const ScreenRegister({super.key});
@@ -50,7 +51,7 @@ class _ScreenRegisterState extends State<ScreenRegister> {
               SizedBox(height: 10,),
               textFieldPassword('Senha', txtPassword, context),
               SizedBox(height: 10,),
-              textFieldPassword('Confirmar senha', txtConfirmPassword, context),
+              textFieldConfirmPassword('Confirmar senha', txtConfirmPassword, context, txtPassword.value),
 
               SizedBox(height: 50,),
 
