@@ -32,13 +32,21 @@ textField(rotulo, variavel, context) {
   return Container(
     margin: EdgeInsets.only(bottom: 15),
     width: MediaQuery.of(context).size.width - 120,
-    height: 70,
+
+    constraints: BoxConstraints( 
+      minWidth: 70,
+    ),
+
     child: Center(
       child: TextFormField(
         controller: variavel,
-        
+        obscureText: true,
+        enableSuggestions: false,
+        autocorrect: false,
+
         style: TextStyle(
-          fontSize: 28,
+          fontSize: 24,
+          color: Colors.white,
         ),
 
         decoration: InputDecoration(
