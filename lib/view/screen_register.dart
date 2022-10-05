@@ -54,7 +54,7 @@ class _ScreenRegisterState extends State<ScreenRegister> {
 
               SizedBox(height: 50,),
 
-              button('Entrar', context, 'home'),
+              buttonRegister(),
               SizedBox(height: 50,),
 
               Text(
@@ -67,6 +67,43 @@ class _ScreenRegisterState extends State<ScreenRegister> {
               button('Entrar agora', context, 'login')
           ],),
         )
+      ),
+    );
+  }
+
+  buttonRegister() {
+    return Container(
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          minimumSize: Size(100, 50),
+          primary: Color.fromRGBO(50, 62, 64, 1),
+          
+        ),
+        
+        child: Text('Entrar',
+          style: TextStyle(
+          fontSize: 24,
+        )
+        ),
+
+        //COMPORTAMENTO
+        onPressed: () {
+
+          //DISPARAR O PROCESSO DE VALIDAÇÃO
+          if (formKey.currentState!.validate()) {
+            //Se o formulário foi VALIDADO
+          
+            Navigator.of(context).pop();
+            Navigator.pushNamed(
+              context,
+              'home',
+            );
+
+          } else {
+            
+          }
+          
+        },
       ),
     );
   }
