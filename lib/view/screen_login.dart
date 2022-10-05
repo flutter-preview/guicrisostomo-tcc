@@ -35,7 +35,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
 
               SizedBox(height: 50,),
               textFieldEmail('E-mail', txtEmail),
-              textFieldPassword('Senha', txtPassword),
+              textFieldPassword('Senha', txtPassword, context),
               buttonLogin(),
               SizedBox(height: 50,),
 
