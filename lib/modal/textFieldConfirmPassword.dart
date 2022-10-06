@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class textFieldClass extends StatefulWidget {
   final String rotulo;
-  final String variavel;
+  final TextEditingController variavel;
   final String fieldPassword;
 
   const textFieldClass({super.key, required this.rotulo, required this.variavel, required this.fieldPassword});
