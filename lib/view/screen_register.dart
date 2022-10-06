@@ -49,7 +49,7 @@ class _ScreenRegisterState extends State<ScreenRegister> {
               SizedBox(height: 10,),
               textFieldGeneral('Telefone', txtPhone, context),
               SizedBox(height: 10,),
-              textFieldPassword('Senha', txtPassword, context),
+              TextFieldPassword(rotulo: 'Senha', variavel: txtPassword),
               SizedBox(height: 10,),
               TextFieldConfirmPassword(rotulo: 'Confirmar senha', variavel: txtConfirmPassword, fieldPassword: txtPassword.text),
               // textFieldConfirmPassword('Confirmar senha', txtConfirmPassword, context, txtPassword.value),
