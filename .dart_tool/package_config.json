@@ -74,6 +74,12 @@
       "languageVersion": "2.17"
     },
     {
+      "name": "mask_text_input_formatter",
+      "rootUri": "file:///C:/flutter/sdk/.pub-cache/hosted/pub.dartlang.org/mask_text_input_formatter-2.4.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "matcher",
       "rootUri": "file:///C:/flutter/sdk/.pub-cache/hosted/pub.dartlang.org/matcher-0.12.12",
       "packageUri": "lib/",
@@ -176,7 +182,7 @@
       "languageVersion": "2.18"
     }
   ],
-  "generated": "2022-10-05T11:45:41.996747Z",
+  "generated": "2022-10-06T21:36:33.281864Z",
   "generator": "pub",
   "generatorVersion": "2.18.0"
 }

@@ -38,6 +38,10 @@ lints
 2.17
 file:///C:/flutter/sdk/.pub-cache/hosted/pub.dartlang.org/lints-2.0.0/
 file:///C:/flutter/sdk/.pub-cache/hosted/pub.dartlang.org/lints-2.0.0/lib/
+mask_text_input_formatter
+2.12
+file:///C:/flutter/sdk/.pub-cache/hosted/pub.dartlang.org/mask_text_input_formatter-2.4.0/
+file:///C:/flutter/sdk/.pub-cache/hosted/pub.dartlang.org/mask_text_input_formatter-2.4.0/lib/
 matcher
 2.12
 file:///C:/flutter/sdk/.pub-cache/hosted/pub.dartlang.org/matcher-0.12.12/
@@ -112,6 +116,6 @@ file:///C:/flutter/sdk/packages/flutter_test/
 file:///C:/flutter/sdk/packages/flutter_test/lib/
 tcc
 2.18
-file:///D:/Guilherme/Estudos/Github/TCC/
-file:///D:/Guilherme/Estudos/Github/TCC/lib/
+file:///D:/Estudos/Guilherme/Outros/GitHub/tcc/
+file:///D:/Estudos/Guilherme/Outros/GitHub/tcc/lib/
 2
