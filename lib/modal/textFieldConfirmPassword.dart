@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class TextFieldClass extends StatefulWidget {
+class TextFieldConfirmPassword extends StatefulWidget {
   final String rotulo;
   final TextEditingController variavel;
   final String fieldPassword;
 
-  const TextFieldClass({super.key, required this.rotulo, required this.variavel, required this.fieldPassword});
+  const TextFieldConfirmPassword({super.key, required this.rotulo, required this.variavel, required this.fieldPassword});
 
   @override
-  State<TextFieldClass> createState() => _TextFieldClassState();
+  State<TextFieldConfirmPassword> createState() => _TextFieldConfirmPasswordState();
 }
 
-class _TextFieldClassState extends State<TextFieldClass> {
+class _TextFieldConfirmPasswordState extends State<TextFieldConfirmPassword> {
   bool _passwordVisible = true;
   final String assetIconSeePassword = 'lib/images/iconSeePassword.svg';
   final String assetIconHidePassword = 'lib/images/iconHidePassword.svg';
