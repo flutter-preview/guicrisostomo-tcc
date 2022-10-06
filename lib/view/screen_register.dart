@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tcc/modal/textFieldEmail.dart';
 import 'package:tcc/modal/textFieldPassword.dart';
+import 'package:tcc/modal/textFieldPhone.dart';
 
 import '../modal/button.dart';
 import '../modal/imageMainScreens.dart';
@@ -42,7 +43,7 @@ class _ScreenRegisterState extends State<ScreenRegister> {
         child: Form(
           key: formKey,
           autovalidateMode: autoValidation ? AutovalidateMode.always : AutovalidateMode.disabled,
-          
+
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center ,
             children: [
@@ -54,7 +55,7 @@ class _ScreenRegisterState extends State<ScreenRegister> {
               SizedBox(height: 10,),
               textFieldEmail('E-mail', txtEmail, context),
               SizedBox(height: 10,),
-              textFieldGeneral('Telefone', txtPhone, context),
+              TextFieldPhone('Telefone', txtPhone, context),
               SizedBox(height: 10,),
               TextFieldPassword(rotulo: 'Senha', variavel: txtPassword),
               SizedBox(height: 10,),
