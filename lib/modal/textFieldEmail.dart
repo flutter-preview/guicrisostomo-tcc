@@ -31,7 +31,8 @@ textField(rotulo, variavel, context) {
     child: Center(
       child: TextFormField(
         controller: variavel,
-        
+        keyboardType: TextInputType.emailAddress,
+
         style: TextStyle(
           fontSize: 24,
           color: Colors.white,
