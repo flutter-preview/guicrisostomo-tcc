@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:tcc/modal/textFieldEmail.dart';
 import 'package:tcc/modal/textFieldPassword.dart';
 
@@ -52,7 +51,7 @@ class _ScreenRegisterState extends State<ScreenRegister> {
               TextFieldPassword(rotulo: 'Senha', variavel: txtPassword),
               SizedBox(height: 10,),
               TextFieldConfirmPassword(rotulo: 'Confirmar senha', variavel: txtConfirmPassword, fieldPassword: txtPassword.text),
-              // textFieldConfirmPassword('Confirmar senha', txtConfirmPassword, context, txtPassword.value),
+              
               SizedBox(height: 50,),
 
               buttonRegister(),
