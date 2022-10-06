@@ -33,7 +33,6 @@ class _ScreenRegisterState extends State<ScreenRegister> {
 
         child: Form(
           key: formKey,
-          autovalidateMode: AutovalidateMode.always,
           
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center ,
