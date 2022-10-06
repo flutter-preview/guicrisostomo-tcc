@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+
+var maskFormatter = new MaskTextInputFormatter(
+  mask: '(##) #####-####', 
+  filter: { "#": RegExp(r'[0-9]') },
+  type: MaskAutoCompletionType.lazy
+);
 
 TextFieldPhone(rotulo, variavel, context) {
   final String assetIconSeePassword = 'lib/images/iconSeePassword.svg';
@@ -32,6 +39,7 @@ textField(rotulo, variavel, context) {
       child: TextFormField(
         controller: variavel,
         keyboardType: TextInputType.number,
+        inputFormatters: [maskFormatter],
 
         style: TextStyle(
           fontSize: 24,
@@ -56,7 +64,7 @@ textField(rotulo, variavel, context) {
         //
 
         validator: (value) {
-          value = value!;
+          value = value!.replaceAll(RegExp('[^0-9A-Za-z]'), '');
 
           if (int.tryParse(value) == null) {
             //o usuário NÃo digitou um valr numérico
