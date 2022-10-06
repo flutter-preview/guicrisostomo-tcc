@@ -15,24 +15,33 @@ class ScreenRegister extends StatefulWidget {
 }
 
 class _ScreenRegisterState extends State<ScreenRegister> {
+  var txtEmail = TextEditingController();
+  var txtPassword = TextEditingController();
+  var txtConfirmPassword = TextEditingController();
+  var txtName = TextEditingController();
+  var txtPhone = TextEditingController();
+
   final String imgRegister = 'lib/images/imgRegister.svg';
   
   var formKey = GlobalKey<FormState>();
 
+  bool autoValidation = false;
+
+  @override
+  void initState() {
+    autoValidation = false;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    var txtEmail = TextEditingController();
-    var txtPassword = TextEditingController();
-    var txtConfirmPassword = TextEditingController();
-    var txtName = TextEditingController();
-    var txtPhone = TextEditingController();
-    
     return Scaffold(
       body: SingleChildScrollView(
         padding: EdgeInsets.all(20),
 
         child: Form(
           key: formKey,
+          autovalidateMode: autoValidation ? AutovalidateMode.always : AutovalidateMode.disabled,
           
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center ,
@@ -100,7 +109,9 @@ class _ScreenRegisterState extends State<ScreenRegister> {
             );
 
           } else {
-            
+            setState(() {
+              autoValidation = true;
+            });
           }
           
         },

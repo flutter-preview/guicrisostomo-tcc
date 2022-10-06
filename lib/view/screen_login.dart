@@ -17,8 +17,16 @@ class _ScreenLoginState extends State<ScreenLogin> {
 
   var formKey = GlobalKey<FormState>();
   
+  bool autoValidation = false;
+
   final String imgLogin = 'lib/images/imgLogin.svg';
 
+  @override
+  void initState() {
+    autoValidation = false;
+    super.initState();
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,6 +34,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
         padding: EdgeInsets.all(20),
         child: Form(
           key: formKey,
+          autovalidateMode: autoValidation ? AutovalidateMode.always : AutovalidateMode.disabled,
 
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center ,
@@ -87,6 +96,10 @@ class _ScreenLoginState extends State<ScreenLogin> {
             );
 
           } else {
+            setState(() {
+              autoValidation = true;
+            });
+            
             dialogField("Informe os campos corretamente");
           }
           
