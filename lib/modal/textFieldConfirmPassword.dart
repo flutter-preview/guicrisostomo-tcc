@@ -1,30 +1,71 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class textFieldClass extends StatefulWidget {
+class TextFieldClass extends StatefulWidget {
   final String rotulo;
   final TextEditingController variavel;
   final String fieldPassword;
 
-  const textFieldClass({super.key, required this.rotulo, required this.variavel, required this.fieldPassword});
+  const TextFieldClass({super.key, required this.rotulo, required this.variavel, required this.fieldPassword});
 
   @override
-  State<textFieldClass> createState() => _textFieldClassState();
+  State<TextFieldClass> createState() => _TextFieldClassState();
 }
 
-class _textFieldClassState extends State<textFieldClass> {
+class _TextFieldClassState extends State<TextFieldClass> {
   bool _passwordVisible = true;
+  final String assetIconSeePassword = 'lib/images/iconSeePassword.svg';
+  final String assetIconHidePassword = 'lib/images/iconHidePassword.svg';
+  
   @override
   void initState() {
     _passwordVisible = true;
+    super.initState();
   }
 
-  textField (rotulo, variavel, fieldPassword) => {
-    Container(
-      margin: EdgeInsets.only(bottom: 15),
+  @override
+  Widget build(BuildContext context) {
+
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: const Color.fromRGBO(50, 62, 64, 1),
+        boxShadow: const [
+          BoxShadow(color: Colors.transparent, spreadRadius: 3),
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.only(left: 20),
+        child: Row(
+          children: [
+            textField(widget.rotulo, widget.variavel, widget.fieldPassword),
+            
+            GestureDetector(
+              child: SvgPicture.asset(
+                _passwordVisible ? assetIconSeePassword : assetIconHidePassword,
+                height: 50,
+                width: 50,
+              ),
+
+              onTap: () => {
+                setState(() {
+                  _passwordVisible = !_passwordVisible;
+                })
+                
+              },
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget textField (rotulo, variavel, fieldPassword) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 15),
       width: MediaQuery.of(context).size.width - 120,
 
-      constraints: BoxConstraints( 
+      constraints: const BoxConstraints( 
         minWidth: 70,
       ),
 
@@ -35,21 +76,21 @@ class _textFieldClassState extends State<textFieldClass> {
           enableSuggestions: false,
           autocorrect: false,
 
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 24,
             color: Colors.white,
           ),
 
           decoration: InputDecoration(
             labelText: rotulo,
-            labelStyle: TextStyle(
+            labelStyle: const TextStyle(
               fontSize: 24,
               color: Colors.white,
             ),
 
-            enabledBorder: new UnderlineInputBorder(
-              borderRadius: new BorderRadius.circular(20.0),
-              borderSide:  BorderSide(color: Colors.transparent ),
+            enabledBorder: UnderlineInputBorder(
+              borderRadius: BorderRadius.circular(20.0),
+              borderSide:  const BorderSide(color: Colors.transparent ),
             ),
           ),
           
@@ -68,48 +109,6 @@ class _textFieldClassState extends State<textFieldClass> {
           },
         )
       )
-    )
-  };
-
-  @override
-  Widget build(BuildContext context) {
-    
-    @override
-    State<textFieldClass> createState() => _textFieldClassState();
-
-    final String assetIconSeePassword = 'lib/images/iconSeePassword.svg';
-    
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: Color.fromRGBO(50, 62, 64, 1),
-        boxShadow: [
-          BoxShadow(color: Colors.transparent, spreadRadius: 3),
-        ],
-      ),
-      child: Padding(
-        padding: EdgeInsets.only(left: 20),
-        child: Row(
-          children: [
-            textField(widget.rotulo, widget.variavel, widget.fieldPassword),
-            
-            GestureDetector(
-              child: SvgPicture.asset(
-                assetIconSeePassword,
-                height: 50,
-                width: 50,
-              ),
-
-              onTap: () => {
-                setState(() {
-                  _passwordVisible = false;
-                })
-                
-              },
-            )
-          ],
-        ),
-      ),
     );
   }
 }
