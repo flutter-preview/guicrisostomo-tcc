@@ -51,7 +51,7 @@ class _ScreenRegisterState extends State<ScreenRegister> {
               SizedBox(height: 10,),
               textFieldPassword('Senha', txtPassword, context),
               SizedBox(height: 10,),
-              TextFieldClass(rotulo: 'Confirmar senha', variavel: txtConfirmPassword, fieldPassword: txtPassword.text),
+              TextFieldConfirmPassword(rotulo: 'Confirmar senha', variavel: txtConfirmPassword, fieldPassword: txtPassword.text),
               // textFieldConfirmPassword('Confirmar senha', txtConfirmPassword, context, txtPassword.value),
               SizedBox(height: 50,),
 
