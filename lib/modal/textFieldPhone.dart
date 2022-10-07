@@ -4,7 +4,7 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 var maskFormatter = new MaskTextInputFormatter(
   mask: '(##) #####-####', 
   filter: { "#": RegExp(r'[0-9]') },
-  type: MaskAutoCompletionType.lazy
+  type: MaskAutoCompletionType.eager
 );
 
 TextFieldPhone(rotulo, variavel, context) {
@@ -74,6 +74,14 @@ textField(rotulo, variavel, context) {
             return null;
           }
 
+        },
+
+        onChanged: (value) {
+          if (value.length <= 14) {
+            variavel.value = maskFormatter.updateMask(mask: "(##) ####-#####");
+          } else {
+            variavel.value = maskFormatter.updateMask(mask: "(##) #####-####");
+          }
         },
       )
     )
