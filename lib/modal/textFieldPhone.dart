@@ -1,13 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
-var maskFormatter = new MaskTextInputFormatter(
-  mask: '(##) #####-####', 
-  filter: { "#": RegExp(r'[0-9]') },
-  type: MaskAutoCompletionType.eager
-);
-
-TextFieldPhone(rotulo, variavel, context) {
+TextFieldPhone(rotulo, variavel, context, initialText) {
   final String assetIconSeePassword = 'lib/images/iconSeePassword.svg';
 
   return Container(
@@ -21,12 +15,19 @@ TextFieldPhone(rotulo, variavel, context) {
     child: Padding(
       padding: EdgeInsets.only(left: 20),
       
-      child: textField(rotulo, variavel, context),
+      child: textField(rotulo, variavel, context, initialText),
     ),
   );
 }
 
-textField(rotulo, variavel, context) {
+textField(rotulo, variavel, context, initialText) {
+  var maskFormatter = new MaskTextInputFormatter(
+    mask: '(##) #####-####', 
+    filter: { "#": RegExp(r'[0-9]') },
+    type: MaskAutoCompletionType.eager,
+    initialText: initialText,
+  );
+
   return Container(
     margin: EdgeInsets.only(bottom: 15),
     padding: EdgeInsets.fromLTRB(0, 0, 10, 0),

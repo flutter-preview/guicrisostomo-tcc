@@ -55,7 +55,7 @@ class _ScreenRegisterState extends State<ScreenRegister> {
               SizedBox(height: 10,),
               textFieldEmail('E-mail', txtEmail, context),
               SizedBox(height: 10,),
-              TextFieldPhone('Telefone', txtPhone, context),
+              TextFieldPhone('Telefone', txtPhone, context, ''),
               SizedBox(height: 10,),
               TextFieldPassword(rotulo: 'Senha', variavel: txtPassword),
               SizedBox(height: 10,),
