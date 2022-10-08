@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../modal/bottonNavigationCustomer.dart';
 import '../modal/listSizeAvailable.dart';
@@ -6,6 +7,7 @@ import '../modal/listSizeAvailable.dart';
 class ScreenInfoProduct extends StatelessWidget {
 
   final String imgPizza = 'lib/images/imgPizza.png';
+  final String iconOrder = 'lib/images/iconOrder.svg';
 
   const ScreenInfoProduct({super.key});
 
@@ -102,10 +104,43 @@ class ScreenInfoProduct extends StatelessWidget {
             ),
 
             const SizedBox(height: 10,),
-            
+
             listSize('PEQUENA (4 fatias)'),
             listSize('GRANDE (8 fatias)'),
             listSize('GIGANTE (12 fatias)'),
+
+            const SizedBox(height: 10,),
+
+            const Center(
+              child: Text(
+                'Informações adicionais',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 10,),
+
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: Row(
+                children: [
+                  SvgPicture.asset(
+                    iconOrder,
+                    fit: BoxFit.scaleDown,
+                    height: 20,
+                  ),
+            
+                  const Text(
+                    'Último pedido: 19:52 do dia 27/05/2022'
+                  )
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 10,),
           ]
         )
       ),
