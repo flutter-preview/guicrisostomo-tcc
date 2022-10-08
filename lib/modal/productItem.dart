@@ -58,7 +58,10 @@ productItem() {
                 child: ElevatedButton(
                     
                     onPressed: () {
-                    
+                      Navigator.pushNamed(
+                        context,
+                        'products/add_product',
+                      );
                     },
                     
                     style: ElevatedButton.styleFrom(
@@ -84,7 +87,10 @@ productItem() {
                     
                     
                     onPressed: () {
-                    
+                      Navigator.pushNamed(
+                        context,
+                        'products/info_product',
+                      );
                     },
                     
                     style: ElevatedButton.styleFrom(
@@ -104,7 +110,10 @@ productItem() {
           ),
           //EVENTO DE CLIQUE
           onTap: () {
-            
+            Navigator.pushNamed(
+              context,
+              'products/info_product',
+            );
           },
           
         ),
