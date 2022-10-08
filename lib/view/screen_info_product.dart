@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../modal/bottonNavigationCustomer.dart';
+import '../modal/listSizeAvailable.dart';
 
 class ScreenInfoProduct extends StatelessWidget {
 
@@ -13,7 +14,7 @@ class ScreenInfoProduct extends StatelessWidget {
     return Scaffold(
       
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(170),
+        preferredSize: const Size.fromHeight(200),
         child: AppBar(
           titleSpacing: 0,
           automaticallyImplyLeading: false,
@@ -88,7 +89,23 @@ class ScreenInfoProduct extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            const SizedBox(height: 10,),
+
+            const Center(
+              child: Text(
+                'Tamanhos disponíveis',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 10,),
             
+            listSize('PEQUENA (4 fatias)'),
+            listSize('GRANDE (8 fatias)'),
+            listSize('GIGANTE (12 fatias)'),
           ]
         )
       ),
