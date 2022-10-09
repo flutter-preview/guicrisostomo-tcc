@@ -18,78 +18,76 @@ class _ScreenProfileState extends State<ScreenProfile> {
     return Scaffold(
       body: SingleChildScrollView(
         padding: EdgeInsets.all(20),
-        child: Container(
-          child: Column(
-            children: [
-              Center(
-                child: Column(
-                  children: [
-                    SvgPicture.asset(
-                      'lib/images/imgProfile.svg',
-                      width: 100,
-                    ),
-
-                    Text(
-                      'Rodrigo',
-                      style: TextStyle(
-                        fontFamily: 'Roboto',
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-
-                    Text(
-                      '(16) 99999-9999',
-                      style: TextStyle(
-                        fontFamily: 'Roboto',
-                        fontSize: 14,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              SizedBox(height: 10,),
-
-              Column(
+        child: Column(
+          children: [
+            Center(
+              child: Column(
                 children: [
-                  Card(
-                    child: ListTile(
-                      contentPadding: EdgeInsets.all(10),
-                      title: Text('Editar dados'),
+                  SvgPicture.asset(
+                    'lib/images/imgProfile.svg',
+                    width: 100,
+                  ),
 
-                      trailing: Icon(Icons.arrow_right, size: 20),
-
-                      onTap: () => {
-                        Navigator.pushNamed(
-                          context,
-                          'profile/edit_datas',
-                        )
-                      },
+                  Text(
+                    'Rodrigo',
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
 
-                  SizedBox(height: 10,),
-
-                  Card(
-                    child: ListTile(
-                      contentPadding: EdgeInsets.all(10),
-                      title: Text('Sobre'),
-
-                      trailing: Icon(Icons.arrow_right, size: 20),
-
-                      onTap: () => {
-                        Navigator.pushNamed(
-                          context,
-                          'profile/about',
-                        )
-                      },
+                  Text(
+                    '(16) 99999-9999',
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      fontSize: 14,
                     ),
-                  )
-                ]
-              )
-            ]
-          )
+                  ),
+                ],
+              ),
+            ),
+
+            SizedBox(height: 10,),
+
+            Column(
+              children: [
+                Card(
+                  child: ListTile(
+                    contentPadding: EdgeInsets.all(10),
+                    title: Text('Editar dados'),
+
+                    trailing: Icon(Icons.arrow_right, size: 20),
+
+                    onTap: () => {
+                      Navigator.pushNamed(
+                        context,
+                        'profile/edit_datas',
+                      )
+                    },
+                  ),
+                ),
+
+                SizedBox(height: 10,),
+
+                Card(
+                  child: ListTile(
+                    contentPadding: EdgeInsets.all(10),
+                    title: Text('Sobre'),
+
+                    trailing: Icon(Icons.arrow_right, size: 20),
+
+                    onTap: () => {
+                      Navigator.pushNamed(
+                        context,
+                        'profile/about',
+                      )
+                    },
+                  ),
+                )
+              ]
+            )
+          ]
         )
       ),
 

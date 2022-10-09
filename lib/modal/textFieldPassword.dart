@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -101,6 +103,7 @@ class _TextFieldPasswordState extends State<TextFieldPassword> {
             if (value == null || value.isEmpty) {
               return 'Preencha o campo com as informações necessárias';
             }
+            return null;
           },
         )
       )

@@ -14,19 +14,19 @@ class _ScreenInfoOrderState extends State<ScreenInfoOrder> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Informações'),
+        title: const Text('Informações'),
         centerTitle: true,
-        backgroundColor: Color.fromRGBO(50, 62, 64, 1),
+        backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
       ),
 
       body: Container(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         
         child: Column(
           children: [
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
+              children: const [
                 Icon(Icons.people_rounded, size: 30, color: Color.fromRGBO(242, 169, 34, 1)),
                 SizedBox(width: 10,),
                 Text(
@@ -35,11 +35,11 @@ class _ScreenInfoOrderState extends State<ScreenInfoOrder> {
               ],
             ),
 
-            SizedBox(height: 5,),
+            const SizedBox(height: 5,),
 
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
+              children: const [
                 Icon(Icons.timer_outlined, size: 30, color: Color.fromRGBO(242, 169, 34, 1)),
                 SizedBox(width: 10,),
                 Text(
@@ -50,7 +50,7 @@ class _ScreenInfoOrderState extends State<ScreenInfoOrder> {
 
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
+              children: const [
                 Icon(Icons.delivery_dining, size: 30, color: Color.fromRGBO(242, 169, 34, 1)),
                 SizedBox(width: 10,),
                 Text(
@@ -62,11 +62,11 @@ class _ScreenInfoOrderState extends State<ScreenInfoOrder> {
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Icon(Icons.attach_money, size: 30, color: Color.fromRGBO(242, 169, 34, 1)),
-                SizedBox(width: 10,),
+                const Icon(Icons.attach_money, size: 30, color: Color.fromRGBO(242, 169, 34, 1)),
+                const SizedBox(width: 10,),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+                  children: const [
                     Text(
                       'Total: R\$ 51,00',
                     ),
@@ -79,11 +79,11 @@ class _ScreenInfoOrderState extends State<ScreenInfoOrder> {
               ],
             ),
 
-            SizedBox(height: 10,),
+            const SizedBox(height: 10,),
 
             Container(
               alignment: Alignment.centerLeft,
-              child: Text(
+              child: const Text(
                 'Itens pedidos hoje',
                 textAlign: TextAlign.left,
                 style: TextStyle(
@@ -99,7 +99,7 @@ class _ScreenInfoOrderState extends State<ScreenInfoOrder> {
         )
         
       ),
-      bottomNavigationBar: Bottom(),
+      bottomNavigationBar: const Bottom(),
     );
   }
 }
@@ -112,12 +112,12 @@ productItem() {
       scrollDirection: Axis.vertical,
       itemBuilder: (context, index) {
       return Card(
-        color: Color.fromRGBO(50, 62, 64, 1),
+        color: const Color.fromRGBO(50, 62, 64, 1),
         child: ListTile(
-          contentPadding: EdgeInsets.fromLTRB(10, 10, 20, 10),
-          leading: Icon(Icons.local_pizza, size: 40, color: Colors.white),
+          contentPadding: const EdgeInsets.fromLTRB(10, 10, 20, 10),
+          leading: const Icon(Icons.local_pizza, size: 40, color: Colors.white),
 
-          title: Text(
+          title: const Text(
             'TENTAÇÃO',
             style: TextStyle(
               fontSize: 24,
@@ -127,7 +127,7 @@ productItem() {
 
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+            children: const [
               Text(
                 'PIZZA - GIGANTE',
                 style: TextStyle(
@@ -144,66 +144,64 @@ productItem() {
             ]
           ),
 
-          trailing: Container(
-            child: Column(
-              children: [
-              
-              Expanded(
+          trailing: Column(
+            children: [
+            
+            Expanded(
+            child: SizedBox(
+              width: 25,
+              height: 25,
+              child: ElevatedButton(
+                  
+                  onPressed: () {
+                    Navigator.pushNamed(
+                      context,
+                      'products/add_product',
+                    );
+                  },
+                  
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.all(2),
+                    backgroundColor: const Color.fromRGBO(242, 169, 34, 1),
+                    shape: const CircleBorder(),
+                    foregroundColor: Colors.white,
+                  ),
+                  child: const Icon(Icons.add, size: 15, color: Colors.white,),
+                
+                ),
+              ),
+            ),
+            
+            const SizedBox(height: 10,),
+
+            Expanded(
               child: SizedBox(
                 width: 25,
                 height: 25,
+                
                 child: ElevatedButton(
-                    
-                    onPressed: () {
-                      Navigator.pushNamed(
-                        context,
-                        'products/add_product',
-                      );
-                    },
-                    
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.all(2),
-                      backgroundColor: Color.fromRGBO(242, 169, 34, 1),
-                      shape: CircleBorder(),
-                      primary: Colors.white,
-                    ),
-                    child: Icon(Icons.add, size: 15, color: Colors.white,),
                   
+                  
+                  onPressed: () {
+                    Navigator.pushNamed(
+                      context,
+                      'products/info_product',
+                    );
+                  },
+                  
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.all(2),
+                    backgroundColor: const Color.fromRGBO(242, 169, 34, 1),
+                    shape: const CircleBorder(),
+                    foregroundColor: Colors.white,
                   ),
-                ),
-              ),
-              
-              SizedBox(height: 10,),
-
-              Expanded(
-                child: SizedBox(
-                  width: 25,
-                  height: 25,
                   
-                  child: ElevatedButton(
-                    
-                    
-                    onPressed: () {
-                      Navigator.pushNamed(
-                        context,
-                        'products/info_product',
-                      );
-                    },
-                    
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.all(2),
-                      backgroundColor: Color.fromRGBO(242, 169, 34, 1),
-                      shape: CircleBorder(),
-                      primary: Colors.white,
-                    ),
-                    
-                    child: Icon(Icons.question_mark, size: 15, color: Colors.white,),
-                  
-                    ),
-                  )
+                  child: const Icon(Icons.question_mark, size: 15, color: Colors.white,),
+                
+                  ),
                 )
-              ]
-            )
+              )
+            ]
           ),
           //EVENTO DE CLIQUE
           onTap: () {

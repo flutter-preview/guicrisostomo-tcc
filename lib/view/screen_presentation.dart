@@ -21,21 +21,19 @@ class ScreenPresentation extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween ,
                 children: [
                   SizedBox(height: 0,),
-                  Container(
-                    child: Column(
-                      children: [
-                        imgCenter(imgPresentation),
-                        SizedBox(height: 14,),
-                        Text(
-                          'Peça sua pizza de onde quiser e divida com quem você ama',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 20,
-                          ),
-                          textAlign: TextAlign.center,
+                  Column(
+                    children: [
+                      imgCenter(imgPresentation),
+                      SizedBox(height: 14,),
+                      Text(
+                        'Peça sua pizza de onde quiser e divida com quem você ama',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 20,
                         ),
-                      ],
-                    ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
                   ),
                   
                   Row(

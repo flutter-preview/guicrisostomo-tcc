@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tcc/modal/button.dart';
 
 import '../modal/bottonNavigationCustomer.dart';
 import '../modal/textField.dart';
@@ -35,76 +34,71 @@ class _ScreenEditDatasState extends State<ScreenEditDatas> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Editar dados'),
+        title: const Text('Editar dados'),
         centerTitle: true,
-        backgroundColor: Color.fromRGBO(50, 62, 64, 1),
+        backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
       ),
 
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
 
-        child: Container(
-          child: Form(
-            key: formKey,
-            autovalidateMode: autoValidation ? AutovalidateMode.always : AutovalidateMode.disabled,
+        child: Form(
+          key: formKey,
+          autovalidateMode: autoValidation ? AutovalidateMode.always : AutovalidateMode.disabled,
 
-            child: Column(
-              children: [
-                textFieldGeneral('Nome', txtName, context),
-                SizedBox(height: 10,),
-                textFieldEmail('E-mail', txtEmail, context),
-                SizedBox(height: 10,),
-                TextFieldPhone('Telefone', txtPhone, context, txtPhone.text),
-                SizedBox(height: 50,),
+          child: Column(
+            children: [
+              textFieldGeneral('Nome', txtName, context),
+              const SizedBox(height: 10,),
+              textFieldEmail('E-mail', txtEmail, context),
+              const SizedBox(height: 10,),
+              TextFieldPhone('Telefone', txtPhone, context, txtPhone.text),
+              const SizedBox(height: 50,),
 
-                buttonSave(),
-              ]
-            ),
+              buttonSave(),
+            ]
           ),
         ),
       ),
 
-      bottomNavigationBar: Bottom(),
+      bottomNavigationBar: const Bottom(),
     );
   }
 
   buttonSave() {
-    return Container(
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          minimumSize: Size(100, 50),
-          primary: Color.fromRGBO(50, 62, 64, 1),
-          
-        ),
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        minimumSize: const Size(100, 50), backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
         
-        child: Text('Salvar',
-          style: TextStyle(
-          fontSize: 24,
-        )
-        ),
-
-        //COMPORTAMENTO
-        onPressed: () {
-
-          //DISPARAR O PROCESSO DE VALIDAÇÃO
-          if (formKey.currentState!.validate()) {
-            //Se o formulário foi VALIDADO
-          
-            Navigator.of(context).pop();
-            Navigator.pushNamed(
-              context,
-              'home',
-
-            );
-
-          } else {
-            setState(() {
-              autoValidation = true;
-            });
-          }
-          
-        },
       ),
+      
+      child: const Text('Salvar',
+        style: TextStyle(
+        fontSize: 24,
+      )
+      ),
+
+      //COMPORTAMENTO
+      onPressed: () {
+
+        //DISPARAR O PROCESSO DE VALIDAÇÃO
+        if (formKey.currentState!.validate()) {
+          //Se o formulário foi VALIDADO
+        
+          Navigator.of(context).pop();
+          Navigator.pushNamed(
+            context,
+            'home',
+
+          );
+
+        } else {
+          setState(() {
+            autoValidation = true;
+          });
+        }
+        
+      },
     );
   }
 }

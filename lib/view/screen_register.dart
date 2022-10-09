@@ -38,7 +38,7 @@ class _ScreenRegisterState extends State<ScreenRegister> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
 
         child: Form(
           key: formKey,
@@ -49,24 +49,24 @@ class _ScreenRegisterState extends State<ScreenRegister> {
             children: [
               imgCenter(imgRegister),
 
-              SizedBox(height: 50,),
+              const SizedBox(height: 50,),
 
               textFieldGeneral('Nome', txtName, context),
-              SizedBox(height: 10,),
+              const SizedBox(height: 10,),
               textFieldEmail('E-mail', txtEmail, context),
-              SizedBox(height: 10,),
+              const SizedBox(height: 10,),
               TextFieldPhone('Telefone', txtPhone, context, ''),
-              SizedBox(height: 10,),
+              const SizedBox(height: 10,),
               TextFieldPassword(rotulo: 'Senha', variavel: txtPassword),
-              SizedBox(height: 10,),
+              const SizedBox(height: 10,),
               TextFieldConfirmPassword(rotulo: 'Confirmar senha', variavel: txtConfirmPassword, fieldPassword: txtPassword.text),
               
-              SizedBox(height: 50,),
+              const SizedBox(height: 50,),
 
               buttonRegister(),
-              SizedBox(height: 50,),
+              const SizedBox(height: 50,),
 
-              Text(
+              const Text(
                 'Já possui cadastro ?',
                 style: TextStyle(
                   fontSize: 16,
@@ -81,42 +81,39 @@ class _ScreenRegisterState extends State<ScreenRegister> {
   }
 
   buttonRegister() {
-    return Container(
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          minimumSize: Size(100, 50),
-          primary: Color.fromRGBO(50, 62, 64, 1),
-          
-        ),
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        minimumSize: const Size(100, 50), backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
         
-        child: Text('Entrar',
-          style: TextStyle(
-          fontSize: 24,
-        )
-        ),
-
-        //COMPORTAMENTO
-        onPressed: () {
-
-          //DISPARAR O PROCESSO DE VALIDAÇÃO
-          if (formKey.currentState!.validate()) {
-            //Se o formulário foi VALIDADO
-          
-            Navigator.of(context).pop();
-            Navigator.pushNamed(
-              context,
-              'home',
-
-            );
-
-          } else {
-            setState(() {
-              autoValidation = true;
-            });
-          }
-          
-        },
       ),
+      
+      child: const Text('Entrar',
+        style: TextStyle(
+        fontSize: 24,
+      )
+      ),
+
+      //COMPORTAMENTO
+      onPressed: () {
+
+        //DISPARAR O PROCESSO DE VALIDAÇÃO
+        if (formKey.currentState!.validate()) {
+          //Se o formulário foi VALIDADO
+        
+          Navigator.of(context).pop();
+          Navigator.pushNamed(
+            context,
+            'home',
+
+          );
+
+        } else {
+          setState(() {
+            autoValidation = true;
+          });
+        }
+        
+      },
     );
   }
 }

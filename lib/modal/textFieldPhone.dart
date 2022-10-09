@@ -1,19 +1,21 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
+// ignore: non_constant_identifier_names
 TextFieldPhone(rotulo, variavel, context, initialText) {
-  final String assetIconSeePassword = 'lib/images/iconSeePassword.svg';
 
   return Container(
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(20),
-      color: Color.fromRGBO(50, 62, 64, 1),
-      boxShadow: [
+      color: const Color.fromRGBO(50, 62, 64, 1),
+      boxShadow: const [
         BoxShadow(color: Colors.transparent, spreadRadius: 3),
       ],
     ),
     child: Padding(
-      padding: EdgeInsets.only(left: 20),
+      padding: const EdgeInsets.only(left: 20),
       
       child: textField(rotulo, variavel, context, initialText),
     ),
@@ -21,7 +23,7 @@ TextFieldPhone(rotulo, variavel, context, initialText) {
 }
 
 textField(rotulo, variavel, context, initialText) {
-  var maskFormatter = new MaskTextInputFormatter(
+  var maskFormatter = MaskTextInputFormatter(
     mask: '(##) #####-####', 
     filter: { "#": RegExp(r'[0-9]') },
     type: MaskAutoCompletionType.eager,
@@ -29,10 +31,10 @@ textField(rotulo, variavel, context, initialText) {
   );
 
   return Container(
-    margin: EdgeInsets.only(bottom: 15),
-    padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+    margin: const EdgeInsets.only(bottom: 15),
+    padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
     
-    constraints: BoxConstraints( 
+    constraints: const BoxConstraints( 
       minWidth: 70,
     ),
 
@@ -42,21 +44,21 @@ textField(rotulo, variavel, context, initialText) {
         keyboardType: TextInputType.number,
         inputFormatters: [maskFormatter],
 
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 24,
           color: Colors.white,
         ),
 
         decoration: InputDecoration(
           labelText: rotulo,
-          labelStyle: TextStyle(
+          labelStyle: const TextStyle(
             fontSize: 24,
             color: Colors.white,
           ),
 
-          enabledBorder: new UnderlineInputBorder(
-            borderRadius: new BorderRadius.circular(20.0),
-            borderSide:  BorderSide(color: Colors.transparent ),
+          enabledBorder: UnderlineInputBorder(
+            borderRadius: BorderRadius.circular(20.0),
+            borderSide:  const BorderSide(color: Colors.transparent ),
           ),
         ),
         

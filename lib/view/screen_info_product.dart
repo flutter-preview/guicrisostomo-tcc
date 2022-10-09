@@ -33,13 +33,13 @@ class ScreenInfoProduct extends StatelessWidget {
             child: Column(
               children: [
                 Padding(
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   child: Row(
                     children: [
                       
                       IconButton(
                         onPressed: () => Navigator.pop(context),
-                        icon: Icon(Icons.arrow_back, color: Colors.white),
+                        icon: const Icon(Icons.arrow_back, color: Colors.white),
                       ),
                 
                       const Text(
@@ -124,7 +124,7 @@ class ScreenInfoProduct extends StatelessWidget {
             const SizedBox(height: 10,),
 
             Padding(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               child: Row(
                 children: [
                   SvgPicture.asset(

@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -106,6 +108,7 @@ class _TextFieldConfirmPasswordState extends State<TextFieldConfirmPassword> {
             if (value != fieldPassword) {
               return 'As senhas devem ser iguais';
             }
+            return null;
           },
         )
       )

@@ -14,17 +14,15 @@ class _ScreenOrderState extends State<ScreenOrder> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(20),
-        child: Container(
-          child: Column(
-            children: [
-              listViewOrder(),
-            ],
-          )
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+            listViewOrder(),
+          ],
         ),
       ),
 
-      bottomNavigationBar: Bottom(),
+      bottomNavigationBar: const Bottom(),
     );
   }
 }
@@ -36,10 +34,10 @@ listViewOrder() {
     scrollDirection: Axis.vertical,
     itemBuilder: (context, index) {
     return Card(
-      color: Color.fromRGBO(50, 62, 64, 1),
+      color: const Color.fromRGBO(50, 62, 64, 1),
       child: ListTile(
-        contentPadding: EdgeInsets.all(15),
-        title: Text(
+        contentPadding: const EdgeInsets.all(15),
+        title: const Text(
           'Data: 01/12/2022 às 21:35',
           style: TextStyle(
             fontSize: 28,
@@ -49,7 +47,7 @@ listViewOrder() {
 
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+          children: const [
             Text(
               'Total: R\$ 52,00',
               style: TextStyle(

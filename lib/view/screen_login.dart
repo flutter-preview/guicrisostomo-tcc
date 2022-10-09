@@ -31,7 +31,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         child: Form(
           key: formKey,
           autovalidateMode: autoValidation ? AutovalidateMode.always : AutovalidateMode.disabled,
@@ -41,19 +41,19 @@ class _ScreenLoginState extends State<ScreenLogin> {
             children: [
               imgCenter(imgLogin),
 
-              SizedBox(height: 50,),
+              const SizedBox(height: 50,),
               textFieldEmail('E-mail', txtEmail, context),
               
-              SizedBox(height: 10,),
+              const SizedBox(height: 10,),
 
               TextFieldPassword(rotulo: 'Senha', variavel: txtPassword),
               
-              SizedBox(height: 50,),
+              const SizedBox(height: 50,),
 
               buttonLogin(),
-              SizedBox(height: 50,),
+              const SizedBox(height: 50,),
 
-              Text(
+              const Text(
                 'Ainda não se registrou ?',
                 style: TextStyle(
                   fontSize: 16,
@@ -68,43 +68,40 @@ class _ScreenLoginState extends State<ScreenLogin> {
   }
 
   buttonLogin() {
-    return Container(
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          minimumSize: Size(100, 50),
-          primary: Color.fromRGBO(50, 62, 64, 1),
-          
-        ),
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        minimumSize: const Size(100, 50), backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
         
-        child: Text('Entrar',
-          style: TextStyle(
-          fontSize: 24,
-        )
-        ),
-
-        //COMPORTAMENTO
-        onPressed: () {
-
-          //DISPARAR O PROCESSO DE VALIDAÇÃO
-          if (formKey.currentState!.validate()) {
-            //Se o formulário foi VALIDADO
-          
-            Navigator.of(context).pop();
-            Navigator.pushNamed(
-              context,
-              'home',
-            );
-
-          } else {
-            setState(() {
-              autoValidation = true;
-            });
-            
-            dialogField("Informe os campos corretamente");
-          }
-          
-        },
       ),
+      
+      child: const Text('Entrar',
+        style: TextStyle(
+        fontSize: 24,
+      )
+      ),
+
+      //COMPORTAMENTO
+      onPressed: () {
+
+        //DISPARAR O PROCESSO DE VALIDAÇÃO
+        if (formKey.currentState!.validate()) {
+          //Se o formulário foi VALIDADO
+        
+          Navigator.of(context).pop();
+          Navigator.pushNamed(
+            context,
+            'home',
+          );
+
+        } else {
+          setState(() {
+            autoValidation = true;
+          });
+          
+          dialogField("Informe os campos corretamente");
+        }
+        
+      },
     );
   }
 
@@ -113,10 +110,10 @@ class _ScreenLoginState extends State<ScreenLogin> {
       context: context, 
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Pizzaria'),
+          title: const Text('Pizzaria'),
           content: Text(
             msg,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 28,
             ),
           ),
@@ -128,7 +125,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
                 Navigator.of(context).pop();
               },
 
-              child: Text('Fechar'),
+              child: const Text('Fechar'),
             )
           ],
         );

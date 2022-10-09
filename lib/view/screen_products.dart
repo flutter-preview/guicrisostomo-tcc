@@ -17,92 +17,78 @@ class _ScreenProductsState extends State<ScreenProducts> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(20),
-        child: Container(
-          child: Column(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: Color.fromRGBO(50, 62, 64, 1),
-                  boxShadow: [
-                    BoxShadow(color: Colors.transparent, spreadRadius: 3),
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: const Color.fromRGBO(50, 62, 64, 1),
+                boxShadow: const [
+                  BoxShadow(color: Colors.transparent, spreadRadius: 3),
+                ],
+              ),
+              child: Padding(
+                padding: const EdgeInsets.only(left: 20),
+                child: Row(
+                  children: [
+                    textFieldSearch('Procurar item', txtProd, context),
+                    const Icon(Icons.search, size: 50, color: Color.fromRGBO(242, 169, 34, 1),),
                   ],
                 ),
-                child: Padding(
-                  padding: EdgeInsets.only(left: 20),
-                  child: Row(
-                    children: [
-                      textFieldSearch('Procurar item', txtProd, context),
-                      Icon(Icons.search, size: 50, color: Color.fromRGBO(242, 169, 34, 1),),
-                    ],
-                  ),
-                ),
               ),
+            ),
 
-              SizedBox(height: 10,),
+            const SizedBox(height: 10,),
 
-              Text(
-                'Produtos',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
-                  fontFamily: 'Roboto',
-                ),
+            const Text(
+              'Produtos',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w700,
+                fontFamily: 'Roboto',
               ),
+            ),
 
-              SizedBox(height: 10,),
-              
-              productItem(),
-            ],
-          )
-          
-
-          
-
+            const SizedBox(height: 10,),
+            
+            productItem(),
+          ],
         ),
       ),
 
-      bottomNavigationBar: Bottom(),
+      bottomNavigationBar: const Bottom(),
     );
   }
 }
 
 textFieldSearch(rotulo, variavel, context) {
   return Container(
-    margin: EdgeInsets.only(bottom: 15),
+    margin: const EdgeInsets.only(bottom: 15),
     width: MediaQuery.of(context).size.width - 120,
     height: 70,
     child: Center(
       child: TextFormField(
         controller: variavel,
         
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 28,
           
         ),
 
         decoration: InputDecoration(
           labelText: rotulo,
-          labelStyle: TextStyle(
+          labelStyle: const TextStyle(
             fontSize: 24,
             color: Colors.white,
           ),
 
-          enabledBorder: new OutlineInputBorder(
-            borderRadius: new BorderRadius.circular(20.0),
-            borderSide:  BorderSide(color: Colors.transparent ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20.0),
+            borderSide:  const BorderSide(color: Colors.transparent ),
 
           ),
         ),
-        
-        //
-        // VALIDAÇÃO
-        //
-
-        validator: (value) {
-          
-        },
       )
     )
   );

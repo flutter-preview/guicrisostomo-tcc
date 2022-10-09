@@ -8,23 +8,23 @@ class ScreenAbout extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sobre'),
+        title: const Text('Sobre'),
         centerTitle: true,
-        backgroundColor: Color.fromRGBO(50, 62, 64, 1),
+        backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
       ),
 
       body: Container(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-            Text(
+            const Text(
               'Projeto de TCC',
               style: TextStyle(
                 fontSize: 24,
               ),
             ),
 
-            SizedBox(height: 10,),
+            const SizedBox(height: 10,),
 
             listViewStuff('Rodrigro Plotze', 'Desenvolvedor'),
             listViewStuff('Guilherme Crisostomo', 'Desenvolvedor'),
@@ -32,18 +32,18 @@ class ScreenAbout extends StatelessWidget {
         ),
       ),
 
-      bottomNavigationBar: Bottom(),
+      bottomNavigationBar: const Bottom(),
     );
   }
 
   listViewStuff(name, func) {
     return Card(
       child: ListTile(
-        contentPadding: EdgeInsets.all(10),
+        contentPadding: const EdgeInsets.all(10),
 
         title: Text(
           name,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 24,
           ),
         ),

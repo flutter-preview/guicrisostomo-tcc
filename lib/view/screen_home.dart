@@ -21,103 +21,95 @@ class _ScreenHomeState extends State<ScreenHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(20),
-        child: Container(
-          
-          child: Column(
-            children: [
-              
-              imgCenter(imgHome),
-              SizedBox(height: 10,),
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+            
+            imgCenter(imgHome),
+            const SizedBox(height: 10,),
 
-              Text(
-                'Itens mais pedidos',
-                style: TextStyle(
-                  fontFamily: 'Roboto',
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
-                ),
+            const Text(
+              'Itens mais pedidos',
+              style: TextStyle(
+                fontFamily: 'Roboto',
+                fontSize: 20,
+                fontWeight: FontWeight.w700,
               ),
+            ),
 
-              SizedBox(height: 10,),
+            const SizedBox(height: 10,),
 
-              Text(
-                'Informações da sua mesa',
-                style: TextStyle(
-                  fontFamily: 'Roboto',
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
-                ),
+            const Text(
+              'Informações da sua mesa',
+              style: TextStyle(
+                fontFamily: 'Roboto',
+                fontSize: 20,
+                fontWeight: FontWeight.w700,
               ),
-              
-              productItem(),
+            ),
+            
+            productItem(),
 
-              SizedBox(height: 10,),
+            const SizedBox(height: 10,),
 
-              
-              Container(
-                child :Column(children: [
-                  Container(
-                    child: Row(
-                      children: [
-                        Icon(Icons.timer_outlined, size: 20, color: Color.fromRGBO(242, 169, 34, 1)),
-                        Text(
-                          'Criado \às 19:49 do dia 27/05/2022'
-                        )
-                      ],
-                    ),
-                  ),
-                  
-                  SizedBox(height: 5,),
-
-                  Container(
-                    child: Row(
-                      children: [
-                        Icon(Icons.people_rounded, size: 20, color: Color.fromRGBO(242, 169, 34, 1)),
-                        Text(
-                          'Mesa criada pelo garçom José'
-                        )
-                      ],
-                    ),
-                  ),
-
-                  SizedBox(height: 5,),
-
-                  Container(
-                    child: Row(
-                      children: [
-                        Icon(Icons.attach_money, size: 20, color: Color.fromRGBO(242, 169, 34, 1)),
-                        Text(
-                          'TOTAL: R\$ 91,00'
-                        )
-                      ],
-                    ),
-                  ),
-
-                  SizedBox(height: 10,),
-
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Itens pedidos hoje',
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        fontFamily: 'Roboto',
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                      ),
+            
+            Column(
+              children: [
+                Row(
+                  children: const [
+                    Icon(Icons.timer_outlined, size: 20, color: Color.fromRGBO(242, 169, 34, 1)),
+                    Text(
+                      // ignore: unnecessary_string_escapes
+                      'Criado \às 19:49 do dia 27/05/2022'
                     )
-                  ),
+                  ],
+                ),
+                
+                const SizedBox(height: 5,),
 
-                  productItem(),
-                ],)
-              ),
-            ]
-          )
+                Row(
+                  children: const [
+                    Icon(Icons.people_rounded, size: 20, color: Color.fromRGBO(242, 169, 34, 1)),
+                    Text(
+                      'Mesa criada pelo garçom José'
+                    )
+                  ],
+                ),
+
+                const SizedBox(height: 5,),
+
+                Row(
+                  children: const [
+                    Icon(Icons.attach_money, size: 20, color: Color.fromRGBO(242, 169, 34, 1)),
+                    Text(
+                      'TOTAL: R\$ 91,00'
+                    )
+                  ],
+                ),
+
+                const SizedBox(height: 10,),
+
+                Container(
+                  alignment: Alignment.centerLeft,
+                  child: const Text(
+                    'Itens pedidos hoje',
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  )
+                ),
+
+                productItem(),
+              ]
+            ),
+          ]
         )
       ),
 
-      bottomNavigationBar: Bottom(),
+      bottomNavigationBar: const Bottom(),
     );
   }
 }
