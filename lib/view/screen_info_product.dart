@@ -105,9 +105,9 @@ class ScreenInfoProduct extends StatelessWidget {
 
             const SizedBox(height: 10,),
 
-            listSize('PEQUENA (4 fatias)'),
-            listSize('GRANDE (8 fatias)'),
-            listSize('GIGANTE (12 fatias)'),
+            listSize('PEQUENA (4 fatias)', 'R\$ 20,00'),
+            listSize('GRANDE (8 fatias)', 'R\$ 30,00'),
+            listSize('GIGANTE (12 fatias)', 'R\$ 40,00'),
 
             const SizedBox(height: 10,),
 

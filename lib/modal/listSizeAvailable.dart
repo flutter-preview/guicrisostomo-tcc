@@ -1,8 +1,7 @@
 // ignore_for_file: file_names
-
 import 'package:flutter/material.dart';
 
-listSize(nameSize) {
+listSize(nameSize, price) {
   return (
     ListView.builder(
       itemCount: 1,
@@ -23,10 +22,11 @@ listSize(nameSize) {
             ),
           ),
 
-          /*
           trailing: SizedBox(
+            /*
             width: 25,
             height: 25,
+            
             child: ElevatedButton(
                 
               onPressed: () {
@@ -44,8 +44,16 @@ listSize(nameSize) {
               ),
               child: const Icon(Icons.add, size: 15, color: Colors.white,),
             )
+            */
+
+            child: Text(
+              price,
+              style: const TextStyle(
+                fontSize: 20,
+                color: Colors.white,
+              ),
+            ),
           ),
-          */
           
         ),
       );
