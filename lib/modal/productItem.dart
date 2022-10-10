@@ -34,7 +34,7 @@ productItem() {
               ),
 
               Text(
-                'Pedidos as',
+                'Último pedido às 19:52 do dia 27/05/2022',
                 style: TextStyle(
                   color: Colors.white,
                 ),
