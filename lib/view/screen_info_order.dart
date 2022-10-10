@@ -48,6 +48,8 @@ class _ScreenInfoOrderState extends State<ScreenInfoOrder> {
               ],
             ),
 
+            const SizedBox(height: 5,),
+
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: const [
@@ -58,6 +60,8 @@ class _ScreenInfoOrderState extends State<ScreenInfoOrder> {
                 )
               ],
             ),
+
+            const SizedBox(height: 5,),
 
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -176,7 +180,7 @@ productItem() {
             const SizedBox(height: 10,),
 
             */
-            
+
             Expanded(
               child: SizedBox(
                 width: 25,
