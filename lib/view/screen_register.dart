@@ -111,9 +111,39 @@ class _ScreenRegisterState extends State<ScreenRegister> {
           setState(() {
             autoValidation = true;
           });
+
+          dialogField("Informe os campos corretamente");
         }
         
       },
+    );
+  }
+
+  dialogField(msg) {
+    return showDialog(
+      context: context, 
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Pizzaria'),
+          content: Text(
+            msg,
+            style: const TextStyle(
+              fontSize: 28,
+            ),
+          ),
+
+          actions: [
+            TextButton(
+              onPressed: () {
+                //fechar caixa de dialogo
+                Navigator.of(context).pop();
+              },
+
+              child: const Text('Fechar'),
+            )
+          ],
+        );
+      }
     );
   }
 }
