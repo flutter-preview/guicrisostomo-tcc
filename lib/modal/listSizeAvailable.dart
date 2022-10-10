@@ -23,6 +23,7 @@ listSize(nameSize) {
             ),
           ),
 
+          /*
           trailing: SizedBox(
             width: 25,
             height: 25,
@@ -44,6 +45,8 @@ listSize(nameSize) {
               child: const Icon(Icons.add, size: 15, color: Colors.white,),
             )
           ),
+          */
+          
         ),
       );
     })

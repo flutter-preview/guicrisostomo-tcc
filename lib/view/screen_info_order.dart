@@ -147,6 +147,7 @@ productItem() {
           trailing: Column(
             children: [
             
+            /*
             Expanded(
             child: SizedBox(
               width: 25,
@@ -174,6 +175,8 @@ productItem() {
             
             const SizedBox(height: 10,),
 
+            */
+            
             Expanded(
               child: SizedBox(
                 width: 25,
