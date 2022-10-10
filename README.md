@@ -21,3 +21,4 @@ It was created with intuition of to show my TCC.
 ## Technology used
  - Flutter
  - Flutter_svg
+ - Mask_text_input_formatter
