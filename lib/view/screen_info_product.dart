@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../modal/bottonNavigationCustomer.dart';
-import '../modal/listSizeAvailable.dart';
+import '../model/bottonNavigationCustomer.dart';
+import '../model/listSizeAvailable.dart';
 
 class ScreenInfoProduct extends StatelessWidget {
 

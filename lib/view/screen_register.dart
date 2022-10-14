@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:tcc/modal/textFieldEmail.dart';
-import 'package:tcc/modal/textFieldPassword.dart';
-import 'package:tcc/modal/textFieldPhone.dart';
+import 'package:tcc/model/textFieldEmail.dart';
+import 'package:tcc/model/textFieldPassword.dart';
+import 'package:tcc/model/textFieldPhone.dart';
 
-import '../modal/button.dart';
-import '../modal/imageMainScreens.dart';
-import '../modal/textField.dart';
-import '../modal/textFieldConfirmPassword.dart';
+import '../model/button.dart';
+import '../model/imageMainScreens.dart';
+import '../model/textField.dart';
+import '../model/textFieldConfirmPassword.dart';
 
 class ScreenRegister extends StatefulWidget {
   const ScreenRegister({super.key});

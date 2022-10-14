@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tcc/modal/bottonNavigationCustomer.dart';
-import 'package:tcc/modal/imageMainScreens.dart';
-import 'package:tcc/modal/productItem.dart';
+import 'package:tcc/model/bottonNavigationCustomer.dart';
+import 'package:tcc/model/imageMainScreens.dart';
+import 'package:tcc/model/productItem.dart';
 
 class ScreenHome extends StatefulWidget {
   const ScreenHome({super.key});

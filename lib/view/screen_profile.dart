@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../modal/bottonNavigationCustomer.dart';
+import '../model/bottonNavigationCustomer.dart';
 
 class ScreenProfile extends StatefulWidget {
   const ScreenProfile({super.key});

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../modal/bottonNavigationCustomer.dart';
+import '../model/bottonNavigationCustomer.dart';
 
 class ScreenInfoOrder extends StatefulWidget {
   const ScreenInfoOrder({super.key});
