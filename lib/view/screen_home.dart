@@ -58,6 +58,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                 Row(
                   children: const [
                     Icon(Icons.timer_outlined, size: 20, color: Color.fromRGBO(242, 169, 34, 1)),
+                    SizedBox(width: 5,),
                     Text(
                       // ignore: unnecessary_string_escapes
                       'Criado \às 19:49 do dia 27/05/2022'
@@ -70,6 +71,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                 Row(
                   children: const [
                     Icon(Icons.people_rounded, size: 20, color: Color.fromRGBO(242, 169, 34, 1)),
+                    SizedBox(width: 5,),
                     Text(
                       'Mesa criada pelo garçom José'
                     )
@@ -81,6 +83,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                 Row(
                   children: const [
                     Icon(Icons.attach_money, size: 20, color: Color.fromRGBO(242, 169, 34, 1)),
+                    SizedBox(width: 5,),
                     Text(
                       'TOTAL: R\$ 91,00'
                     )
