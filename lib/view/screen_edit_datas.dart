@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../model/bottonNavigationCustomer.dart';
-import '../model/textField.dart';
-import '../model/textFieldEmail.dart';
-import '../model/textFieldPhone.dart';
+import '../widget/bottonNavigationCustomer.dart';
+import '../widget/textField.dart';
+import '../widget/textFieldEmail.dart';
+import '../widget/textFieldPhone.dart';
 
 class ScreenEditDatas extends StatefulWidget {
   const ScreenEditDatas({super.key});

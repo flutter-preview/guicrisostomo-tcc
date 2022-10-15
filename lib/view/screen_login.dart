@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:tcc/model/button.dart';
-import '../model/imageMainScreens.dart';
-import '../model/textFieldEmail.dart';
-import '../model/textFieldPassword.dart';
+import 'package:tcc/widget/button.dart';
+import '../widget/imageMainScreens.dart';
+import '../widget/textFieldEmail.dart';
+import '../widget/textFieldPassword.dart';
 
 class ScreenLogin extends StatefulWidget {
   const ScreenLogin({super.key});

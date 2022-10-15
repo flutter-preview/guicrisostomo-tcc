@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../model/bottonNavigationCustomer.dart';
+import '../widget/bottonNavigationCustomer.dart';
 
 class ScreenOrder extends StatefulWidget {
   const ScreenOrder({super.key});
