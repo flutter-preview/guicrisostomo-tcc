@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tcc/widget/button.dart';
+import 'package:tcc/widget/textFieldEmail.dart';
 
 class ScreenForgetPassword extends StatefulWidget {
   const ScreenForgetPassword({super.key});
@@ -9,6 +10,8 @@ class ScreenForgetPassword extends StatefulWidget {
 }
 
 class _ScreenForgetPasswordState extends State<ScreenForgetPassword> {
+  var txtEmail = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,6 +24,9 @@ class _ScreenForgetPasswordState extends State<ScreenForgetPassword> {
       body: Column(
         children: [
           const Text('Digite seu e-mail usado no cadastro'),
+          const SizedBox(height: 5,),
+          textFieldEmail('E-mail', txtEmail, context),
+          
           const SizedBox(height: 10,),
           button('Confirmar', context, 'login/forget_password/validation')
         ],
