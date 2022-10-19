@@ -48,7 +48,20 @@ class _ScreenLoginState extends State<ScreenLogin> {
 
               TextFieldPassword(rotulo: 'Senha', variavel: txtPassword),
               
-              const SizedBox(height: 50,),
+              const SizedBox(height: 10,),
+
+              Container(
+                alignment: Alignment.centerRight,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    buttonForgetPassword(),
+                  ],
+                )
+              ),
+              
+
+              const SizedBox(height: 40,),
 
               buttonLogin(),
               const SizedBox(height: 50,),
@@ -100,6 +113,31 @@ class _ScreenLoginState extends State<ScreenLogin> {
           
           dialogField("Informe os campos corretamente");
         }
+        
+      },
+    );
+  }
+
+  buttonForgetPassword() {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        minimumSize: const Size(100, 50), backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
+        
+      ),
+      
+      child: const Text('Esqueci minha senha',
+        style: TextStyle(
+        fontSize: 24,
+      )
+      ),
+
+      //COMPORTAMENTO
+      onPressed: () {
+
+        Navigator.pushNamed(
+          context,
+          'login/forget_password',
+        );
         
       },
     );
