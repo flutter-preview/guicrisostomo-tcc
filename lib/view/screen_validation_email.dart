@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tcc/widget/textField.dart';
-
-import '../widget/button.dart';
 import '../widget/textFieldNumberGeneral.dart';
 
 class ScreenValidationEmail extends StatefulWidget {
@@ -13,6 +10,15 @@ class ScreenValidationEmail extends StatefulWidget {
 
 class _ScreenValidationEmailState extends State<ScreenValidationEmail> {
   var txtCodigo = TextEditingController();
+  var formKey = GlobalKey<FormState>();
+  
+  bool autoValidation = false;
+
+  @override
+  void initState() {
+    autoValidation = false;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,27 +31,32 @@ class _ScreenValidationEmailState extends State<ScreenValidationEmail> {
 
       body: Padding(
         padding: const EdgeInsets.all(20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Text(
-              'Digite o código enviado ao e-mail',
-              style: TextStyle(
-                fontFamily: 'Roboto',
-                fontSize: 20,
+        child: Form(
+          key: formKey,
+          autovalidateMode: autoValidation ? AutovalidateMode.always : AutovalidateMode.disabled,
+
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Text(
+                'Digite o código enviado ao e-mail',
+                style: TextStyle(
+                  fontFamily: 'Roboto',
+                  fontSize: 20,
+                ),
               ),
-            ),
-            const SizedBox(height: 10,),
-            textFieldNumberGeneral('Código', txtCodigo, context),
-
-            const SizedBox(height: 10,),
-
-            Container(
-              alignment: Alignment.centerRight,
-              child: buttonConfirmCode(),
-            )
-          ],
+              const SizedBox(height: 10,),
+              textFieldNumberGeneral('Código', txtCodigo, context),
+        
+              const SizedBox(height: 10,),
+              
+              Container(
+                alignment: Alignment.centerRight,
+                child: buttonConfirmCode(),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -66,11 +77,19 @@ class _ScreenValidationEmailState extends State<ScreenValidationEmail> {
 
       //COMPORTAMENTO
       onPressed: () {
+        
+        if (formKey.currentState!.validate()) {
+        
+          Navigator.pushNamed(
+            context,
+            'login/forget_password/reset_password',
+          );
 
-        Navigator.pushNamed(
-          context,
-          'login/forget_password/reset_password',
-        );
+        } else {
+          setState(() {
+            autoValidation = true;
+          });
+        }
         
       },
     );

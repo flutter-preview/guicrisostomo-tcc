@@ -11,7 +11,16 @@ class ScreenForgetPassword extends StatefulWidget {
 
 class _ScreenForgetPasswordState extends State<ScreenForgetPassword> {
   var txtEmail = TextEditingController();
+  var formKey = GlobalKey<FormState>();
+  
+  bool autoValidation = false;
 
+  @override
+  void initState() {
+    autoValidation = false;
+    super.initState();
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,28 +32,32 @@ class _ScreenForgetPasswordState extends State<ScreenForgetPassword> {
 
       body: Padding(
         padding: const EdgeInsets.all(20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Text(
-              'Digite seu e-mail usado no cadastro',
-              style: TextStyle(
-                fontFamily: 'Roboto',
-                fontSize: 20,
+        child: Form(
+          key: formKey,
+          autovalidateMode: autoValidation ? AutovalidateMode.always : AutovalidateMode.disabled,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Text(
+                'Digite seu e-mail usado no cadastro',
+                style: TextStyle(
+                  fontFamily: 'Roboto',
+                  fontSize: 20,
+                ),
               ),
-            ),
-            const SizedBox(height: 5,),
-            textFieldEmail('E-mail', txtEmail, context),
-            
-            const SizedBox(height: 10,),
-
-            Container(
-              alignment: Alignment.centerRight,
-              child: buttonConfirmEmail(),
-            )
-            
-          ],
+              const SizedBox(height: 5,),
+              textFieldEmail('E-mail', txtEmail, context),
+              
+              const SizedBox(height: 10,),
+        
+              Container(
+                alignment: Alignment.centerRight,
+                child: buttonConfirmEmail(),
+              )
+              
+            ],
+          ),
         ),
       ),
     );
@@ -65,11 +78,19 @@ class _ScreenForgetPasswordState extends State<ScreenForgetPassword> {
 
       //COMPORTAMENTO
       onPressed: () {
+        
+        if (formKey.currentState!.validate()) {
+        
+          Navigator.pushNamed(
+            context,
+            'login/forget_password/validation_email',
+          );
 
-        Navigator.pushNamed(
-          context,
-          'login/forget_password/validation_email',
-        );
+        } else {
+          setState(() {
+            autoValidation = true;
+          });
+        }
         
       },
     );
