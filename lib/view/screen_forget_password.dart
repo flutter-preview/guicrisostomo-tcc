@@ -27,7 +27,13 @@ class _ScreenForgetPasswordState extends State<ScreenForgetPassword> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Text('Digite seu e-mail usado no cadastro'),
+            const Text(
+              'Digite seu e-mail usado no cadastro',
+              style: TextStyle(
+                fontFamily: 'Roboto',
+                fontSize: 20,
+              ),
+            ),
             const SizedBox(height: 5,),
             textFieldEmail('E-mail', txtEmail, context),
             

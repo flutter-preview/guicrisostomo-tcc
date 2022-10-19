@@ -29,7 +29,13 @@ class _ScreenValidationEmailState extends State<ScreenValidationEmail> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Text('Digite o código enviado ao e-mail'),
+            const Text(
+              'Digite o código enviado ao e-mail',
+              style: TextStyle(
+                fontFamily: 'Roboto',
+                fontSize: 20,
+              ),
+            ),
             const SizedBox(height: 10,),
             textFieldNumberGeneral('Código', txtCodigo, context),
 
