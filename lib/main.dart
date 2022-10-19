@@ -14,6 +14,7 @@ import 'package:tcc/view/screen_presentation.dart';
 import 'package:tcc/view/screen_products.dart';
 import 'package:tcc/view/screen_profile.dart';
 import 'package:tcc/view/screen_register.dart';
+import 'package:tcc/view/screen_reset_password.dart';
 import 'package:tcc/view/screen_validation_email.dart';
 
 void main() {
@@ -27,6 +28,7 @@ void main() {
         'login' :(context) => const ScreenLogin(),
         'login/forget_password' :(context) => const ScreenForgetPassword(),
         'login/forget_password/validation_email' :(context) => const ScreenValidationEmail(),
+        'login/forget_password/reset_password' :(context) => const ScreenResetPassword(),
         'register' :(context) => const ScreenRegister(),
         'home' :(context) => const ScreenHome(),
         'products' :(context) => const ScreenProducts(),
