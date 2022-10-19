@@ -23,15 +23,20 @@ class _ScreenValidationEmailState extends State<ScreenValidationEmail> {
         backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
       ),
 
-      body: Column(
-        children: [
-          const Text('Digite o código enviado ao e-mail'),
-          const SizedBox(height: 10,),
-          textFieldNumberGeneral('Código', txtCodigo, context),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const Text('Digite o código enviado ao e-mail'),
+            const SizedBox(height: 10,),
+            textFieldNumberGeneral('Código', txtCodigo, context),
 
-          const SizedBox(height: 10,),
-          button('Confirmar', context, 'login/forget_password/reset_password')
-        ],
+            const SizedBox(height: 10,),
+            button('Confirmar', context, 'login/forget_password/reset_password')
+          ],
+        ),
       ),
     );
   }
