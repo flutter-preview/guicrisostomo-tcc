@@ -38,10 +38,40 @@ class _ScreenForgetPasswordState extends State<ScreenForgetPassword> {
             textFieldEmail('E-mail', txtEmail, context),
             
             const SizedBox(height: 10,),
-            button('Confirmar', context, 'login/forget_password/validation')
+
+            Container(
+              alignment: Alignment.centerRight,
+              child: buttonConfirmEmail(),
+            )
+            
           ],
         ),
       ),
+    );
+  }
+
+  buttonConfirmEmail() {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        minimumSize: const Size(100, 50), backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
+        
+      ),
+      
+      child: const Text('Confirmar',
+        style: TextStyle(
+          fontSize: 24,
+        )
+      ),
+
+      //COMPORTAMENTO
+      onPressed: () {
+
+        Navigator.pushNamed(
+          context,
+          'login/forget_password/validation_email',
+        );
+        
+      },
     );
   }
 }

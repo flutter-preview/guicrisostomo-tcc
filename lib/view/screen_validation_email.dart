@@ -40,10 +40,39 @@ class _ScreenValidationEmailState extends State<ScreenValidationEmail> {
             textFieldNumberGeneral('Código', txtCodigo, context),
 
             const SizedBox(height: 10,),
-            button('Confirmar', context, 'login/forget_password/reset_password')
+
+            Container(
+              alignment: Alignment.centerRight,
+              child: buttonConfirmCode(),
+            )
           ],
         ),
       ),
+    );
+  }
+
+  buttonConfirmCode() {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        minimumSize: const Size(100, 50), backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
+        
+      ),
+      
+      child: const Text('Confirmar',
+        style: TextStyle(
+          fontSize: 24,
+        )
+      ),
+
+      //COMPORTAMENTO
+      onPressed: () {
+
+        Navigator.pushNamed(
+          context,
+          'login/forget_password/reset_password',
+        );
+        
+      },
     );
   }
 }
