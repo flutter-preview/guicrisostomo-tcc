@@ -50,7 +50,7 @@ class _ScreenValidationEmailState extends State<ScreenValidationEmail> {
               textFieldNumberGeneral('Código', txtCodigo, context),
         
               const SizedBox(height: 10,),
-              
+
               Container(
                 alignment: Alignment.centerRight,
                 child: buttonConfirmCode(),
@@ -79,7 +79,10 @@ class _ScreenValidationEmailState extends State<ScreenValidationEmail> {
       onPressed: () {
         
         if (formKey.currentState!.validate()) {
-        
+          Navigator.of(context).pop();
+          Navigator.of(context).pop();
+          Navigator.of(context).pop();
+          
           Navigator.pushNamed(
             context,
             'login/forget_password/reset_password',
