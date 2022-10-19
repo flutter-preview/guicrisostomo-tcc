@@ -1,5 +1,4 @@
 // ignore_for_file: file_names
-
 import 'package:flutter/material.dart';
 
 textFieldNumberGeneral(rotulo, variavel, context) {
@@ -34,7 +33,6 @@ textField(rotulo, variavel, context) {
       child: TextFormField(
         controller: variavel,
         keyboardType: TextInputType.number,
-        
         style: const TextStyle(
           fontSize: 24,
           color: Colors.white,
@@ -58,10 +56,15 @@ textField(rotulo, variavel, context) {
         //
 
         validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'Preencha o campo com as informações necessárias';
+          value = value!.replaceFirst(',', '.');
+          if (int.tryParse(value) == null) {
+            return 'Entre com um valor numérico';
+          } else {
+            if (value.isEmpty) {
+              return 'Preencha o campo com as informações necessárias';
+            }
+            return null;
           }
-          return null;
         }
       )
     )
