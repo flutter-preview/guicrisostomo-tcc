@@ -4,6 +4,7 @@ import 'package:tcc/view/screen_about.dart';
 import 'package:tcc/view/screen_add_product.dart';
 */
 import 'package:tcc/view/screen_edit_datas.dart';
+import 'package:tcc/view/screen_forget_password.dart';
 import 'package:tcc/view/screen_home.dart';
 import 'package:tcc/view/screen_info_order.dart';
 import 'package:tcc/view/screen_info_product.dart';
@@ -23,13 +24,11 @@ void main() {
       routes: {
         'presentation' :(context) => const ScreenPresentation(),
         'login' :(context) => const ScreenLogin(),
+        'login/forget_password' :(context) => const ScreenForgetPassword(),
         'register' :(context) => const ScreenRegister(),
         'home' :(context) => const ScreenHome(),
         'products' :(context) => const ScreenProducts(),
         'products/info_product' :(context) => const ScreenInfoProduct(),
-        /*
-        'products/add_product' :(context) => const ScreenAddProduct(),
-        */
         'profile' :(context) => const ScreenProfile(),
         'profile/edit_datas' :(context) => const ScreenEditDatas(),
         'profile/about' :(context) => const ScreenAbout(),
