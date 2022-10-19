@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:tcc/widget/textFieldPassword.dart';
-
-import '../widget/button.dart';
 import '../widget/textFieldConfirmPassword.dart';
 
 class ScreenResetPassword extends StatefulWidget {
@@ -61,11 +59,10 @@ class _ScreenResetPasswordState extends State<ScreenResetPassword> {
     );
   }
 
-  buttonResetPassword() {
+  Widget buttonResetPassword() {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         minimumSize: const Size(100, 50), backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
-        
       ),
       
       child: const Text('Confirmar',
@@ -74,12 +71,11 @@ class _ScreenResetPasswordState extends State<ScreenResetPassword> {
         )
       ),
 
-      //COMPORTAMENTO
       onPressed: () {
         
         if (formKey.currentState!.validate()) {
+
           Navigator.of(context).pop();
-          
           Navigator.pushNamed(
             context,
             'home',
@@ -90,7 +86,6 @@ class _ScreenResetPasswordState extends State<ScreenResetPassword> {
             autoValidation = true;
           });
         }
-        
       },
     );
   }

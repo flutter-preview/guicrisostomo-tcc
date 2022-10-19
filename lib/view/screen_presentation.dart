@@ -14,39 +14,40 @@ class ScreenPresentation extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-          padding: EdgeInsets.all(20),
+        padding: EdgeInsets.all(20),
 
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween ,
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween ,
+            children: [
+              SizedBox(height: 0,),
+              Column(
                 children: [
-                  SizedBox(height: 0,),
-                  Column(
-                    children: [
-                      imgCenter(imgPresentation),
-                      SizedBox(height: 14,),
-                      Text(
-                        'Peça sua pizza de onde quiser e divida com quem você ama',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 20,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
+                  imgCenter(imgPresentation),
+                  SizedBox(height: 14,),
+                  Text(
+                    'Peça sua pizza de onde quiser e divida com quem você ama',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 20,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      button('Entrar', context, 'login'),
-                      button('Cadastrar', context, 'register'),
-                    ],
-                  )
-              ]),
+                ],
+              ),
+              
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  button('Entrar', context, 'login'),
+                  button('Cadastrar', context, 'register'),
+                ],
+              )
+            ]
           ),
         ),
+      ),
     );
   }
 }

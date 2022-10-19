@@ -64,11 +64,13 @@ class _BottomState extends State<Bottom> {
             Navigator.pushNamed(context, 'profile');
             break;
         }
+
         setState(
           () {
             globals.globalSelectedIndexBotton = index;
           },
         );
+        
       },
     );
   }

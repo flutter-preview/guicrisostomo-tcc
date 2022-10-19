@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 
-textFieldEmail(rotulo, variavel, context) {
+Widget textFieldEmail(rotulo, variavel, context) {
 
   return Container(
     decoration: BoxDecoration(
@@ -20,7 +20,7 @@ textFieldEmail(rotulo, variavel, context) {
   );
 }
 
-textField(rotulo, variavel, context) {
+Widget textField(rotulo, variavel, context) {
   return Container(
     margin: const EdgeInsets.only(bottom: 15),
     padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
@@ -51,10 +51,6 @@ textField(rotulo, variavel, context) {
             borderSide:  const BorderSide(color: Colors.transparent ),
           ),
         ),
-        
-        //
-        // VALIDAÇÃO
-        //
 
         validator: (value) {
           if (value == null || value.isEmpty) {

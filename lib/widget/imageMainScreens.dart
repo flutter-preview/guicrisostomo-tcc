@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-imgCenter(image) {
+Widget imgCenter(image) {
   return Center(
     child: Column(
       children: [
@@ -11,7 +11,6 @@ imgCenter(image) {
           image,
           fit: BoxFit.scaleDown,
         ),
-          
       ],
     ),
   );

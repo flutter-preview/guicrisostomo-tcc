@@ -60,36 +60,34 @@ class _ScreenProductsState extends State<ScreenProducts> {
       bottomNavigationBar: const Bottom(),
     );
   }
-}
 
-textFieldSearch(rotulo, variavel, context) {
-  return Container(
-    margin: const EdgeInsets.only(bottom: 15),
-    width: MediaQuery.of(context).size.width - 120,
-    height: 70,
-    child: Center(
-      child: TextFormField(
-        controller: variavel,
-        
-        style: const TextStyle(
-          fontSize: 28,
+  Widget textFieldSearch(rotulo, variavel, context) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 15),
+      width: MediaQuery.of(context).size.width - 120,
+      height: 70,
+      child: Center(
+        child: TextFormField(
+          controller: variavel,
           
-        ),
-
-        decoration: InputDecoration(
-          labelText: rotulo,
-          labelStyle: const TextStyle(
-            fontSize: 24,
-            color: Colors.white,
+          style: const TextStyle(
+            fontSize: 28,
           ),
 
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(20.0),
-            borderSide:  const BorderSide(color: Colors.transparent ),
+          decoration: InputDecoration(
+            labelText: rotulo,
+            labelStyle: const TextStyle(
+              fontSize: 24,
+              color: Colors.white,
+            ),
 
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20.0),
+              borderSide:  const BorderSide(color: Colors.transparent ),
+            ),
           ),
-        ),
+        )
       )
-    )
-  );
+    );
+  }
 }

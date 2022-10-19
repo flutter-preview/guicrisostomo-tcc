@@ -2,8 +2,7 @@
 
 import 'package:flutter/material.dart';
 
-textFieldGeneral(rotulo, variavel, context) {
-  // ignore: prefer_const_declarations
+Widget textFieldGeneral(rotulo, variavel, context) {
 
   return Container(
     decoration: BoxDecoration(
@@ -21,7 +20,7 @@ textFieldGeneral(rotulo, variavel, context) {
   );
 }
 
-textField(rotulo, variavel, context) {
+Widget textField(rotulo, variavel, context) {
   return Container(
     margin: const EdgeInsets.only(bottom: 15),
     padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
@@ -52,10 +51,6 @@ textField(rotulo, variavel, context) {
           ),
         ),
         
-        //
-        // VALIDAÇÃO
-        //
-
         validator: (value) {
           if (value == null || value.isEmpty) {
             return 'Preencha o campo com as informações necessárias';

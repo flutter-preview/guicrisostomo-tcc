@@ -55,7 +55,7 @@ class _ScreenRegisterState extends State<ScreenRegister> {
               const SizedBox(height: 10,),
               textFieldEmail('E-mail', txtEmail, context),
               const SizedBox(height: 10,),
-              TextFieldPhone('Telefone', txtPhone, context, ''),
+              textFieldPhone('Telefone', txtPhone, context, ''),
               const SizedBox(height: 10,),
               TextFieldPassword(rotulo: 'Senha', variavel: txtPassword),
               const SizedBox(height: 10,),
@@ -80,7 +80,7 @@ class _ScreenRegisterState extends State<ScreenRegister> {
     );
   }
 
-  buttonRegister() {
+  Widget buttonRegister() {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         minimumSize: const Size(100, 50), backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
@@ -89,22 +89,17 @@ class _ScreenRegisterState extends State<ScreenRegister> {
       
       child: const Text('Entrar',
         style: TextStyle(
-        fontSize: 24,
-      )
+          fontSize: 24,
+        )
       ),
-
-      //COMPORTAMENTO
       onPressed: () {
 
-        //DISPARAR O PROCESSO DE VALIDAÇÃO
         if (formKey.currentState!.validate()) {
-          //Se o formulário foi VALIDADO
         
           Navigator.of(context).pop();
           Navigator.pushNamed(
             context,
             'home',
-
           );
 
         } else {
@@ -114,12 +109,11 @@ class _ScreenRegisterState extends State<ScreenRegister> {
 
           dialogField("Informe os campos corretamente");
         }
-        
       },
     );
   }
 
-  dialogField(msg) {
+  Future dialogField(msg) {
     return showDialog(
       context: context, 
       builder: (BuildContext context) {

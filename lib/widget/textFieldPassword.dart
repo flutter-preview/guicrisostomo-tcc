@@ -52,7 +52,6 @@ class _TextFieldPasswordState extends State<TextFieldPassword> {
                 setState(() {
                   _passwordVisible = !_passwordVisible;
                 })
-                
               },
             )
           ],
@@ -94,10 +93,6 @@ class _TextFieldPasswordState extends State<TextFieldPassword> {
               borderSide:  const BorderSide(color: Colors.transparent ),
             ),
           ),
-          
-          //
-          // VALIDAÇÃO
-          //
 
           validator: (value) {
             if (value == null || value.isEmpty) {

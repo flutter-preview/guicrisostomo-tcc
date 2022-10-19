@@ -62,11 +62,10 @@ class _ScreenValidationEmailState extends State<ScreenValidationEmail> {
     );
   }
 
-  buttonConfirmCode() {
+  Widget buttonConfirmCode() {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         minimumSize: const Size(100, 50), backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
-        
       ),
       
       child: const Text('Confirmar',
@@ -75,14 +74,13 @@ class _ScreenValidationEmailState extends State<ScreenValidationEmail> {
         )
       ),
 
-      //COMPORTAMENTO
       onPressed: () {
         
         if (formKey.currentState!.validate()) {
           Navigator.of(context).pop();
           Navigator.of(context).pop();
           Navigator.of(context).pop();
-          
+
           Navigator.pushNamed(
             context,
             'login/forget_password/reset_password',
@@ -93,7 +91,6 @@ class _ScreenValidationEmailState extends State<ScreenValidationEmail> {
             autoValidation = true;
           });
         }
-        
       },
     );
   }

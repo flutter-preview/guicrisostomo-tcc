@@ -3,8 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
-// ignore: non_constant_identifier_names
-TextFieldPhone(rotulo, variavel, context, initialText) {
+Widget textFieldPhone(rotulo, variavel, context, initialText) {
 
   return Container(
     decoration: BoxDecoration(
@@ -22,7 +21,7 @@ TextFieldPhone(rotulo, variavel, context, initialText) {
   );
 }
 
-textField(rotulo, variavel, context, initialText) {
+Widget textField(rotulo, variavel, context, initialText) {
   var maskFormatter = MaskTextInputFormatter(
     mask: '(##) #####-####', 
     filter: { "#": RegExp(r'[0-9]') },
@@ -61,19 +60,13 @@ textField(rotulo, variavel, context, initialText) {
             borderSide:  const BorderSide(color: Colors.transparent ),
           ),
         ),
-        
-        //
-        // VALIDAÇÃO
-        //
 
         validator: (value) {
           value = value!.replaceAll(RegExp('[^0-9A-Za-z]'), '');
 
           if (int.tryParse(value) == null) {
-            //o usuário NÃo digitou um valr numérico
             return 'Entre com um valor numérico';
           } else {
-            //Tudo CERTO, o valor digitado é numérico
             return null;
           }
 

@@ -80,7 +80,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
     );
   }
 
-  buttonLogin() {
+  Widget buttonLogin() {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         minimumSize: const Size(100, 50), backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
@@ -89,16 +89,13 @@ class _ScreenLoginState extends State<ScreenLogin> {
       
       child: const Text('Entrar',
         style: TextStyle(
-        fontSize: 24,
-      )
+          fontSize: 24,
+        )
       ),
 
-      //COMPORTAMENTO
       onPressed: () {
 
-        //DISPARAR O PROCESSO DE VALIDAÇÃO
         if (formKey.currentState!.validate()) {
-          //Se o formulário foi VALIDADO
         
           Navigator.of(context).pop();
           Navigator.pushNamed(
@@ -118,7 +115,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
     );
   }
 
-  buttonForgetPassword() {
+  Widget buttonForgetPassword() {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         minimumSize: const Size(100, 50), backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
@@ -143,7 +140,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
     );
   }
 
-  dialogField(msg) {
+  Future dialogField(msg) {
     return showDialog(
       context: context, 
       builder: (BuildContext context) {

@@ -1,8 +1,7 @@
 // ignore_for_file: file_names
 import 'package:flutter/material.dart';
 
-textFieldNumberGeneral(rotulo, variavel, context) {
-  // ignore: prefer_const_declarations
+Widget textFieldNumberGeneral(rotulo, variavel, context) {
 
   return Container(
     decoration: BoxDecoration(
@@ -14,13 +13,12 @@ textFieldNumberGeneral(rotulo, variavel, context) {
     ),
     child: Padding(
       padding: const EdgeInsets.only(left: 20),
-      
       child: textField(rotulo, variavel, context),
     ),
   );
 }
 
-textField(rotulo, variavel, context) {
+Widget textField(rotulo, variavel, context) {
   return Container(
     margin: const EdgeInsets.only(bottom: 15),
     padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
@@ -50,10 +48,6 @@ textField(rotulo, variavel, context) {
             borderSide:  const BorderSide(color: Colors.transparent ),
           ),
         ),
-        
-        //
-        // VALIDAÇÃO
-        //
 
         validator: (value) {
           value = value!.replaceFirst(',', '.');

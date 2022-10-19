@@ -49,7 +49,6 @@ class ScreenInfoProduct extends StatelessWidget {
                           fontSize: 32,
                         ),
                       ),
-                
                     ],
                   ),
                 ),
@@ -86,8 +85,6 @@ class ScreenInfoProduct extends StatelessWidget {
         ),
       ),
     
-
-
       body: SingleChildScrollView(
         child: Column(
           children: [

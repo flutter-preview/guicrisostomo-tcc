@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-button(text, context, screen) {
+Widget button(text, context, screen) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         minimumSize: const Size(100, 50), 
@@ -13,8 +13,7 @@ button(text, context, screen) {
           fontSize: 24,
         )
       ),
-
-      //COMPORTAMENTO
+      
       onPressed: () {
         Navigator.of(context).pop();
         Navigator.pushNamed(
