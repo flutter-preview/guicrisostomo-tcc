@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tcc/widget/bottonNavigationCustomer.dart';
 
+import '../widget/listViewStuff.dart';
+
 class ScreenAbout extends StatelessWidget {
   const ScreenAbout({super.key});
 
@@ -40,33 +42,13 @@ class ScreenAbout extends StatelessWidget {
 
             const SizedBox(height: 10,),
 
-            listViewStuff('Rodrigro Plotze', 'Desenvolvedor'),
-            listViewStuff('Guilherme Crisostomo', 'Desenvolvedor'),
+            listViewStuff('Rodrigro Plotze', 'Desenvolvedor', 'lib/images/imgProfessor.png'),
+            listViewStuff('Guilherme Crisostomo', 'Desenvolvedor', 'lib/images/imgMe.png'),
           ],
         ),
       ),
 
       bottomNavigationBar: const Bottom(),
-    );
-  }
-
-  listViewStuff(name, func) {
-    return Card(
-      child: ListTile(
-        contentPadding: const EdgeInsets.all(10),
-
-        title: Text(
-          name,
-          style: const TextStyle(
-            fontSize: 24,
-          ),
-        ),
-
-        subtitle: Text(
-          func,
-        ),
-
-      ),
     );
   }
 }
