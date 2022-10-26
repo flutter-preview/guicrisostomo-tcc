@@ -13,15 +13,29 @@ class ScreenAbout extends StatelessWidget {
         backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
       ),
 
-      body: Container(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
             const Text(
-              'Projeto de TCC',
+              'Aplicativo para controle de vendas para pizzaria',
               style: TextStyle(
                 fontSize: 24,
               ),
+            ),
+
+            const SizedBox(height: 5,),
+
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: const [
+                Text(
+                  'Objetivo: auxiliar clientes (facilitando na consulta e execução de pedidos), funcionários (facilitando na execução de pedidos e gerenciamento dos pedidos [como dos pedidos de mesa]) e gerentes (auxiliando no gerenciamento da pizzaria [podendo controlar as vendas/pedidos e gerando relatórios])',
+                  style: TextStyle(
+                    fontSize: 16,
+                  ),
+                ),
+              ],
             ),
 
             const SizedBox(height: 10,),
