@@ -77,6 +77,8 @@ flutter:
     - lib/images/iconSeePassword.svg
     - lib/images/iconHidePassword.svg
     - lib/images/imgPizza.png
+    - lib/images/imgMe.png
+    - lib/images/imgProfessor.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
