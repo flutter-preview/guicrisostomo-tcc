@@ -1,7 +1,7 @@
 // ignore_for_file: file_names
 import 'package:flutter/material.dart';
 
-Widget listViewStuff(name, func, img) {
+Widget listViewTeam(name, func, img) {
     return Card(
       child: ListTile(
         contentPadding: const EdgeInsets.all(10),

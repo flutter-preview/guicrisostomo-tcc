@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tcc/widget/bottonNavigationCustomer.dart';
 
-import '../widget/listViewStuff.dart';
+import '../widget/listViewTeam.dart';
 
 class ScreenAbout extends StatelessWidget {
   const ScreenAbout({super.key});
@@ -42,8 +42,8 @@ class ScreenAbout extends StatelessWidget {
 
             const SizedBox(height: 10,),
 
-            listViewStuff('Rodrigro Plotze', 'Desenvolvedor', 'lib/images/imgProfessor.png'),
-            listViewStuff('Guilherme Crisostomo', 'Desenvolvedor', 'lib/images/imgMe.png'),
+            listViewTeam('Rodrigro Plotze', 'Desenvolvedor', 'lib/images/imgProfessor.png'),
+            listViewTeam('Guilherme Crisostomo', 'Desenvolvedor', 'lib/images/imgMe.png'),
           ],
         ),
       ),
