@@ -46,7 +46,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
               
               const SizedBox(height: 10,),
 
-              TextFieldPassword(rotulo: 'Senha', variavel: txtPassword),
+              TextFieldPassword(label: 'Senha', variavel: txtPassword),
               
               const SizedBox(height: 10,),
 

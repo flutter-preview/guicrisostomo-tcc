@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class TextFieldPassword extends StatefulWidget {
-  final String rotulo;
+  final String label;
   final TextEditingController variavel;
 
-  const TextFieldPassword({super.key, required this.rotulo, required this.variavel});
+  const TextFieldPassword({super.key, required this.label, required this.variavel});
 
   @override
   State<TextFieldPassword> createState() => _TextFieldPasswordState();
@@ -39,7 +39,7 @@ class _TextFieldPasswordState extends State<TextFieldPassword> {
         padding: const EdgeInsets.only(left: 20),
         child: Row(
           children: [
-            textField(widget.rotulo, widget.variavel),
+            textField(widget.label, widget.variavel),
             
             GestureDetector(
               child: SvgPicture.asset(
@@ -60,7 +60,7 @@ class _TextFieldPasswordState extends State<TextFieldPassword> {
     );
   }
 
-  Widget textField (rotulo, variavel) {
+  Widget textField (label, variavel) {
     return Container(
       margin: const EdgeInsets.only(bottom: 15),
       width: MediaQuery.of(context).size.width - 120,
@@ -82,7 +82,7 @@ class _TextFieldPasswordState extends State<TextFieldPassword> {
           ),
 
           decoration: InputDecoration(
-            labelText: rotulo,
+            labelText: label,
             labelStyle: const TextStyle(
               fontSize: 24,
               color: Colors.white,

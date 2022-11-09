@@ -1,7 +1,7 @@
 // ignore_for_file: file_names
 import 'package:flutter/material.dart';
 
-Widget textFieldNumberGeneral(rotulo, variavel, context) {
+Widget textFieldNumberGeneral(label, variavel, context) {
 
   return Container(
     decoration: BoxDecoration(
@@ -13,12 +13,12 @@ Widget textFieldNumberGeneral(rotulo, variavel, context) {
     ),
     child: Padding(
       padding: const EdgeInsets.only(left: 20),
-      child: textField(rotulo, variavel, context),
+      child: textField(label, variavel, context),
     ),
   );
 }
 
-Widget textField(rotulo, variavel, context) {
+Widget textField(label, variavel, context) {
   return Container(
     margin: const EdgeInsets.only(bottom: 15),
     padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
@@ -37,7 +37,7 @@ Widget textField(rotulo, variavel, context) {
         ),
 
         decoration: InputDecoration(
-          labelText: rotulo,
+          labelText: label,
           labelStyle: const TextStyle(
             fontSize: 24,
             color: Colors.white,

@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
-Widget textFieldPhone(rotulo, variavel, context, initialText) {
+Widget textFieldPhone(label, variavel, context, initialText) {
 
   return Container(
     decoration: BoxDecoration(
@@ -16,12 +16,12 @@ Widget textFieldPhone(rotulo, variavel, context, initialText) {
     child: Padding(
       padding: const EdgeInsets.only(left: 20),
       
-      child: textField(rotulo, variavel, context, initialText),
+      child: textField(label, variavel, context, initialText),
     ),
   );
 }
 
-Widget textField(rotulo, variavel, context, initialText) {
+Widget textField(label, variavel, context, initialText) {
   var maskFormatter = MaskTextInputFormatter(
     mask: '(##) #####-####', 
     filter: { "#": RegExp(r'[0-9]') },
@@ -49,7 +49,7 @@ Widget textField(rotulo, variavel, context, initialText) {
         ),
 
         decoration: InputDecoration(
-          labelText: rotulo,
+          labelText: label,
           labelStyle: const TextStyle(
             fontSize: 24,
             color: Colors.white,

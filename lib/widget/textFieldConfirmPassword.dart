@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class TextFieldConfirmPassword extends StatefulWidget {
-  final String rotulo;
+  final String label;
   final TextEditingController variavel;
   final TextEditingController fieldPassword;
 
-  const TextFieldConfirmPassword({super.key, required this.rotulo, required this.variavel, required this.fieldPassword});
+  const TextFieldConfirmPassword({super.key, required this.label, required this.variavel, required this.fieldPassword});
 
   @override
   State<TextFieldConfirmPassword> createState() => _TextFieldConfirmPasswordState();
@@ -40,7 +40,7 @@ class _TextFieldConfirmPasswordState extends State<TextFieldConfirmPassword> {
         padding: const EdgeInsets.only(left: 20),
         child: Row(
           children: [
-            textField(widget.rotulo, widget.variavel, widget.fieldPassword),
+            textField(widget.label, widget.variavel, widget.fieldPassword),
             
             GestureDetector(
               child: SvgPicture.asset(
@@ -61,7 +61,7 @@ class _TextFieldConfirmPasswordState extends State<TextFieldConfirmPassword> {
     );
   }
 
-  Widget textField (rotulo, variavel, fieldPassword) {
+  Widget textField (label, variavel, fieldPassword) {
     return Container(
       margin: const EdgeInsets.only(bottom: 15),
       width: MediaQuery.of(context).size.width - 120,
@@ -84,7 +84,7 @@ class _TextFieldConfirmPasswordState extends State<TextFieldConfirmPassword> {
           ),
 
           decoration: InputDecoration(
-            labelText: rotulo,
+            labelText: label,
             labelStyle: const TextStyle(
               fontSize: 24,
               color: Colors.white,
