@@ -6,7 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 class TextFieldConfirmPassword extends StatefulWidget {
   final String rotulo;
   final TextEditingController variavel;
-  final String fieldPassword;
+  final TextEditingController fieldPassword;
 
   const TextFieldConfirmPassword({super.key, required this.rotulo, required this.variavel, required this.fieldPassword});
 
@@ -72,6 +72,7 @@ class _TextFieldConfirmPasswordState extends State<TextFieldConfirmPassword> {
 
       child: Center(
         child: TextFormField(
+          
           controller: variavel,
           obscureText: _passwordVisible,
           enableSuggestions: false,
@@ -96,13 +97,14 @@ class _TextFieldConfirmPasswordState extends State<TextFieldConfirmPassword> {
           ),
 
           validator: (value) {
-            if (value == null || value.isEmpty) {
+            if (variavel.text == null || variavel.text.isEmpty) {
               return 'Preencha o campo com as informações necessárias';
             }
 
-            if (value != fieldPassword) {
+            if (variavel.text != fieldPassword.text) {
               return 'As senhas devem ser iguais';
             }
+
             return null;
           },
         )
