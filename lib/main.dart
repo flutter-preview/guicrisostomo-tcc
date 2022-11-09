@@ -1,21 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:tcc/view/screen_about.dart';
-/*
-import 'package:tcc/view/screen_add_product.dart';
-*/
-import 'package:tcc/view/screen_edit_datas.dart';
-import 'package:tcc/view/screen_forget_password.dart';
-import 'package:tcc/view/screen_home.dart';
-import 'package:tcc/view/screen_info_order.dart';
-import 'package:tcc/view/screen_info_product.dart';
-import 'package:tcc/view/screen_login.dart';
-import 'package:tcc/view/screen_order.dart';
-import 'package:tcc/view/screen_presentation.dart';
-import 'package:tcc/view/screen_products.dart';
-import 'package:tcc/view/screen_profile.dart';
-import 'package:tcc/view/screen_register.dart';
-import 'package:tcc/view/screen_reset_password.dart';
-import 'package:tcc/view/screen_validation_email.dart';
+import 'package:tcc/view/pages/screen_about.dart';
+import 'package:tcc/view/pages/screen_edit_datas.dart';
+import 'package:tcc/view/pages/screen_forget_password.dart';
+import 'package:tcc/view/pages/screen_home.dart';
+import 'package:tcc/view/pages/screen_info_order.dart';
+import 'package:tcc/view/pages/screen_info_product.dart';
+import 'package:tcc/view/pages/screen_login.dart';
+import 'package:tcc/view/pages/screen_order.dart';
+import 'package:tcc/view/pages/screen_presentation.dart';
+import 'package:tcc/view/pages/screen_products.dart';
+import 'package:tcc/view/pages/screen_profile.dart';
+import 'package:tcc/view/pages/screen_register.dart';
+import 'package:tcc/view/pages/screen_reset_password.dart';
+import 'package:tcc/view/pages/screen_validation_email.dart';
 
 void main() {
   runApp(

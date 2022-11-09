@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import '../globals.dart' as globals;
+import '../../globals.dart' as globals;
 
 class Bottom extends StatefulWidget {
   const Bottom({super.key});

@@ -1,45 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:tcc/widget/textFieldEmail.dart';
-import 'package:tcc/widget/textFieldPassword.dart';
-import 'package:tcc/widget/textFieldPhone.dart';
+import 'package:tcc/view/widget/button.dart';
+import 'package:tcc/view/widget/imageMainScreens.dart';
+import 'package:tcc/view/widget/textFieldEmail.dart';
+import 'package:tcc/view/widget/textFieldPassword.dart';
 
-import '../widget/button.dart';
-import '../widget/imageMainScreens.dart';
-import '../widget/textField.dart';
-import '../widget/textFieldConfirmPassword.dart';
-
-class ScreenRegister extends StatefulWidget {
-  const ScreenRegister({super.key});
+class ScreenLogin extends StatefulWidget {
+  const ScreenLogin({super.key});
 
   @override
-  State<ScreenRegister> createState() => _ScreenRegisterState();
+  State<ScreenLogin> createState() => _ScreenLoginState();
 }
 
-class _ScreenRegisterState extends State<ScreenRegister> {
+class _ScreenLoginState extends State<ScreenLogin> {
   var txtEmail = TextEditingController();
   var txtPassword = TextEditingController();
-  var txtConfirmPassword = TextEditingController();
-  var txtName = TextEditingController();
-  var txtPhone = TextEditingController();
 
-  final String imgRegister = 'lib/images/imgRegister.svg';
-  
   var formKey = GlobalKey<FormState>();
-
+  
   bool autoValidation = false;
+
+  final String imgLogin = 'lib/images/imgLogin.svg';
 
   @override
   void initState() {
     autoValidation = false;
     super.initState();
   }
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
-
         child: Form(
           key: formKey,
           autovalidateMode: autoValidation ? AutovalidateMode.always : AutovalidateMode.disabled,
@@ -47,40 +39,48 @@ class _ScreenRegisterState extends State<ScreenRegister> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center ,
             children: [
-              imgCenter(imgRegister),
+              imgCenter(imgLogin),
 
               const SizedBox(height: 50,),
-
-              textFieldGeneral('Nome', txtName, context),
-              const SizedBox(height: 10,),
               textFieldEmail('E-mail', txtEmail, context),
-              const SizedBox(height: 10,),
-              textFieldPhone('Telefone', txtPhone, context, ''),
-              const SizedBox(height: 10,),
-              TextFieldPassword(label: 'Senha', variavel: txtPassword),
-              const SizedBox(height: 10,),
-              TextFieldConfirmPassword(label: 'Confirmar senha', variavel: txtConfirmPassword, fieldPassword: txtPassword),
               
-              const SizedBox(height: 50,),
+              const SizedBox(height: 10,),
 
-              buttonRegister(),
+              TextFieldPassword(label: 'Senha', variavel: txtPassword),
+              
+              const SizedBox(height: 10,),
+
+              Container(
+                alignment: Alignment.centerRight,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    buttonForgetPassword(),
+                  ],
+                )
+              ),
+              
+
+              const SizedBox(height: 40,),
+
+              buttonLogin(),
               const SizedBox(height: 50,),
 
               const Text(
-                'Já possui cadastro ?',
+                'Ainda não se registrou ?',
                 style: TextStyle(
                   fontSize: 16,
                 ),
               ),
 
-              button('Entrar agora', context, 'login')
+              button('Registrar agora', context, 'register')
           ],),
         )
       ),
     );
   }
 
-  Widget buttonRegister() {
+  Widget buttonLogin() {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         minimumSize: const Size(100, 50), backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
@@ -92,6 +92,7 @@ class _ScreenRegisterState extends State<ScreenRegister> {
           fontSize: 24,
         )
       ),
+
       onPressed: () {
 
         if (formKey.currentState!.validate()) {
@@ -106,9 +107,35 @@ class _ScreenRegisterState extends State<ScreenRegister> {
           setState(() {
             autoValidation = true;
           });
-
+          
           dialogField("Informe os campos corretamente");
         }
+        
+      },
+    );
+  }
+
+  Widget buttonForgetPassword() {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        minimumSize: const Size(100, 50), backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
+        
+      ),
+      
+      child: const Text('Esqueci minha senha',
+        style: TextStyle(
+        fontSize: 24,
+      )
+      ),
+
+      //COMPORTAMENTO
+      onPressed: () {
+
+        Navigator.pushNamed(
+          context,
+          'login/forget_password',
+        );
+        
       },
     );
   }
