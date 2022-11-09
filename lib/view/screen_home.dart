@@ -29,7 +29,7 @@ class _ScreenHomeState extends State<ScreenHome> {
             const SizedBox(height: 10,),
 
             const Text(
-              'Itens mais pedidos',
+              'Informações da sua mesa',
               style: TextStyle(
                 fontFamily: 'Roboto',
                 fontSize: 20,
@@ -38,15 +38,6 @@ class _ScreenHomeState extends State<ScreenHome> {
             ),
 
             const SizedBox(height: 10,),
-
-            const Text(
-              'Informações da sua mesa',
-              style: TextStyle(
-                fontFamily: 'Roboto',
-                fontSize: 20,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
             
             productItem(),
 

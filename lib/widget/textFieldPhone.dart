@@ -68,7 +68,7 @@ Widget textField(rotulo, variavel, context, initialText) {
             return 'Entre com um valor numérico';
           }
 
-          if (value.length < 14) {
+          if (variavel.text.length < 14) {
             return 'Informe um número de telefone válido';
           }
 

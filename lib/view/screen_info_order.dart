@@ -88,7 +88,7 @@ class _ScreenInfoOrderState extends State<ScreenInfoOrder> {
             Container(
               alignment: Alignment.centerLeft,
               child: const Text(
-                'Itens pedidos hoje',
+                'Itens pedidos',
                 textAlign: TextAlign.left,
                 style: TextStyle(
                   fontFamily: 'Roboto',
