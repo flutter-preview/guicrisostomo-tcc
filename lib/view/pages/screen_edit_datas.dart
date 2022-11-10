@@ -1,22 +1,31 @@
 import 'package:flutter/material.dart';
-import '../widget/textFieldNumberGeneral.dart';
+import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
+import 'package:tcc/view/widget/textField.dart';
+import 'package:tcc/view/widget/textFieldEmail.dart';
+import 'package:tcc/view/widget/textFieldPhone.dart';
 
-class ScreenValidationEmail extends StatefulWidget {
-  const ScreenValidationEmail({super.key});
+class ScreenEditDatas extends StatefulWidget {
+  const ScreenEditDatas({super.key});
 
   @override
-  State<ScreenValidationEmail> createState() => _ScreenValidationEmailState();
+  State<ScreenEditDatas> createState() => _ScreenEditDatasState();
 }
 
-class _ScreenValidationEmailState extends State<ScreenValidationEmail> {
-  var txtCodigo = TextEditingController();
-  var formKey = GlobalKey<FormState>();
-  
+class _ScreenEditDatasState extends State<ScreenEditDatas> {
+  var txtEmail = TextEditingController();
+  var txtName = TextEditingController();
+  var txtPhone = TextEditingController();
+
   bool autoValidation = false;
 
+  var formKey = GlobalKey<FormState>();
+  
   @override
   void initState() {
     autoValidation = false;
+    txtName.text = 'Rodrigo';
+    txtEmail.text = 'rodrigo@gmail.com';
+    txtPhone.text = '(16) 99999-9999';
     super.initState();
   }
 
@@ -24,66 +33,57 @@ class _ScreenValidationEmailState extends State<ScreenValidationEmail> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Recuperação de senha'),
+        title: const Text('Editar dados'),
         centerTitle: true,
         backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
       ),
 
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
+
         child: Form(
           key: formKey,
           autovalidateMode: autoValidation ? AutovalidateMode.always : AutovalidateMode.disabled,
 
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Text(
-                'Digite o código enviado ao e-mail',
-                style: TextStyle(
-                  fontFamily: 'Roboto',
-                  fontSize: 20,
-                ),
-              ),
+              textFieldGeneral('Nome', txtName, context),
               const SizedBox(height: 10,),
-              textFieldNumberGeneral('Código', txtCodigo, context),
-        
+              textFieldEmail('E-mail', txtEmail, context),
               const SizedBox(height: 10,),
+              textFieldPhone('Telefone', txtPhone, context, txtPhone.text),
+              const SizedBox(height: 50,),
 
-              Container(
-                alignment: Alignment.centerRight,
-                child: buttonConfirmCode(),
-              )
-            ],
+              buttonSave(),
+            ]
           ),
         ),
       ),
+
+      bottomNavigationBar: const Bottom(),
     );
   }
 
-  Widget buttonConfirmCode() {
+  Widget buttonSave() {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         minimumSize: const Size(100, 50), backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
       ),
       
-      child: const Text('Confirmar',
+      child: const Text('Salvar',
         style: TextStyle(
           fontSize: 24,
         )
       ),
 
       onPressed: () {
-        
-        if (formKey.currentState!.validate()) {
-          Navigator.of(context).pop();
-          Navigator.of(context).pop();
-          Navigator.of(context).pop();
 
+        if (formKey.currentState!.validate()) {
+        
+          Navigator.of(context).pop();
           Navigator.pushNamed(
             context,
-            'login/forget_password/reset_password',
+            'home',
           );
 
         } else {
@@ -91,6 +91,7 @@ class _ScreenValidationEmailState extends State<ScreenValidationEmail> {
             autoValidation = true;
           });
         }
+        
       },
     );
   }

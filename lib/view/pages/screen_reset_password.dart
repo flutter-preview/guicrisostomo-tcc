@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tcc/widget/textFieldPassword.dart';
-import '../widget/textFieldConfirmPassword.dart';
+import 'package:tcc/view/widget/textFieldConfirmPassword.dart';
+import 'package:tcc/view/widget/textFieldPassword.dart';
 
 class ScreenResetPassword extends StatefulWidget {
   const ScreenResetPassword({super.key});

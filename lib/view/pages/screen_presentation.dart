@@ -1,9 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:tcc/widget/button.dart';
-
-import '../widget/imageMainScreens.dart';
+import 'package:tcc/view/widget/button.dart';
+import 'package:tcc/view/widget/imageMainScreens.dart';
 
 class ScreenPresentation extends StatelessWidget {
   const ScreenPresentation({super.key});
