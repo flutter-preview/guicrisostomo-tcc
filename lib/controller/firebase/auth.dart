@@ -18,18 +18,18 @@ class LoginController {
           }
         );
 
-      sucesso(context, 'Usuário criado com sucesso.');
+      success(context, 'Usuário criado com sucesso.');
       Navigator.pop(context);
     }).catchError((e) {
       switch (e.code) {
         case 'email-already-in-use':
-          erro(context, 'O email já foi cadastrado.');
+          error(context, 'O email já foi cadastrado.');
           break;
         case 'invalid-email':
-          erro(context, 'O email é inválido.');
+          error(context, 'O email é inválido.');
           break;
         default:
-          erro(context, e.code.toString());
+          error(context, e.code.toString());
       }
     });
   }
@@ -38,21 +38,21 @@ class LoginController {
     FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: senha)
         .then((res) {
-      sucesso(context, 'Usuário autenticado com sucesso.');
+      success(context, 'Usuário autenticado com sucesso.');
       Navigator.pushReplacementNamed(context, 'principal');
     }).catchError((e) {
       switch (e.code) {
         case 'invalid-email':
-          erro(context, 'O formato do email é inválido.');
+          error(context, 'O formato do email é inválido.');
           break;
         case 'user-not-found':
-          erro(context, 'Usuário não encontrado.');
+          error(context, 'Usuário não encontrado.');
           break;
         case 'wrong-password':
-          erro(context, 'Senha incorreta.');
+          error(context, 'Senha incorreta.');
           break;
         default:
-          erro(context, e.code.toString());
+          error(context, e.code.toString());
       }
     });
   }
