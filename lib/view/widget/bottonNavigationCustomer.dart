@@ -39,6 +39,10 @@ class _BottomState extends State<Bottom> {
           label: 'Cardápio',
         ),
         const BottomNavigationBarItem(
+          icon: Icon(Icons.manage_accounts, color: Color.fromRGBO(242, 169, 34, 1),),
+          label: 'Gerenciar',
+        ),
+        const BottomNavigationBarItem(
           icon: Icon(Icons.perm_identity, color: Color.fromRGBO(242, 169, 34, 1),),
           label: 'Perfil',
         ),
