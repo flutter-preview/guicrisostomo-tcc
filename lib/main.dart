@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tcc/view/pages/screen_about.dart';
+import 'package:tcc/view/pages/screen_create_order.dart';
+import 'package:tcc/view/pages/screen_create_products.dart';
 import 'package:tcc/view/pages/screen_edit_datas.dart';
 import 'package:tcc/view/pages/screen_forget_password.dart';
 import 'package:tcc/view/pages/screen_home.dart';
@@ -28,6 +30,9 @@ void main() {
         'login/forget_password/reset_password' :(context) => const ScreenResetPassword(),
         'register' :(context) => const ScreenRegister(),
         'home' :(context) => const ScreenHome(),
+        'manager' :(context) => const ScreenHome(),
+        'manager/products' :(context) => const ScreenCreateProducts(),
+        'manager/order' :(context) => const ScreenCreateOrder(),
         'products' :(context) => const ScreenProducts(),
         'products/info_product' :(context) => const ScreenInfoProduct(),
         'profile' :(context) => const ScreenProfile(),
