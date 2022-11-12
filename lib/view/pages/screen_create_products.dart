@@ -14,8 +14,6 @@ class _ScreenCreateProductsState extends State<ScreenCreateProducts> {
   var txtDescription = TextEditingController();
   var txtPrice = TextEditingController();
   var txtSize = TextEditingController();
-
-  final String imgRegister = 'lib/images/imgRegister.svg';
   
   var formKey = GlobalKey<FormState>();
 
