@@ -8,6 +8,7 @@ import 'package:tcc/view/pages/screen_home.dart';
 import 'package:tcc/view/pages/screen_info_order.dart';
 import 'package:tcc/view/pages/screen_info_product.dart';
 import 'package:tcc/view/pages/screen_login.dart';
+import 'package:tcc/view/pages/screen_manager.dart';
 import 'package:tcc/view/pages/screen_order.dart';
 import 'package:tcc/view/pages/screen_presentation.dart';
 import 'package:tcc/view/pages/screen_products.dart';
@@ -30,7 +31,7 @@ void main() {
         'login/forget_password/reset_password' :(context) => const ScreenResetPassword(),
         'register' :(context) => const ScreenRegister(),
         'home' :(context) => const ScreenHome(),
-        'manager' :(context) => const ScreenHome(),
+        'manager' :(context) => const ScreenManager(),
         'manager/products' :(context) => const ScreenCreateProducts(),
         'manager/order' :(context) => const ScreenCreateOrder(),
         'products' :(context) => const ScreenProducts(),
