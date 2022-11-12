@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:tcc/view/widget/textField.dart';
 import 'package:tcc/view/widget/textFieldNumberGeneral.dart';
 
+import '../widget/bottonNavigationCustomer.dart';
+
 class ScreenCreateProducts extends StatefulWidget {
   const ScreenCreateProducts({super.key});
 
@@ -28,6 +30,12 @@ class _ScreenCreateProductsState extends State<ScreenCreateProducts> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Cadastrar produto'),
+        centerTitle: true,
+        backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
+      ),
+
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
 
@@ -52,6 +60,8 @@ class _ScreenCreateProductsState extends State<ScreenCreateProducts> {
           ],),
         )
       ),
+
+      bottomNavigationBar: const Bottom(),
     );
   }
 }

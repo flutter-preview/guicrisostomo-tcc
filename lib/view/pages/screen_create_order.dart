@@ -3,6 +3,8 @@ import 'package:tcc/view/widget/dropDownButton.dart';
 import 'package:tcc/view/widget/textField.dart';
 import 'package:tcc/view/widget/textFieldNumberGeneral.dart';
 
+import '../widget/bottonNavigationCustomer.dart';
+
 class ScreenCreateOrder extends StatefulWidget {
   const ScreenCreateOrder({super.key});
 
@@ -47,6 +49,12 @@ class _ScreenCreateOrderState extends State<ScreenCreateOrder> {
     ];
 
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Cadastrar pedido'),
+        centerTitle: true,
+        backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
+      ),
+
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
 
@@ -66,11 +74,11 @@ class _ScreenCreateOrderState extends State<ScreenCreateOrder> {
               textFieldNumberGeneral('Preço', txtTotal, context),
               
               const SizedBox(height: 50,),
-
-              //buttonRegister(),
           ],),
         )
       ),
+
+      bottomNavigationBar: const Bottom(),
     );
   }
 }
