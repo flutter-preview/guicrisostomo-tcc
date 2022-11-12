@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tcc/view/widget/dropDownButton.dart';
 import 'package:tcc/view/widget/textField.dart';
 import 'package:tcc/view/widget/textFieldNumberGeneral.dart';
 
@@ -12,10 +13,8 @@ class ScreenCreateOrder extends StatefulWidget {
 class _ScreenCreateOrderState extends State<ScreenCreateOrder> {
   var txtTypeSale = TextEditingController();
   var txtWaiter = TextEditingController();
-  var txtPrice = TextEditingController();
-  var txtSize = TextEditingController();
-
-  final String imgRegister = 'lib/images/imgRegister.svg';
+  var txtTotal = TextEditingController();
+  var txtTypePayment = TextEditingController();
   
   var formKey = GlobalKey<FormState>();
 
@@ -29,6 +28,24 @@ class _ScreenCreateOrderState extends State<ScreenCreateOrder> {
 
   @override
   Widget build(BuildContext context) {
+    List <String> listTypeSale = [
+      'Retirada',
+      'Entrega',
+      'Mesa',
+    ];
+
+    List <String> listWaiter = [
+      'Ana',
+      'João',
+      'Fatima',
+    ];
+
+    List <String> listTypePayment = [
+      'Dinheiro',
+      'Cartão',
+      'Pix',
+    ];
+
     return Scaffold(
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
@@ -40,13 +57,13 @@ class _ScreenCreateOrderState extends State<ScreenCreateOrder> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center ,
             children: [
-              textFieldGeneral('Nome', txtName, context),
+              DropDown(text: 'Selecione o tipo de venda', itemsDropDownButton: listTypeSale),
               const SizedBox(height: 10,),
-              textFieldGeneral('Descrição', txtDescription, context),
+              DropDown(text: 'Selecione o atendente', itemsDropDownButton: listWaiter),
               const SizedBox(height: 10,),
-              textFieldGeneral('Tamanho', txtSize, context),
+              DropDown(text: 'Selecione a forma de pagamento', itemsDropDownButton: listTypePayment),
               const SizedBox(height: 10,),
-              textFieldNumberGeneral('Preço', txtPrice, context),
+              textFieldNumberGeneral('Preço', txtTotal, context),
               
               const SizedBox(height: 50,),
 
