@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/textField.dart';
 import 'package:tcc/view/widget/textFieldNumberGeneral.dart';
 
@@ -56,7 +57,7 @@ class _ScreenCreateProductsState extends State<ScreenCreateProducts> {
               
               const SizedBox(height: 50,),
 
-              //buttonRegister(),
+              button('Salvar', context, 'home')
           ],),
         )
       ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/dropDownButton.dart';
 import 'package:tcc/view/widget/textField.dart';
 import 'package:tcc/view/widget/textFieldNumberGeneral.dart';
@@ -74,6 +75,8 @@ class _ScreenCreateOrderState extends State<ScreenCreateOrder> {
               textFieldNumberGeneral('Preço', txtTotal, context),
               
               const SizedBox(height: 50,),
+
+              button('Salvar', context, 'home')
           ],),
         )
       ),
