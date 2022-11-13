@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tcc/controller/firebase/auth.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/imageMainScreens.dart';
 import 'package:tcc/view/widget/textFieldEmail.dart';
@@ -96,13 +97,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
       onPressed: () {
 
         if (formKey.currentState!.validate()) {
-        
-          Navigator.of(context).pop();
-          Navigator.pushNamed(
-            context,
-            'home',
-          );
-
+          LoginController().login(context, txtEmail.text, txtPassword.text);
         } else {
           setState(() {
             autoValidation = true;

@@ -39,7 +39,11 @@ class LoginController {
         .signInWithEmailAndPassword(email: email, password: senha)
         .then((res) {
       success(context, 'Usuário autenticado com sucesso.');
-      Navigator.pushReplacementNamed(context, 'principal');
+      Navigator.of(context).pop();
+      Navigator.pushNamed(
+        context,
+        'home',
+      );
     }).catchError((e) {
       switch (e.code) {
         case 'invalid-email':
