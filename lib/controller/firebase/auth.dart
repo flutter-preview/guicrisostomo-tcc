@@ -97,4 +97,21 @@ class LoginController {
     );
     return res;
   }
+
+  void updateUser(id, name, email, phone, context) {
+    FirebaseFirestore.instance.collection('users').doc(id).update(
+      {
+        "name": name,
+        "email": email,
+        "phone": phone,
+      },
+    );
+
+    Navigator.of(context).pop();
+    Navigator.pushNamed(
+      context,
+      'home',
+    );
+
+  }
 }
