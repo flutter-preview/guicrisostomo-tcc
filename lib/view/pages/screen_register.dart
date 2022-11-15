@@ -96,7 +96,7 @@ class _ScreenRegisterState extends State<ScreenRegister> {
 
         if (formKey.currentState!.validate()) {
         
-          LoginController().criarConta(context, txtName.text, txtEmail.text, txtPhone.text, txtPassword.text);
+          LoginController().createAccount(context, txtName.text, txtEmail.text, txtPhone.text, txtPassword.text);
 
         } else {
           setState(() {

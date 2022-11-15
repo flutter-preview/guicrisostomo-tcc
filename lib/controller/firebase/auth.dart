@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:tcc/view/widget/snackBars.dart';
 
 class LoginController {
-  void criarConta(context, String name, String email, String phone, String password) {
+  void createAccount(context, String name, String email, String phone, String password) {
     FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: email, password: password)
         .then((res) {
@@ -61,7 +61,7 @@ class LoginController {
     });
   }
 
-  Future<void> esqueceuSenha(String email, context) async {
+  Future<void> forgetPassword(String email, context) async {
     Navigator.of(context).pop();
     Navigator.pushNamed(
       context,
@@ -79,7 +79,7 @@ class LoginController {
     );
   }
 
-  Future<String> retornarUsuarioLogado() async {
+  Future<String> userLogin() async {
     var uid = FirebaseAuth.instance.currentUser!.uid;
     var res;
     await FirebaseFirestore.instance
