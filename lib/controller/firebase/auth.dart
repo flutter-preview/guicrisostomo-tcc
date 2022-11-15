@@ -4,17 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:tcc/view/widget/snackBars.dart';
 
 class LoginController {
-  void criarConta(context, String nome, String email, String telefone, String senha) {
+  void criarConta(context, String name, String email, String phone, String password) {
     FirebaseAuth.instance
-        .createUserWithEmailAndPassword(email: email, password: senha)
+        .createUserWithEmailAndPassword(email: email, password: password)
         .then((res) {
 
-      FirebaseFirestore.instance.collection('usuarios')
+      FirebaseFirestore.instance.collection('users')
         .add(
           {
             "uid" : res.user!.uid.toString(),
-            "nome" : nome,
-            "telefone" : telefone,
+            "name" : name,
+            "phone" : phone,
           }
         );
 
@@ -61,25 +61,35 @@ class LoginController {
     });
   }
 
-  Future<void> esqueceuSenha(String email) async {
+  Future<void> esqueceuSenha(String email, context) async {
+    Navigator.of(context).pop();
+    Navigator.pushNamed(
+      context,
+      'login/forget_password',
+    );
     await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
   }
 
-  void logout() {
+  void logout(context) {
     FirebaseAuth.instance.signOut();
+    Navigator.of(context).pop();
+    Navigator.pushNamed(
+      context,
+      'presentation',
+    );
   }
 
   Future<String> retornarUsuarioLogado() async {
     var uid = FirebaseAuth.instance.currentUser!.uid;
     var res;
     await FirebaseFirestore.instance
-        .collection('usuarios')
+        .collection('users')
         .where('uid', isEqualTo: uid)
         .get()
         .then(
       (q) {
         if (q.docs.isNotEmpty) {
-          res = q.docs[0].data()['nome'];
+          res = q.docs[0].data()['name'];
         } else {
           res = "";
         }
