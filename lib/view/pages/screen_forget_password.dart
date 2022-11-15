@@ -79,7 +79,7 @@ class _ScreenForgetPasswordState extends State<ScreenForgetPassword> {
         
         if (formKey.currentState!.validate()) {
 
-          LoginController().esqueceuSenha(context, txtEmail.text);
+          LoginController().esqueceuSenha(txtEmail.text, context);
 
         } else {
           setState(() {
