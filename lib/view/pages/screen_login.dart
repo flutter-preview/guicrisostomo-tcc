@@ -102,8 +102,6 @@ class _ScreenLoginState extends State<ScreenLogin> {
           setState(() {
             autoValidation = true;
           });
-          
-          dialogField("Informe os campos corretamente");
         }
         
       },

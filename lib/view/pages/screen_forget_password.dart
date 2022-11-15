@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tcc/controller/firebase/auth.dart';
 import 'package:tcc/view/widget/textFieldEmail.dart';
 
 class ScreenForgetPassword extends StatefulWidget {
@@ -52,7 +53,7 @@ class _ScreenForgetPasswordState extends State<ScreenForgetPassword> {
         
               Container(
                 alignment: Alignment.centerRight,
-                child: buttonConfirmEmail(),
+                child: buttonConfirmEmail(context),
               )
               
             ],
@@ -62,7 +63,7 @@ class _ScreenForgetPasswordState extends State<ScreenForgetPassword> {
     );
   }
 
-  Widget buttonConfirmEmail() {
+  Widget buttonConfirmEmail(context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         minimumSize: const Size(100, 50), backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
@@ -78,10 +79,7 @@ class _ScreenForgetPasswordState extends State<ScreenForgetPassword> {
         
         if (formKey.currentState!.validate()) {
 
-          Navigator.pushNamed(
-            context,
-            'login/forget_password/validation_email',
-          );
+          LoginController().esqueceuSenha(context, txtEmail.text);
 
         } else {
           setState(() {

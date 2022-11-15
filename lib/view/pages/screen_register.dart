@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tcc/controller/firebase/auth.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/imageMainScreens.dart';
 import 'package:tcc/view/widget/textField.dart';
@@ -62,7 +63,7 @@ class _ScreenRegisterState extends State<ScreenRegister> {
               
               const SizedBox(height: 50,),
 
-              buttonRegister(),
+              buttonRegister(context),
               const SizedBox(height: 50,),
 
               const Text(
@@ -79,7 +80,7 @@ class _ScreenRegisterState extends State<ScreenRegister> {
     );
   }
 
-  Widget buttonRegister() {
+  Widget buttonRegister(context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         minimumSize: const Size(100, 50), backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
@@ -95,18 +96,12 @@ class _ScreenRegisterState extends State<ScreenRegister> {
 
         if (formKey.currentState!.validate()) {
         
-          Navigator.of(context).pop();
-          Navigator.pushNamed(
-            context,
-            'home',
-          );
+          LoginController().criarConta(context, txtName.text, txtEmail.text, txtPhone.text, txtPassword.text);
 
         } else {
           setState(() {
             autoValidation = true;
           });
-
-          dialogField("Informe os campos corretamente");
         }
       },
     );
