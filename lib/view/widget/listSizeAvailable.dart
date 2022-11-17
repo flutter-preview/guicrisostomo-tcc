@@ -23,15 +23,27 @@ Widget listSize(nameSize, price) {
           ),
 
           trailing: SizedBox(
-
-            child: Text(
-              price,
-              style: const TextStyle(
-                fontSize: 20,
-                color: Colors.white,
+            width: 25,
+            height: 25,
+            
+            child: ElevatedButton(
+                
+              onPressed: () {
+                Navigator.pushNamed(
+                  context,
+                  'products/add_product',
+                );
+              },
+              
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.all(2),
+                backgroundColor: const Color.fromRGBO(242, 169, 34, 1),
+                shape: const CircleBorder(),
+                foregroundColor: Colors.white,
               ),
-            ),
-          ),
+              child: const Icon(Icons.add, size: 15, color: Colors.white,),
+            )
+          )
           
         ),
       );

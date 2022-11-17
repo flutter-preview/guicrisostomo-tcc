@@ -52,30 +52,63 @@ Widget productItem() {
           trailing: Column(
             children: [
             
-              Expanded(
-                child: SizedBox(
-                  width: 25,
-                  height: 25,
+            
+            Expanded(
+              child: SizedBox(
+                width: 25,
+                height: 25,
+                child: ElevatedButton(
+                    
+                  onPressed: () {
+                    Navigator.pushNamed(
+                      context,
+                      'products/add_product',
+                    );
+                  },
                   
-                  child: ElevatedButton(
-                    
-                    
-                    onPressed: () {
-                      Navigator.pushNamed(
-                        context,
-                        'products/info_product',
-                      );
-                    },
-                    
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.all(2),
-                      backgroundColor: const Color.fromRGBO(242, 169, 34, 1),
-                      shape: const CircleBorder(),
-                      foregroundColor: Colors.white,
-                    ),
-                    
-                    child: const Icon(Icons.question_mark, size: 15, color: Colors.white,),
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.all(2),
+                    backgroundColor: const Color.fromRGBO(242, 169, 34, 1),
+                    shape: const CircleBorder(),
+                    foregroundColor: Colors.white,
+                  ),
+
+                  child: const Icon(
+                    Icons.add, size: 15,
+                    color: Colors.white,
+                  ),
                   
+                ),
+              ),
+            ),
+            
+            const SizedBox(height: 10,),
+            
+            
+            Expanded(
+              child: SizedBox(
+                width: 25,
+                height: 25,
+                
+                child: ElevatedButton(
+                  
+                  
+                  onPressed: () {
+                    Navigator.pushNamed(
+                      context,
+                      'products/info_product',
+                    );
+                  },
+                  
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.all(2),
+                    backgroundColor: const Color.fromRGBO(242, 169, 34, 1),
+                    shape: const CircleBorder(),
+                    foregroundColor: Colors.white,
+                  ),
+                  
+                  child: const Icon(Icons.question_mark, size: 15, color: Colors.white,),
+                
                   ),
                 )
               )
