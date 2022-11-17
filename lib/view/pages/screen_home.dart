@@ -53,7 +53,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                   ],
                 ),
                 
-                const SizedBox(height: 5,),
+                const SizedBox(height: 10,),
 
                 Row(
                   children: const [
@@ -65,7 +65,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                   ],
                 ),
 
-                const SizedBox(height: 5,),
+                const SizedBox(height: 10,),
 
                 Row(
                   children: const [
