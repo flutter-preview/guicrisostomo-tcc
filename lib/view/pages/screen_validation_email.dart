@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:tcc/widget/textFieldPassword.dart';
-import '../widget/textFieldConfirmPassword.dart';
+import 'package:tcc/view/widget/textFieldNumberGeneral.dart';
 
-class ScreenResetPassword extends StatefulWidget {
-  const ScreenResetPassword({super.key});
+class ScreenValidationEmail extends StatefulWidget {
+  const ScreenValidationEmail({super.key});
 
   @override
-  State<ScreenResetPassword> createState() => _ScreenResetPasswordState();
+  State<ScreenValidationEmail> createState() => _ScreenValidationEmailState();
 }
 
-class _ScreenResetPasswordState extends State<ScreenResetPassword> {
-  var txtPassword = TextEditingController();
-  var txtConfirmPassword = TextEditingController();
+class _ScreenValidationEmailState extends State<ScreenValidationEmail> {
+  var txtCodigo = TextEditingController();
   var formKey = GlobalKey<FormState>();
   
   bool autoValidation = false;
@@ -25,33 +23,38 @@ class _ScreenResetPasswordState extends State<ScreenResetPassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Recuperação de senha'),
+        centerTitle: true,
+        backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
+      ),
+
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Form(
           key: formKey,
           autovalidateMode: autoValidation ? AutovalidateMode.always : AutovalidateMode.disabled,
+
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const Text(
-                'Digite sua nova senha',
+                'Digite o código enviado ao e-mail',
                 style: TextStyle(
                   fontFamily: 'Roboto',
                   fontSize: 20,
                 ),
               ),
               const SizedBox(height: 10,),
-              TextFieldPassword(rotulo: 'Senha', variavel: txtPassword),
-              const SizedBox(height: 5,),
-              TextFieldConfirmPassword(rotulo: 'Confirmar senha', variavel: txtConfirmPassword, fieldPassword: txtPassword),
-
+              textFieldNumberGeneral('Código', txtCodigo, context),
+        
               const SizedBox(height: 10,),
 
               Container(
                 alignment: Alignment.centerRight,
-                child: buttonResetPassword(),
-              ),
+                child: buttonConfirmCode(),
+              )
             ],
           ),
         ),
@@ -59,7 +62,7 @@ class _ScreenResetPasswordState extends State<ScreenResetPassword> {
     );
   }
 
-  Widget buttonResetPassword() {
+  Widget buttonConfirmCode() {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         minimumSize: const Size(100, 50), backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
@@ -74,11 +77,13 @@ class _ScreenResetPasswordState extends State<ScreenResetPassword> {
       onPressed: () {
         
         if (formKey.currentState!.validate()) {
-
           Navigator.of(context).pop();
+          Navigator.of(context).pop();
+          Navigator.of(context).pop();
+
           Navigator.pushNamed(
             context,
-            'home',
+            'login/forget_password/reset_password',
           );
 
         } else {

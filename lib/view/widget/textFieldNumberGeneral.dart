@@ -1,8 +1,7 @@
 // ignore_for_file: file_names
-
 import 'package:flutter/material.dart';
 
-Widget textFieldEmail(rotulo, variavel, context) {
+Widget textFieldNumberGeneral(label, variavel, context) {
 
   return Container(
     decoration: BoxDecoration(
@@ -14,13 +13,12 @@ Widget textFieldEmail(rotulo, variavel, context) {
     ),
     child: Padding(
       padding: const EdgeInsets.only(left: 20),
-      
-      child: textField(rotulo, variavel, context),
+      child: textField(label, variavel, context),
     ),
   );
 }
 
-Widget textField(rotulo, variavel, context) {
+Widget textField(label, variavel, context) {
   return Container(
     margin: const EdgeInsets.only(bottom: 15),
     padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
@@ -32,15 +30,14 @@ Widget textField(rotulo, variavel, context) {
     child: Center(
       child: TextFormField(
         controller: variavel,
-        keyboardType: TextInputType.emailAddress,
-
+        keyboardType: TextInputType.number,
         style: const TextStyle(
           fontSize: 24,
           color: Colors.white,
         ),
 
         decoration: InputDecoration(
-          labelText: rotulo,
+          labelText: label,
           labelStyle: const TextStyle(
             fontSize: 24,
             color: Colors.white,
@@ -53,21 +50,16 @@ Widget textField(rotulo, variavel, context) {
         ),
 
         validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'Preencha o campo com as informações necessárias';
-          }
-
-          String pattern =
-          r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]"
-          r"{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]"
-          r"{0,253}[a-zA-Z0-9])?)*$";
-          RegExp regex = RegExp(pattern);
-          if (!regex.hasMatch(value)) {
-            return 'Informe um e-mail válido';
+          value = value!.replaceFirst(',', '.');
+          if (int.tryParse(value) == null) {
+            return 'Entre com um valor numérico';
           } else {
+            if (value.isEmpty) {
+              return 'Preencha o campo com as informações necessárias';
+            }
             return null;
           }
-        },
+        }
       )
     )
   );

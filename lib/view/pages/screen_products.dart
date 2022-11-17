@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tcc/widget/floatingButton.dart';
-import 'package:tcc/widget/productItem.dart';
-
-import '../widget/bottonNavigationCustomer.dart';
+import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
+import 'package:tcc/view/widget/floatingButton.dart';
+import 'package:tcc/view/widget/productItem.dart';
 
 class ScreenProducts extends StatefulWidget {
   const ScreenProducts({super.key});

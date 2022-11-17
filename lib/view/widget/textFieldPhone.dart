@@ -1,7 +1,9 @@
 // ignore_for_file: file_names
-import 'package:flutter/material.dart';
 
-Widget textFieldNumberGeneral(rotulo, variavel, context) {
+import 'package:flutter/material.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+
+Widget textFieldPhone(label, variavel, context, initialText) {
 
   return Container(
     decoration: BoxDecoration(
@@ -13,12 +15,20 @@ Widget textFieldNumberGeneral(rotulo, variavel, context) {
     ),
     child: Padding(
       padding: const EdgeInsets.only(left: 20),
-      child: textField(rotulo, variavel, context),
+      
+      child: textField(label, variavel, context, initialText),
     ),
   );
 }
 
-Widget textField(rotulo, variavel, context) {
+Widget textField(label, variavel, context, initialText) {
+  var maskFormatter = MaskTextInputFormatter(
+    mask: '(##) #####-####', 
+    filter: { "#": RegExp(r'[0-9]') },
+    type: MaskAutoCompletionType.eager,
+    initialText: initialText,
+  );
+
   return Container(
     margin: const EdgeInsets.only(bottom: 15),
     padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
@@ -31,13 +41,15 @@ Widget textField(rotulo, variavel, context) {
       child: TextFormField(
         controller: variavel,
         keyboardType: TextInputType.number,
+        inputFormatters: [maskFormatter],
+
         style: const TextStyle(
           fontSize: 24,
           color: Colors.white,
         ),
 
         decoration: InputDecoration(
-          labelText: rotulo,
+          labelText: label,
           labelStyle: const TextStyle(
             fontSize: 24,
             color: Colors.white,
@@ -50,16 +62,27 @@ Widget textField(rotulo, variavel, context) {
         ),
 
         validator: (value) {
-          value = value!.replaceFirst(',', '.');
+          value = value!.replaceAll(RegExp('[^0-9A-Za-z]'), '');
+
           if (int.tryParse(value) == null) {
             return 'Entre com um valor numérico';
-          } else {
-            if (value.isEmpty) {
-              return 'Preencha o campo com as informações necessárias';
-            }
-            return null;
           }
-        }
+
+          if (variavel.text.length < 14) {
+            return 'Informe um número de telefone válido';
+          }
+
+          return null;
+
+        },
+
+        onChanged: (value) {
+          if (value.length <= 14) {
+            variavel.value = maskFormatter.updateMask(mask: "(##) ####-#####");
+          } else {
+            variavel.value = maskFormatter.updateMask(mask: "(##) #####-####");
+          }
+        },
       )
     )
   );

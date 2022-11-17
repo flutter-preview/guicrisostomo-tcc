@@ -1,9 +1,8 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
-Widget textFieldPhone(rotulo, variavel, context, initialText) {
+Widget textFieldEmail(label, variavel, context) {
 
   return Container(
     decoration: BoxDecoration(
@@ -16,19 +15,12 @@ Widget textFieldPhone(rotulo, variavel, context, initialText) {
     child: Padding(
       padding: const EdgeInsets.only(left: 20),
       
-      child: textField(rotulo, variavel, context, initialText),
+      child: textField(label, variavel, context),
     ),
   );
 }
 
-Widget textField(rotulo, variavel, context, initialText) {
-  var maskFormatter = MaskTextInputFormatter(
-    mask: '(##) #####-####', 
-    filter: { "#": RegExp(r'[0-9]') },
-    type: MaskAutoCompletionType.eager,
-    initialText: initialText,
-  );
-
+Widget textField(label, variavel, context) {
   return Container(
     margin: const EdgeInsets.only(bottom: 15),
     padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
@@ -40,8 +32,7 @@ Widget textField(rotulo, variavel, context, initialText) {
     child: Center(
       child: TextFormField(
         controller: variavel,
-        keyboardType: TextInputType.number,
-        inputFormatters: [maskFormatter],
+        keyboardType: TextInputType.emailAddress,
 
         style: const TextStyle(
           fontSize: 24,
@@ -49,7 +40,7 @@ Widget textField(rotulo, variavel, context, initialText) {
         ),
 
         decoration: InputDecoration(
-          labelText: rotulo,
+          labelText: label,
           labelStyle: const TextStyle(
             fontSize: 24,
             color: Colors.white,
@@ -62,25 +53,19 @@ Widget textField(rotulo, variavel, context, initialText) {
         ),
 
         validator: (value) {
-          value = value!.replaceAll(RegExp('[^0-9A-Za-z]'), '');
-
-          if (int.tryParse(value) == null) {
-            return 'Entre com um valor numérico';
+          if (value == null || value.isEmpty) {
+            return 'Preencha o campo com as informações necessárias';
           }
 
-          if (variavel.text.length < 14) {
-            return 'Informe um número de telefone válido';
-          }
-
-          return null;
-
-        },
-
-        onChanged: (value) {
-          if (value.length <= 14) {
-            variavel.value = maskFormatter.updateMask(mask: "(##) ####-#####");
+          String pattern =
+          r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]"
+          r"{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]"
+          r"{0,253}[a-zA-Z0-9])?)*$";
+          RegExp regex = RegExp(pattern);
+          if (!regex.hasMatch(value)) {
+            return 'Informe um e-mail válido';
           } else {
-            variavel.value = maskFormatter.updateMask(mask: "(##) #####-####");
+            return null;
           }
         },
       )

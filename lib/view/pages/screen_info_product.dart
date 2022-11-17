@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
-import '../widget/bottonNavigationCustomer.dart';
-import '../widget/floatingButton.dart';
-import '../widget/listSizeAvailable.dart';
+import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
+import 'package:tcc/view/widget/floatingButton.dart';
+import 'package:tcc/view/widget/listSizeAvailable.dart';
 
 class ScreenInfoProduct extends StatelessWidget {
 

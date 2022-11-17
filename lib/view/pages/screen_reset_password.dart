@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:tcc/widget/textFieldEmail.dart';
+import 'package:tcc/view/widget/textFieldConfirmPassword.dart';
+import 'package:tcc/view/widget/textFieldPassword.dart';
 
-class ScreenForgetPassword extends StatefulWidget {
-  const ScreenForgetPassword({super.key});
+class ScreenResetPassword extends StatefulWidget {
+  const ScreenResetPassword({super.key});
 
   @override
-  State<ScreenForgetPassword> createState() => _ScreenForgetPasswordState();
+  State<ScreenResetPassword> createState() => _ScreenResetPasswordState();
 }
 
-class _ScreenForgetPasswordState extends State<ScreenForgetPassword> {
-  var txtEmail = TextEditingController();
+class _ScreenResetPasswordState extends State<ScreenResetPassword> {
+  var txtPassword = TextEditingController();
+  var txtConfirmPassword = TextEditingController();
   var formKey = GlobalKey<FormState>();
   
   bool autoValidation = false;
@@ -19,16 +21,10 @@ class _ScreenForgetPasswordState extends State<ScreenForgetPassword> {
     autoValidation = false;
     super.initState();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Recuperação de senha'),
-        centerTitle: true,
-        backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
-      ),
-
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Form(
@@ -39,22 +35,23 @@ class _ScreenForgetPasswordState extends State<ScreenForgetPassword> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const Text(
-                'Digite seu e-mail usado no cadastro',
+                'Digite sua nova senha',
                 style: TextStyle(
                   fontFamily: 'Roboto',
                   fontSize: 20,
                 ),
               ),
-              const SizedBox(height: 5,),
-              textFieldEmail('E-mail', txtEmail, context),
-              
               const SizedBox(height: 10,),
-        
+              TextFieldPassword(label: 'Senha', variavel: txtPassword),
+              const SizedBox(height: 5,),
+              TextFieldConfirmPassword(label: 'Confirmar senha', variavel: txtConfirmPassword, fieldPassword: txtPassword),
+
+              const SizedBox(height: 10,),
+
               Container(
                 alignment: Alignment.centerRight,
-                child: buttonConfirmEmail(),
-              )
-              
+                child: buttonResetPassword(),
+              ),
             ],
           ),
         ),
@@ -62,7 +59,7 @@ class _ScreenForgetPasswordState extends State<ScreenForgetPassword> {
     );
   }
 
-  Widget buttonConfirmEmail() {
+  Widget buttonResetPassword() {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         minimumSize: const Size(100, 50), backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
@@ -78,9 +75,10 @@ class _ScreenForgetPasswordState extends State<ScreenForgetPassword> {
         
         if (formKey.currentState!.validate()) {
 
+          Navigator.of(context).pop();
           Navigator.pushNamed(
             context,
-            'login/forget_password/validation_email',
+            'home',
           );
 
         } else {
@@ -88,7 +86,6 @@ class _ScreenForgetPasswordState extends State<ScreenForgetPassword> {
             autoValidation = true;
           });
         }
-        
       },
     );
   }

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tcc/widget/bottonNavigationCustomer.dart';
-import 'package:tcc/widget/floatingButton.dart';
-
-import '../widget/listViewTeam.dart';
+import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
+import 'package:tcc/view/widget/floatingButton.dart';
+import 'package:tcc/view/widget/listViewTeam.dart';
 
 class ScreenAbout extends StatelessWidget {
   const ScreenAbout({super.key});
