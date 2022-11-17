@@ -30,7 +30,7 @@ class _ScreenHomeState extends State<ScreenHome> {
             const SizedBox(height: 10,),
 
             const Text(
-              'Informações da sua mesa',
+              'Informações do seu último pedido',
               style: TextStyle(
                 fontFamily: 'Roboto',
                 fontSize: 20,
@@ -39,11 +39,6 @@ class _ScreenHomeState extends State<ScreenHome> {
             ),
 
             const SizedBox(height: 10,),
-            
-            productItem(),
-
-            const SizedBox(height: 10,),
-
             
             Column(
               children: [
@@ -87,7 +82,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                 Container(
                   alignment: Alignment.centerLeft,
                   child: const Text(
-                    'Itens pedidos hoje',
+                    'Itens pedidos',
                     textAlign: TextAlign.left,
                     style: TextStyle(
                       fontFamily: 'Roboto',
