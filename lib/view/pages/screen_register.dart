@@ -87,7 +87,7 @@ class _ScreenRegisterState extends State<ScreenRegister> {
         
       ),
       
-      child: const Text('Entrar',
+      child: const Text('Cadastrar',
         style: TextStyle(
           fontSize: 24,
         )
