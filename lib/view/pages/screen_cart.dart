@@ -26,7 +26,6 @@ class _ScreenCartState extends State<ScreenCart> {
       ),
 
       bottomNavigationBar: const Bottom(),
-      floatingActionButton: floatingButton(context),
     );
   }
 }
