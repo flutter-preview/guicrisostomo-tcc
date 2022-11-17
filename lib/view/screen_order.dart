@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tcc/widget/floatingButton.dart';
 
 import '../widget/bottonNavigationCustomer.dart';
 
@@ -23,6 +24,7 @@ class _ScreenOrderState extends State<ScreenOrder> {
       ),
 
       bottomNavigationBar: const Bottom(),
+      floatingActionButton: floatingButton(context),
     );
   }
 }

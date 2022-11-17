@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tcc/widget/bottonNavigationCustomer.dart';
+import 'package:tcc/widget/floatingButton.dart';
 import 'package:tcc/widget/imageMainScreens.dart';
 import 'package:tcc/widget/productItem.dart';
 
@@ -104,6 +105,7 @@ class _ScreenHomeState extends State<ScreenHome> {
       ),
 
       bottomNavigationBar: const Bottom(),
+      floatingActionButton: floatingButton(context),
     );
   }
 }

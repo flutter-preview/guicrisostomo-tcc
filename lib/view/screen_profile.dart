@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:tcc/widget/floatingButton.dart';
 
 import '../widget/bottonNavigationCustomer.dart';
 
@@ -92,6 +93,7 @@ class _ScreenProfileState extends State<ScreenProfile> {
       ),
 
       bottomNavigationBar: Bottom(),
+      floatingActionButton: floatingButton(context),
     );
   }
 }

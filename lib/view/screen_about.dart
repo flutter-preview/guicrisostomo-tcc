@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tcc/widget/bottonNavigationCustomer.dart';
+import 'package:tcc/widget/floatingButton.dart';
 
 import '../widget/listViewTeam.dart';
 
@@ -49,6 +50,7 @@ class ScreenAbout extends StatelessWidget {
       ),
 
       bottomNavigationBar: const Bottom(),
+      floatingActionButton: floatingButton(context),
     );
   }
 }

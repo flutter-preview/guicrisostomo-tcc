@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../widget/bottonNavigationCustomer.dart';
+import '../widget/floatingButton.dart';
 import '../widget/textField.dart';
 import '../widget/textFieldEmail.dart';
 import '../widget/textFieldPhone.dart';
@@ -62,6 +63,7 @@ class _ScreenEditDatasState extends State<ScreenEditDatas> {
       ),
 
       bottomNavigationBar: const Bottom(),
+      floatingActionButton: floatingButton(context),
     );
   }
 
