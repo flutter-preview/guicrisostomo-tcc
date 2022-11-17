@@ -13,9 +13,15 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Adicionar item'),
+        centerTitle: true,
+        backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
+      ),
+
       body: Column(
         children: [
-          
+
         ],
       ),
       
