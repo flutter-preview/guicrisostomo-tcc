@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
+import 'package:tcc/view/widget/floatingButton.dart';
 import 'package:tcc/view/widget/imageMainScreens.dart';
 import 'package:tcc/view/widget/productItem.dart';
 
@@ -29,7 +30,7 @@ class _ScreenHomeState extends State<ScreenHome> {
             const SizedBox(height: 10,),
 
             const Text(
-              'Informações da sua mesa',
+              'Informações do seu último pedido',
               style: TextStyle(
                 fontFamily: 'Roboto',
                 fontSize: 20,
@@ -38,11 +39,6 @@ class _ScreenHomeState extends State<ScreenHome> {
             ),
 
             const SizedBox(height: 10,),
-            
-            productItem(),
-
-            const SizedBox(height: 10,),
-
             
             Column(
               children: [
@@ -57,7 +53,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                   ],
                 ),
                 
-                const SizedBox(height: 5,),
+                const SizedBox(height: 10,),
 
                 Row(
                   children: const [
@@ -69,7 +65,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                   ],
                 ),
 
-                const SizedBox(height: 5,),
+                const SizedBox(height: 10,),
 
                 Row(
                   children: const [
@@ -86,7 +82,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                 Container(
                   alignment: Alignment.centerLeft,
                   child: const Text(
-                    'Itens pedidos hoje',
+                    'Itens pedidos',
                     textAlign: TextAlign.left,
                     style: TextStyle(
                       fontFamily: 'Roboto',
@@ -104,6 +100,7 @@ class _ScreenHomeState extends State<ScreenHome> {
       ),
 
       bottomNavigationBar: const Bottom(),
+      floatingActionButton: floatingButton(context),
     );
   }
 }

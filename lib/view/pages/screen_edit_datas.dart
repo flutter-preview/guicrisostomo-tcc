@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tcc/controller/firebase/auth.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
+import 'package:tcc/view/widget/floatingButton.dart';
 import 'package:tcc/view/widget/textField.dart';
 import 'package:tcc/view/widget/textFieldEmail.dart';
 import 'package:tcc/view/widget/textFieldPhone.dart';
@@ -62,6 +63,7 @@ class _ScreenEditDatasState extends State<ScreenEditDatas> {
       ),
 
       bottomNavigationBar: const Bottom(),
+      floatingActionButton: floatingButton(context),
     );
   }
 

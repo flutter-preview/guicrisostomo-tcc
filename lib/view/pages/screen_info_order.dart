@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
+import 'package:tcc/view/widget/floatingButton.dart';
 
 class ScreenInfoOrder extends StatefulWidget {
   const ScreenInfoOrder({super.key});
@@ -103,6 +104,7 @@ class _ScreenInfoOrderState extends State<ScreenInfoOrder> {
         
       ),
       bottomNavigationBar: const Bottom(),
+      floatingActionButton: floatingButton(context),
     );
   }
 }
