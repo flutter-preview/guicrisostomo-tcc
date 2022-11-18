@@ -14,12 +14,17 @@ class LoginController {
           {
             "uid" : res.user!.uid.toString(),
             "name" : name,
+            "email" : email,
             "phone" : phone,
           }
         );
 
       success(context, 'Usuário criado com sucesso.');
       Navigator.pop(context);
+      Navigator.pushNamed(
+        context,
+        'home',
+      );
     }).catchError((e) {
       switch (e.code) {
         case 'email-already-in-use':
