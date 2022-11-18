@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class ProductsController {
 
@@ -8,7 +7,7 @@ class ProductsController {
       .collection('products');
   }
 
-  void add(name, price, description, category, size) {
+  void add(name, price, description, category, size, urlImage) {
     FirebaseFirestore.instance.collection('products').add(
       {
         'name': name,
@@ -16,6 +15,7 @@ class ProductsController {
         'description': description,
         'category': category,
         'size': size,
+        'urlImage': urlImage,
       },
     );
   }
@@ -24,7 +24,7 @@ class ProductsController {
     FirebaseFirestore.instance.collection('products').doc(id).delete();
   }
 
-  void update(id, name, price, description, category, size) {
+  void update(id, name, price, description, category, size, urlImage) {
     FirebaseFirestore.instance.collection('products').doc(id).update(
       {
         'name': name,
@@ -32,6 +32,7 @@ class ProductsController {
         'description': description,
         'category': category,
         'size': size,
+        'urlImage': urlImage,
       },
     );
   }
