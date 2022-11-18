@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tcc/controller/firebase/products.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
 import 'package:tcc/view/widget/floatingButton.dart';
 import 'package:tcc/view/widget/imageMainScreens.dart';
@@ -17,6 +18,14 @@ class _ScreenHomeState extends State<ScreenHome> {
   final String iconMenu = 'lib/images/iconMenu.svg';
 
   final String imgHome = 'lib/images/imgHomeCustomer.svg';
+
+  var list;
+
+  @override
+  void initState() {
+    super.initState();
+    list = ProductsController().list();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +101,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                   )
                 ),
 
-                productItem(),
+                ProductItem(list),
               ]
             ),
           ]

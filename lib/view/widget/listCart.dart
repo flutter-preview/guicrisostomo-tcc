@@ -109,7 +109,7 @@ class _ProductsCartState extends State<ProductsCart> {
                   );
                 } else {
                   return Center(
-                    child: Text('Nenhuma tarefa encontrada.'),
+                    child: Text('O carrinho está vazio.'),
                   );
                 }
             }

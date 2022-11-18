@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tcc/controller/firebase/products.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
 import 'package:tcc/view/widget/floatingButton.dart';
 import 'package:tcc/view/widget/productItem.dart';
@@ -13,6 +14,14 @@ class ScreenProducts extends StatefulWidget {
 class _ScreenProductsState extends State<ScreenProducts> {
   var txtProd = TextEditingController();
 
+  var list;
+
+  @override
+  void initState() {
+    super.initState();
+    list = ProductsController().list();
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,7 +61,7 @@ class _ScreenProductsState extends State<ScreenProducts> {
 
             const SizedBox(height: 10,),
             
-            productItem(),
+            ProductItem(list),
           ],
         ),
       ),
