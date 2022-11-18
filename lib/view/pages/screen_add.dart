@@ -10,8 +10,11 @@ class ScreenAddItem extends StatefulWidget {
 }
 
 class _ScreenAddItemState extends State<ScreenAddItem> {
+  
   @override
   Widget build(BuildContext context) {
+    var productSelect = ModalRoute.of(context)!.settings.arguments as String;
+    
     return Scaffold(
       appBar: AppBar(
         title: const Text('Adicionar item'),
