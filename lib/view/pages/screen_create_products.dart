@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tcc/view/widget/button.dart';
+import 'package:tcc/controller/firebase/products.dart';
+import 'package:tcc/view/widget/dropDownButton.dart';
 import 'package:tcc/view/widget/textField.dart';
 import 'package:tcc/view/widget/textFieldNumberGeneral.dart';
 
@@ -17,16 +18,29 @@ class _ScreenCreateProductsState extends State<ScreenCreateProducts> {
   var txtDescription = TextEditingController();
   var txtPrice = TextEditingController();
   var txtSize = TextEditingController();
+  var txtUrlImage = TextEditingController();
   
   var formKey = GlobalKey<FormState>();
 
   bool autoValidation = false;
+  String? sizeSelected;
+  String? categorySelected;
 
   @override
   void initState() {
     autoValidation = false;
     super.initState();
   }
+
+  List <String> listSize = [
+    'PEQUENA',
+    'GRANDE',
+    'GIGANTE',
+  ];
+
+  List <String> listCategory = [
+    'PIZZA',
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -51,18 +65,64 @@ class _ScreenCreateProductsState extends State<ScreenCreateProducts> {
               const SizedBox(height: 10,),
               textFieldGeneral('Descrição', txtDescription, context),
               const SizedBox(height: 10,),
-              textFieldGeneral('Tamanho', txtSize, context),
-              const SizedBox(height: 10,),
-              textFieldNumberGeneral('Preço', txtPrice, context),
               
+              DropDown(text: 'Tamanho', itemsDropDownButton: listSize, callback: (text) {
+                   setState((){
+                     sizeSelected = text;
+                   });
+                }),
+
+              const SizedBox(height: 10,),
+
+              DropDown(text: 'Categoria', itemsDropDownButton: listCategory, callback: (text) {
+                   setState((){
+                     categorySelected = text;
+                   });
+                }),
+
+              const SizedBox(height: 10,),
+
+              textFieldNumberGeneral('Preço', txtPrice, context),
+
+              const SizedBox(height: 10,),
+              
+              textFieldGeneral('URL da imagem', txtUrlImage, context),
+
               const SizedBox(height: 50,),
 
-              button('Salvar', context, 'home')
+              buttonSave(context)
           ],),
         )
       ),
 
       bottomNavigationBar: const Bottom(),
+    );
+  }
+
+  Widget buttonSave(context) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        minimumSize: const Size(100, 50), backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
+        
+      ),
+      
+      child: const Text('Salvar',
+        style: TextStyle(
+          fontSize: 24,
+        )
+      ),
+      onPressed: () {
+
+        if (formKey.currentState!.validate()) {
+        
+          ProductsController().add(txtName.text, txtPrice.text, txtDescription.text, categorySelected, sizeSelected, txtUrlImage.text);
+
+        } else {
+          setState(() {
+            autoValidation = true;
+          });
+        }
+      },
     );
   }
 }
