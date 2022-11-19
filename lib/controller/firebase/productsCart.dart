@@ -9,13 +9,15 @@ class ProductsCartController {
       .where('idSale', isEqualTo: FirebaseAuth.instance.currentUser!.uid);
   }
 
-  void add(titulo, descricao) {
+  void add(idSale, idItem, name, price, qtd, subTotal) {
     FirebaseFirestore.instance.collection('cart').add(
       {
-        'titulo': titulo,
-        'descricao': descricao,
-        'status': '0',
-        'uid': FirebaseAuth.instance.currentUser!.uid,
+        'idSale': idSale,
+        'idItem': idItem,
+        'name': name,
+        'price': price,
+        'qtd': qtd,
+        'subTotal': subTotal,
       },
     );
   }
@@ -24,7 +26,12 @@ class ProductsCartController {
     FirebaseFirestore.instance.collection('cart').doc(id).delete();
   }
 
-  void update(id, status) {
-    
+  void update(id, qtd, subTotal) {
+    FirebaseFirestore.instance.collection('cart').doc(id).update(
+      {
+        'qtd': qtd,
+        'subTotal': subTotal,
+      },
+    );
   }
 }
