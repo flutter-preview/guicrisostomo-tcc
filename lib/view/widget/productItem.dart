@@ -17,11 +17,9 @@ class ProductItem extends StatefulWidget {
 class _ProductItemState extends State<ProductItem> {
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-        color: Colors.white,
-        padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-        child: StreamBuilder<QuerySnapshot>(
+    return Container(
+      child: (
+        StreamBuilder<QuerySnapshot>(
           stream: widget.product.snapshots(),
           builder: (context, snapshot) {
             switch (snapshot.connectionState) {
@@ -33,19 +31,19 @@ class _ProductItemState extends State<ProductItem> {
                 return const Center(child: CircularProgressIndicator());
               default:
                 final dados = snapshot.requireData;
+                print(dados.size);
                 if (dados.size > 0) {
                   return ListView.builder(
                     itemCount: dados.size,
                     itemBuilder: (context, index) {
                       dynamic item = dados.docs[index].data();
-                      String uid;
                       String idItem = item.id;
                       String name = item['name'];
-                      double price = item['price'];
+                      String price = item['price'];
                       String description = item['description'];
                       String category = item['category'];
                       String size = item['size'];
-
+    
                       return Card(
                         color: const Color.fromRGBO(50, 62, 64, 1),
                         child: ListTile(
@@ -59,7 +57,7 @@ class _ProductItemState extends State<ProductItem> {
                               color: Colors.white,
                             ),
                           ),
-
+    
                           subtitle: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -78,7 +76,7 @@ class _ProductItemState extends State<ProductItem> {
                               )
                             ]
                           ),
-
+    
                           trailing: Column(
                             children: [
                             
@@ -102,7 +100,7 @@ class _ProductItemState extends State<ProductItem> {
                                     shape: const CircleBorder(),
                                     foregroundColor: Colors.white,
                                   ),
-
+    
                                   child: const Icon(
                                     Icons.add, size: 15,
                                     color: Colors.white,
@@ -156,13 +154,11 @@ class _ProductItemState extends State<ProductItem> {
                     },
                   );
                 } else {
-                  return Center(
-                    child: Text('Nenhum produto cadastrado.'),
-                  );
+                  return Text('Nenhum item foi encontrado');
                 }
             }
           },
-        ),
+        )
       ),
     );
   }
