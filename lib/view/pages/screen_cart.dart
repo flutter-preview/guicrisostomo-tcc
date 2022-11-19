@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tcc/controller/firebase/productsCart.dart';
+import 'package:tcc/controller/firebase/sales.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
 import 'package:tcc/view/widget/floatingButton.dart';
 import 'package:tcc/view/widget/listCart.dart';
@@ -26,11 +27,19 @@ class _ScreenCartState extends State<ScreenCart> {
   }*/
 
   var list;
+  String? idSale;
+  void getIdSale() async {
+    await SalesController().idSale().then((value){
+      idSale = value;
+    });
+  }
+  
 
   @override
   void initState() {
     super.initState();
-    list = ProductsCartController().list();
+    
+    list = ProductsCartController().list(idSale);
   }
 
 
@@ -44,10 +53,12 @@ class _ScreenCartState extends State<ScreenCart> {
         backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
       ),
 
-      body: Column(
-        children: [
-          ProductsCart(list)
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            ProductsCart(list)
+          ],
+        ),
       ),
 
       bottomNavigationBar: const Bottom(),

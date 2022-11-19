@@ -1,12 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class ProductsCartController {
-
-  list() {
+  
+  list(uid) {
     return FirebaseFirestore.instance
       .collection('cart')
-      .where('idSale', isEqualTo: FirebaseAuth.instance.currentUser!.uid);
+      .where('idSale', isEqualTo: uid);
   }
 
   void add(idSale, idItem, name, price, qtd, subTotal) {
