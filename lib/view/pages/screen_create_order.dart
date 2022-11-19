@@ -22,6 +22,9 @@ class _ScreenCreateOrderState extends State<ScreenCreateOrder> {
   var formKey = GlobalKey<FormState>();
 
   bool autoValidation = false;
+  String? typeSaleSelected;
+  String? typePaymentSelected;
+  String? waiterSelected;
 
   @override
   void initState() {
@@ -66,11 +69,23 @@ class _ScreenCreateOrderState extends State<ScreenCreateOrder> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center ,
             children: [
-              DropDown(text: 'Selecione o tipo de venda', itemsDropDownButton: listTypeSale),
+              DropDown(text: 'Selecione o tipo de venda', itemsDropDownButton: listTypeSale, callback: (text) {
+                   setState((){
+                     typeSaleSelected = text;
+                   });
+                }),
               const SizedBox(height: 10,),
-              DropDown(text: 'Selecione o atendente', itemsDropDownButton: listWaiter),
+              DropDown(text: 'Selecione o atendente', itemsDropDownButton: listWaiter, callback: (text) {
+                   setState((){
+                     waiterSelected = text;
+                   });
+                }),
               const SizedBox(height: 10,),
-              DropDown(text: 'Selecione a forma de pagamento', itemsDropDownButton: listTypePayment),
+              DropDown(text: 'Selecione a forma de pagamento', itemsDropDownButton: listTypePayment,  callback: (text) {
+                   setState((){
+                     typePaymentSelected = text;
+                   });
+                }),
               const SizedBox(height: 10,),
               textFieldNumberGeneral('Preço', txtTotal, context),
               
