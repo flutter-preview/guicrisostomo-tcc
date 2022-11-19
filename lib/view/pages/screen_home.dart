@@ -49,61 +49,57 @@ class _ScreenHomeState extends State<ScreenHome> {
 
             const SizedBox(height: 10,),
             
-            Column(
-              children: [
-                Row(
-                  children: const [
-                    Icon(Icons.timer_outlined, size: 20, color: Color.fromRGBO(242, 169, 34, 1)),
-                    SizedBox(width: 5,),
-                    Text(
-                      // ignore: unnecessary_string_escapes
-                      'Criado \às 19:49 do dia 27/05/2022'
-                    )
-                  ],
-                ),
-                
-                const SizedBox(height: 10,),
-
-                Row(
-                  children: const [
-                    Icon(Icons.people_rounded, size: 20, color: Color.fromRGBO(242, 169, 34, 1)),
-                    SizedBox(width: 5,),
-                    Text(
-                      'Mesa criada pelo garçom José'
-                    )
-                  ],
-                ),
-
-                const SizedBox(height: 10,),
-
-                Row(
-                  children: const [
-                    Icon(Icons.attach_money, size: 20, color: Color.fromRGBO(242, 169, 34, 1)),
-                    SizedBox(width: 5,),
-                    Text(
-                      'TOTAL: R\$ 91,00'
-                    )
-                  ],
-                ),
-
-                const SizedBox(height: 10,),
-
-                Container(
-                  alignment: Alignment.centerLeft,
-                  child: const Text(
-                    'Itens pedidos',
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      fontFamily: 'Roboto',
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  )
-                ),
-
-                ProductItem(list),
-              ]
+            Row(
+              children: const [
+                Icon(Icons.timer_outlined, size: 20, color: Color.fromRGBO(242, 169, 34, 1)),
+                SizedBox(width: 5,),
+                Text(
+                  // ignore: unnecessary_string_escapes
+                  'Criado \às 19:49 do dia 27/05/2022'
+                )
+              ],
             ),
+            
+            const SizedBox(height: 10,),
+
+            Row(
+              children: const [
+                Icon(Icons.people_rounded, size: 20, color: Color.fromRGBO(242, 169, 34, 1)),
+                SizedBox(width: 5,),
+                Text(
+                  'Mesa criada pelo garçom José'
+                )
+              ],
+            ),
+
+            const SizedBox(height: 10,),
+
+            Row(
+              children: const [
+                Icon(Icons.attach_money, size: 20, color: Color.fromRGBO(242, 169, 34, 1)),
+                SizedBox(width: 5,),
+                Text(
+                  'TOTAL: R\$ 91,00'
+                )
+              ],
+            ),
+
+            const SizedBox(height: 10,),
+
+            Container(
+              alignment: Alignment.centerLeft,
+              child: const Text(
+                'Itens pedidos',
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontFamily: 'Roboto',
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                ),
+              )
+            ),
+
+            ProductItem(list)
           ]
         )
       ),
