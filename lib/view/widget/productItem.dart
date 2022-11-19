@@ -31,13 +31,13 @@ class _ProductItemState extends State<ProductItem> {
                 return const Center(child: CircularProgressIndicator());
               default:
                 final dados = snapshot.requireData;
-                print(dados.size);
                 if (dados.size > 0) {
                   return ListView.builder(
                     itemCount: dados.size,
+                    shrinkWrap: true,
                     itemBuilder: (context, index) {
                       dynamic item = dados.docs[index].data();
-                      String idItem = item.id;
+                      String idItem = dados.docs[index].id;
                       String name = item['name'];
                       String price = item['price'];
                       String description = item['description'];
@@ -91,6 +91,7 @@ class _ProductItemState extends State<ProductItem> {
                                     Navigator.pushNamed(
                                       context,
                                       'products/add_product',
+                                      arguments: dados.docs[index],
                                     );
                                   },
                                   
