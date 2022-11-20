@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tcc/controller/firebase/productsCart.dart';
 import 'package:tcc/view/widget/snackBars.dart';
+import 'package:tcc/view/widget/textFieldNumberGeneral.dart';
 
 class ProductsCart extends StatefulWidget {
   final product;
@@ -20,6 +21,8 @@ class ProductsCart extends StatefulWidget {
 class _ProductsCartState extends State<ProductsCart> {
   @override
   Widget build(BuildContext context) {
+    var txtQtd = TextEditingController();
+
     return Padding(
       padding: EdgeInsets.all(20),
       child: StreamBuilder<QuerySnapshot>(
@@ -37,70 +40,183 @@ class _ProductsCartState extends State<ProductsCart> {
               if (dados.size > 0) {
                 return ListView.builder(
                   itemCount: dados.size,
+                  shrinkWrap: true,
                   itemBuilder: (context, index) {
                     dynamic item = dados.docs[index].data();
                     String uid;
-                    String idItem = item.id;
+                    String idItem = dados.docs[index].id;
                     String name = item['name'];
-                    double price = item['price'];
+                    num price = item['price'];
                     int qtd = item['qtd'];
-                    double subTotal = item['subTotal'];
+                    num subTotal = item['subTotal'];
+                    txtQtd.text = qtd.toString();
 
                     return Card(
                       color: const Color.fromRGBO(50, 62, 64, 1),
-                      child: ListTile(
-                        title: Text(
-                          name,
-                          style: GoogleFonts.roboto(fontSize: 22),
-                        ),
-                        subtitle: Column(
-                          children: [
-                            Text(
-                              "Preço: $price",
-                              style: GoogleFonts.roboto(fontSize: 18),
+                      child: Padding(
+                        padding: EdgeInsets.all(10),
+                        child: ListTile(
+                          title: Text(
+                            name,
+                            style: TextStyle(
+                              fontSize: 24,
+                              color: Colors.white,
                             ),
-
-                            const SizedBox(height: 5,),
-
-                            Text(
-                              "Quantidade: $qtd",
-                              style: GoogleFonts.roboto(fontSize: 18),
-                            ),
-
-                            const SizedBox(height: 5,),
-
-                            Text(
-                              "Sub-total: $subTotal",
-                              style: GoogleFonts.roboto(fontSize: 18),
-                            ),
-                          ]
-                        ),
-                        trailing: SizedBox(
-                          width: 25,
-                          height: 25,
+                          ),
+                      
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Preço: R\$ ${price.toString().replaceFirst('.', ',')}',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                      
+                              Text(
+                                "Quantidade: $qtd",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                      
+                              Text(
+                                'Sub-total: R\$ ${subTotal.toString().replaceFirst('.', ',')}',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ]
+                          ),
+                      
+                          trailing: Column(
+                            children: [
+                              Expanded(
+                                child: SizedBox(
+                                  width: 25,
+                                  height: 25,
+                                  child: ElevatedButton(
+                                      
+                                    onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) => AlertDialog(
+                                          title: Text(
+                                            'Informe seu e-mail',
+                                            style: GoogleFonts.roboto(
+                                              fontSize: 36,
+                                              color: Colors.blueGrey.shade700,
+                                            ),
+                                          ),
+                                          titlePadding: EdgeInsets.all(20),
+                                          content: SizedBox(
+                                            width: 350,
+                                            height: 90,
+                                            child: Column(
+                                              children: [
+                                                textFieldNumberGeneral('Quantidade', txtQtd, context),
+                                              ],
+                                            ),
+                                          ),
+                                          backgroundColor: Colors.blueGrey.shade50,
+                                          actionsPadding: EdgeInsets.fromLTRB(0, 0, 20, 20),
+                                          actions: [
+                                            TextButton(
+                                              style: TextButton.styleFrom(
+                                                minimumSize: Size(120, 50),
+                                              ),
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: Text(
+                                                'Cancelar',
+                                                style: GoogleFonts.roboto(
+                                                  fontSize: 20,
+                                                  color: Colors.blueAccent.shade700,
+                                                ),
+                                              ),
+                                            ),
+                                            TextButton(
+                                              style: TextButton.styleFrom(
+                                                backgroundColor: Colors.blueAccent.shade700,
+                                                minimumSize: Size(120, 50),
+                                              ),
+                                              onPressed: () async {
+                                                if (txtQtd.text.isNotEmpty) {
+                                                  ProductsCartController().update(idItem, int.parse(txtQtd.text), num.parse(price.toString()) * int.parse(txtQtd.text));
+                                                  success(context, 'Quantidade atualizada com sucesso.');
+                                                } else {
+                                                  error(context, 'Informe a quantidade.');
+                                                }
+                      
+                                                Navigator.pop(context);
+                                              },
+                                              child: Text(
+                                                'Atualizar',
+                                                style: GoogleFonts.roboto(
+                                                  fontSize: 20,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                    
+                                    style: ElevatedButton.styleFrom(
+                                      padding: const EdgeInsets.all(2),
+                                      backgroundColor: const Color.fromRGBO(242, 169, 34, 1),
+                                      shape: const CircleBorder(),
+                                      foregroundColor: Colors.white,
+                                    ),
                           
-                          child: ElevatedButton(
+                                    child: const Icon(
+                                      Icons.edit, size: 15,
+                                      color: Colors.white,
+                                    ),
+                                    
+                                  ),
+                                ),
+                              ),
                               
-                            onPressed: () {
-                              ProductsCartController().remove(
-                                dados.docs[index].id,
-                              );
-
-                              success(
-                                context,
-                                'Produto removido com sucesso.',
-                              );
-                            },
-                            
-                            style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.all(2),
-                              backgroundColor: const Color.fromRGBO(242, 169, 34, 1),
-                              shape: const CircleBorder(),
-                              foregroundColor: Colors.white,
-                            ),
-                            child: const Icon(Icons.add, size: 15, color: Colors.white,),
-                          )
-                        )
+                              const SizedBox(height: 10,),
+                              
+                              
+                              Expanded(
+                                child: SizedBox(
+                                  width: 35,
+                                  height: 35,
+                                  
+                                  child: ElevatedButton(
+                                    
+                                    
+                                    onPressed: () {
+                                      ProductsCartController().remove(
+                                        dados.docs[index].id,
+                                      );
+                                                        
+                                      success(
+                                        context,
+                                        'Produto removido com sucesso.',
+                                      );
+                                    },
+                                
+                                    style: ElevatedButton.styleFrom(
+                                      padding: const EdgeInsets.all(2),
+                                      backgroundColor: const Color.fromRGBO(242, 169, 34, 1),
+                                      shape: const CircleBorder(),
+                                      foregroundColor: Colors.white,
+                                    ),
+                                    child: const Icon(Icons.delete, size: 15, color: Colors.white,),
+                      
+                                  ),
+                                )
+                              )
+                            ]
+                          ),
+                        ),
                       )
                     );
                   },
