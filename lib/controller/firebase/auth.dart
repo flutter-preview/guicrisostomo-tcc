@@ -84,7 +84,7 @@ class LoginController {
     );
   }
 
-  Future<String> userLogin() async {
+  Future<dynamic> userLogin() async {
     var uid = FirebaseAuth.instance.currentUser!.uid;
     var res;
     await FirebaseFirestore.instance
@@ -94,9 +94,9 @@ class LoginController {
         .then(
       (q) {
         if (q.docs.isNotEmpty) {
-          res = q.docs[0].data()['name'];
+          res = q.docs[0];
         } else {
-          res = "";
+          res = null;
         }
       },
     );

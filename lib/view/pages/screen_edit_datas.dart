@@ -14,6 +14,7 @@ class ScreenEditDatas extends StatefulWidget {
 }
 
 class _ScreenEditDatasState extends State<ScreenEditDatas> {
+
   var txtEmail = TextEditingController();
   var txtName = TextEditingController();
   var txtPhone = TextEditingController();
@@ -25,14 +26,44 @@ class _ScreenEditDatasState extends State<ScreenEditDatas> {
   @override
   void initState() {
     autoValidation = false;
-    txtName.text = 'Rodrigo';
-    txtEmail.text = 'rodrigo@gmail.com';
-    txtPhone.text = '(16) 99999-9999';
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    var user = ModalRoute.of(context)!.settings.arguments as dynamic;
+
+    txtName.text = user.data()['name'];
+    txtEmail.text = user.data()['email'];
+    txtPhone.text = user.data()['phone'];
+
+    Widget buttonSave() {
+      return ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          minimumSize: const Size(100, 50), backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
+        ),
+        
+        child: const Text('Salvar',
+          style: TextStyle(
+            fontSize: 24,
+          )
+        ),
+
+        onPressed: () {
+          if (formKey.currentState!.validate()) {
+          
+            LoginController().updateUser(user.id, txtName.text, txtEmail.text, txtPhone.text, context);
+
+          } else {
+            setState(() {
+              autoValidation = true;
+            });
+          }
+          
+        },
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Editar dados'),
@@ -64,35 +95,6 @@ class _ScreenEditDatasState extends State<ScreenEditDatas> {
 
       bottomNavigationBar: const Bottom(),
       floatingActionButton: floatingButton(context),
-    );
-  }
-
-  Widget buttonSave() {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        minimumSize: const Size(100, 50), backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
-      ),
-      
-      child: const Text('Salvar',
-        style: TextStyle(
-          fontSize: 24,
-        )
-      ),
-
-      onPressed: () {
-        var userId = LoginController().userLogin();
-
-        if (formKey.currentState!.validate()) {
-        
-          LoginController().updateUser(userId, txtName.text, txtEmail.text, txtPhone.text, context);
-
-        } else {
-          setState(() {
-            autoValidation = true;
-          });
-        }
-        
-      },
     );
   }
 }
