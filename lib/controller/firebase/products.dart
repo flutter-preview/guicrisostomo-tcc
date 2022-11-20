@@ -7,7 +7,7 @@ class ProductsController {
       .collection('products');
   }
 
-  void add(name, price, description, category, size, urlImage) {
+  void add(name, num price, description, category, size, urlImage) {
     FirebaseFirestore.instance.collection('products').add(
       {
         'name': name,

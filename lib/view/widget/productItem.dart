@@ -39,7 +39,7 @@ class _ProductItemState extends State<ProductItem> {
                       dynamic item = dados.docs[index].data();
                       String idItem = dados.docs[index].id;
                       String name = item['name'];
-                      String price = item['price'];
+                      num price = item['price'];
                       String description = item['description'];
                       String category = item['category'];
                       String size = item['size'];
@@ -69,7 +69,7 @@ class _ProductItemState extends State<ProductItem> {
                               ),
                               
                               Text(
-                                "R\$ $price",
+                                'R\$ ${price.toString().replaceFirst('.', ',')}',
                                 style: TextStyle(
                                   color: Colors.white,
                                 ),

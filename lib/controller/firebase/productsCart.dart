@@ -1,4 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+// ignore_for_file: file_names
+
+import 'package:cloud_firestore/cloud_firestore.dart' show FirebaseFirestore;
 
 class ProductsCartController {
   
@@ -8,7 +10,7 @@ class ProductsCartController {
       .where('idSale', isEqualTo: uid);
   }
 
-  void add(idSale, idItem, name, price, qtd, subTotal) {
+  void add(idSale, idItem, name, num price, int qtd, num subTotal) {
     FirebaseFirestore.instance.collection('cart').add(
       {
         'idSale': idSale,
@@ -25,7 +27,7 @@ class ProductsCartController {
     FirebaseFirestore.instance.collection('cart').doc(id).delete();
   }
 
-  void update(id, qtd, subTotal) {
+  void update(id, int qtd, num subTotal) {
     FirebaseFirestore.instance.collection('cart').doc(id).update(
       {
         'qtd': qtd,

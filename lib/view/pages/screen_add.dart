@@ -4,6 +4,7 @@ import 'package:tcc/controller/firebase/productsCart.dart';
 import 'package:tcc/controller/firebase/sales.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
 import 'package:tcc/view/widget/floatingButton.dart';
+import 'package:tcc/view/widget/snackBars.dart';
 
 class ScreenAddItem extends StatefulWidget {
   const ScreenAddItem({super.key});
@@ -32,13 +33,13 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
 
     var idProduct = productSelect.id;
     var nameProduct = productSelect['name'];
-    var priceProduct = productSelect['price'];
+    num priceProduct = productSelect['price'];
     var descriptionProduct = productSelect['description'];
     var urlImageProduct = productSelect['urlImage'];
 
     if (txtQtd.text == '1' || txtQtd.text == '') {
       setState(() {
-        subTotal = num.parse(priceProduct) * 1;
+        subTotal = priceProduct * 1;
       });
     }
 
@@ -88,11 +89,11 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
             onChanged: (value) {
               if (value != "") {
                 setState(() {
-                  subTotal = int.parse(value) * num.parse(priceProduct);
+                  subTotal = int.parse(value) * priceProduct;
                 });
               } else {
                 setState(() {
-                  subTotal = 1 * num.parse(priceProduct);
+                  subTotal = 1 * priceProduct;
                 });
               }
             },
@@ -135,7 +136,11 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
             String? idSale;
             SalesController().idSale().then((res){
               idSale = res;
-              ProductsCartController().add(idSale, idProduct, nameProduct, priceProduct, txtQtd.text, subTotal);
+              ProductsCartController().add(idSale, idProduct, nameProduct, priceProduct, int.parse(txtQtd.text), subTotal);
+              Navigator.pop(context);
+              success(context, 'Produto adicionado com sucesso');
+            }).catchError((e){
+              error(context, 'Ocorreu um erro ao adicionar o produto: ${e.code.toString()}');
             });
 
           } else {
@@ -205,7 +210,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                       ),
 
                       Text(
-                        'R\$ $priceProduct',
+                        'R\$ ${priceProduct.toString().replaceFirst('.', '.')}',
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 20,
@@ -276,7 +281,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                           alignment: Alignment.bottomLeft,
                           height: 60,
                           child: Text(
-                            'R\$ $subTotal',
+                            'R\$ ${subTotal.toString().replaceFirst('.', '.')}',
                             style: const TextStyle(
                               fontSize: 24,
                               color: Colors.red,
