@@ -7,6 +7,13 @@ class ProductsController {
       .collection('products');
   }
 
+  listSearch(name) {
+    return FirebaseFirestore.instance
+      .collection('products')
+      .where('name', isGreaterThanOrEqualTo: name.toString().toUpperCase())
+      .where('name', isLessThan: '${name.toString().toUpperCase()}\uf8ff');
+  }
+
   void add(name, num price, description, category, size, urlImage) {
     FirebaseFirestore.instance.collection('products').add(
       {

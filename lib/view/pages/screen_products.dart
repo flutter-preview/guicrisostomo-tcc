@@ -24,6 +24,63 @@ class _ScreenProductsState extends State<ScreenProducts> {
   
   @override
   Widget build(BuildContext context) {
+    Widget textFieldSearch() {
+      return Expanded(
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: const Color.fromRGBO(50, 62, 64, 1),
+            boxShadow: const [
+              BoxShadow(color: Colors.transparent, spreadRadius: 3),
+            ],
+          ),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20),
+            
+            child: 
+                Container(
+              margin: const EdgeInsets.only(bottom: 15),
+              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+              
+              constraints: const BoxConstraints( 
+                minWidth: 70,
+              ),
+      
+              child: Center(
+                child: TextFormField(
+                  controller: txtProd,
+      
+                  style: const TextStyle(
+                    fontSize: 24,
+                    color: Colors.white,
+                  ),
+      
+                  decoration: InputDecoration(
+                    labelText: 'Procurar item',
+                    labelStyle: const TextStyle(
+                      fontSize: 24,
+                      color: Colors.white,
+                    ),
+      
+                    enabledBorder: UnderlineInputBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                      borderSide:  const BorderSide(color: Colors.transparent ),
+                    ),
+                  ),
+      
+                  onChanged: (value) {
+                    setState(() {
+                      list = ProductsController().listSearch(value);
+                    });
+                  },
+                )
+              )
+            )
+          ),
+        ),
+      );
+    }
+
     return Scaffold(
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
@@ -41,7 +98,7 @@ class _ScreenProductsState extends State<ScreenProducts> {
                 padding: const EdgeInsets.only(left: 20),
                 child: Row(
                   children: [
-                    textFieldSearch('Procurar item', txtProd, context),
+                    textFieldSearch(),
                     const Icon(Icons.search, size: 50, color: Color.fromRGBO(242, 169, 34, 1),),
                   ],
                 ),
@@ -68,36 +125,6 @@ class _ScreenProductsState extends State<ScreenProducts> {
 
       bottomNavigationBar: const Bottom(),
       floatingActionButton: floatingButton(context),
-    );
-  }
-
-  Widget textFieldSearch(rotulo, variavel, context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 15),
-      width: MediaQuery.of(context).size.width - 120,
-      height: 70,
-      child: Center(
-        child: TextFormField(
-          controller: variavel,
-          
-          style: const TextStyle(
-            fontSize: 28,
-          ),
-
-          decoration: InputDecoration(
-            labelText: rotulo,
-            labelStyle: const TextStyle(
-              fontSize: 24,
-              color: Colors.white,
-            ),
-
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(20.0),
-              borderSide:  const BorderSide(color: Colors.transparent ),
-            ),
-          ),
-        )
-      )
     );
   }
 }
