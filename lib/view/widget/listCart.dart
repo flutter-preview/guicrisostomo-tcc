@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tcc/controller/firebase/productsCart.dart';
+import 'package:tcc/controller/firebase/sales.dart';
 import 'package:tcc/view/widget/snackBars.dart';
 import 'package:tcc/view/widget/textFieldNumberGeneral.dart';
 
@@ -49,7 +50,6 @@ class _ProductsCartState extends State<ProductsCart> {
                     num price = item['price'];
                     int qtd = item['qtd'];
                     num subTotal = item['subTotal'];
-                    txtQtd.text = qtd.toString();
 
                     return Card(
                       color: const Color.fromRGBO(50, 62, 64, 1),
@@ -99,11 +99,12 @@ class _ProductsCartState extends State<ProductsCart> {
                                   child: ElevatedButton(
                                       
                                     onPressed: () {
+                                      txtQtd.text = item['qtd'].toString();
                                       showDialog(
                                         context: context,
                                         builder: (context) => AlertDialog(
                                           title: Text(
-                                            'Informe seu e-mail',
+                                            'Informe a quantidade',
                                             style: GoogleFonts.roboto(
                                               fontSize: 36,
                                               color: Colors.blueGrey.shade700,
@@ -144,13 +145,29 @@ class _ProductsCartState extends State<ProductsCart> {
                                               ),
                                               onPressed: () async {
                                                 if (txtQtd.text.isNotEmpty) {
-                                                  ProductsCartController().update(idItem, int.parse(txtQtd.text), num.parse(price.toString()) * int.parse(txtQtd.text));
-                                                  success(context, 'Quantidade atualizada com sucesso.');
+                                                  String? idSale;
+
+                                                  await SalesController().idSale().then((res) async {
+                                                    idSale = res;
+
+                                                    await SalesController().getTotal().then((res){
+                                                      SalesController().updateTotal(idSale, (res - subTotal) + (num.parse(price.toString()) * int.parse(txtQtd.text)));
+                                                      ProductsCartController().update(idItem, int.parse(txtQtd.text), num.parse(price.toString()) * int.parse(txtQtd.text));
+
+                                                      Navigator.pop(context);
+                                                      
+                                                      success(context, 'Quantidade atualizada com sucesso.');
+                                                    }).catchError((e){
+                                                      error(context, 'Ocorreu um erro ao atualizar a quantidade: ${e.code.toString()}');
+                                                    });
+                                                    
+                                                  }).catchError((e){
+                                                    error(context, 'Ocorreu um erro ao atualizar a quantidade: ${e.code.toString()}');
+                                                  });
+                                                  
                                                 } else {
                                                   error(context, 'Informe a quantidade.');
                                                 }
-                      
-                                                Navigator.pop(context);
                                               },
                                               child: Text(
                                                 'Atualizar',
