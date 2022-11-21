@@ -106,6 +106,19 @@ class _ScreenProfileState extends State<ScreenProfile> {
                       )
                     },
                   ),
+                ),
+
+                Card(
+                  child: ListTile(
+                    contentPadding: EdgeInsets.all(10),
+                    title: Text('Sair'),
+
+                    trailing: Icon(Icons.arrow_right, size: 20),
+
+                    onTap: () => {
+                      LoginController().logout(context)
+                    },
+                  ),
                 )
               ]
             )
