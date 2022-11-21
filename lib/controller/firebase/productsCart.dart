@@ -1,13 +1,13 @@
 // ignore_for_file: file_names
 
-import 'package:cloud_firestore/cloud_firestore.dart' show FirebaseFirestore;
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProductsCartController {
   
-  list(uid) {
+  list(idSale) {
     return FirebaseFirestore.instance
       .collection('cart')
-      .where('idSale', isEqualTo: uid);
+      .where('idSale', isEqualTo: idSale);
   }
 
   void add(idSale, idItem, name, num price, int qtd, num subTotal) {
