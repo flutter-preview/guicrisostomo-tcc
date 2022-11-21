@@ -6,8 +6,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 class TextFieldPassword extends StatefulWidget {
   final String label;
   final TextEditingController variavel;
+  final Function(void) onFieldSubmitted;
 
-  const TextFieldPassword({super.key, required this.label, required this.variavel});
+  const TextFieldPassword({super.key, required this.label, required this.variavel, required this.onFieldSubmitted});
 
   @override
   State<TextFieldPassword> createState() => _TextFieldPasswordState();
@@ -39,7 +40,7 @@ class _TextFieldPasswordState extends State<TextFieldPassword> {
         padding: const EdgeInsets.only(left: 20),
         child: Row(
           children: [
-            textField(widget.label, widget.variavel),
+            textField(widget.label, widget.variavel, widget.onFieldSubmitted),
             
             GestureDetector(
               child: SvgPicture.asset(
@@ -60,7 +61,7 @@ class _TextFieldPasswordState extends State<TextFieldPassword> {
     );
   }
 
-  Widget textField (label, variavel) {
+  Widget textField (label, variavel, onFieldSubmitted) {
     return Container(
       margin: const EdgeInsets.only(bottom: 15),
       width: MediaQuery.of(context).size.width - 120,
@@ -100,6 +101,8 @@ class _TextFieldPasswordState extends State<TextFieldPassword> {
             }
             return null;
           },
+
+          onFieldSubmitted: onFieldSubmitted,
         )
       )
     );

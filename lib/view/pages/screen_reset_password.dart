@@ -42,7 +42,7 @@ class _ScreenResetPasswordState extends State<ScreenResetPassword> {
                 ),
               ),
               const SizedBox(height: 10,),
-              TextFieldPassword(label: 'Senha', variavel: txtPassword),
+              TextFieldPassword(label: 'Senha', variavel: txtPassword, onFieldSubmitted: (a) {}),
               const SizedBox(height: 5,),
               TextFieldConfirmPassword(label: 'Confirmar senha', variavel: txtConfirmPassword, fieldPassword: txtPassword),
 

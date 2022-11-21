@@ -57,7 +57,7 @@ class _ScreenRegisterState extends State<ScreenRegister> {
               const SizedBox(height: 10,),
               textFieldPhone('Telefone', txtPhone, context, ''),
               const SizedBox(height: 10,),
-              TextFieldPassword(label: 'Senha', variavel: txtPassword),
+              TextFieldPassword(label: 'Senha', variavel: txtPassword, onFieldSubmitted: (a) {},),
               const SizedBox(height: 10,),
               TextFieldConfirmPassword(label: 'Confirmar senha', variavel: txtConfirmPassword, fieldPassword: txtPassword),
               

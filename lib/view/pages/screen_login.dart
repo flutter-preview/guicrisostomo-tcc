@@ -47,7 +47,15 @@ class _ScreenLoginState extends State<ScreenLogin> {
               
               const SizedBox(height: 10,),
 
-              TextFieldPassword(label: 'Senha', variavel: txtPassword),
+              TextFieldPassword(label: 'Senha', variavel: txtPassword, onFieldSubmitted: (a) {
+                if (formKey.currentState!.validate()) {
+                  LoginController().login(context, txtEmail.text, txtPassword.text);
+                } else {
+                  setState(() {
+                    autoValidation = true;
+                  });
+                }
+              },),
               
               const SizedBox(height: 10,),
 
