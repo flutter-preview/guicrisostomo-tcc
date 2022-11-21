@@ -37,8 +37,7 @@ class _ScreenProductsState extends State<ScreenProducts> {
           child: Padding(
             padding: const EdgeInsets.only(left: 20),
             
-            child: 
-                Container(
+            child: Container(
               margin: const EdgeInsets.only(bottom: 15),
               padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
               
