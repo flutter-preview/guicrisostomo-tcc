@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:tcc/controller/firebase/auth.dart';
 import 'package:tcc/firebase_options.dart';
 import 'package:tcc/view/pages/screen_about.dart';
 import 'package:tcc/view/pages/screen_create_order.dart';
@@ -22,16 +23,27 @@ import 'package:tcc/view/pages/screen_reset_password.dart';
 import 'package:tcc/view/pages/screen_validation_email.dart';
 
 Future<void> main() async {
+  var route = 'presentation';
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  await LoginController().userLogin().then((dynamic value){
+    if (value == '' || value == null) {
+      route = 'presentation';
+    } else {
+      route = 'home';
+    }
+  }).catchError((erro) {
+    route = 'presentation';
+  });
+  
   runApp(
     MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'App pizzaria',
-      initialRoute: 'presentation',
+      initialRoute: route,
       routes: {
         'presentation' :(context) => const ScreenPresentation(),
         'login' :(context) => const ScreenLogin(),
