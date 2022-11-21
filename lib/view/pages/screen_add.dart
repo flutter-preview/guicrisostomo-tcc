@@ -130,15 +130,22 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
             fontSize: 24,
           )
         ),
-        onPressed: () {
+        onPressed: () async {
 
           if (formKey.currentState!.validate()) {
             String? idSale;
-            SalesController().idSale().then((res){
+            await SalesController().idSale().then((res) async {
               idSale = res;
               ProductsCartController().add(idSale, idProduct, nameProduct, priceProduct, int.parse(txtQtd.text), subTotal);
-              Navigator.pop(context);
-              success(context, 'Produto adicionado com sucesso');
+
+              await SalesController().getTotal().then((res){
+                SalesController().updateTotal(idSale, res + subTotal);
+                Navigator.pop(context);
+                success(context, 'Produto adicionado com sucesso');
+              }).catchError((e){
+                error(context, 'Ocorreu um erro ao adicionar o produto: ${e.code.toString()}');
+              });
+
             }).catchError((e){
               error(context, 'Ocorreu um erro ao adicionar o produto: ${e.code.toString()}');
             });
