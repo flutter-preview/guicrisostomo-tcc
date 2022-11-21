@@ -67,12 +67,17 @@ class LoginController {
   }
 
   Future<void> forgetPassword(String email, context) async {
+    await FirebaseAuth.instance.sendPasswordResetEmail(email: email).then((value) {
+      success(context, 'E-mail de recuperação de senha enviado com sucesso');
+    }).catchError((e) {
+      error(context, 'Ocorreu um erro ao enviar seu e-mail de recuperação de senha: ${e.code.toString()}');
+    });
+
     Navigator.of(context).pop();
     Navigator.pushNamed(
       context,
-      'login/forget_password',
+      'presentation',
     );
-    await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
   }
 
   void logout(context) {
@@ -86,7 +91,7 @@ class LoginController {
 
   Future<dynamic> userLogin() async {
     var uid = FirebaseAuth.instance.currentUser!.uid;
-    var res;
+    dynamic res = '';
     await FirebaseFirestore.instance
         .collection('users')
         .where('uid', isEqualTo: uid)
@@ -96,10 +101,13 @@ class LoginController {
         if (q.docs.isNotEmpty) {
           res = q.docs[0];
         } else {
-          res = null;
+          res = '';
         }
       },
-    );
+    ).catchError((e) {
+      res = '';
+    });
+
     return res;
   }
 
