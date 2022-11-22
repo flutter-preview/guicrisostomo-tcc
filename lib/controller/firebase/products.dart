@@ -7,14 +7,14 @@ class ProductsController {
       .collection('products');
   }
 
-  listSearch(name) {
+  listSearch(String name) {
     return FirebaseFirestore.instance
       .collection('products')
       .where('name', isGreaterThanOrEqualTo: name.toString().toUpperCase())
       .where('name', isLessThan: '${name.toString().toUpperCase()}\uf8ff');
   }
 
-  void add(name, num price, description, category, size, urlImage) {
+  void add(String name, num price, String description, String category, String size, String urlImage) {
     FirebaseFirestore.instance.collection('products').add(
       {
         'name': name,
@@ -27,11 +27,11 @@ class ProductsController {
     );
   }
 
-  void remove(id) {
+  void remove(String id) {
     FirebaseFirestore.instance.collection('products').doc(id).delete();
   }
 
-  void update(id, name, price, description, category, size, urlImage) {
+  void update(String id, String name, num price, String description, String category, String size, String urlImage) {
     FirebaseFirestore.instance.collection('products').doc(id).update(
       {
         'name': name,

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class DropDown extends StatefulWidget {
   final String text;
   final List<String> itemsDropDownButton;
-  final Function(String?) callback;
+  final Function(String) callback;
   const DropDown({super.key, required this.text, required this.itemsDropDownButton, required this.callback});
 
   @override
@@ -13,7 +13,7 @@ class DropDown extends StatefulWidget {
 }
 
 class _DropDownState extends State<DropDown> {
-  String? itemSelecionado;
+  String itemSelecionado = '';
 
   Widget dropDownGeneral() {
     return DropdownButton(

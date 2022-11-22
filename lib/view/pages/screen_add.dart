@@ -29,13 +29,15 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
 
   @override
   Widget build(BuildContext context) {
-    var productSelect = ModalRoute.of(context)!.settings.arguments as QueryDocumentSnapshot;
+    dynamic productSelect = ModalRoute.of(context)!.settings.arguments as QueryDocumentSnapshot;
 
-    var idProduct = productSelect.id;
-    var nameProduct = productSelect['name'];
+    String idProduct = productSelect.id;
+    String nameProduct = productSelect['name'];
     num priceProduct = productSelect['price'];
-    var descriptionProduct = productSelect['description'];
-    var urlImageProduct = productSelect['urlImage'];
+    String descriptionProduct = productSelect['description'];
+    String urlImageProduct = productSelect['urlImage'];
+    String categoryProduct = productSelect['category'];
+    String sizeProduct = productSelect['size'];
 
     if (txtQtd.text == '1' || txtQtd.text == '') {
       setState(() {
@@ -133,10 +135,10 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
         onPressed: () async {
 
           if (formKey.currentState!.validate()) {
-            String? idSale;
+            String idSale;
             await SalesController().idSale().then((res) async {
               idSale = res;
-              ProductsCartController().add(idSale, idProduct, nameProduct, priceProduct, int.parse(txtQtd.text), subTotal);
+              ProductsCartController().add(idSale, idProduct, nameProduct, priceProduct, int.parse(txtQtd.text), subTotal, categoryProduct, sizeProduct);
 
               await SalesController().getTotal().then((res){
                 SalesController().updateTotal(idSale, res + subTotal);

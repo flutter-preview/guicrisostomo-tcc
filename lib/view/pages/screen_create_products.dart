@@ -23,8 +23,8 @@ class _ScreenCreateProductsState extends State<ScreenCreateProducts> {
   var formKey = GlobalKey<FormState>();
 
   bool autoValidation = false;
-  String? sizeSelected;
-  String? categorySelected;
+  String sizeSelected = '';
+  String categorySelected = '';
 
   @override
   void initState() {
