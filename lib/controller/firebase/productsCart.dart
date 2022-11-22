@@ -10,7 +10,7 @@ class ProductsCartController {
       .where('idSale', isEqualTo: idSale);
   }
 
-  void add(idSale, idItem, name, num price, int qtd, num subTotal) {
+  void add(String idSale, String idItem, String name, num price, int qtd, num subTotal, String category, String size) {
     FirebaseFirestore.instance.collection('cart').add(
       {
         'idSale': idSale,
@@ -19,15 +19,17 @@ class ProductsCartController {
         'price': price,
         'qtd': qtd,
         'subTotal': subTotal,
+        'category': category,
+        'size': size,
       },
     );
   }
 
-  void remove(id) {
+  void remove(String id) {
     FirebaseFirestore.instance.collection('cart').doc(id).delete();
   }
 
-  void update(id, int qtd, num subTotal) {
+  void update(String id, int qtd, num subTotal) {
     FirebaseFirestore.instance.collection('cart').doc(id).update(
       {
         'qtd': qtd,
