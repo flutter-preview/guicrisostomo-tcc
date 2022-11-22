@@ -45,29 +45,33 @@ class _ScreenCartState extends State<ScreenCart> {
     list = ProductsCartController().list(idSale);
   }
 
-  Widget buttonFinalize() {
-    return Padding(
-      padding: const EdgeInsets.all(20),
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          minimumSize: Size(largura, 50), 
-          backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
+  Widget? buttonFinalize() {
+    if (list = false) {
+      return Padding(
+        padding: const EdgeInsets.all(20),
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            minimumSize: Size(largura, 50), 
+            backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
+          ),
+          
+          child: const Text(
+            'Finalizar pedido',
+            style: TextStyle(
+              fontSize: 24,
+            )
+          ),
+          
+          onPressed: () {
+            SalesController().update(idSale, 1, context);
+            Navigator.pop(context);
+            Navigator.pushNamed(context, 'home');
+          },
         ),
-        
-        child: const Text(
-          'Finalizar pedido',
-          style: TextStyle(
-            fontSize: 24,
-          )
-        ),
-        
-        onPressed: () {
-          SalesController().update(idSale, 1, context);
-          Navigator.pop(context);
-          Navigator.pushNamed(context, 'home');
-        },
-      ),
-    );
+      );
+    }
+
+    return null;
   }
 
 
