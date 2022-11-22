@@ -94,4 +94,13 @@ class SalesController {
       .where('uid', isEqualTo: uid)
       .where('status', isEqualTo: 1);
   }
+
+  listSalesOnDemand() {
+    var uid = FirebaseAuth.instance.currentUser!.uid;
+
+    return FirebaseFirestore.instance
+      .collection('sales')
+      .where('uid', isEqualTo: uid)
+      .where('status', isEqualTo: 0);
+  }
 }
