@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/dropDownButton.dart';
-import 'package:tcc/view/widget/textField.dart';
 import 'package:tcc/view/widget/textFieldNumberGeneral.dart';
 
 import '../widget/bottonNavigationCustomer.dart';
