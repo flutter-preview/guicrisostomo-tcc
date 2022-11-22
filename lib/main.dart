@@ -22,7 +22,6 @@ import 'package:tcc/view/pages/screen_profile.dart';
 import 'package:tcc/view/pages/screen_register.dart';
 import 'package:tcc/view/pages/screen_reset_password.dart';
 import 'package:tcc/view/pages/screen_validation_email.dart';
-import 'package:intl/intl.dart';
 
 Future<void> main() async {
   var route = 'presentation';
