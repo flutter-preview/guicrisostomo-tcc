@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:tcc/controller/firebase/auth.dart';
 import 'package:tcc/firebase_options.dart';
 import 'package:tcc/view/pages/screen_about.dart';
@@ -21,6 +22,7 @@ import 'package:tcc/view/pages/screen_profile.dart';
 import 'package:tcc/view/pages/screen_register.dart';
 import 'package:tcc/view/pages/screen_reset_password.dart';
 import 'package:tcc/view/pages/screen_validation_email.dart';
+import 'package:intl/intl.dart';
 
 Future<void> main() async {
   var route = 'presentation';
@@ -41,6 +43,14 @@ Future<void> main() async {
   
   runApp(
     MaterialApp(
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate
+      ],
+      supportedLocales: const [
+        Locale('pt', 'BR')
+      ],
+
       debugShowCheckedModeBanner: false,
       title: 'App pizzaria',
       initialRoute: route,
