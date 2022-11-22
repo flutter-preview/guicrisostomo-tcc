@@ -44,8 +44,10 @@ Future<void> main() async {
     MaterialApp(
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate
       ],
+      
       supportedLocales: const [
         Locale('pt', 'BR')
       ],
