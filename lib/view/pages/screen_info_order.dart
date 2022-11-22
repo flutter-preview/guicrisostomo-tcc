@@ -23,8 +23,7 @@ class _ScreenInfoOrderState extends State<ScreenInfoOrder> {
     num total = orderSelect['total'];
     String? id = orderSelect.id.toString();
     String textDate = DateFormat("d 'de' MMMM 'de' y 'às' HH':'mm':'ss", "pt_BR").format(date);
-
-    print(id);
+    
     Widget productItem() {
       return Container(
         child: (
@@ -149,14 +148,14 @@ class _ScreenInfoOrderState extends State<ScreenInfoOrder> {
                                   )
                                 )
                               ]
-                            ),*/
+                            ),
                             
                             onTap: () {
                               Navigator.pushNamed(
                                 context,
                                 'products/info_product',
                               );
-                            },
+                            },*/
                           )
                         );
                       },
