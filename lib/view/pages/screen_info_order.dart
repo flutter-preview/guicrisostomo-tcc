@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
 import 'package:tcc/view/widget/floatingButton.dart';
 
@@ -12,6 +14,11 @@ class ScreenInfoOrder extends StatefulWidget {
 class _ScreenInfoOrderState extends State<ScreenInfoOrder> {
   @override
   Widget build(BuildContext context) {
+    var orderSelect = ModalRoute.of(context)!.settings.arguments as QueryDocumentSnapshot;
+
+    Timestamp date = orderSelect['date'];
+    num total = orderSelect['total'];
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Informações'),
@@ -24,7 +31,7 @@ class _ScreenInfoOrderState extends State<ScreenInfoOrder> {
         
         child: Column(
           children: [
-            Row(
+            /*Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: const [
                 Icon(Icons.people_rounded, size: 30, color: Color.fromRGBO(242, 169, 34, 1)),
@@ -35,22 +42,22 @@ class _ScreenInfoOrderState extends State<ScreenInfoOrder> {
               ],
             ),
 
-            const SizedBox(height: 5,),
+            const SizedBox(height: 5,),*/
 
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: const [
-                Icon(Icons.timer_outlined, size: 30, color: Color.fromRGBO(242, 169, 34, 1)),
-                SizedBox(width: 10,),
+              children: [
+                const Icon(Icons.timer_outlined, size: 30, color: Color.fromRGBO(242, 169, 34, 1)),
+                const SizedBox(width: 10,),
                 Text(
-                  '01/12/2022 às 21:51',
+                  DateFormat("d 'de' MMMM 'de' y 'às' HH':'mm':'ss", "pt_BR").format(date),
                 )
               ],
             ),
 
             const SizedBox(height: 5,),
 
-            Row(
+            /*Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: const [
                 Icon(Icons.delivery_dining, size: 30, color: Color.fromRGBO(242, 169, 34, 1)),
@@ -61,7 +68,7 @@ class _ScreenInfoOrderState extends State<ScreenInfoOrder> {
               ],
             ),
 
-            const SizedBox(height: 5,),
+            const SizedBox(height: 5,),*/
 
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -70,14 +77,14 @@ class _ScreenInfoOrderState extends State<ScreenInfoOrder> {
                 const SizedBox(width: 10,),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
+                  children: [
                     Text(
-                      'Total: R\$ 51,00',
+                      'Total: R\$ $total',
                     ),
 
-                    Text(
+                    /*Text(
                       'Pago em dinheiro',
-                    )
+                    )*/
                   ]
                 )
               ],

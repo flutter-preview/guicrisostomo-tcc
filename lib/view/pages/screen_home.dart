@@ -39,7 +39,7 @@ class _ScreenHomeState extends State<ScreenHome> {
             const SizedBox(height: 10,),
 
             const Text(
-              'Informações do seu último pedido',
+              'Informações do seu pedido',
               style: TextStyle(
                 fontFamily: 'Roboto',
                 fontSize: 20,

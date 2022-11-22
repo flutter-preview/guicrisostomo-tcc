@@ -85,4 +85,13 @@ class SalesController {
       return res;
     }
   }
+
+  listSalesFinalize() {
+    var uid = FirebaseAuth.instance.currentUser!.uid;
+
+    return FirebaseFirestore.instance
+      .collection('sales')
+      .where('uid', isEqualTo: uid)
+      .where('status', isEqualTo: 1);
+  }
 }

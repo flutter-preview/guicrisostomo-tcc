@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:tcc/controller/firebase/sales.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
 import 'package:tcc/view/widget/floatingButton.dart';
 
@@ -29,57 +32,86 @@ class _ScreenOrderState extends State<ScreenOrder> {
 }
 
 listViewOrder() {
-  return ListView.builder(
-    itemCount: 10,
-    shrinkWrap:true,
-    scrollDirection: Axis.vertical,
-    itemBuilder: (context, index) {
-    return Card(
-      color: const Color.fromRGBO(50, 62, 64, 1),
-      child: ListTile(
-        contentPadding: const EdgeInsets.all(15),
-        title: const Text(
-          'Data: 01/12/2022 às 21:35',
-          style: TextStyle(
-            fontSize: 28,
-            color: Colors.white,
-          ),
-        ),
 
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
-            Text(
-              'Total: R\$ 52,00',
-              style: TextStyle(
-                color: Colors.white,
-              ),
-            ),
+  return Container(
+    child: (
+      StreamBuilder<QuerySnapshot>(
+        stream: SalesController().listSalesFinalize().snapshots(),
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.none:
+              return const Center(
+                child: Text('Não foi possível conectar.'),
+              );
+            case ConnectionState.waiting:
+              return const Center(child: CircularProgressIndicator());
+            default:
+              final dados = snapshot.requireData;
+              if (dados.size > 0) {
+                return ListView.builder(
+                  itemCount: dados.size,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    dynamic item = dados.docs[index].data();
+                    Map<String, dynamic> map = item!;
+                    DateTime date = (map['date'] as Timestamp).toDate();
+                    String dateText = DateFormat("d 'de' MMMM 'de' y 'às' HH':'mm':'ss", "pt_BR").format(date);
+                    num total = item['total'];
+  
+                    return Card(
+                      color: const Color.fromRGBO(50, 62, 64, 1),
+                      child: ListTile(
+                        contentPadding: const EdgeInsets.fromLTRB(10, 10, 20, 10),
+                        leading: const Icon(Icons.local_pizza, size: 50, color: Colors.white),
+                        
+                        title: Text(
+                          'Data: $dateText',
+                          style: const TextStyle(
+                            fontSize: 28,
+                            color: Colors.white,
+                          ),
+                        ),
 
-            Text(
-              'Tipo: entrega',
-              style: TextStyle(
-                color: Colors.white,
-              ),
-            ),
-          ]
-        ),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Total: R\$ $total',
+                              style: const TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
 
-        //EVENTO DE CLIQUE
-        onTap: () {
-          Navigator.pushNamed(
-            context,
-            'order/info',
+                            /*Text(
+                              'Tipo: entrega',
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),*/
+                          ]
+                        ),
 
-            //Passagem de parâmetro
-            arguments: index,
+                        //EVENTO DE CLIQUE
+                        onTap: () {
+                          Navigator.pushNamed(
+                            context,
+                            'order/info',
 
-          );
+                            //Passagem de parâmetro
+                            arguments: dados.docs[index],
+
+                          );
+                        },
+                      )
+                    );
+                  },
+                );
+              } else {
+                return const Text('Nenhum item foi encontrado');
+              }
+          }
         },
-        
-      ),
-    );
-      
-    }
+      )
+    ),
   );
 }
