@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tcc/controller/firebase/productsCart.dart';
 import 'package:tcc/controller/firebase/sales.dart';
@@ -48,32 +49,47 @@ class _ScreenCartState extends State<ScreenCart> {
   }
 
   Widget? buttonFinalize() {
-    if (list = false) {
-      return Padding(
-        padding: const EdgeInsets.all(20),
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            minimumSize: Size(largura, 50), 
-            backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
-          ),
-          
-          child: const Text(
-            'Finalizar pedido',
-            style: TextStyle(
-              fontSize: 24,
-            )
-          ),
-          
-          onPressed: () {
-            SalesController().update(idSale, 1, context);
-            Navigator.pop(context);
-            Navigator.pushNamed(context, 'home');
-          },
-        ),
-      );
-    }
-
-    return null;
+    return StreamBuilder<QuerySnapshot>(
+      stream: list.snapshots(),
+      builder: (context, snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.none:
+            return const Center(
+              child: Text('Não foi possível conectar.'),
+            );
+          case ConnectionState.waiting:
+            return const Center(child: CircularProgressIndicator());
+          default:
+            final dados = snapshot.requireData;
+            if (dados.size > 0) {
+              return Padding(
+                padding: const EdgeInsets.all(20),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size(largura, 50), 
+                    backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
+                  ),
+                  
+                  child: const Text(
+                    'Finalizar pedido',
+                    style: TextStyle(
+                      fontSize: 24,
+                    )
+                  ),
+                  
+                  onPressed: () {
+                    SalesController().update(idSale, 1, context);
+                    Navigator.pop(context);
+                    Navigator.pushNamed(context, 'home');
+                  },
+                ),
+              );
+            } else {
+              return const Text('');
+            }
+        }
+      }
+    );
   }
 
 
