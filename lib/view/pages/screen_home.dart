@@ -1,11 +1,14 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:tcc/controller/firebase/products.dart';
+import 'package:intl/intl.dart';
+import 'package:tcc/controller/firebase/productsCart.dart';
 import 'package:tcc/controller/firebase/sales.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
 import 'package:tcc/view/widget/floatingButton.dart';
 import 'package:tcc/view/widget/imageMainScreens.dart';
-import 'package:tcc/view/widget/productItem.dart';
+import 'package:tcc/view/widget/listCart.dart';
 
 class ScreenHome extends StatefulWidget {
   const ScreenHome({super.key});
@@ -23,19 +26,33 @@ class _ScreenHomeState extends State<ScreenHome> {
 
   var list;
   var listSale;
+  String? idSale;
+
+  void getIdSale() async {
+    await SalesController().idSale().then((value){
+      setState(() {
+        idSale = value;
+        list = ProductsCartController().list(idSale);
+      });
+    });
+  }
 
   @override
   void initState() {
     super.initState();
-    list = ProductsController().list();
-    listSale = SalesController().listSalesOnDemand().snapshots();
+    list = ProductsCartController().list(idSale);
+    listSale = SalesController().listSalesOnDemand();
   }
 
   @override
   Widget build(BuildContext context) {
-    Widget? dataSales() {
+    if (idSale == null) {
+      getIdSale();
+    }
+
+    Widget dataSales() {
       return StreamBuilder<QuerySnapshot>(
-        stream: listSale,
+        stream: listSale.snapshots(),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.none:
@@ -47,66 +64,64 @@ class _ScreenHomeState extends State<ScreenHome> {
             default:
               final dados = snapshot.requireData;
               if (dados.size > 0) {
+                dynamic item = dados.docs[0].data();
+                Map<String, dynamic> map = item!;
+                DateTime date = (map['date'] as Timestamp).toDate();
+                String dateText = DateFormat("d 'de' MMMM 'de' y 'às' HH':'mm':'ss", "pt_BR").format(date);
+                num total = item['total'];
+
                 return Column(
                   children: [
                     Row(
-                      children: const [
-                        Icon(Icons.timer_outlined, size: 20, color: Color.fromRGBO(242, 169, 34, 1)),
-                        SizedBox(width: 5,),
+                      children: [
+                        const Icon(Icons.timer_outlined, size: 20, color: Color.fromRGBO(242, 169, 34, 1)),
+
+                        const SizedBox(width: 5,),
+
                         Text(
                           // ignore: unnecessary_string_escapes
-                          'Criado \às 19:49 do dia 27/05/2022'
+                          'Criado \às $dateText'
                         )
                       ],
                     ),
                     
                     const SizedBox(height: 10,),
 
-                    Row(
-                      children: const [
-                        Icon(Icons.people_rounded, size: 20, color: Color.fromRGBO(242, 169, 34, 1)),
-                        SizedBox(width: 5,),
+                    /*Row(
+                      children: [
+                        const Icon(Icons.people_rounded, size: 20, color: Color.fromRGBO(242, 169, 34, 1)),
+
+                        const SizedBox(width: 5,),
+
                         Text(
                           'Mesa criada pelo garçom José'
                         )
                       ],
                     ),
 
-                    const SizedBox(height: 10,),
+                    const SizedBox(height: 10,),*/
 
                     Row(
-                      children: const [
-                        Icon(Icons.attach_money, size: 20, color: Color.fromRGBO(242, 169, 34, 1)),
-                        SizedBox(width: 5,),
+                      children: [
+                        const Icon(Icons.attach_money, size: 20, color: Color.fromRGBO(242, 169, 34, 1)),
+
+                        const SizedBox(width: 5,),
+
                         Text(
-                          'TOTAL: R\$ 91,00'
+                          'TOTAL: R\$ $total'
                         )
                       ],
-                    ),
-
-                    const SizedBox(height: 10,),
-
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      child: const Text(
-                        'Itens pedidos',
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                          fontFamily: 'Roboto',
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      )
                     ),
                   ],
                 );
               } else {
-                return null;
+                return const Text('Nenhuma venda iniciada');
               }
           }
         }
       );
     }
+    
     return Scaffold(
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
@@ -127,9 +142,9 @@ class _ScreenHomeState extends State<ScreenHome> {
 
             const SizedBox(height: 10,),
             
-            
+            dataSales(),
 
-            ProductItem(list)
+            ProductsCart(list)
           ]
         )
       ),
