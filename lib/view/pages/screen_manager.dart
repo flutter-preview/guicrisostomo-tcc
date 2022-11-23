@@ -31,25 +31,6 @@ class _ScreenManagerState extends State<ScreenManager> {
                 },
               ),
             ),
-
-            const SizedBox(height: 10,),
-
-            Card(
-              child: ListTile(
-                contentPadding: const EdgeInsets.all(10),
-                title: const Text('Cadastrar pedido'),
-                subtitle: const Text('Opção criada apenas fins de avaliação da disciplina de programação de dispositivos móveis, não sendo parte da versão final.'),
-
-                trailing: const Icon(Icons.arrow_right, size: 20),
-
-                onTap: () => {
-                  Navigator.pushNamed(
-                    context,
-                    'manager/order',
-                  )
-                },
-              ),
-            )
           ]
         )
       ),
