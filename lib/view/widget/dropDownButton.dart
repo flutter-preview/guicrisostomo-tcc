@@ -13,7 +13,7 @@ class DropDown extends StatefulWidget {
 }
 
 class _DropDownState extends State<DropDown> {
-  String itemSelecionado = '';
+  String? itemSelecionado;
 
   Widget dropDownGeneral() {
     return DropdownButton(
@@ -54,7 +54,7 @@ class _DropDownState extends State<DropDown> {
           itemSelecionado = value;
         });
 
-        widget.callback(itemSelecionado);
+        widget.callback(itemSelecionado!);
       },
     );
   }
