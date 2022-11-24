@@ -17,7 +17,7 @@ class ProductsController {
   void add(String name, num price, String description, String category, String size, String urlImage) {
     FirebaseFirestore.instance.collection('products').add(
       {
-        'name': name,
+        'name': name.toUpperCase(),
         'price': price,
         'description': description,
         'category': category,
