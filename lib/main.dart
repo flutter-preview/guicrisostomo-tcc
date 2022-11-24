@@ -24,6 +24,7 @@ import 'package:tcc/view/pages/screen_reset_password.dart';
 import 'package:tcc/view/pages/screen_validation_email.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   var route = 'presentation';
 
   await Firebase.initializeApp(
