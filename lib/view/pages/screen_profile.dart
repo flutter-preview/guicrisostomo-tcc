@@ -1,11 +1,13 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tcc/controller/firebase/auth.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
 import 'package:tcc/view/widget/floatingButton.dart';
+import 'package:tcc/view/widget/snackBars.dart';
 
 class ScreenProfile extends StatefulWidget {
   const ScreenProfile({super.key});
@@ -15,16 +17,18 @@ class ScreenProfile extends StatefulWidget {
 }
 
 class _ScreenProfileState extends State<ScreenProfile> {
-  late QueryDocumentSnapshot user;
-  var nameUser = "Nome";
-  var phoneUser = "(99) 99999-9999";
+  QueryDocumentSnapshot? user;
+  String nameUser = "Nome";
+  String? phoneUser = "(99) 99999-9999";
+  String photoUser = "https://i.pinimg.com/originals/0c/3b/3a/0c3b3adb1a7530892e55ef36d3be6cb8.png";
 
   void getUser() async {
-    await LoginController().userLogin().then((dynamic value){
+    await LoginController().userLogin().then((value){
       setState(() {
         user = value;
         nameUser = value.data()['name'];
         phoneUser = value.data()['phone'];
+        photoUser = value.data()['photo'];
       });
     });
   }
@@ -35,6 +39,20 @@ class _ScreenProfileState extends State<ScreenProfile> {
       getUser();
     }
 
+    Widget returnPhotoUser() {
+      if (phoneUser != null) {
+        return Text(
+          phoneUser!,
+          style: TextStyle(
+            fontFamily: 'Roboto',
+            fontSize: 14,
+          ),
+        );
+      } else {
+        return SizedBox(height: 5,);
+      }
+    }
+
     return Scaffold(
       body: SingleChildScrollView(
         padding: EdgeInsets.all(20),
@@ -43,10 +61,24 @@ class _ScreenProfileState extends State<ScreenProfile> {
             Center(
               child: Column(
                 children: [
-                  SvgPicture.asset(
-                    'lib/images/imgProfile.svg',
-                    width: 100,
+                  
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(50.0),
+                    child: SizedBox(
+                      width: 100,
+                      height: 100,
+                  
+                      child: CachedNetworkImage(
+                        imageUrl: photoUser,
+                        fit: BoxFit.fill,
+                        placeholder: (context, url) => CircularProgressIndicator(),
+                        errorWidget: (context, url, error) => Icon(Icons.error),
+                        
+                      ),
+                    ),
                   ),
+
+                  SizedBox(height: 10,),
 
                   Text(
                     nameUser,
@@ -57,13 +89,7 @@ class _ScreenProfileState extends State<ScreenProfile> {
                     ),
                   ),
 
-                  Text(
-                    phoneUser,
-                    style: TextStyle(
-                      fontFamily: 'Roboto',
-                      fontSize: 14,
-                    ),
-                  ),
+                  returnPhotoUser(),
                 ],
               ),
             ),
