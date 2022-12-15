@@ -49,3 +49,5 @@ flutter
 .dart_tool/package_config_subset
 .dart_tool/package_config.json
 config.proxy.fatec
+android/google-services.json
+android/client_secret_732995296377-diqk55tsa4j93gnsm2e706rm41sciq9q.apps.googleusercontent.com.json

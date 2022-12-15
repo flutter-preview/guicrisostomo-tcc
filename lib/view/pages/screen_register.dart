@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tcc/controller/firebase/auth.dart';
+import 'package:tcc/controller/firebase/authGoogle.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/imageMainScreens.dart';
 import 'package:tcc/view/widget/textField.dart';
@@ -64,6 +65,9 @@ class _ScreenRegisterState extends State<ScreenRegister> {
               const SizedBox(height: 50,),
 
               buttonRegister(context),
+              const SizedBox(height: 10,),
+
+              buttonGoogle(context),
               const SizedBox(height: 50,),
 
               const Text(
@@ -103,6 +107,26 @@ class _ScreenRegisterState extends State<ScreenRegister> {
             autoValidation = true;
           });
         }
+      },
+    );
+  }
+
+  Widget buttonGoogle(context) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        minimumSize: const Size(100, 50), backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
+        
+      ),
+      
+      child: const Text('Cadastrar',
+        style: TextStyle(
+          fontSize: 24,
+        )
+      ),
+      onPressed: () {
+        
+        signIn(context);
+
       },
     );
   }
