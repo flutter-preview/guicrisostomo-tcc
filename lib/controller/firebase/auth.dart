@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:tcc/view/widget/snackBars.dart';
 
 class LoginController {
@@ -16,6 +17,7 @@ class LoginController {
             "name" : name,
             "email" : email,
             "phone" : phone,
+            "photo" : 'https://i.pinimg.com/originals/0c/3b/3a/0c3b3adb1a7530892e55ef36d3be6cb8.png',
           }
         );
 
@@ -80,8 +82,12 @@ class LoginController {
     );
   }
 
-  void logout(context) {
-    FirebaseAuth.instance.signOut();
+  Future<void> logout(context) async {
+    final GoogleSignIn googleSignIn = GoogleSignIn();
+
+    await googleSignIn.signOut();
+    
+    await FirebaseAuth.instance.signOut();
     Navigator.of(context).pop();
     Navigator.pushNamed(
       context,
@@ -100,12 +106,13 @@ class LoginController {
       (q) {
         if (q.docs.isNotEmpty) {
           res = q.docs[0];
+          return res;
         } else {
-          res = '';
+          res = null;
         }
       },
     ).catchError((e) {
-      res = '';
+      res = null;
     });
 
     return res;
