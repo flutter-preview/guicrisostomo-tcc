@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/dropDownButton.dart';
 import 'package:tcc/view/widget/textFieldNumberGeneral.dart';
+import 'package:tcc/globals.dart' as globals;
 
 import '../widget/bottonNavigationCustomer.dart';
 
@@ -55,7 +56,7 @@ class _ScreenCreateOrderState extends State<ScreenCreateOrder> {
       appBar: AppBar(
         title: const Text('Cadastrar pedido'),
         centerTitle: true,
-        backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
+        backgroundColor: globals.primary,
       ),
 
       body: SingleChildScrollView(

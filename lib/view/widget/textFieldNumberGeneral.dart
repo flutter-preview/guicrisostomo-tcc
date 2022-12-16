@@ -1,12 +1,13 @@
 // ignore_for_file: file_names
 import 'package:flutter/material.dart';
+import 'package:tcc/globals.dart' as globals;
 
 Widget textFieldNumberGeneral(label, variavel, context) {
 
   return Container(
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(20),
-      color: const Color.fromRGBO(50, 62, 64, 1),
+      color: globals.primary,
       boxShadow: const [
         BoxShadow(color: Colors.transparent, spreadRadius: 3),
       ],

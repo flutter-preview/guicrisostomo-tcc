@@ -1,10 +1,11 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:tcc/globals.dart' as globals;
 
 Widget floatingButton(context) {
   return FloatingActionButton(
-    backgroundColor: const Color.fromRGBO(242, 169, 34, 1),
+    backgroundColor: globals.secundary,
     onPressed: () {
       Navigator.pushNamed(context, 'cart');
     },

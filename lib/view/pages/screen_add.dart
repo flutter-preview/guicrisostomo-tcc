@@ -6,6 +6,7 @@ import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/floatingButton.dart';
 import 'package:tcc/view/widget/snackBars.dart';
+import 'package:tcc/globals.dart' as globals;
 
 class ScreenAddItem extends StatefulWidget {
   const ScreenAddItem({super.key});
@@ -110,7 +111,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
       return Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          color: const Color.fromRGBO(50, 62, 64, 1),
+          color: globals.primary,
           boxShadow: const [
             BoxShadow(color: Colors.transparent, spreadRadius: 3),
           ],

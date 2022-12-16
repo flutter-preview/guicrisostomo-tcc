@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:tcc/controller/firebase/authGoogle.dart';
+import 'package:tcc/globals.dart' as globals;
 
 class GoogleSignInButton extends StatefulWidget {
   @override
@@ -21,7 +22,7 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
           )
         : OutlinedButton(
             style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(50, 62, 64, 1)),
+              backgroundColor: MaterialStateProperty.all(globals.primary),
               shape: MaterialStateProperty.all(
                 RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5),

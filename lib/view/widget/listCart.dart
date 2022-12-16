@@ -7,6 +7,7 @@ import 'package:tcc/controller/firebase/productsCart.dart';
 import 'package:tcc/controller/firebase/sales.dart';
 import 'package:tcc/view/widget/snackBars.dart';
 import 'package:tcc/view/widget/textFieldNumberGeneral.dart';
+import 'package:tcc/globals.dart' as globals;
 
 class ProductsCart extends StatefulWidget {
   final product;
@@ -52,7 +53,7 @@ class _ProductsCartState extends State<ProductsCart> {
                     num subTotal = item['subTotal'];
 
                     return Card(
-                      color: const Color.fromRGBO(50, 62, 64, 1),
+                      color: globals.primary,
                       child: Padding(
                         padding: EdgeInsets.all(10),
                         child: ListTile(
@@ -184,7 +185,7 @@ class _ProductsCartState extends State<ProductsCart> {
                                     
                                     style: ElevatedButton.styleFrom(
                                       padding: const EdgeInsets.all(2),
-                                      backgroundColor: const Color.fromRGBO(242, 169, 34, 1),
+                                      backgroundColor: globals.secundary,
                                       shape: const CircleBorder(),
                                       foregroundColor: Colors.white,
                                     ),
@@ -222,7 +223,7 @@ class _ProductsCartState extends State<ProductsCart> {
                                 
                                     style: ElevatedButton.styleFrom(
                                       padding: const EdgeInsets.all(2),
-                                      backgroundColor: const Color.fromRGBO(242, 169, 34, 1),
+                                      backgroundColor: globals.secundary,
                                       shape: const CircleBorder(),
                                       foregroundColor: Colors.white,
                                     ),

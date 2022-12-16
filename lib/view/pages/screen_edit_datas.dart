@@ -6,6 +6,7 @@ import 'package:tcc/view/widget/floatingButton.dart';
 import 'package:tcc/view/widget/textField.dart';
 import 'package:tcc/view/widget/textFieldEmail.dart';
 import 'package:tcc/view/widget/textFieldPhone.dart';
+import 'package:tcc/globals.dart' as globals;
 
 class ScreenEditDatas extends StatefulWidget {
   const ScreenEditDatas({super.key});
@@ -45,7 +46,7 @@ class _ScreenEditDatasState extends State<ScreenEditDatas> {
       appBar: AppBar(
         title: const Text('Editar dados'),
         centerTitle: true,
-        backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
+        backgroundColor: globals.primary,
       ),
 
       body: SingleChildScrollView(

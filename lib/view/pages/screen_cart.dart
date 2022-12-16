@@ -6,6 +6,7 @@ import 'package:tcc/controller/firebase/productsCart.dart';
 import 'package:tcc/controller/firebase/sales.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
 import 'package:tcc/view/widget/listCart.dart';
+import 'package:tcc/globals.dart' as globals;
 
 class ScreenCart extends StatefulWidget {
   const ScreenCart({super.key});
@@ -67,7 +68,7 @@ class _ScreenCartState extends State<ScreenCart> {
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     minimumSize: Size(largura, 50), 
-                    backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
+                    backgroundColor: globals.primary,
                   ),
                   
                   child: const Text(
@@ -103,7 +104,7 @@ class _ScreenCartState extends State<ScreenCart> {
       appBar: AppBar(
         title: const Text('Carrinho'),
         centerTitle: true,
-        backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
+        backgroundColor: globals.primary,
       ),
 
       body: SingleChildScrollView(

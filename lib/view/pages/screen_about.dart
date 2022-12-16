@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
 import 'package:tcc/view/widget/floatingButton.dart';
 import 'package:tcc/view/widget/listViewTeam.dart';
+import 'package:tcc/globals.dart' as globals;
 
 class ScreenAbout extends StatelessWidget {
   const ScreenAbout({super.key});
@@ -12,7 +13,7 @@ class ScreenAbout extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Sobre'),
         centerTitle: true,
-        backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
+        backgroundColor: globals.primary,
       ),
 
       body: SingleChildScrollView(

@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:tcc/globals.dart' as globals;
 
 class DropDown extends StatefulWidget {
   final String text;
@@ -17,8 +18,8 @@ class _DropDownState extends State<DropDown> {
 
   Widget dropDownGeneral() {
     return DropdownButton(
-      dropdownColor: const Color.fromRGBO(50, 62, 64, 1),
-      iconEnabledColor: const Color.fromRGBO(242, 169, 34, 1),
+      dropdownColor: globals.primary,
+      iconEnabledColor: globals.secundary,
       borderRadius: BorderRadius.circular(10),
       underline: Container(),
       style: const TextStyle(color: Colors.white),
@@ -64,7 +65,7 @@ class _DropDownState extends State<DropDown> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        color: const Color.fromRGBO(50, 62, 64, 1),
+        color: globals.primary,
         boxShadow: const [
           BoxShadow(color: Colors.transparent, spreadRadius: 3),
         ],

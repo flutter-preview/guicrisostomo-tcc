@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tcc/controller/firebase/auth.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/textFieldEmail.dart';
+import 'package:tcc/globals.dart' as globals;
 
 class ScreenForgetPassword extends StatefulWidget {
   const ScreenForgetPassword({super.key});
@@ -28,7 +29,7 @@ class _ScreenForgetPasswordState extends State<ScreenForgetPassword> {
       appBar: AppBar(
         title: const Text('Recuperação de senha'),
         centerTitle: true,
-        backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
+        backgroundColor: globals.primary,
       ),
 
       body: Padding(

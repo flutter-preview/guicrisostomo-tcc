@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:tcc/controller/firebase/sales.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
 import 'package:tcc/view/widget/floatingButton.dart';
+import 'package:tcc/globals.dart' as globals;
 
 class ScreenOrder extends StatefulWidget {
   const ScreenOrder({super.key});
@@ -59,7 +60,7 @@ listViewOrder() {
                     num total = item['total'];
   
                     return Card(
-                      color: const Color.fromRGBO(50, 62, 64, 1),
+                      color: globals.primary,
                       child: ListTile(
                         contentPadding: const EdgeInsets.fromLTRB(10, 10, 20, 10),
                         leading: const Icon(Icons.local_pizza, size: 50, color: Colors.white),

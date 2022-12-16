@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:tcc/controller/firebase/productsCart.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
 import 'package:tcc/view/widget/floatingButton.dart';
+import 'package:tcc/globals.dart' as globals;
 
 class ScreenInfoOrder extends StatefulWidget {
   const ScreenInfoOrder({super.key});
@@ -51,7 +52,7 @@ class _ScreenInfoOrderState extends State<ScreenInfoOrder> {
                         String size = item['size'];
       
                         return Card(
-                          color: const Color.fromRGBO(50, 62, 64, 1),
+                          color: globals.primary,
                           child: ListTile(
                             contentPadding: const EdgeInsets.fromLTRB(10, 10, 20, 10),
                             leading: const Icon(Icons.local_pizza, size: 50, color: Colors.white),
@@ -103,7 +104,7 @@ class _ScreenInfoOrderState extends State<ScreenInfoOrder> {
                                     
                                     style: ElevatedButton.styleFrom(
                                       padding: const EdgeInsets.all(2),
-                                      backgroundColor: const Color.fromRGBO(242, 169, 34, 1),
+                                      backgroundColor: secundary,
                                       shape: const CircleBorder(),
                                       foregroundColor: Colors.white,
                                     ),
@@ -137,7 +138,7 @@ class _ScreenInfoOrderState extends State<ScreenInfoOrder> {
                                     
                                     style: ElevatedButton.styleFrom(
                                       padding: const EdgeInsets.all(2),
-                                      backgroundColor: const Color.fromRGBO(242, 169, 34, 1),
+                                      backgroundColor: secundary,
                                       shape: const CircleBorder(),
                                       foregroundColor: Colors.white,
                                     ),
@@ -174,7 +175,7 @@ class _ScreenInfoOrderState extends State<ScreenInfoOrder> {
       appBar: AppBar(
         title: const Text('Informações'),
         centerTitle: true,
-        backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
+        backgroundColor: globals.primary,
       ),
 
       body: SingleChildScrollView(

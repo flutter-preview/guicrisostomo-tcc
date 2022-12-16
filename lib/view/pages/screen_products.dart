@@ -5,6 +5,7 @@ import 'package:tcc/controller/firebase/products.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
 import 'package:tcc/view/widget/floatingButton.dart';
 import 'package:tcc/view/widget/productItem.dart';
+import 'package:tcc/globals.dart' as globals;
 
 class ScreenProducts extends StatefulWidget {
   const ScreenProducts({super.key});
@@ -31,7 +32,7 @@ class _ScreenProductsState extends State<ScreenProducts> {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
-            color: const Color.fromRGBO(50, 62, 64, 1),
+            color: globals.primary,
             boxShadow: const [
               BoxShadow(color: Colors.transparent, spreadRadius: 3),
             ],
@@ -90,7 +91,7 @@ class _ScreenProductsState extends State<ScreenProducts> {
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                color: const Color.fromRGBO(50, 62, 64, 1),
+                color: globals.primary,
                 boxShadow: const [
                   BoxShadow(color: Colors.transparent, spreadRadius: 3),
                 ],

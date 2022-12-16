@@ -21,9 +21,9 @@ class _BottomState extends State<Bottom> {
 
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
-      backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
+      backgroundColor: globals.primary,
       unselectedItemColor: Colors.white,
-      selectedItemColor: const Color.fromRGBO(242, 169, 34, 1),
+      selectedItemColor: globals.secundary,
 
       items: <BottomNavigationBarItem>[
         const BottomNavigationBarItem(

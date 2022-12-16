@@ -2,13 +2,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:tcc/globals.dart' as globals;
 
 Widget textFieldPhone(label, variavel, context, initialText) {
 
   return Container(
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(20),
-      color: const Color.fromRGBO(50, 62, 64, 1),
+      color: globals.primary,
       boxShadow: const [
         BoxShadow(color: Colors.transparent, spreadRadius: 3),
       ],

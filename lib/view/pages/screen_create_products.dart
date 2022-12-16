@@ -4,6 +4,7 @@ import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/dropDownButton.dart';
 import 'package:tcc/view/widget/textField.dart';
 import 'package:tcc/view/widget/textFieldNumberGeneral.dart';
+import 'package:tcc/globals.dart' as globals;
 
 import '../widget/bottonNavigationCustomer.dart';
 
@@ -49,7 +50,7 @@ class _ScreenCreateProductsState extends State<ScreenCreateProducts> {
       appBar: AppBar(
         title: const Text('Cadastrar produto'),
         centerTitle: true,
-        backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
+        backgroundColor: globals.primary,
       ),
 
       body: SingleChildScrollView(

@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:tcc/globals.dart' as globals;
 
 class ProductItem extends StatefulWidget {
   final product;
@@ -45,7 +46,7 @@ class _ProductItemState extends State<ProductItem> {
                       String size = item['size'];
     
                       return Card(
-                        color: const Color.fromRGBO(50, 62, 64, 1),
+                        color: globals.primary,
                         child: ListTile(
                           contentPadding: const EdgeInsets.fromLTRB(10, 10, 20, 10),
                           leading: const Icon(Icons.local_pizza, size: 50, color: Colors.white),
@@ -97,7 +98,7 @@ class _ProductItemState extends State<ProductItem> {
                                   
                                   style: ElevatedButton.styleFrom(
                                     padding: const EdgeInsets.all(2),
-                                    backgroundColor: const Color.fromRGBO(242, 169, 34, 1),
+                                    backgroundColor: globals.secundary,
                                     shape: const CircleBorder(),
                                     foregroundColor: Colors.white,
                                   ),
@@ -131,7 +132,7 @@ class _ProductItemState extends State<ProductItem> {
                                   
                                   style: ElevatedButton.styleFrom(
                                     padding: const EdgeInsets.all(2),
-                                    backgroundColor: const Color.fromRGBO(242, 169, 34, 1),
+                                    backgroundColor: globals.secundary,
                                     shape: const CircleBorder(),
                                     foregroundColor: Colors.white,
                                   ),

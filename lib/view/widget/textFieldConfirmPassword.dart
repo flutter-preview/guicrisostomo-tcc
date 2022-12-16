@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:tcc/globals.dart' as globals;
 
 class TextFieldConfirmPassword extends StatefulWidget {
   final String label;
@@ -31,7 +32,7 @@ class _TextFieldConfirmPasswordState extends State<TextFieldConfirmPassword> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        color: const Color.fromRGBO(50, 62, 64, 1),
+        color: globals.primary,
         boxShadow: const [
           BoxShadow(color: Colors.transparent, spreadRadius: 3),
         ],

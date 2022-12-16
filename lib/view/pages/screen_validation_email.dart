@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/textFieldNumberGeneral.dart';
+import 'package:tcc/globals.dart' as globals;
 
 class ScreenValidationEmail extends StatefulWidget {
   const ScreenValidationEmail({super.key});
@@ -27,7 +28,7 @@ class _ScreenValidationEmailState extends State<ScreenValidationEmail> {
       appBar: AppBar(
         title: const Text('Recuperação de senha'),
         centerTitle: true,
-        backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
+        backgroundColor: globals.primary,
       ),
 
       body: Padding(
