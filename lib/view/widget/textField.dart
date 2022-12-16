@@ -1,14 +1,13 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
-import 'package:tcc/globals.dart' as globals;
 
 Widget textFieldGeneral(label, variavel, context) {
 
   return Container(
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(20),
-      color: globals.primary,
+      color: Colors.white,
       boxShadow: const [
         BoxShadow(color: Colors.transparent, spreadRadius: 3),
       ],
@@ -36,14 +35,14 @@ Widget textField(label, variavel, context) {
 
         style: const TextStyle(
           fontSize: 24,
-          color: Colors.white,
+          color: Colors.black,
         ),
 
         decoration: InputDecoration(
           labelText: label,
           labelStyle: const TextStyle(
             fontSize: 24,
-            color: Colors.white,
+            color: Colors.black,
           ),
 
           enabledBorder: UnderlineInputBorder(

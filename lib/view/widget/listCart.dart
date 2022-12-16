@@ -53,7 +53,7 @@ class _ProductsCartState extends State<ProductsCart> {
                     num subTotal = item['subTotal'];
 
                     return Card(
-                      color: globals.primary,
+                      color: Colors.white,
                       child: Padding(
                         padding: EdgeInsets.all(10),
                         child: ListTile(
@@ -61,7 +61,7 @@ class _ProductsCartState extends State<ProductsCart> {
                             name,
                             style: TextStyle(
                               fontSize: 24,
-                              color: Colors.white,
+                              color: Colors.black,
                             ),
                           ),
                       
@@ -71,21 +71,21 @@ class _ProductsCartState extends State<ProductsCart> {
                               Text(
                                 'Preço: R\$ ${price.toString().replaceFirst('.', ',')}',
                                 style: TextStyle(
-                                  color: Colors.white,
+                                  color: Colors.black,
                                 ),
                               ),
                       
                               Text(
                                 "Quantidade: $qtd",
                                 style: TextStyle(
-                                  color: Colors.white,
+                                  color: Colors.black,
                                 ),
                               ),
                       
                               Text(
                                 'Sub-total: R\$ ${subTotal.toString().replaceFirst('.', ',')}',
                                 style: TextStyle(
-                                  color: Colors.white,
+                                  color: Colors.black,
                                 ),
                               ),
                             ]
@@ -185,12 +185,11 @@ class _ProductsCartState extends State<ProductsCart> {
                                     
                                     style: ElevatedButton.styleFrom(
                                       padding: const EdgeInsets.all(2),
-                                      backgroundColor: globals.secundary,
+                                      backgroundColor: globals.primary,
                                       shape: const CircleBorder(),
-                                      foregroundColor: Colors.white,
                                     ),
                           
-                                    child: const Icon(
+                                    child: Icon(
                                       Icons.edit, size: 15,
                                       color: Colors.white,
                                     ),
@@ -223,11 +222,10 @@ class _ProductsCartState extends State<ProductsCart> {
                                 
                                     style: ElevatedButton.styleFrom(
                                       padding: const EdgeInsets.all(2),
-                                      backgroundColor: globals.secundary,
+                                      backgroundColor: globals.primary,
                                       shape: const CircleBorder(),
-                                      foregroundColor: Colors.white,
                                     ),
-                                    child: const Icon(Icons.delete, size: 15, color: Colors.white,),
+                                    child: Icon(Icons.delete, size: 15, color: Colors.white,),
                       
                                   ),
                                 )

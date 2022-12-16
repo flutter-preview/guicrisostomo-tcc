@@ -32,7 +32,7 @@ class _ScreenProductsState extends State<ScreenProducts> {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
-            color: globals.primary,
+            color: Colors.white,
             boxShadow: const [
               BoxShadow(color: Colors.transparent, spreadRadius: 3),
             ],
@@ -54,14 +54,14 @@ class _ScreenProductsState extends State<ScreenProducts> {
       
                   style: const TextStyle(
                     fontSize: 24,
-                    color: Colors.white,
+                    color: Colors.black,
                   ),
       
                   decoration: InputDecoration(
                     labelText: 'Procurar item',
                     labelStyle: const TextStyle(
                       fontSize: 24,
-                      color: Colors.white,
+                      color: Colors.black,
                     ),
       
                     enabledBorder: UnderlineInputBorder(
@@ -91,7 +91,7 @@ class _ScreenProductsState extends State<ScreenProducts> {
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                color: globals.primary,
+                color: Colors.white,
                 boxShadow: const [
                   BoxShadow(color: Colors.transparent, spreadRadius: 3),
                 ],
@@ -101,7 +101,7 @@ class _ScreenProductsState extends State<ScreenProducts> {
                 child: Row(
                   children: [
                     textFieldSearch(),
-                    const Icon(Icons.search, size: 50, color: Color.fromRGBO(242, 169, 34, 1),),
+                    Icon(Icons.search, size: 50, color: globals.primary,),
                   ],
                 ),
               ),

@@ -46,16 +46,16 @@ class _ProductItemState extends State<ProductItem> {
                       String size = item['size'];
     
                       return Card(
-                        color: globals.primary,
+                        color: Colors.white,
                         child: ListTile(
                           contentPadding: const EdgeInsets.fromLTRB(10, 10, 20, 10),
-                          leading: const Icon(Icons.local_pizza, size: 50, color: Colors.white),
+                          leading: Icon(Icons.local_pizza, size: 50, color: globals.primary),
                           
                           title: Text(
                             name,
                             style: TextStyle(
                               fontSize: 24,
-                              color: Colors.white,
+                              color: Colors.black,
                             ),
                           ),
     
@@ -65,14 +65,14 @@ class _ProductItemState extends State<ProductItem> {
                               Text(
                                 '$category - $size',
                                 style: TextStyle(
-                                  color: Colors.white,
+                                  color: Colors.black,
                                 ),
                               ),
                               
                               Text(
                                 'R\$ ${price.toString().replaceFirst('.', ',')}',
                                 style: TextStyle(
-                                  color: Colors.white,
+                                  color: Colors.black,
                                 ),
                               )
                             ]
@@ -98,7 +98,7 @@ class _ProductItemState extends State<ProductItem> {
                                   
                                   style: ElevatedButton.styleFrom(
                                     padding: const EdgeInsets.all(2),
-                                    backgroundColor: globals.secundary,
+                                    backgroundColor: globals.primary,
                                     shape: const CircleBorder(),
                                     foregroundColor: Colors.white,
                                   ),
@@ -132,7 +132,7 @@ class _ProductItemState extends State<ProductItem> {
                                   
                                   style: ElevatedButton.styleFrom(
                                     padding: const EdgeInsets.all(2),
-                                    backgroundColor: globals.secundary,
+                                    backgroundColor: globals.primary,
                                     shape: const CircleBorder(),
                                     foregroundColor: Colors.white,
                                   ),

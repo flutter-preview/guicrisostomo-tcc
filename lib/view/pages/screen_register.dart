@@ -65,7 +65,7 @@ class _ScreenRegisterState extends State<ScreenRegister> {
               
               const SizedBox(height: 50,),
 
-              button('Cadastrar', 260, 50, () {
+              button('Cadastrar', 295, 50, () {
 
                 if (formKey.currentState!.validate()) {
         

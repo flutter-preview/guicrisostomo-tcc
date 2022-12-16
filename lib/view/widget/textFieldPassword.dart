@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:tcc/globals.dart' as globals;
 
 class TextFieldPassword extends StatefulWidget {
   final String label;
@@ -32,7 +31,7 @@ class _TextFieldPasswordState extends State<TextFieldPassword> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        color: globals.primary,
+        color: Colors.white,
         boxShadow: const [
           BoxShadow(color: Colors.transparent, spreadRadius: 3),
         ],
@@ -80,14 +79,14 @@ class _TextFieldPasswordState extends State<TextFieldPassword> {
 
           style: const TextStyle(
             fontSize: 24,
-            color: Colors.white,
+            color: Colors.black,
           ),
 
           decoration: InputDecoration(
             labelText: label,
             labelStyle: const TextStyle(
               fontSize: 24,
-              color: Colors.white,
+              color: Colors.black,
             ),
 
             enabledBorder: UnderlineInputBorder(

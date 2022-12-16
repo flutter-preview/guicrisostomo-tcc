@@ -22,7 +22,7 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
           )
         : OutlinedButton(
             style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(globals.primary),
+              backgroundColor: MaterialStateProperty.all(Colors.white),
               shape: MaterialStateProperty.all(
                 RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5),
@@ -56,8 +56,8 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
                     child: Text(
                       'Entrar com Google',
                       style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
+                        fontSize: 24,
+                        color: Colors.black87,
                         fontWeight: FontWeight.w600,
                       ),
                     ),

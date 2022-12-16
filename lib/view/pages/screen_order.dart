@@ -60,16 +60,16 @@ listViewOrder() {
                     num total = item['total'];
   
                     return Card(
-                      color: globals.primary,
+                      color: Colors.white,
                       child: ListTile(
                         contentPadding: const EdgeInsets.fromLTRB(10, 10, 20, 10),
-                        leading: const Icon(Icons.local_pizza, size: 50, color: Colors.white),
+                        leading: Icon(Icons.local_pizza, size: 50, color: globals.primary),
                         
                         title: Text(
                           'Data: $dateText',
                           style: const TextStyle(
                             fontSize: 28,
-                            color: Colors.white,
+                            color: Colors.black,
                           ),
                         ),
 
@@ -79,14 +79,14 @@ listViewOrder() {
                             Text(
                               'Total: R\$ $total',
                               style: const TextStyle(
-                                color: Colors.white,
+                                color: Colors.black,
                               ),
                             ),
 
                             /*Text(
                               'Tipo: entrega',
                               style: TextStyle(
-                                color: Colors.white,
+                                color: Colors.black,
                               ),
                             ),*/
                           ]

@@ -23,11 +23,12 @@ class _BottomState extends State<Bottom> {
       type: BottomNavigationBarType.fixed,
       backgroundColor: globals.primary,
       unselectedItemColor: Colors.white,
-      selectedItemColor: globals.secundary,
+      selectedItemColor: Colors.white,
+      selectedFontSize: 18,
 
       items: <BottomNavigationBarItem>[
         const BottomNavigationBarItem(
-          icon: Icon(Icons.home, color: Color.fromRGBO(242, 169, 34, 1),),
+          icon: Icon(Icons.home, color: Colors.white),
           label: 'Inicio',
         ),
         BottomNavigationBarItem(
@@ -39,11 +40,11 @@ class _BottomState extends State<Bottom> {
           label: 'Cardápio',
         ),
         const BottomNavigationBarItem(
-          icon: Icon(Icons.manage_accounts, color: Color.fromRGBO(242, 169, 34, 1),),
+          icon: Icon(Icons.manage_accounts, color: Colors.white),
           label: 'Gerenciar',
         ),
         const BottomNavigationBarItem(
-          icon: Icon(Icons.perm_identity, color: Color.fromRGBO(242, 169, 34, 1),),
+          icon: Icon(Icons.perm_identity, color: Colors.white),
           label: 'Perfil',
         ),
       ],

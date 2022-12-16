@@ -78,7 +78,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
 
               const SizedBox(height: 40,),
 
-              button('Entrar', 260, 50, () {
+              button('Entrar', 295, 50, () {
 
                 if (formKey.currentState!.validate()) {
                   LoginController().login(context, txtEmail.text, txtPassword.text);

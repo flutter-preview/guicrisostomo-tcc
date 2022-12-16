@@ -10,16 +10,16 @@ Widget listSize(nameSize, price) {
       scrollDirection: Axis.vertical,
       itemBuilder: (context, index) {
       return Card(
-        color: globals.primary,
+        color: Colors.white,
         child: ListTile(
           contentPadding: const EdgeInsets.fromLTRB(10, 10, 20, 10),
-          leading: const Icon(Icons.local_pizza, size: 50, color: Colors.white),
+          leading: Icon(Icons.local_pizza, size: 50, color: globals.primary),
           
           title: Text(
             nameSize,
             style: const TextStyle(
               fontSize: 24,
-              color: Colors.white,
+              color: Colors.black,
             ),
           ),
 
@@ -38,9 +38,8 @@ Widget listSize(nameSize, price) {
               
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.all(2),
-                backgroundColor: globals.secundary,
+                backgroundColor: globals.primary,
                 shape: const CircleBorder(),
-                foregroundColor: Colors.white,
               ),
               child: const Icon(Icons.add, size: 15, color: Colors.white,),
             )

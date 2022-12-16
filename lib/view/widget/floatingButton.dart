@@ -5,14 +5,14 @@ import 'package:tcc/globals.dart' as globals;
 
 Widget floatingButton(context) {
   return FloatingActionButton(
-    backgroundColor: globals.secundary,
+    backgroundColor: globals.primary,
     onPressed: () {
       Navigator.pushNamed(context, 'cart');
     },
 
     child: const Icon(
       Icons.shopping_cart_outlined,
-      color: Color.fromRGBO(50, 62, 64, 1),
+      color: Colors.white,
     ),
   );
 }

@@ -5,7 +5,7 @@ Widget button(String text, double width, double height, Function() onPressed) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         minimumSize: Size(width, height), 
-        backgroundColor: globals.primary,
+        backgroundColor: Colors.white,
       ),
       
       onPressed: () {
@@ -16,6 +16,8 @@ Widget button(String text, double width, double height, Function() onPressed) {
         text,
         style: const TextStyle(
           fontSize: 24,
+          color: Colors.black87,
+          fontWeight: FontWeight.w600,
         )
       ),
 

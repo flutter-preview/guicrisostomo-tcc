@@ -56,6 +56,9 @@ Future<void> main() async {
       debugShowCheckedModeBanner: false,
       title: 'App pizzaria',
       initialRoute: route,
+
+      theme: ThemeData(scaffoldBackgroundColor: const Color.fromRGBO(245, 245, 245, 1)),
+
       routes: {
         'presentation' :(context) => const ScreenPresentation(),
         'login' :(context) => const ScreenLogin(),
