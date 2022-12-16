@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tcc/controller/firebase/products.dart';
+import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/dropDownButton.dart';
 import 'package:tcc/view/widget/textField.dart';
 import 'package:tcc/view/widget/textFieldNumberGeneral.dart';
@@ -90,39 +91,24 @@ class _ScreenCreateProductsState extends State<ScreenCreateProducts> {
 
               const SizedBox(height: 50,),
 
-              buttonSave(context)
+              button('Salvar', 100, 50, () {
+
+                if (formKey.currentState!.validate()) {
+        
+                  ProductsController().add(txtName.text, num.parse(txtPrice.text.replaceFirst(',', '.')), txtDescription.text, categorySelected, sizeSelected, txtUrlImage.text);
+
+                } else {
+                  setState(() {
+                    autoValidation = true;
+                  });
+                }
+
+              })
           ],),
         )
       ),
 
       bottomNavigationBar: const Bottom(),
-    );
-  }
-
-  Widget buttonSave(context) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        minimumSize: const Size(100, 50), backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
-        
-      ),
-      
-      child: const Text('Salvar',
-        style: TextStyle(
-          fontSize: 24,
-        )
-      ),
-      onPressed: () {
-
-        if (formKey.currentState!.validate()) {
-        
-          ProductsController().add(txtName.text, num.parse(txtPrice.text.replaceFirst(',', '.')), txtDescription.text, categorySelected, sizeSelected, txtUrlImage.text);
-
-        } else {
-          setState(() {
-            autoValidation = true;
-          });
-        }
-      },
     );
   }
 }

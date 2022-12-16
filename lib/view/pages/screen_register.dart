@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tcc/controller/firebase/auth.dart';
 import 'package:tcc/controller/firebase/authGoogle.dart';
 import 'package:tcc/view/widget/button.dart';
+import 'package:tcc/view/widget/buttonGoogleAuth.dart';
 import 'package:tcc/view/widget/imageMainScreens.dart';
 import 'package:tcc/view/widget/textField.dart';
 import 'package:tcc/view/widget/textFieldConfirmPassword.dart';
@@ -64,10 +65,23 @@ class _ScreenRegisterState extends State<ScreenRegister> {
               
               const SizedBox(height: 50,),
 
-              buttonRegister(context),
+              button('Cadastrar', 260, 50, () {
+
+                if (formKey.currentState!.validate()) {
+        
+                  LoginController().createAccount(context, txtName.text, txtEmail.text, txtPhone.text, txtPassword.text);
+
+                } else {
+                  setState(() {
+                    autoValidation = true;
+                  });
+                }
+
+              }),
+
               const SizedBox(height: 10,),
 
-              buttonGoogle(context),
+              GoogleSignInButton(),
               const SizedBox(height: 50,),
 
               const Text(
@@ -77,57 +91,12 @@ class _ScreenRegisterState extends State<ScreenRegister> {
                 ),
               ),
 
-              button('Entrar agora', context, 'login')
+              button('Entrar agora', 100, 50, () {
+                Navigator.popAndPushNamed(context, 'login');
+              })
           ],),
         )
       ),
-    );
-  }
-
-  Widget buttonRegister(context) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        minimumSize: const Size(100, 50), backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
-        
-      ),
-      
-      child: const Text('Cadastrar',
-        style: TextStyle(
-          fontSize: 24,
-        )
-      ),
-      onPressed: () {
-
-        if (formKey.currentState!.validate()) {
-        
-          LoginController().createAccount(context, txtName.text, txtEmail.text, txtPhone.text, txtPassword.text);
-
-        } else {
-          setState(() {
-            autoValidation = true;
-          });
-        }
-      },
-    );
-  }
-
-  Widget buttonGoogle(context) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        minimumSize: const Size(100, 50), backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
-        
-      ),
-      
-      child: const Text('Cadastrar',
-        style: TextStyle(
-          fontSize: 24,
-        )
-      ),
-      onPressed: () {
-        
-        signIn(context);
-
-      },
     );
   }
 

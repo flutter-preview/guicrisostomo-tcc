@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tcc/controller/firebase/auth.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
+import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/floatingButton.dart';
 import 'package:tcc/view/widget/textField.dart';
 import 'package:tcc/view/widget/textFieldEmail.dart';
@@ -37,33 +38,6 @@ class _ScreenEditDatasState extends State<ScreenEditDatas> {
     txtEmail.text = user.data()['email'];
     txtPhone.text = user.data()['phone'];
 
-    Widget buttonSave() {
-      return ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          minimumSize: const Size(100, 50), backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
-        ),
-        
-        child: const Text('Salvar',
-          style: TextStyle(
-            fontSize: 24,
-          )
-        ),
-
-        onPressed: () {
-          if (formKey.currentState!.validate()) {
-          
-            LoginController().updateUser(user.id, txtName.text, txtEmail.text, txtPhone.text, context);
-
-          } else {
-            setState(() {
-              autoValidation = true;
-            });
-          }
-          
-        },
-      );
-    }
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Editar dados'),
@@ -87,7 +61,19 @@ class _ScreenEditDatasState extends State<ScreenEditDatas> {
               textFieldPhone('Telefone', txtPhone, context, txtPhone.text),
               const SizedBox(height: 50,),
 
-              buttonSave(),
+              button('Salvar', 100, 50, () {
+
+                if (formKey.currentState!.validate()) {
+          
+                  LoginController().updateUser(user.id, txtName.text, txtEmail.text, txtPhone.text, context);
+
+                } else {
+                  setState(() {
+                    autoValidation = true;
+                  });
+                }
+
+              })
             ]
           ),
         ),

@@ -64,7 +64,12 @@ class _ScreenLoginState extends State<ScreenLogin> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    buttonForgetPassword(),
+                    button('Esqueci minha senha', 100, 50, () {
+                      Navigator.pushNamed(
+                        context,
+                        'login/forget_password',
+                      );
+                    }),
                   ],
                 )
               ),
@@ -72,7 +77,18 @@ class _ScreenLoginState extends State<ScreenLogin> {
 
               const SizedBox(height: 40,),
 
-              buttonLogin(),
+              button('Entrar', 100, 50, () {
+
+                if (formKey.currentState!.validate()) {
+                  LoginController().login(context, txtEmail.text, txtPassword.text);
+                } else {
+                  setState(() {
+                    autoValidation = true;
+                  });
+                }
+
+              }),
+
               const SizedBox(height: 50,),
 
               const Text(
@@ -82,62 +98,12 @@ class _ScreenLoginState extends State<ScreenLogin> {
                 ),
               ),
 
-              button('Registrar agora', context, 'register')
+              button('Registrar agora', 100, 50, () {
+                Navigator.popAndPushNamed(context, 'register');
+              })
           ],),
         )
       ),
-    );
-  }
-
-  Widget buttonLogin() {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        minimumSize: const Size(100, 50), backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
-        
-      ),
-      
-      child: const Text('Entrar',
-        style: TextStyle(
-          fontSize: 24,
-        )
-      ),
-
-      onPressed: () {
-
-        if (formKey.currentState!.validate()) {
-          LoginController().login(context, txtEmail.text, txtPassword.text);
-        } else {
-          setState(() {
-            autoValidation = true;
-          });
-        }
-        
-      },
-    );
-  }
-
-  Widget buttonForgetPassword() {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        minimumSize: const Size(100, 50), backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
-        
-      ),
-      
-      child: const Text('Esqueci minha senha',
-        style: TextStyle(
-        fontSize: 24,
-      )
-      ),
-
-      //COMPORTAMENTO
-      onPressed: () {
-
-        Navigator.pushNamed(
-          context,
-          'login/forget_password',
-        );
-        
-      },
     );
   }
 

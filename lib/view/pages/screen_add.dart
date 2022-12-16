@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tcc/controller/firebase/productsCart.dart';
 import 'package:tcc/controller/firebase/sales.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
+import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/floatingButton.dart';
 import 'package:tcc/view/widget/snackBars.dart';
 
@@ -118,46 +119,6 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
           padding: const EdgeInsets.only(left: 20),
           child: textField(),
         ),
-      );
-    }
-
-    Widget buttonAddCart() {
-      return ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          minimumSize: const Size(100, 50), backgroundColor: const Color.fromRGBO(50, 62, 64, 1),
-        ),
-        
-        child: const Text('Adicionar',
-          style: TextStyle(
-            fontSize: 24,
-          )
-        ),
-        onPressed: () async {
-
-          if (formKey.currentState!.validate()) {
-            String idSale;
-            await SalesController().idSale().then((res) async {
-              idSale = res;
-              ProductsCartController().add(idSale, idProduct, nameProduct, priceProduct, int.parse(txtQtd.text), subTotal, categoryProduct, sizeProduct);
-
-              await SalesController().getTotal().then((res){
-                SalesController().updateTotal(idSale, res + subTotal);
-                Navigator.pop(context);
-                success(context, 'Produto adicionado com sucesso');
-              }).catchError((e){
-                error(context, 'Ocorreu um erro ao adicionar o produto: ${e.code.toString()}');
-              });
-
-            }).catchError((e){
-              error(context, 'Ocorreu um erro ao adicionar o produto: ${e.code.toString()}');
-            });
-
-          } else {
-            setState(() {
-              autoValidation = true;
-            });
-          }
-        },
       );
     }
 
@@ -301,7 +262,31 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                         Container(
                           alignment: Alignment.bottomRight,
                           height: 60,
-                          child: buttonAddCart(),
+                          child: button('Adicionar', 100, 50, () async {
+                            if (formKey.currentState!.validate()) {
+                              String idSale;
+                              await SalesController().idSale().then((res) async {
+                                idSale = res;
+                                ProductsCartController().add(idSale, idProduct, nameProduct, priceProduct, int.parse(txtQtd.text), subTotal, categoryProduct, sizeProduct);
+
+                                await SalesController().getTotal().then((res){
+                                  SalesController().updateTotal(idSale, res + subTotal);
+                                  Navigator.pop(context);
+                                  success(context, 'Produto adicionado com sucesso');
+                                }).catchError((e){
+                                  error(context, 'Ocorreu um erro ao adicionar o produto: ${e.code.toString()}');
+                                });
+
+                              }).catchError((e){
+                                error(context, 'Ocorreu um erro ao adicionar o produto: ${e.code.toString()}');
+                              });
+
+                            } else {
+                              setState(() {
+                                autoValidation = true;
+                              });
+                            }
+                          }),
                         ),
                       ],
                     ),

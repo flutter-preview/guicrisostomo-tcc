@@ -90,7 +90,9 @@ class _ScreenCreateOrderState extends State<ScreenCreateOrder> {
               
               const SizedBox(height: 50,),
 
-              button('Salvar', context, 'home')
+              button('Salvar', 100, 50, () {
+                Navigator.popAndPushNamed(context, 'home');
+              })
           ],),
         )
       ),

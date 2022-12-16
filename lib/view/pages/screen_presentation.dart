@@ -39,8 +39,14 @@ class ScreenPresentation extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  button('Entrar', context, 'login'),
-                  button('Cadastrar', context, 'register'),
+                  
+                  button('Entrar', 100, 50, () {
+                    Navigator.popAndPushNamed(context, 'login');
+                  }),
+
+                  button('Cadastrar', 100, 50, () {
+                    Navigator.popAndPushNamed(context, 'register');
+                  }),
                 ],
               )
             ]
