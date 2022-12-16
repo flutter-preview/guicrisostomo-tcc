@@ -1,5 +1,5 @@
 name: tcc
-description: A new Flutter project.
+description: Application for order and check sales of restaurants.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
