@@ -36,7 +36,10 @@ class _ScreenEditDatasState extends State<ScreenEditDatas> {
 
     txtName.text = user.data()['name'];
     txtEmail.text = user.data()['email'];
-    txtPhone.text = user.data()['phone'];
+
+    if (user.data()['phone'] != null) {
+      txtPhone.text = user.data()['phone'];
+    }
 
     return Scaffold(
       appBar: AppBar(
