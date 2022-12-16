@@ -57,7 +57,7 @@ Future<void> main() async {
       title: 'App pizzaria',
       initialRoute: route,
 
-      theme: ThemeData(scaffoldBackgroundColor: const Color.fromRGBO(245, 245, 245, 1)),
+      theme: ThemeData(scaffoldBackgroundColor: const Color.fromRGBO(252, 252, 252, 1)),
 
       routes: {
         'presentation' :(context) => const ScreenPresentation(),

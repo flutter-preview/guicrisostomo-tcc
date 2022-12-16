@@ -14,8 +14,15 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16.0),
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(40),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(color: globals.primary, spreadRadius: 1),
+        ],
+      ),
+
       child: _isSigningIn
         ? const CircularProgressIndicator(
             valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
@@ -25,7 +32,8 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
               backgroundColor: MaterialStateProperty.all(Colors.white),
               shape: MaterialStateProperty.all(
                 RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5),
+                  borderRadius: BorderRadius.circular(40),
+                  side: BorderSide(color: Colors.red),
                 ),
               ),
             ),
@@ -34,9 +42,9 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
               setState(() {
                 _isSigningIn = true;
               });
-
+    
               signIn(context);
-
+    
               setState(() {
                 _isSigningIn = false;
               });

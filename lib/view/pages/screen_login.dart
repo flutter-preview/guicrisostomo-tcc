@@ -46,7 +46,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
               const SizedBox(height: 50,),
               textFieldEmail('E-mail', txtEmail, context),
               
-              const SizedBox(height: 10,),
+              const SizedBox(height: 20,),
 
               TextFieldPassword(label: 'Senha', variavel: txtPassword, onFieldSubmitted: (a) {
                 if (formKey.currentState!.validate()) {
@@ -58,7 +58,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
                 }
               },),
               
-              const SizedBox(height: 10,),
+              const SizedBox(height: 20,),
 
               Container(
                 alignment: Alignment.centerRight,
@@ -90,7 +90,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
 
               }),
 
-              const SizedBox(height: 10,),
+              const SizedBox(height: 20,),
 
               GoogleSignInButton(),
               
@@ -102,6 +102,8 @@ class _ScreenLoginState extends State<ScreenLogin> {
                   fontSize: 16,
                 ),
               ),
+
+              const SizedBox(height: 5,),
 
               button('Registrar agora', 100, 50, () {
                 Navigator.popAndPushNamed(context, 'register');

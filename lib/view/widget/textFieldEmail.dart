@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:tcc/globals.dart' as globals;
 
 Widget textFieldEmail(label, variavel, context) {
 
@@ -8,10 +9,11 @@ Widget textFieldEmail(label, variavel, context) {
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(20),
       color: Colors.white,
-      boxShadow: const [
-        BoxShadow(color: Colors.transparent, spreadRadius: 3),
+      boxShadow: [
+        BoxShadow(color: globals.primary, spreadRadius: 1),
       ],
     ),
+
     child: Padding(
       padding: const EdgeInsets.only(left: 20),
       
@@ -48,7 +50,7 @@ Widget textField(label, variavel, context) {
 
           enabledBorder: UnderlineInputBorder(
             borderRadius: BorderRadius.circular(20.0),
-            borderSide:  const BorderSide(color: Colors.transparent ),
+            borderSide:  const BorderSide(color: Colors.black ),
           ),
         ),
 

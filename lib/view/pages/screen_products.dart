@@ -92,8 +92,8 @@ class _ScreenProductsState extends State<ScreenProducts> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 color: Colors.white,
-                boxShadow: const [
-                  BoxShadow(color: Colors.transparent, spreadRadius: 3),
+                boxShadow: [
+                  BoxShadow(color: globals.primary, spreadRadius: 1),
                 ],
               ),
               child: Padding(

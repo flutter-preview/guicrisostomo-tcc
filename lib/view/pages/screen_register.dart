@@ -54,13 +54,13 @@ class _ScreenRegisterState extends State<ScreenRegister> {
               const SizedBox(height: 50,),
 
               textFieldGeneral('Nome', txtName, context),
-              const SizedBox(height: 10,),
+              const SizedBox(height: 20,),
               textFieldEmail('E-mail', txtEmail, context),
-              const SizedBox(height: 10,),
+              const SizedBox(height: 20,),
               textFieldPhone('Telefone', txtPhone, context, ''),
-              const SizedBox(height: 10,),
+              const SizedBox(height: 20,),
               TextFieldPassword(label: 'Senha', variavel: txtPassword, onFieldSubmitted: (a) {},),
-              const SizedBox(height: 10,),
+              const SizedBox(height: 20,),
               TextFieldConfirmPassword(label: 'Confirmar senha', variavel: txtConfirmPassword, fieldPassword: txtPassword),
               
               const SizedBox(height: 50,),
@@ -79,7 +79,7 @@ class _ScreenRegisterState extends State<ScreenRegister> {
 
               }),
 
-              const SizedBox(height: 10,),
+              const SizedBox(height: 20,),
 
               GoogleSignInButton(),
               const SizedBox(height: 50,),
@@ -90,6 +90,8 @@ class _ScreenRegisterState extends State<ScreenRegister> {
                   fontSize: 16,
                 ),
               ),
+
+              const SizedBox(height: 5,),
 
               button('Entrar agora', 100, 50, () {
                 Navigator.popAndPushNamed(context, 'login');

@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:tcc/globals.dart' as globals;
 
 Widget textFieldPhone(label, variavel, context, initialText) {
 
@@ -9,10 +10,11 @@ Widget textFieldPhone(label, variavel, context, initialText) {
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(20),
       color: Colors.white,
-      boxShadow: const [
-        BoxShadow(color: Colors.transparent, spreadRadius: 3),
+      boxShadow: [
+        BoxShadow(color: globals.primary, spreadRadius: 1),
       ],
     ),
+
     child: Padding(
       padding: const EdgeInsets.only(left: 20),
       
@@ -57,7 +59,7 @@ Widget textField(label, variavel, context, initialText) {
 
           enabledBorder: UnderlineInputBorder(
             borderRadius: BorderRadius.circular(20.0),
-            borderSide:  const BorderSide(color: Colors.transparent ),
+            borderSide:  const BorderSide(color: Colors.black ),
           ),
         ),
 
