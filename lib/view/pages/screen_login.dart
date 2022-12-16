@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tcc/controller/firebase/auth.dart';
 import 'package:tcc/view/widget/button.dart';
+import 'package:tcc/view/widget/buttonGoogleAuth.dart';
 import 'package:tcc/view/widget/imageMainScreens.dart';
 import 'package:tcc/view/widget/textFieldEmail.dart';
 import 'package:tcc/view/widget/textFieldPassword.dart';
@@ -77,7 +78,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
 
               const SizedBox(height: 40,),
 
-              button('Entrar', 100, 50, () {
+              button('Entrar', 260, 50, () {
 
                 if (formKey.currentState!.validate()) {
                   LoginController().login(context, txtEmail.text, txtPassword.text);
@@ -89,6 +90,10 @@ class _ScreenLoginState extends State<ScreenLogin> {
 
               }),
 
+              const SizedBox(height: 10,),
+
+              GoogleSignInButton(),
+              
               const SizedBox(height: 50,),
 
               const Text(
