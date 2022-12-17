@@ -17,19 +17,19 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(40),
-        color: Colors.white,
+        color: globals.primary,
         boxShadow: [
-          BoxShadow(color: globals.primary, spreadRadius: 1),
+          BoxShadow(color: globals.primaryBlack, spreadRadius: 3),
         ],
       ),
 
       child: _isSigningIn
-        ? const CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+        ? CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(globals.primary),
           )
         : OutlinedButton(
             style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(Colors.white),
+              backgroundColor: MaterialStateProperty.all(globals.primary),
               shape: MaterialStateProperty.all(
                 RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(40),
@@ -65,7 +65,7 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
                       'Entrar com Google',
                       style: TextStyle(
                         fontSize: 24,
-                        color: Colors.black87,
+                        color: Colors.white,
                         fontWeight: FontWeight.w600,
                       ),
                     ),

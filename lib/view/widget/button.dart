@@ -5,16 +5,16 @@ Widget button(String text, double width, double height, Function() onPressed) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(40),
-        color: Colors.white,
+        color: globals.primary,
         boxShadow: [
-          BoxShadow(color: globals.primary, spreadRadius: 1),
+          BoxShadow(color: globals.primaryBlack, spreadRadius: 3),
         ],
       ),
 
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           minimumSize: Size(width, height), 
-          backgroundColor: Colors.white,
+          backgroundColor: globals.primary,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(40),
           )
@@ -28,7 +28,7 @@ Widget button(String text, double width, double height, Function() onPressed) {
           text,
           style: const TextStyle(
             fontSize: 24,
-            color: Colors.black87,
+            color: Colors.white,
             fontWeight: FontWeight.w600,
           )
         ),
