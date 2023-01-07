@@ -125,7 +125,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
 
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(200),
+        preferredSize: const Size.fromHeight(145),
         child: AppBar(
           titleSpacing: 0,
           automaticallyImplyLeading: false,
@@ -144,20 +144,20 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
               direction: Axis.horizontal,
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.fromLTRB(10, 30, 10, 0),
                   child: Row(
                     children: [
-                      
+
                       IconButton(
                         onPressed: () => Navigator.pop(context),
                         icon: const Icon(Icons.arrow_back, color: Colors.white),
                       ),
                 
                       const Text(
-                        'Adicionar \nao carrinho',
+                        'Adicionar ao carrinho',
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 28,
+                          fontSize: 24,
                         ),
                       ),
                     ],
@@ -181,7 +181,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                       ),
 
                       Text(
-                        'R\$ ${priceProduct.toString().replaceFirst('.', '.')}',
+                        'R\$ ${priceProduct.toStringAsFixed(2).replaceFirst('.', '.')}',
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 20,
@@ -252,7 +252,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                           alignment: Alignment.bottomLeft,
                           height: 60,
                           child: Text(
-                            'R\$ ${subTotal.toString().replaceFirst('.', '.')}',
+                            'R\$ ${subTotal.toStringAsFixed(2).replaceFirst('.', ',')}',
                             style: const TextStyle(
                               fontSize: 24,
                               color: Colors.red,
