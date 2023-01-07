@@ -63,13 +63,13 @@ listViewOrder() {
                       color: Colors.white,
                       child: ListTile(
                         contentPadding: const EdgeInsets.fromLTRB(10, 10, 20, 10),
-                        leading: Icon(Icons.local_pizza, size: 50, color: globals.primary),
                         
                         title: Text(
                           'Data: $dateText',
                           style: const TextStyle(
-                            fontSize: 28,
+                            fontSize: 20,
                             color: Colors.black,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
 
