@@ -7,6 +7,7 @@ import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/floatingButton.dart';
 import 'package:tcc/view/widget/snackBars.dart';
 import 'package:tcc/globals.dart' as globals;
+import 'package:tcc/view/widget/textFieldNumberGeneral.dart';
 
 class ScreenAddItem extends StatefulWidget {
   const ScreenAddItem({super.key});
@@ -103,23 +104,6 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
             },
           )
         )
-      );
-    }
-
-    Widget textFieldQtd() {
-
-      return Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: globals.primary,
-          boxShadow: const [
-            BoxShadow(color: Colors.transparent, spreadRadius: 3),
-          ],
-        ),
-        child: Padding(
-          padding: const EdgeInsets.only(left: 20),
-          child: textField(),
-        ),
       );
     }
 
@@ -242,7 +226,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                       alignment: Alignment.bottomLeft,
                       height: 80,
                       width: MediaQuery.of(context).size.width,
-                      child: textFieldQtd(),
+                      child: textFieldNumberGeneral('Quantidade', txtQtd, context),
                     ),
 
                     Row(
