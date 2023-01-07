@@ -54,8 +54,9 @@ class _ProductItemState extends State<ProductItem> {
                           title: Text(
                             name,
                             style: TextStyle(
-                              fontSize: 24,
+                              fontSize: 20,
                               color: Colors.black,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
     
