@@ -24,7 +24,7 @@ class _BottomState extends State<Bottom> {
       backgroundColor: globals.primary,
       unselectedItemColor: Colors.white,
       selectedItemColor: Colors.white,
-      selectedFontSize: 18,
+      selectedFontSize: 14,
 
       items: <BottomNavigationBarItem>[
         const BottomNavigationBarItem(
