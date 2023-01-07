@@ -77,7 +77,7 @@ listViewOrder() {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Total: R\$ $total',
+                              'Total: R\$ ${total.toStringAsFixed(2).replaceAll('.', ',')}',
                               style: const TextStyle(
                                 color: Colors.black,
                               ),

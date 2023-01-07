@@ -70,7 +70,7 @@ class _ProductItemState extends State<ProductItem> {
                               ),
                               
                               Text(
-                                'R\$ ${price.toString().replaceFirst('.', ',')}',
+                                'R\$ ${price.toStringAsFixed(2).replaceFirst('.', ',')}',
                                 style: TextStyle(
                                   color: Colors.black,
                                 ),

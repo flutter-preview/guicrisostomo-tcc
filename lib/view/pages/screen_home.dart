@@ -108,7 +108,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                         const SizedBox(width: 5,),
 
                         Text(
-                          'TOTAL: R\$ $total'
+                          'TOTAL: R\$ ${total.toStringAsFixed(2).replaceAll('.', ',')}'
                         )
                       ],
                     ),

@@ -70,7 +70,7 @@ class _ProductsCartState extends State<ProductsCart> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Preço: R\$ ${price.toString().replaceFirst('.', ',')}',
+                                'Preço: R\$ ${price.toStringAsFixed(2).replaceFirst('.', ',')}',
                                 style: TextStyle(
                                   color: Colors.black,
                                 ),
@@ -84,7 +84,7 @@ class _ProductsCartState extends State<ProductsCart> {
                               ),
                       
                               Text(
-                                'Sub-total: R\$ ${subTotal.toString().replaceFirst('.', ',')}',
+                                'Sub-total: R\$ ${subTotal.toStringAsFixed(2).replaceFirst('.', ',')}',
                                 style: TextStyle(
                                   color: Colors.black,
                                 ),

@@ -50,7 +50,7 @@ class _ScreenInfoOrderState extends State<ScreenInfoOrder> {
                         num price = item['price'];
                         String category = item['category'];
                         String size = item['size'];
-      
+
                         return Card(
                           color: globals.primary,
                           child: ListTile(
@@ -76,7 +76,7 @@ class _ScreenInfoOrderState extends State<ScreenInfoOrder> {
                                 ),
                                 
                                 Text(
-                                  'R\$ ${price.toString().replaceFirst('.', ',')}',
+                                  'R\$ ${price.toStringAsFixed(2).replaceFirst('.', ',')}',
                                   style: const TextStyle(
                                     color: Colors.white,
                                   ),
@@ -232,7 +232,7 @@ class _ScreenInfoOrderState extends State<ScreenInfoOrder> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Total: R\$ $total',
+                        'Total: R\$ ${total.toStringAsFixed(2).replaceFirst('.', ',')}',
                       ),
       
                       /*Text(
