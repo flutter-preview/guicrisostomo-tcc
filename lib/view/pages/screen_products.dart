@@ -85,7 +85,7 @@ class _ScreenProductsState extends State<ScreenProducts> {
 
     return Scaffold(
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.fromLTRB(20, 50, 20, 20),
         child: Column(
           children: [
             Container(
@@ -106,19 +106,6 @@ class _ScreenProductsState extends State<ScreenProducts> {
                 ),
               ),
             ),
-
-            const SizedBox(height: 10,),
-
-            const Text(
-              'Produtos',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w700,
-                fontFamily: 'Roboto',
-              ),
-            ),
-
-            const SizedBox(height: 10,),
             
             ProductItem(list),
           ],

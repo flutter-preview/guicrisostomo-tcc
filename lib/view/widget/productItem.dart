@@ -63,6 +63,11 @@ class _ProductItemState extends State<ProductItem> {
                           subtitle: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+
+                              const SizedBox(
+                                height: 3,
+                              ),
+
                               Text(
                                 '$category - $size',
                                 style: TextStyle(

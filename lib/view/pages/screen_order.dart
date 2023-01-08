@@ -62,7 +62,7 @@ listViewOrder() {
                     return Card(
                       color: Colors.white,
                       child: ListTile(
-                        contentPadding: const EdgeInsets.fromLTRB(10, 10, 20, 10),
+                        contentPadding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
                         
                         title: Text(
                           'Data: $dateText',
@@ -76,10 +76,15 @@ listViewOrder() {
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            const SizedBox(
+                              height: 5,
+                            ),
+
                             Text(
                               'Total: R\$ ${total.toStringAsFixed(2).replaceAll('.', ',')}',
                               style: const TextStyle(
                                 color: Colors.black,
+                                fontSize: 16,
                               ),
                             ),
 

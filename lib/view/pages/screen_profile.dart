@@ -55,7 +55,7 @@ class _ScreenProfileState extends State<ScreenProfile> {
 
     return Scaffold(
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.fromLTRB(20, 50, 20, 20),
         child: Column(
           children: [
             Center(
@@ -100,7 +100,7 @@ class _ScreenProfileState extends State<ScreenProfile> {
               children: [
                 Card(
                   child: ListTile(
-                    contentPadding: EdgeInsets.all(10),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     title: Text('Editar dados'),
 
                     trailing: Icon(Icons.arrow_right, size: 20),
@@ -116,11 +116,11 @@ class _ScreenProfileState extends State<ScreenProfile> {
                   ),
                 ),
 
-                SizedBox(height: 10,),
+                SizedBox(height: 5,),
 
                 Card(
                   child: ListTile(
-                    contentPadding: EdgeInsets.all(10),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     title: Text('Sobre'),
 
                     trailing: Icon(Icons.arrow_right, size: 20),
@@ -134,9 +134,11 @@ class _ScreenProfileState extends State<ScreenProfile> {
                   ),
                 ),
 
+                SizedBox(height: 5,),
+
                 Card(
                   child: ListTile(
-                    contentPadding: EdgeInsets.all(10),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     title: Text('Sair'),
 
                     trailing: Icon(Icons.arrow_right, size: 20),

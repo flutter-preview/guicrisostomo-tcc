@@ -124,7 +124,7 @@ class _ScreenHomeState extends State<ScreenHome> {
     
     return Scaffold(
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.fromLTRB(20, 50, 20, 20),
         child: Column(
           children: [
             

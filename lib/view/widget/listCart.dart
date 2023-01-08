@@ -69,6 +69,11 @@ class _ProductsCartState extends State<ProductsCart> {
                           subtitle: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+
+                              const SizedBox(
+                                height: 3,
+                              ),
+                              
                               Text(
                                 'Preço: R\$ ${price.toStringAsFixed(2).replaceFirst('.', ',')}',
                                 style: TextStyle(
