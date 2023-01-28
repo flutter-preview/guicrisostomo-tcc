@@ -180,15 +180,29 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Container(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    'Descição: $descriptionProduct',
-                    style: const TextStyle(
-                      fontSize: 20,
+                Row(
+                  children: [
+                    Icon(
+                      Icons.description,
+                      color: globals.primary,
+                      size: 30,
                     ),
-                  ),
+
+                    const SizedBox(width: 10),
+
+                    Container(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        'Descição: $descriptionProduct',
+                        style: const TextStyle(
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
+
+                const SizedBox(height: 20),
             
                 /*Padding(
                   padding: const EdgeInsets.only(bottom: 80),
@@ -209,6 +223,52 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                     ]
                   ),
                 )*/
+
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(color: globals.primary, spreadRadius: 1),
+                    ],
+                  ),
+
+                  height: 85,
+                  width: MediaQuery.of(context).size.width - 20,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.add,
+                          color: globals.primary,
+                          size: 30,
+                        ),
+                  
+                        const SizedBox(width: 10),
+                  
+                        Flexible(
+                          child: Padding(
+                            padding: const EdgeInsets.only(bottom: 10),
+
+                            child: Container(
+                              alignment: Alignment.center,
+                              child: const Text(
+                                'Agregar outro item ao produto',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ),
+
+                const SizedBox(height: 20),
           
                 Padding(
                   padding: const EdgeInsets.only(bottom: 80),
@@ -221,51 +281,34 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                         child: textFieldNumberGeneral('Quantidade', txtQtd, context),
                       ),
       
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            alignment: Alignment.bottomLeft,
-                            height: 60,
-                            child: Text(
-                              'R\$ ${subTotal.toStringAsFixed(2).replaceFirst('.', ',')}',
-                              style: const TextStyle(
-                                fontSize: 24,
-                                color: Colors.red,
-                              ),
-                            ),
-                          ),
-                          
-                          Container(
-                            alignment: Alignment.bottomRight,
-                            height: 60,
-                            child: button('Adicionar', 100, 50, () async {
-                              if (formKey.currentState!.validate()) {
-                                String idSale;
-                                await SalesController().idSale().then((res) async {
-                                  idSale = res;
-                                  ProductsCartController().add(idSale, idProduct, nameProduct, priceProduct, int.parse(txtQtd.text), subTotal, categoryProduct, sizeProduct);
+                      Container(
+                        alignment: Alignment.bottomRight,
+                        height: 60,
+                        child: button('Adicionar R\$ ${subTotal.toStringAsFixed(2).replaceFirst('.', ',')}', 100, 50, () async {
+                          if (formKey.currentState!.validate()) {
+                            String idSale;
+                            await SalesController().idSale().then((res) async {
+                              idSale = res;
+                              ProductsCartController().add(idSale, idProduct, nameProduct, priceProduct, int.parse(txtQtd.text), subTotal, categoryProduct, sizeProduct);
       
-                                  await SalesController().getTotal().then((res){
-                                    SalesController().updateTotal(idSale, res + subTotal);
-                                    Navigator.pop(context);
-                                    success(context, 'Produto adicionado com sucesso');
-                                  }).catchError((e){
-                                    error(context, 'Ocorreu um erro ao adicionar o produto: ${e.code.toString()}');
-                                  });
+                              await SalesController().getTotal().then((res){
+                                SalesController().updateTotal(idSale, res + subTotal);
+                                Navigator.pop(context);
+                                success(context, 'Produto adicionado com sucesso');
+                              }).catchError((e){
+                                error(context, 'Ocorreu um erro ao adicionar o produto: ${e.code.toString()}');
+                              });
       
-                                }).catchError((e){
-                                  error(context, 'Ocorreu um erro ao adicionar o produto: ${e.code.toString()}');
-                                });
+                            }).catchError((e){
+                              error(context, 'Ocorreu um erro ao adicionar o produto: ${e.code.toString()}');
+                            });
       
-                              } else {
-                                setState(() {
-                                  autoValidation = true;
-                                });
-                              }
-                            }),
-                          ),
-                        ],
+                          } else {
+                            setState(() {
+                              autoValidation = true;
+                            });
+                          }
+                        }),
                       ),
                     ]
                   ),
