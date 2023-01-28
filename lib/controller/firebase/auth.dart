@@ -85,7 +85,9 @@ class LoginController {
   Future<void> logout(context) async {
     final GoogleSignIn googleSignIn = GoogleSignIn();
 
-    await googleSignIn.signOut();
+    if (googleSignIn.clientId != null) {
+      await googleSignIn.signOut();
+    }
     
     await FirebaseAuth.instance.signOut();
     Navigator.of(context).pop();
