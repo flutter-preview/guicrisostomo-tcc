@@ -84,14 +84,15 @@ class _ProductItemState extends State<ProductItem> {
                             ]
                           ),
     
-                          trailing: Column(
+                          trailing: Wrap(
+                            direction: Axis.horizontal,
                             children: [
                             
                             
                             Expanded(
                               child: SizedBox(
-                                width: 25,
-                                height: 25,
+                                width: 30,
+                                height: 30,
                                 child: ElevatedButton(
                                     
                                   onPressed: () {
@@ -110,7 +111,7 @@ class _ProductItemState extends State<ProductItem> {
                                   ),
     
                                   child: const Icon(
-                                    Icons.add, size: 15,
+                                    Icons.add, size: 20,
                                     color: Colors.white,
                                   ),
                                   
@@ -118,13 +119,13 @@ class _ProductItemState extends State<ProductItem> {
                               ),
                             ),
                             
-                            const SizedBox(height: 10,),
+                            const SizedBox(width: 20,),
                             
                             
                             Expanded(
                               child: SizedBox(
-                                width: 25,
-                                height: 25,
+                                width: 30,
+                                height: 30,
                                 
                                 child: ElevatedButton(
                                   
@@ -143,7 +144,7 @@ class _ProductItemState extends State<ProductItem> {
                                     foregroundColor: Colors.white,
                                   ),
                                   
-                                  child: const Icon(Icons.question_mark, size: 15, color: Colors.white,),
+                                  child: const Icon(Icons.question_mark, size: 20, color: Colors.white,),
                                 
                                   ),
                                 )
