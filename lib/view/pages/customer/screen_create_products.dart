@@ -6,7 +6,7 @@ import 'package:tcc/view/widget/textField.dart';
 import 'package:tcc/view/widget/textFieldNumberGeneral.dart';
 import 'package:tcc/globals.dart' as globals;
 
-import '../widget/bottonNavigationCustomer.dart';
+import '../../widget/bottonNavigationCustomer.dart';
 
 class ScreenCreateProducts extends StatefulWidget {
   const ScreenCreateProducts({super.key});
