@@ -21,6 +21,7 @@ import 'package:tcc/view/pages/screen_profile.dart';
 import 'package:tcc/view/pages/screen_register.dart';
 import 'package:tcc/view/pages/screen_reset_password.dart';
 import 'package:tcc/view/pages/screen_validation_email.dart';
+import 'package:tcc/view/pages/screen_verification_table.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -68,6 +69,7 @@ Future<void> main() async {
         'home' :(context) => const ScreenHome(),
         'manager' :(context) => const ScreenManager(),
         'manager/products' :(context) => const ScreenCreateProducts(),
+        'table' :(context) => const ScreenVerificationTable(),
         'cart' :(context) => const ScreenCart(),
         'products' :(context) => const ScreenProducts(),
         'products/info_product' :(context) => const ScreenInfoProduct(),

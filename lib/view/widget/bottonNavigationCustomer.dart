@@ -44,8 +44,8 @@ class _BottomState extends State<Bottom> {
           label: 'Cardápio',
         ),
         const BottomNavigationBarItem(
-          icon: Icon(Icons.manage_accounts, color: Colors.white),
-          label: 'Gerenciar',
+          icon: Icon(Icons.table_restaurant, color: Colors.white),
+          label: 'Mesa',
         ),
         const BottomNavigationBarItem(
           icon: Icon(Icons.perm_identity, color: Colors.white),
