@@ -70,7 +70,7 @@ class _BottomState extends State<Bottom> {
             break;
           case 3:
             Navigator.of(context).pop();
-            Navigator.pushNamed(context, 'manager');
+            Navigator.pushNamed(context, 'table');
             break;
           case 4:
             Navigator.of(context).pop();
