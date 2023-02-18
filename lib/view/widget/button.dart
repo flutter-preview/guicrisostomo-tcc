@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tcc/globals.dart' as globals;
 
-Widget button(String text, double width, double height, Function() onPressed) {
+Widget button(String text, double width, double height, IconData icon, Function() onPressed) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(40),
@@ -13,7 +13,7 @@ Widget button(String text, double width, double height, Function() onPressed) {
 
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          minimumSize: Size(width, height), 
+          maximumSize: Size(width, height), 
           backgroundColor: globals.primary,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(40),
@@ -24,13 +24,29 @@ Widget button(String text, double width, double height, Function() onPressed) {
           onPressed();
         },
         
-        child: Text(
-          text,
-          style: const TextStyle(
-            fontSize: 24,
-            color: Colors.white,
-            fontWeight: FontWeight.w600,
-          )
+        child: SizedBox(
+          height: height,
+          width: width,
+          child: Wrap(
+            direction: Axis.horizontal,
+            spacing: 10,
+            alignment: WrapAlignment.center,
+            runAlignment: WrapAlignment.center,
+            
+            children: [
+          
+              Icon(icon, size: 30,),
+          
+              Text(
+                text,
+                style: const TextStyle(
+                  fontSize: 24,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
         ),
 
       ),

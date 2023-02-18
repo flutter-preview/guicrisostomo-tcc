@@ -92,7 +92,7 @@ class _ScreenCreateProductsState extends State<ScreenCreateProducts> {
 
               const SizedBox(height: 50,),
 
-              button('Salvar', 100, 50, () {
+              button('Salvar', 100, 50, Icons.add, () {
 
                 if (formKey.currentState!.validate()) {
         

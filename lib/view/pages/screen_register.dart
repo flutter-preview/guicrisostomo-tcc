@@ -65,7 +65,7 @@ class _ScreenRegisterState extends State<ScreenRegister> {
               
               const SizedBox(height: 50,),
 
-              button('Cadastrar', 295, 50, () {
+              button('Cadastrar', 295, 50, Icons.person_add_outlined, () {
 
                 if (formKey.currentState!.validate()) {
         
@@ -93,7 +93,7 @@ class _ScreenRegisterState extends State<ScreenRegister> {
 
               const SizedBox(height: 5,),
 
-              button('Entrar agora', 100, 50, () {
+              button('Entrar agora', 100, 50, Icons.input_outlined, () {
                 Navigator.popAndPushNamed(context, 'login');
               })
           ],),

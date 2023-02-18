@@ -65,7 +65,7 @@ class _ScreenEditDatasState extends State<ScreenEditDatas> {
               textFieldPhone('Telefone', txtPhone, context, txtPhone.text),
               const SizedBox(height: 50,),
 
-              button('Salvar', 100, 50, () {
+              button('Salvar', 100, 50, Icons.save, () {
 
                 if (formKey.currentState!.validate()) {
           

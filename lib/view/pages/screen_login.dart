@@ -65,7 +65,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    button('Esqueci minha senha', 100, 50, () {
+                    button('Esqueci minha senha', 100, 50, Icons.question_mark, () {
                       Navigator.pushNamed(
                         context,
                         'login/forget_password',
@@ -78,7 +78,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
 
               const SizedBox(height: 40,),
 
-              button('Entrar', 295, 50, () {
+              button('Entrar', 295, 50, Icons.arrow_right, () {
 
                 if (formKey.currentState!.validate()) {
                   LoginController().login(context, txtEmail.text, txtPassword.text);
@@ -105,7 +105,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
 
               const SizedBox(height: 5,),
 
-              button('Registrar agora', 100, 50, () {
+              button('Registrar agora', 100, 50, Icons.check, () {
                 Navigator.popAndPushNamed(context, 'register');
               })
           ],),

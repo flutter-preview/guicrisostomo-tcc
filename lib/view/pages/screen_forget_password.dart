@@ -55,7 +55,7 @@ class _ScreenForgetPasswordState extends State<ScreenForgetPassword> {
         
               Container(
                 alignment: Alignment.centerRight,
-                child: button('Confirmar', 100, 50, () {
+                child: button('Confirmar', 100, 50, Icons.check, () {
 
                   if (formKey.currentState!.validate()) {
 

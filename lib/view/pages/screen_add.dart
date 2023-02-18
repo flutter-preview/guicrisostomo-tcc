@@ -284,7 +284,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                       Container(
                         alignment: Alignment.bottomRight,
                         height: 60,
-                        child: button('Adicionar R\$ ${subTotal.toStringAsFixed(2).replaceFirst('.', ',')}', 100, 50, () async {
+                        child: button('Adicionar R\$ ${subTotal.toStringAsFixed(2).replaceFirst('.', ',')}', 100, 50, Icons.add_shopping_cart, () async {
                           if (formKey.currentState!.validate()) {
                             String idSale;
                             await SalesController().idSale().then((res) async {

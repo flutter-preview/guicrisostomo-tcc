@@ -50,7 +50,7 @@ class _ScreenVerificationTableState extends State<ScreenVerificationTable> {
 
             const SizedBox(height: 10),
 
-            button('Ler QR code', 200, 50, () => null),
+            button('Ler QR code', 250, 50, Icons.qr_code_scanner, () => null),
 
             const SizedBox(height: 20),
 
@@ -69,7 +69,7 @@ class _ScreenVerificationTableState extends State<ScreenVerificationTable> {
 
             const SizedBox(height: 20),
 
-            button('Vincular', MediaQuery.of(context).size.width - 100, 50, () => null),
+            button('Vincular', MediaQuery.of(context).size.width - 100, 50, Icons.check, () => null),
           ],
         ),
       ),
