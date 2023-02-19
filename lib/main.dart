@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:tcc/controller/firebase/auth.dart';
 import 'package:tcc/firebase_options.dart';
+import 'package:tcc/view/pages/customer/screen_call_waiter.dart';
 import 'package:tcc/view/pages/screen_about.dart';
 import 'package:tcc/view/pages/customer/screen_create_products.dart';
 import 'package:tcc/view/pages/screen_add.dart';
@@ -70,6 +71,7 @@ Future<void> main() async {
         'manager' :(context) => const ScreenManager(),
         'manager/products' :(context) => const ScreenCreateProducts(),
         'table' :(context) => const ScreenVerificationTable(),
+        'waiter' :(context) => const ScreenCallWaiter(),
         'cart' :(context) => const ScreenCart(),
         'products' :(context) => const ScreenProducts(),
         'products/info_product' :(context) => const ScreenInfoProduct(),

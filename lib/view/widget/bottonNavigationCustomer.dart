@@ -48,6 +48,10 @@ class _BottomState extends State<Bottom> {
           label: 'Mesa',
         ),
         const BottomNavigationBarItem(
+          icon: Icon(Icons.room_service_outlined, color: Colors.white),
+          label: 'Garçom',
+        ),
+        const BottomNavigationBarItem(
           icon: Icon(Icons.perm_identity, color: Colors.white),
           label: 'Perfil',
         ),
@@ -73,6 +77,10 @@ class _BottomState extends State<Bottom> {
             Navigator.pushNamed(context, 'table');
             break;
           case 4:
+            Navigator.of(context).pop();
+            Navigator.pushNamed(context, 'waiter');
+            break;
+          case 5:
             Navigator.of(context).pop();
             Navigator.pushNamed(context, 'profile');
             break;
