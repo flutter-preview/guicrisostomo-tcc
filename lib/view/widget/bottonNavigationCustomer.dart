@@ -43,14 +43,18 @@ class _BottomState extends State<Bottom> {
           icon: SvgPicture.asset(iconMenu, height: 25, fit: BoxFit.fill,),
           label: 'Cardápio',
         ),
-        const BottomNavigationBarItem(
-          icon: Icon(Icons.table_restaurant, color: Colors.white),
-          label: 'Mesa',
-        ),
-        const BottomNavigationBarItem(
-          icon: Icon(Icons.room_service_outlined, color: Colors.white),
-          label: 'Garçom',
-        ),
+
+        globals.isSaleInTable ?
+          const BottomNavigationBarItem(
+            icon: Icon(Icons.room_service_outlined, color: Colors.white),
+            label: 'Garçom',
+          ) :
+          const BottomNavigationBarItem(
+            icon: Icon(Icons.table_restaurant, color: Colors.white),
+            label: 'Mesa',
+          ),
+
+        
         const BottomNavigationBarItem(
           icon: Icon(Icons.perm_identity, color: Colors.white),
           label: 'Perfil',
@@ -73,14 +77,18 @@ class _BottomState extends State<Bottom> {
             Navigator.pushNamed(context, 'products');
             break;
           case 3:
-            Navigator.of(context).pop();
-            Navigator.pushNamed(context, 'table');
-            break;
+            
+            if (globals.isSaleInTable) {
+              Navigator.of(context).pop();
+              Navigator.pushNamed(context, 'waiter');
+              break;
+            } else {
+              Navigator.of(context).pop();
+              Navigator.pushNamed(context, 'table');
+              break;
+            }
+
           case 4:
-            Navigator.of(context).pop();
-            Navigator.pushNamed(context, 'waiter');
-            break;
-          case 5:
             Navigator.of(context).pop();
             Navigator.pushNamed(context, 'profile');
             break;

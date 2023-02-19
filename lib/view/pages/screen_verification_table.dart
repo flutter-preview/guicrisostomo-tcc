@@ -1,10 +1,9 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/imageMainScreens.dart';
 import 'package:tcc/view/widget/textFieldNumberGeneral.dart';
+import 'package:tcc/globals.dart' as globals;
 
 class ScreenVerificationTable extends StatefulWidget {
   const ScreenVerificationTable({super.key});
@@ -69,7 +68,7 @@ class _ScreenVerificationTableState extends State<ScreenVerificationTable> {
 
             const SizedBox(height: 20),
 
-            button('Vincular', MediaQuery.of(context).size.width - 100, 50, Icons.check, () => null),
+            button('Vincular', MediaQuery.of(context).size.width - 100, 50, Icons.check, () => globals.isSaleInTable = !globals.isSaleInTable),
           ],
         ),
       ),
