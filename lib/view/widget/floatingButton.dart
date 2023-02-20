@@ -13,7 +13,7 @@ Widget floatingButton(context) {
         FloatingActionButton(
           backgroundColor: globals.primary,
           onPressed: () {
-            Navigator.pushNamed(context, 'cart');
+            Navigator.pushNamed(context, 'finalize_order_customer');
           },
         
           child: const Icon(
