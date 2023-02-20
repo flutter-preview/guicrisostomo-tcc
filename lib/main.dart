@@ -5,7 +5,7 @@ import 'package:tcc/controller/firebase/auth.dart';
 import 'package:tcc/firebase_options.dart';
 import 'package:tcc/view/pages/customer/screen_call_waiter.dart';
 import 'package:tcc/view/pages/customer/screen_fo_get_adress.dart';
-import 'package:tcc/view/pages/customer/screen_fo_get_phone.dart';
+import 'package:tcc/view/pages/customer/screen_fo_main.dart';
 import 'package:tcc/view/pages/customer/screen_fo_payment.dart';
 import 'package:tcc/view/pages/screen_about.dart';
 import 'package:tcc/view/pages/customer/screen_create_products.dart';
@@ -84,7 +84,7 @@ Future<void> main() async {
         'profile/about' :(context) => const ScreenAbout(),
         'order' :(context) => const ScreenOrder(),
         'order/info' :(context) => const ScreenInfoOrder(),
-        'finalize_order_customer' :(context) => const ScreenFOGetPhoneNumber(),
+        'finalize_order_customer' :(context) => const ScreenFOMain(),
         'finalize_order_customer/address' :(context) => const ScreenFOGetAddress(),
         'finalize_order_customer/payment' :(context) => const ScreenFOPayment(),
       },
