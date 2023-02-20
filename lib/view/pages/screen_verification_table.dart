@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/floatingButton.dart';
 import 'package:tcc/view/widget/imageMainScreens.dart';
 import 'package:tcc/view/widget/textFieldNumberGeneral.dart';
 import 'package:tcc/globals.dart' as globals;
+import 'package:barcode_scan2/barcode_scan2.dart';
 
 class ScreenVerificationTable extends StatefulWidget {
   const ScreenVerificationTable({super.key});
@@ -14,11 +16,74 @@ class ScreenVerificationTable extends StatefulWidget {
 }
 
 class _ScreenVerificationTableState extends State<ScreenVerificationTable> {
-
   var txtCodeTable = TextEditingController();
+
+  ScanResult? scanResult;
+
+  final _flashOnController = TextEditingController(text: 'Ligar flash');
+  final _flashOffController = TextEditingController(text: 'Desligar flash');
+  final _cancelController = TextEditingController(text: 'Cancelar');
+
+  var _aspectTolerance = 0.00;
+  var _numberOfCameras = 0;
+  var _selectedCamera = -1;
+  var _useAutoFocus = true;
+  var _autoEnableFlash = false;
+
+  static final _possibleFormats = BarcodeFormat.values.toList()
+    ..removeWhere((e) => e == BarcodeFormat.unknown);
+
+  List<BarcodeFormat> selectedFormats = [..._possibleFormats];
+
+  @override
+  void initState() {
+    super.initState();
+
+    Future.delayed(Duration.zero, () async {
+      _numberOfCameras = await BarcodeScanner.numberOfCameras;
+      setState(() {});
+    });
+  }
+
+  Future<void> _scan() async {
+    try {
+      final result = await BarcodeScanner.scan(
+        options: ScanOptions(
+          strings: {
+            'cancel': _cancelController.text,
+            'flash_on': _flashOnController.text,
+            'flash_off': _flashOffController.text,
+          },
+          restrictFormat: selectedFormats,
+          useCamera: _selectedCamera,
+          autoEnableFlash: _autoEnableFlash,
+          android: AndroidOptions(
+            aspectTolerance: _aspectTolerance,
+            useAutoFocus: _useAutoFocus,
+          ),
+        ),
+      );
+      setState(() => {
+        txtCodeTable.text = result.rawContent,
+      });
+    } on PlatformException catch (e) {
+      setState(() {
+        scanResult = ScanResult(
+          type: ResultType.Error,
+          format: BarcodeFormat.unknown,
+          rawContent: e.code == BarcodeScanner.cameraAccessDenied
+              ? 'The user did not grant the camera permission!'
+              : 'Unknown error: $e',
+        );
+
+        txtCodeTable.text = scanResult!.rawContent;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.fromLTRB(20, 50, 20, 20),
@@ -50,7 +115,11 @@ class _ScreenVerificationTableState extends State<ScreenVerificationTable> {
 
             const SizedBox(height: 10),
 
-            button('Ler QR code', 250, 50, Icons.qr_code_scanner, () => null),
+            button('Ler QR code', 250, 50, Icons.qr_code_scanner, () => {
+              _scan(),
+              globals.isSaleInTable = !globals.isSaleInTable,
+              Navigator.popAndPushNamed(context, '/home')
+            }),
 
             const SizedBox(height: 20),
 
