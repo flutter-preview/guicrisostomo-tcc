@@ -27,39 +27,67 @@ class _PartFinalizeOrderState extends State<PartFinalizeOrder> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Etapas',
-              style: TextStyle(
-                fontFamily: 'Roboto',
-                fontSize: 20,
-                fontWeight: FontWeight.w700,
+        TextButton(
+          onPressed: () => {
+            setState(() {
+              isShowPart = !isShowPart;
+            }),
+              
+            if (isShowPart) {
+              setState(() {
+                iconPart = const Icon(Icons.arrow_drop_down_rounded);
+              }),
+            } else {
+              setState(() {
+                iconPart = const Icon(Icons.arrow_right_rounded);
+              }),
+            }
+          },
+
+          style: ButtonStyle(
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
               ),
             ),
+          ),
+          
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Etapas',
+                style: TextStyle(
+                  fontFamily: 'Roboto',
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.black,
+                ),
+              ),
         
-            IconButton(
-              icon: iconPart,
-              onPressed: () {
-                setState(() {
-                  isShowPart = !isShowPart;
-                });
-                  
-                if (isShowPart) {
+              IconButton(
+                icon: iconPart,
+                color: globals.primary,
+                onPressed: () {
                   setState(() {
-                    iconPart = const Icon(Icons.arrow_drop_down_rounded);
+                    isShowPart = !isShowPart;
                   });
-                } else {
-                  setState(() {
-                    iconPart = const Icon(Icons.arrow_right_rounded);
-                  });
-                }
-              },
-            ),
-          ],
+                    
+                  if (isShowPart) {
+                    setState(() {
+                      iconPart = const Icon(Icons.arrow_drop_down_rounded);
+                    });
+                  } else {
+                    setState(() {
+                      iconPart = const Icon(Icons.arrow_right_rounded);
+                    });
+                  }
+                },
+              ),
+            ],
+          ),
         ),
 
         const SizedBox(height: 10),
@@ -67,59 +95,87 @@ class _PartFinalizeOrderState extends State<PartFinalizeOrder> {
         if (isShowPart)
           Column(
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: widget.partUser == 1 ? globals.primary : Colors.transparent,
-                  border: Border.all(
-                    color: widget.partUser == 1 ? globals.primary : Colors.transparent,
-                    width: 1,
+              TextButton(
+                onPressed: () => {
+                  setState(() {
+                    isShowDescriptionPart1 = !isShowDescriptionPart1;
+                  }),
+                    
+                  if (isShowDescriptionPart1) {
+                    setState(() {
+                      iconDescriptionPart1 = const Icon(Icons.arrow_drop_down_rounded);
+                    }),
+                  } else {
+                    setState(() {
+                      iconDescriptionPart1 = const Icon(Icons.arrow_right_rounded);
+                    }),
+                  }
+                },
+
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(widget.partUser == 1 ? globals.primary : Colors.transparent),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      side: BorderSide(color: widget.partUser == 1 ? globals.primary : Colors.transparent),
+                    ),
                   ),
-                  borderRadius: const BorderRadius.all(Radius.circular(10)),
                 ),
-                padding: widget.partUser == 1 ? const EdgeInsets.all(10) : const EdgeInsets.all(0),
-                
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: widget.partUser == 1 ? globals.primary : Colors.transparent,
+                    border: Border.all(
+                      color: widget.partUser == 1 ? globals.primary : Colors.transparent,
+                      width: 1,
+                    ),
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                  ),
+                  padding: widget.partUser == 1 ? const EdgeInsets.all(10) : const EdgeInsets.all(0),
                   
-                  children: [
-                    Icon(Icons.phone_android, color: widget.partUser == 1 ? Colors.white : globals.primary),
-                        
-                    const SizedBox(width: 10),
-                        
-                    Flexible(
-                      child: Text(
-                        widget.partUser == 1 ? 'Etapa 1: Obtendo informações como nome e telefone - Você está aqui.' : 'Etapa 1: Obtendo informações como nome e telefone.',
-                        style: TextStyle(
-                          fontFamily: 'Roboto',
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: widget.partUser == 1 ? Colors.white : Colors.black,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    
+                    children: [
+                      Icon(Icons.phone_android, color: widget.partUser == 1 ? Colors.white : globals.primary),
+                          
+                      const SizedBox(width: 10),
+                          
+                      Flexible(
+                        child: Text(
+                          widget.partUser == 1 ? 'Etapa 1: Obtendo informações como nome e telefone - Você está aqui.' : 'Etapa 1: Obtendo informações como nome e telefone.',
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: widget.partUser == 1 ? Colors.white : Colors.black,
+                          ),
                         ),
                       ),
-                    ),
-                        
-                    IconButton(
-                      icon: iconDescriptionPart1,
-                      color: widget.partUser == 1 ? Colors.white : globals.primary,
-                      onPressed: () {
-                        setState(() {
-                          isShowDescriptionPart1 = !isShowDescriptionPart1;
-                        });
                           
-                        if (isShowDescriptionPart1) {
+                      IconButton(
+                        icon: iconDescriptionPart1,
+                        color: widget.partUser == 1 ? Colors.white : globals.primary,
+                        onPressed: () {
                           setState(() {
-                            iconDescriptionPart1 = const Icon(Icons.arrow_drop_down_rounded);
+                            isShowDescriptionPart1 = !isShowDescriptionPart1;
                           });
-                        } else {
-                          setState(() {
-                            iconDescriptionPart1 = const Icon(Icons.arrow_right_rounded);
-                          });
-                        }
-                      },
-                    ),
-                  ],
+                            
+                          if (isShowDescriptionPart1) {
+                            setState(() {
+                              iconDescriptionPart1 = const Icon(Icons.arrow_drop_down_rounded);
+                            });
+                          } else {
+                            setState(() {
+                              iconDescriptionPart1 = const Icon(Icons.arrow_right_rounded);
+                            });
+                          }
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
           
@@ -139,58 +195,86 @@ class _PartFinalizeOrderState extends State<PartFinalizeOrder> {
           
               const SizedBox(height: 10),
           
-              Container(
-                decoration: BoxDecoration(
-                  color: widget.partUser == 2 ? globals.primary : Colors.transparent,
-                  border: Border.all(
-                    color: widget.partUser == 2 ? globals.primary : Colors.transparent,
-                    width: 1,
-                  ),
-                  borderRadius: const BorderRadius.all(Radius.circular(10)),
-                ),
-                padding: widget.partUser == 2 ? const EdgeInsets.all(10) : const EdgeInsets.all(0),
+              TextButton(
+                onPressed: () => {
+                  setState(() {
+                    isShowDescriptionPart2 = !isShowDescriptionPart2;
+                  }),
+                    
+                  if (isShowDescriptionPart2) {
+                    setState(() {
+                      iconDescriptionPart2 = const Icon(Icons.arrow_drop_down_rounded);
+                    }),
+                  } else {
+                    setState(() {
+                      iconDescriptionPart2 = const Icon(Icons.arrow_right_rounded);
+                    }),
+                  }
+                },
 
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Icon(Icons.location_on_outlined, color: widget.partUser == 2 ? Colors.white : globals.primary),
-                        
-                    const SizedBox(width: 10),
-                        
-                    Flexible(
-                      child: Text(
-                        widget.partUser == 2 ? 'Etapa 2: Obtendo informações do local de entrega - Você está aqui.' : 'Etapa 2: Obtendo informações do local de entrega.',
-                        style: TextStyle(
-                          fontFamily: 'Roboto',
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: widget.partUser == 2 ? Colors.white : Colors.black,
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(widget.partUser == 2 ? globals.primary : Colors.transparent),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      side: BorderSide(color: widget.partUser == 2 ? globals.primary : Colors.transparent),
+                    ),
+                  ),
+                ),
+
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: widget.partUser == 2 ? globals.primary : Colors.transparent,
+                    border: Border.all(
+                      color: widget.partUser == 2 ? globals.primary : Colors.transparent,
+                      width: 1,
+                    ),
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                  ),
+                  padding: widget.partUser == 2 ? const EdgeInsets.all(10) : const EdgeInsets.all(0),
+              
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Icon(Icons.location_on_outlined, color: widget.partUser == 2 ? Colors.white : globals.primary),
+                          
+                      const SizedBox(width: 10),
+                          
+                      Flexible(
+                        child: Text(
+                          widget.partUser == 2 ? 'Etapa 2: Obtendo informações do local de entrega - Você está aqui.' : 'Etapa 2: Obtendo informações do local de entrega.',
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: widget.partUser == 2 ? Colors.white : Colors.black,
+                          ),
                         ),
                       ),
-                    ),
-                        
-                    IconButton(
-                      icon: iconDescriptionPart2,
-                      color: widget.partUser == 2 ? Colors.white : globals.primary,
-                      onPressed: () {
-                        setState(() {
-                          isShowDescriptionPart2 = !isShowDescriptionPart2;
-                        });
                           
-                        if (isShowDescriptionPart2) {
+                      IconButton(
+                        icon: iconDescriptionPart2,
+                        color: widget.partUser == 2 ? Colors.white : globals.primary,
+                        onPressed: () {
                           setState(() {
-                            iconDescriptionPart2 = const Icon(Icons.arrow_drop_down_rounded);
+                            isShowDescriptionPart2 = !isShowDescriptionPart2;
                           });
-                        } else {
-                          setState(() {
-                            iconDescriptionPart2 = const Icon(Icons.arrow_right_rounded);
-                          });
-                        }
-                      },
-                    ),
-                  ],
+                            
+                          if (isShowDescriptionPart2) {
+                            setState(() {
+                              iconDescriptionPart2 = const Icon(Icons.arrow_drop_down_rounded);
+                            });
+                          } else {
+                            setState(() {
+                              iconDescriptionPart2 = const Icon(Icons.arrow_right_rounded);
+                            });
+                          }
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
           
@@ -210,58 +294,86 @@ class _PartFinalizeOrderState extends State<PartFinalizeOrder> {
           
               const SizedBox(height: 10),
           
-              Container(
-                decoration: BoxDecoration(
-                  color: widget.partUser == 3 ? globals.primary : Colors.transparent,
-                  border: Border.all(
-                    color: widget.partUser == 3 ? globals.primary : Colors.transparent,
-                    width: 1,
-                  ),
-                  borderRadius: const BorderRadius.all(Radius.circular(10)),
-                ),
-                padding: widget.partUser == 3 ? const EdgeInsets.all(10) : const EdgeInsets.all(0),
+              TextButton(
+                onPressed: () => {
+                  setState(() {
+                    isShowDescriptionPart3 = !isShowDescriptionPart3;
+                  }),
+                    
+                  if (isShowDescriptionPart3) {
+                    setState(() {
+                      iconDescriptionPart3 = const Icon(Icons.arrow_drop_down_rounded);
+                    }),
+                  } else {
+                    setState(() {
+                      iconDescriptionPart3 = const Icon(Icons.arrow_right_rounded);
+                    }),
+                  }
+                },
 
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Icon(Icons.attach_money, color: widget.partUser == 3 ? Colors.white : globals.primary),
-                        
-                    const SizedBox(width: 10),
-                        
-                    Flexible(
-                      child: Text(
-                        widget.partUser == 3 ? 'Etapa 3: Obtendo informações de pagamento - Você está aqui.' : 'Etapa 3: Obtendo informações de pagamento.',
-                        style: TextStyle(
-                          fontFamily: 'Roboto',
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: widget.partUser == 3 ? Colors.white : Colors.black,
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(widget.partUser == 3 ? globals.primary : Colors.transparent),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      side: BorderSide(color: widget.partUser == 3 ? globals.primary : Colors.transparent),
+                    ),
+                  ),
+                ),
+                
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: widget.partUser == 3 ? globals.primary : Colors.transparent,
+                    border: Border.all(
+                      color: widget.partUser == 3 ? globals.primary : Colors.transparent,
+                      width: 1,
+                    ),
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                  ),
+                  padding: widget.partUser == 3 ? const EdgeInsets.all(10) : const EdgeInsets.all(0),
+              
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Icon(Icons.attach_money, color: widget.partUser == 3 ? Colors.white : globals.primary),
+                          
+                      const SizedBox(width: 10),
+                          
+                      Flexible(
+                        child: Text(
+                          widget.partUser == 3 ? 'Etapa 3: Obtendo informações de pagamento - Você está aqui.' : 'Etapa 3: Obtendo informações de pagamento.',
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: widget.partUser == 3 ? Colors.white : Colors.black,
+                          ),
                         ),
                       ),
-                    ),
-                        
-                    IconButton(
-                      icon: iconDescriptionPart3,
-                      color: widget.partUser == 3 ? Colors.white : globals.primary,
-                      onPressed: () {
-                        setState(() {
-                          isShowDescriptionPart3 = !isShowDescriptionPart3;
-                        });
                           
-                        if (isShowDescriptionPart3) {
+                      IconButton(
+                        icon: iconDescriptionPart3,
+                        color: widget.partUser == 3 ? Colors.white : globals.primary,
+                        onPressed: () {
                           setState(() {
-                            iconDescriptionPart3 = const Icon(Icons.arrow_drop_down_rounded);
+                            isShowDescriptionPart3 = !isShowDescriptionPart3;
                           });
-                        } else {
-                          setState(() {
-                            iconDescriptionPart3 = const Icon(Icons.arrow_right_rounded);
-                          });
-                        }
-                      },
-                    ),
-                  ],
+                            
+                          if (isShowDescriptionPart3) {
+                            setState(() {
+                              iconDescriptionPart3 = const Icon(Icons.arrow_drop_down_rounded);
+                            });
+                          } else {
+                            setState(() {
+                              iconDescriptionPart3 = const Icon(Icons.arrow_right_rounded);
+                            });
+                          }
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
           
