@@ -22,8 +22,6 @@ class _ScreenFOPaymentState extends State<ScreenFOPayment> {
 
   String methodSelected = 'Dinheiro';
 
-  bool isSelectedMethod = false;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -93,10 +91,9 @@ class _ScreenFOPaymentState extends State<ScreenFOPayment> {
 
             Center(
               child: SizedBox(
-                width: MediaQuery.of(context).size.width * 0.7,
+                width: MediaQuery.of(context).size.width * 0.8,
                 child: DropdownButtonFormField(
                   isExpanded: true,
-                  isDense: true,
                   iconEnabledColor: globals.primaryBlack,
                   decoration: InputDecoration(
                     label: const Text(
@@ -118,11 +115,12 @@ class _ScreenFOPaymentState extends State<ScreenFOPayment> {
                     return DropdownMenuItem(
                       value: map.name,
                       child: ButtonTheme(
-                        alignedDropdown: true,
                         child: DropdownButtonHideUnderline(
+                          
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             mainAxisSize: MainAxisSize.max,
+                            
                             children: [
                               Text(
                                 map.name,
@@ -131,12 +129,11 @@ class _ScreenFOPaymentState extends State<ScreenFOPayment> {
                                   fontSize: 16,
                                 ),
                               ),
-              
-                              if (isSelectedMethod)
-                                Icon(
-                                  map.icon,
-                                  color: globals.primaryBlack,
-                                ),
+
+                              Icon(
+                                map.icon,
+                                color: globals.primaryBlack,
+                              ),
                             ],
                           ),
                         ),
@@ -148,18 +145,6 @@ class _ScreenFOPaymentState extends State<ScreenFOPayment> {
                     setState(() {
                       methodSelected = value.toString();
                     });
-                  },
-              
-                  onTap: () => {
-                    setState(() {
-                      isSelectedMethod = true;
-                    }),
-                  },
-              
-                  onSaved: (newValue) => {
-                    setState(() {
-                      isSelectedMethod = false;
-                    }),
                   },
               
                   value: methodSelected,

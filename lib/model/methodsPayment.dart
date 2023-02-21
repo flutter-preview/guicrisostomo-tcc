@@ -8,8 +8,4 @@ class MethodsPayment {
     required this.name,
     required this.icon,
   });
-
-  IconData getIcon(name) {
-    return icon;
-  }
 }
