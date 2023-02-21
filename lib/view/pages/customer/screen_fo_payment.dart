@@ -99,10 +99,6 @@ class _ScreenFOPaymentState extends State<ScreenFOPayment> {
                   isDense: true,
                   iconEnabledColor: globals.primaryBlack,
                   decoration: InputDecoration(
-                    prefixIcon: Icon(
-                      paymentMethods.singleWhere((element) => element.name == methodSelected).icon,
-                      color: globals.primaryBlack,
-                    ),
                     label: const Text(
                       'Método de pagamento',
                       style: TextStyle(
