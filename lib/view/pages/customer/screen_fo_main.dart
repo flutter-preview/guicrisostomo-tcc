@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:tcc/globals.dart' as globals;
+import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/customer/partFinalizeOrder.dart';
 import 'package:tcc/view/widget/floatingButton.dart';
+import 'package:tcc/view/widget/textFieldGeneral.dart';
 
 class ScreenFOMain extends StatefulWidget {
   const ScreenFOMain({super.key});
@@ -27,6 +30,15 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
 
   @override
   Widget build(BuildContext context) {
+    var txtName = TextEditingController();
+    var txtPhone = TextEditingController();
+    var maskFormatter = MaskTextInputFormatter(
+      mask: '(##) #####-####', 
+      filter: { "#": RegExp(r'[0-9]') },
+      type: MaskAutoCompletionType.eager,
+      initialText: txtPhone.text,
+    );
+    
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(220),
@@ -90,15 +102,69 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
           children: [
             const PartFinalizeOrder(partUser: 1),
 
-            const SizedBox(height: 20),
+            TextFieldGeneral(
+                label: 'Nome',
+                variavel: txtName,
+                context: context,
+                keyboardType: TextInputType.name,
+                ico: Icons.person,
+                validator: (value) {
+                  validatorString(value!);
+                },
+              ),
 
-            button('Voltar', 300, 50, Icons.arrow_back, () => null),
+              const SizedBox(height: 20,),
+
+              TextFieldGeneral(
+                label: 'Telefone',
+                variavel: txtPhone,
+                context: context,
+                keyboardType: TextInputType.phone,
+                ico: Icons.phone,
+                validator: (value) {
+                  validatorPhone(value!);
+                },
+                onChanged: (value) => {
+                  if (value.length <= 14) {
+                    txtPhone.value = maskFormatter.updateMask(mask: "(##) ####-#####")
+                  } else {
+                    txtPhone.value = maskFormatter.updateMask(mask: "(##) #####-####")
+                  }
+                },
+              ),
+
+            const SizedBox(height: 50),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                button(
+                  'Voltar',
+                  170,
+                  50,
+                  Icons.arrow_back,
+                  () => Navigator.pop(context)
+                ),
+
+                button(
+                  'Avançar',
+                  170,
+                  50,
+                  Icons.arrow_forward,
+                  () => {
+                    Navigator.pushNamed(context, 'finalize_order_customer/address'),
+                  },
+                  false
+                ),
+              ],
+            ),
+            
           ],
         ),
       ),
 
       bottomNavigationBar: const Bottom(),
-      floatingActionButton: floatingButton(context),
     );
   }
 }
