@@ -104,7 +104,7 @@ class _ScreenFOGetAddressState extends State<ScreenFOGetAddress> {
               children: [
                 button(
                   'Voltar',
-                  170,
+                  180,
                   50,
                   Icons.arrow_back,
                   () => Navigator.pop(context)
@@ -112,7 +112,7 @@ class _ScreenFOGetAddressState extends State<ScreenFOGetAddress> {
 
                 button(
                   'Avançar',
-                  170,
+                  180,
                   50,
                   Icons.arrow_forward,
                   () => {

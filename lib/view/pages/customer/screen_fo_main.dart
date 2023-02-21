@@ -141,7 +141,7 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
               children: [
                 button(
                   'Voltar',
-                  170,
+                  180,
                   50,
                   Icons.arrow_back,
                   () => Navigator.pop(context)
@@ -149,7 +149,7 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
 
                 button(
                   'Avançar',
-                  170,
+                  180,
                   50,
                   Icons.arrow_forward,
                   () => {
