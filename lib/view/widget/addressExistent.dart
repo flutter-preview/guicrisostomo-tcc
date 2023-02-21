@@ -25,8 +25,8 @@ class AddressExistent extends StatefulWidget {
 }
 
 class _AddressExistentState extends State<AddressExistent> {
-  bool isShowAddressExistent = false;
-  Icon iconAddressExistent = const Icon(Icons.arrow_right_rounded);
+  bool isShowAddressExistent = true;
+  Icon iconAddressExistent = const Icon(Icons.arrow_drop_down_rounded);
 
   @override
   Widget build(BuildContext context) {
