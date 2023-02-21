@@ -8,7 +8,7 @@ import 'package:tcc/view/pages/customer/screen_fo_get_adress.dart';
 import 'package:tcc/view/pages/customer/screen_fo_main.dart';
 import 'package:tcc/view/pages/customer/screen_fo_payment.dart';
 import 'package:tcc/view/pages/screen_about.dart';
-import 'package:tcc/view/pages/customer/screen_create_products.dart';
+import 'package:tcc/view/pages/screen_create_products.dart';
 import 'package:tcc/view/pages/screen_add.dart';
 import 'package:tcc/view/pages/screen_cart.dart';
 import 'package:tcc/view/pages/screen_edit_datas.dart';
