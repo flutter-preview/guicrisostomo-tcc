@@ -14,7 +14,7 @@ class ScreenFOPayment extends StatefulWidget {
 
 class _ScreenFOPaymentState extends State<ScreenFOPayment> {
   List<MethodsPayment> paymentMethods = [
-    MethodsPayment(name: 'Dinheiro', icon: Icons.money_sharp),
+    MethodsPayment(name: 'Dinheiro', icon: Icons.attach_money_outlined),
     MethodsPayment(name: 'Cartão de crédito', icon: Icons.credit_card),
     MethodsPayment(name: 'Cartão de débito', icon: Icons.credit_card),
     MethodsPayment(name: 'Pix', icon: Icons.pix_sharp),
