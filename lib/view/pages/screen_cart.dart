@@ -80,9 +80,6 @@ class _ScreenCartState extends State<ScreenCart> {
                   
                   onPressed: () {
                     Navigator.pushNamed(context, 'finalize_order_customer');
-                    // SalesController().update(idSale, 1, context);
-                    // Navigator.pop(context);
-                    // Navigator.pushNamed(context, 'home');
                   },
                 ),
               );

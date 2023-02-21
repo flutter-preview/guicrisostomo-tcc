@@ -214,7 +214,7 @@ class _ScreenFOPaymentState extends State<ScreenFOPayment> {
                   50,
                   Icons.check,
                   () => {
-                    Navigator.pushNamed(context, 'finalize_order_customer/payment'),
+                    Navigator.popUntil(context, ModalRoute.withName('home'))
                   },
                 ),
               ],
