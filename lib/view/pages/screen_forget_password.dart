@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:tcc/controller/firebase/auth.dart';
+import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/button.dart';
-import 'package:tcc/view/widget/textFieldEmail.dart';
 import 'package:tcc/globals.dart' as globals;
+import 'package:tcc/view/widget/textFieldGeneral.dart';
 
 class ScreenForgetPassword extends StatefulWidget {
   const ScreenForgetPassword({super.key});
@@ -49,7 +50,17 @@ class _ScreenForgetPasswordState extends State<ScreenForgetPassword> {
                 ),
               ),
               const SizedBox(height: 5,),
-              textFieldEmail('E-mail', txtEmail, context),
+
+              TextFieldGeneral(
+                label: 'E-mail', 
+                variavel: txtEmail,
+                context: context, 
+                keyboardType: TextInputType.emailAddress,
+                ico: Icons.person,
+                validator: (value) {
+                  validatorEmail(value!);
+                },
+              ),
               
               const SizedBox(height: 10,),
         

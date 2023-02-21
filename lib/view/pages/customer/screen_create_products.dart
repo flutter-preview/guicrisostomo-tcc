@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:tcc/controller/firebase/products.dart';
+import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/dropDownButton.dart';
-import 'package:tcc/view/widget/textField.dart';
-import 'package:tcc/view/widget/textFieldNumberGeneral.dart';
+import 'package:tcc/view/widget/textFieldGeneral.dart';
 import 'package:tcc/globals.dart' as globals;
 
 import '../../widget/bottonNavigationCustomer.dart';
@@ -63,9 +63,30 @@ class _ScreenCreateProductsState extends State<ScreenCreateProducts> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center ,
             children: [
-              textFieldGeneral('Nome', txtName, context),
+              TextFieldGeneral(
+                label: 'Nome', 
+                variavel: txtName,
+                context: context, 
+                keyboardType: TextInputType.name,
+                ico: Icons.person,
+                validator: (value) {
+                  validatorString(value!);
+                },
+              ),
+
               const SizedBox(height: 10,),
-              textFieldGeneral('Descrição', txtDescription, context),
+
+              TextFieldGeneral(
+                label: 'Descrição', 
+                variavel: txtDescription,
+                context: context, 
+                keyboardType: TextInputType.multiline,
+                ico: Icons.description_outlined,
+                validator: (value) {
+                  validatorString(value!);
+                },
+              ),
+
               const SizedBox(height: 10,),
               
               DropDown(text: 'Tamanho', itemsDropDownButton: listSize, callback: (text) {
@@ -84,11 +105,29 @@ class _ScreenCreateProductsState extends State<ScreenCreateProducts> {
 
               const SizedBox(height: 10,),
 
-              textFieldNumberGeneral('Preço', txtPrice, context),
+              TextFieldGeneral(
+                label: 'Preço', 
+                variavel: txtPrice,
+                context: context, 
+                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                ico: Icons.attach_money,
+                validator: (value) {
+                  validatorNumber(value!);
+                },
+              ),
 
               const SizedBox(height: 10,),
-              
-              textFieldGeneral('URL da imagem', txtUrlImage, context),
+
+              TextFieldGeneral(
+                label: 'URL da imagem', 
+                variavel: txtUrlImage,
+                context: context, 
+                keyboardType: TextInputType.url,
+                ico: Icons.link_rounded,
+                validator: (value) {
+                  validatorString(value!);
+                },
+              ),
 
               const SizedBox(height: 50,),
 

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/floatingButton.dart';
 import 'package:tcc/view/widget/imageMainScreens.dart';
-import 'package:tcc/view/widget/textFieldNumberGeneral.dart';
+import 'package:tcc/view/widget/textFieldGeneral.dart';
 import 'package:tcc/globals.dart' as globals;
 import 'package:barcode_scan2/barcode_scan2.dart';
 
@@ -134,7 +135,16 @@ class _ScreenVerificationTableState extends State<ScreenVerificationTable> {
 
             const SizedBox(height: 10),
 
-            textFieldNumberGeneral('Código da mesa', txtCodeTable, context),
+            TextFieldGeneral(
+              label: 'Código da mesa',
+              variavel: txtCodeTable,
+              context: context,
+              keyboardType: TextInputType.text,
+              ico: Icons.qr_code_2,
+              validator: (value) {
+                validatorString(value!);
+              },
+            ),
 
             const SizedBox(height: 20),
 

@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:tcc/controller/firebase/auth.dart';
-import 'package:tcc/controller/firebase/authGoogle.dart';
+import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/buttonGoogleAuth.dart';
 import 'package:tcc/view/widget/imageMainScreens.dart';
-import 'package:tcc/view/widget/textField.dart';
-import 'package:tcc/view/widget/textFieldConfirmPassword.dart';
-import 'package:tcc/view/widget/textFieldEmail.dart';
-import 'package:tcc/view/widget/textFieldPassword.dart';
-import 'package:tcc/view/widget/textFieldPhone.dart';
+import 'package:tcc/view/widget/textFieldGeneral.dart';
 
 class ScreenRegister extends StatefulWidget {
   const ScreenRegister({super.key});
@@ -38,6 +35,25 @@ class _ScreenRegisterState extends State<ScreenRegister> {
 
   @override
   Widget build(BuildContext context) {
+    var maskFormatter = MaskTextInputFormatter(
+      mask: '(##) #####-####', 
+      filter: { "#": RegExp(r'[0-9]') },
+      type: MaskAutoCompletionType.eager,
+      initialText: '',
+    );
+
+    void register() {
+      if (formKey.currentState!.validate()) {
+        
+        LoginController().createAccount(context, txtName.text, txtEmail.text, txtPhone.text, txtPassword.text);
+
+      } else {
+        setState(() {
+          autoValidation = true;
+        });
+      }
+    }
+    
     return Scaffold(
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
@@ -53,29 +69,90 @@ class _ScreenRegisterState extends State<ScreenRegister> {
 
               const SizedBox(height: 50,),
 
-              textFieldGeneral('Nome', txtName, context),
-              const SizedBox(height: 20,),
-              textFieldEmail('E-mail', txtEmail, context),
-              const SizedBox(height: 20,),
-              textFieldPhone('Telefone', txtPhone, context, ''),
-              const SizedBox(height: 20,),
-              TextFieldPassword(label: 'Senha', variavel: txtPassword, onFieldSubmitted: (a) {},),
-              const SizedBox(height: 20,),
-              TextFieldConfirmPassword(label: 'Confirmar senha', variavel: txtConfirmPassword, fieldPassword: txtPassword),
               
+              TextFieldGeneral(
+                label: 'Nome',
+                variavel: txtName,
+                context: context,
+                keyboardType: TextInputType.name,
+                ico: Icons.person,
+                validator: (value) {
+                  validatorString(value!);
+                },
+              ),
+
+              const SizedBox(height: 20,),
+
+              TextFieldGeneral(
+                label: 'E-mail', 
+                variavel: txtEmail,
+                context: context, 
+                keyboardType: TextInputType.emailAddress,
+                ico: Icons.person,
+                validator: (value) {
+                  validatorEmail(value!);
+                },
+              ),
+
+              const SizedBox(height: 20,),
+
+              TextFieldGeneral(
+                label: 'Telefone',
+                variavel: txtPhone,
+                context: context,
+                keyboardType: TextInputType.phone,
+                ico: Icons.phone,
+                validator: (value) {
+                  validatorPhone(value!);
+                },
+                onChanged: (value) => {
+                  if (value.length <= 14) {
+                    txtPhone.value = maskFormatter.updateMask(mask: "(##) ####-#####")
+                  } else {
+                    txtPhone.value = maskFormatter.updateMask(mask: "(##) #####-####")
+                  }
+                },
+              ),
+
+              const SizedBox(height: 20,),
+
+              TextFieldGeneral(
+                label: 'Senha', 
+                variavel: txtPassword,
+                context: context, 
+                keyboardType: TextInputType.text,
+                ico: Icons.lock,
+
+                validator: (value) {
+                  validatorPassword(value!);
+                },
+
+                isPassword: true,
+              ),
+
+              const SizedBox(height: 20,),
+
+              TextFieldGeneral(
+                label: 'Confirmar senha', 
+                variavel: txtPassword,
+                context: context, 
+                keyboardType: TextInputType.text,
+                ico: Icons.lock,
+
+                validator: (value) {
+                  validatorConfirmPassword(value!, txtPassword);
+                },
+
+                onFieldSubmitted: (value) => {
+                  register()
+                },
+              ),
+
               const SizedBox(height: 50,),
 
               button('Cadastrar', 295, 50, Icons.person_add_outlined, () {
 
-                if (formKey.currentState!.validate()) {
-        
-                  LoginController().createAccount(context, txtName.text, txtEmail.text, txtPhone.text, txtPassword.text);
-
-                } else {
-                  setState(() {
-                    autoValidation = true;
-                  });
-                }
+                register();
 
               }),
 

@@ -2,12 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tcc/controller/firebase/productsCart.dart';
 import 'package:tcc/controller/firebase/sales.dart';
+import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/floatingButton.dart';
 import 'package:tcc/view/widget/snackBars.dart';
 import 'package:tcc/globals.dart' as globals;
-import 'package:tcc/view/widget/textFieldNumberGeneral.dart';
+import 'package:tcc/view/widget/textFieldGeneral.dart';
 
 class ScreenAddItem extends StatefulWidget {
   const ScreenAddItem({super.key});
@@ -46,65 +47,6 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
       setState(() {
         subTotal = priceProduct * 1;
       });
-    }
-
-    Widget textField() {
-      return Container(
-        margin: const EdgeInsets.only(bottom: 15),
-        padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-        
-        constraints: const BoxConstraints( 
-          minWidth: 70,
-        ),
-
-        child: Center(
-          child: TextFormField(
-            controller: txtQtd,
-            keyboardType: TextInputType.number,
-            style: const TextStyle(
-              fontSize: 24,
-              color: Colors.white,
-            ),
-
-            decoration: InputDecoration(
-              labelText: 'Quantidade',
-              labelStyle: const TextStyle(
-                fontSize: 24,
-                color: Colors.white,
-              ),
-
-              enabledBorder: UnderlineInputBorder(
-                borderRadius: BorderRadius.circular(20.0),
-                borderSide:  const BorderSide(color: Colors.transparent ),
-              ),
-            ),
-
-            validator: (value) {
-              value = value!.replaceFirst(',', '.');
-              if (int.tryParse(value) == null) {
-                return 'Entre com um valor numérico';
-              } else {
-                if (value.isEmpty) {
-                  return 'Preencha o campo com as informações necessárias';
-                }
-                return null;
-              }
-            },
-
-            onChanged: (value) {
-              if (value != "") {
-                setState(() {
-                  subTotal = int.parse(value) * priceProduct;
-                });
-              } else {
-                setState(() {
-                  subTotal = 1 * priceProduct;
-                });
-              }
-            },
-          )
-        )
-      );
     }
 
     return Scaffold(
@@ -278,7 +220,16 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                         alignment: Alignment.bottomLeft,
                         height: 80,
                         width: MediaQuery.of(context).size.width,
-                        child: textFieldNumberGeneral('Quantidade', txtQtd, context),
+                        child: TextFieldGeneral(
+                          label: 'Quantidade', 
+                          variavel: txtQtd,
+                          context: context, 
+                          keyboardType: TextInputType.number,
+                          ico: Icons.shopping_cart_outlined,
+                          validator: (value) {
+                            validatorNumber(value!);
+                          },
+                        ),
                       ),
       
                       Container(

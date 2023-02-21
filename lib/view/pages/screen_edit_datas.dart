@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:tcc/controller/firebase/auth.dart';
+import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/floatingButton.dart';
-import 'package:tcc/view/widget/textField.dart';
-import 'package:tcc/view/widget/textFieldEmail.dart';
-import 'package:tcc/view/widget/textFieldPhone.dart';
+import 'package:tcc/view/widget/textFieldGeneral.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:tcc/globals.dart' as globals;
 
 class ScreenEditDatas extends StatefulWidget {
@@ -34,6 +34,13 @@ class _ScreenEditDatasState extends State<ScreenEditDatas> {
   @override
   Widget build(BuildContext context) {
     var user = ModalRoute.of(context)!.settings.arguments as dynamic;
+    var maskFormatter = MaskTextInputFormatter(
+      mask: '(##) #####-####', 
+      filter: { "#": RegExp(r'[0-9]') },
+      type: MaskAutoCompletionType.eager,
+      initialText: txtPhone.text,
+    );
+
 
     txtName.text = user.data()['name'];
     txtEmail.text = user.data()['email'];
@@ -58,11 +65,51 @@ class _ScreenEditDatasState extends State<ScreenEditDatas> {
 
           child: Column(
             children: [
-              textFieldGeneral('Nome', txtName, context),
+              
+              TextFieldGeneral(
+                label: 'Nome', 
+                variavel: txtName,
+                context: context, 
+                keyboardType: TextInputType.name,
+                ico: Icons.person,
+                validator: (value) {
+                  validatorString(value!);
+                },
+              ),
+
               const SizedBox(height: 10,),
-              textFieldEmail('E-mail', txtEmail, context),
+
+              TextFieldGeneral(
+                label: 'E-mail', 
+                variavel: txtEmail,
+                context: context, 
+                keyboardType: TextInputType.emailAddress,
+                ico: Icons.person,
+                validator: (value) {
+                  validatorEmail(value!);
+                },
+              ),
+
               const SizedBox(height: 10,),
-              textFieldPhone('Telefone', txtPhone, context, txtPhone.text),
+
+              TextFieldGeneral(
+                label: 'Telefone', 
+                variavel: txtPhone,
+                context: context, 
+                keyboardType: TextInputType.number,
+                ico: Icons.person,
+                validator: (value) {
+                  validatorPhone(value!);
+                },
+                onChanged: (value) => {
+                  if (value.length <= 14) {
+                    txtPhone.value = maskFormatter.updateMask(mask: "(##) ####-#####")
+                  } else {
+                    txtPhone.value = maskFormatter.updateMask(mask: "(##) #####-####")
+                  }
+                }
+              ),
+
               const SizedBox(height: 50,),
 
               button('Salvar', 100, 50, Icons.save, () {

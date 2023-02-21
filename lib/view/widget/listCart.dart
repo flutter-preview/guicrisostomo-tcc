@@ -5,8 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tcc/controller/firebase/productsCart.dart';
 import 'package:tcc/controller/firebase/sales.dart';
+import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/snackBars.dart';
-import 'package:tcc/view/widget/textFieldNumberGeneral.dart';
+import 'package:tcc/view/widget/textFieldGeneral.dart';
 import 'package:tcc/globals.dart' as globals;
 
 class ProductsCart extends StatefulWidget {
@@ -123,7 +124,16 @@ class _ProductsCartState extends State<ProductsCart> {
                                             height: 90,
                                             child: Column(
                                               children: [
-                                                textFieldNumberGeneral('Quantidade', txtQtd, context),
+                                                TextFieldGeneral(
+                                                  label: 'Quantidade', 
+                                                  variavel: txtQtd,
+                                                  context: context, 
+                                                  keyboardType: TextInputType.number,
+                                                  ico: Icons.shopping_cart,
+                                                  validator: (value) {
+                                                    validatorNumber(value!);
+                                                  },
+                                                ),
                                               ],
                                             ),
                                           ),

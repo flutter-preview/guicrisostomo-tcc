@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:tcc/controller/firebase/auth.dart';
+import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/buttonGoogleAuth.dart';
 import 'package:tcc/view/widget/imageMainScreens.dart';
-import 'package:tcc/view/widget/textFieldEmail.dart';
-import 'package:tcc/view/widget/textFieldPassword.dart';
+import 'package:tcc/view/widget/textFieldGeneral.dart';
 
 class ScreenLogin extends StatefulWidget {
   const ScreenLogin({super.key});
@@ -28,6 +28,16 @@ class _ScreenLoginState extends State<ScreenLogin> {
     autoValidation = false;
     super.initState();
   }
+
+  void logIn() {
+    if (formKey.currentState!.validate()) {
+      LoginController().login(context, txtEmail.text, txtPassword.text);
+    } else {
+      setState(() {
+        autoValidation = true;
+      });
+    }
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -44,19 +54,37 @@ class _ScreenLoginState extends State<ScreenLogin> {
               imgCenter(imgLogin),
 
               const SizedBox(height: 50,),
-              textFieldEmail('E-mail', txtEmail, context),
+
+              TextFieldGeneral(
+                label: 'E-mail', 
+                variavel: txtEmail,
+                context: context, 
+                keyboardType: TextInputType.emailAddress,
+                ico: Icons.person,
+                validator: (value) {
+                  validatorEmail(value!);
+                },
+              ),
               
               const SizedBox(height: 20,),
 
-              TextFieldPassword(label: 'Senha', variavel: txtPassword, onFieldSubmitted: (a) {
-                if (formKey.currentState!.validate()) {
-                  LoginController().login(context, txtEmail.text, txtPassword.text);
-                } else {
-                  setState(() {
-                    autoValidation = true;
-                  });
-                }
-              },),
+              TextFieldGeneral(
+                label: 'Senha', 
+                variavel: txtPassword,
+                context: context, 
+                keyboardType: TextInputType.none,
+                ico: Icons.lock,
+
+                validator: (value) {
+                  validatorPassword(value!);
+                },
+
+                onFieldSubmitted: (value) => {
+                  logIn()
+                },
+
+                isPassword: true,
+              ),
               
               const SizedBox(height: 20,),
 
@@ -80,13 +108,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
 
               button('Entrar', 295, 50, Icons.arrow_right, () {
 
-                if (formKey.currentState!.validate()) {
-                  LoginController().login(context, txtEmail.text, txtPassword.text);
-                } else {
-                  setState(() {
-                    autoValidation = true;
-                  });
-                }
+                logIn();
 
               }),
 

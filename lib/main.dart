@@ -23,8 +23,6 @@ import 'package:tcc/view/pages/screen_presentation.dart';
 import 'package:tcc/view/pages/screen_products.dart';
 import 'package:tcc/view/pages/screen_profile.dart';
 import 'package:tcc/view/pages/screen_register.dart';
-import 'package:tcc/view/pages/screen_reset_password.dart';
-import 'package:tcc/view/pages/screen_validation_email.dart';
 import 'package:tcc/view/pages/screen_verification_table.dart';
 
 Future<void> main() async {
@@ -67,8 +65,6 @@ Future<void> main() async {
         'presentation' :(context) => const ScreenPresentation(),
         'login' :(context) => const ScreenLogin(),
         'login/forget_password' :(context) => const ScreenForgetPassword(),
-        'login/forget_password/validation_email' :(context) => const ScreenValidationEmail(),
-        'login/forget_password/reset_password' :(context) => const ScreenResetPassword(),
         'register' :(context) => const ScreenRegister(),
         'home' :(context) => const ScreenHome(),
         'manager' :(context) => const ScreenManager(),

@@ -123,7 +123,7 @@ class _ScreenCallWaiterState extends State<ScreenCallWaiter> {
 
             const SizedBox(height: 20),
 
-            button('Fechar mesa', 300, 50, Icons.check, () => null),
+            button('Fechar mesa', 300, 50, Icons.check, () => globals.isSaleInTable = false),
           ],
         ),
       ),
