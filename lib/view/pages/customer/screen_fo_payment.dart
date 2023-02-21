@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:tcc/model/methodsPayment.dart';
+import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/customer/partFinalizeOrder.dart';
 import 'package:tcc/globals.dart' as globals;
+import 'package:tcc/view/widget/textFieldGeneral.dart';
 
 class ScreenFOPayment extends StatefulWidget {
   const ScreenFOPayment({super.key});
@@ -13,6 +15,8 @@ class ScreenFOPayment extends StatefulWidget {
 }
 
 class _ScreenFOPaymentState extends State<ScreenFOPayment> {
+  var txtMoney = TextEditingController();
+
   List<MethodsPayment> paymentMethods = [
     MethodsPayment(name: 'Dinheiro', icon: Icons.attach_money_outlined),
     MethodsPayment(name: 'Cartão de crédito', icon: Icons.credit_card),
@@ -21,6 +25,8 @@ class _ScreenFOPaymentState extends State<ScreenFOPayment> {
   ];
 
   String methodSelected = 'Dinheiro';
+
+  bool hasMoney = false;
 
   @override
   Widget build(BuildContext context) {
@@ -151,6 +157,42 @@ class _ScreenFOPaymentState extends State<ScreenFOPayment> {
                 ),
               ),
             ),
+
+            const SizedBox(height: 10),
+
+            if(methodSelected == 'Dinheiro')
+              Column(
+                children: [
+                  SwitchListTile(
+                    title: const Text(
+                      'Precisa de troco ?',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                      ),
+                    ),
+
+                    value: hasMoney,
+                    onChanged: (value) {
+                      setState(() {
+                        hasMoney = value;
+                      });
+                    },
+                  ),
+
+                  if(hasMoney)
+                    TextFieldGeneral(
+                      label: 'Troco para quanto?', 
+                      variavel: txtMoney,
+                      context: context, 
+                      keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                      ico: Icons.attach_money,
+                      validator: (value) {
+                        validatorNumber(value!);
+                      },
+                    ),
+                ],
+              ),
 
             const SizedBox(height: 50),
 
