@@ -265,7 +265,7 @@ class _AddressExistentState extends State<AddressExistent> {
             ],
           ),
         
-        if (widget.groupLocals != 'New address')
+        if (widget.groupLocals == 'New address')
           Column(
             children: [
               const SizedBox(height: 20),
