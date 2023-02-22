@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:tcc/globals.dart' as globals;
 
 Widget floatingButton(context) {
-  return Padding(
+  print(globals.isUserTyping);
+  return !globals.isUserTyping ? Padding(
     padding: const EdgeInsets.fromLTRB(30, 0, 10, 0),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -37,5 +38,5 @@ Widget floatingButton(context) {
         ),
       ],
     ),
-  );
+  ) : const SizedBox();
 }
