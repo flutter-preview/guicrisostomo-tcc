@@ -7,9 +7,9 @@ class TextFieldGeneral extends StatefulWidget {
   TextEditingController variavel;
   BuildContext context;
   TextInputType keyboardType;
-  IconData ico;
+  IconData? ico;
   IconData? icoSuffix;
-  String? Function(String?)? validator;
+  String? Function(String?)? validator = (value) {return null;};
   void Function(String)? onFieldSubmitted = (value) {};
   void Function(String)? onChanged = (value) {};
   void Function()? eventPressIconSuffix = () {};
@@ -23,13 +23,13 @@ class TextFieldGeneral extends StatefulWidget {
       required this.variavel,
       required this.context,
       required this.keyboardType,
-      required this.ico,
-      required this.validator,
+      this.validator,
       this.onFieldSubmitted,
       this.onChanged,
       this.eventPressIconSuffix,
       this.isPassword = false,
       this.isPasswordVisible = false,
+      this.ico,
       this.icoSuffix,
     });
 
@@ -75,13 +75,13 @@ class _TextFieldGeneralState extends State<TextFieldGeneral> {
                   ? globals.primaryBlack
                   : globals.primary),
 
-            icon: Padding(
+            icon: widget.ico != null ? Padding(
               padding: const EdgeInsets.only(top: 15),
               child: Icon(
                 widget.ico,
                 size: 30
               ),
-            ),
+            ) : null,
 
             suffixIcon: widget.isPassword ? Padding(
               padding: const EdgeInsets.only(top: 20),
