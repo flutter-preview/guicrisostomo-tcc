@@ -5,7 +5,7 @@ Widget button(
     String text,
     double width,
     double height,
-    IconData icon,
+    IconData? icon,
     Function() onPressed,
 
     [
@@ -45,8 +45,8 @@ Widget button(
               runAlignment: WrapAlignment.center,
               
               children: [
-                
-                if (isLeftIconButon)
+
+                if (isLeftIconButon && icon != null)
                   Icon(icon, size: 30,),
             
                 Text(
@@ -58,7 +58,7 @@ Widget button(
                   ),
                 ),
 
-                if (!isLeftIconButon)
+                if (!isLeftIconButon && icon != null)
                   Icon(icon, size: 30,),
               ],
             ),
