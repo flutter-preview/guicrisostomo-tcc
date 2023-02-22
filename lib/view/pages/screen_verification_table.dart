@@ -119,7 +119,7 @@ class _ScreenVerificationTableState extends State<ScreenVerificationTable> {
             button('Ler QR code', 250, 50, Icons.qr_code_scanner, () => {
               _scan(),
               globals.isSaleInTable = !globals.isSaleInTable,
-              Navigator.popAndPushNamed(context, '/home')
+              Navigator.popAndPushNamed(context, 'home')
             }),
 
             const SizedBox(height: 20),
