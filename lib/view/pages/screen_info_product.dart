@@ -46,7 +46,7 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.fromLTRB(10, 40, 10, 10),
                   child: Row(
                     children: [
                       
