@@ -8,9 +8,11 @@ class TextFieldGeneral extends StatefulWidget {
   BuildContext context;
   TextInputType keyboardType;
   IconData ico;
+  IconData? icoSuffix;
   String? Function(String?)? validator;
   void Function(String)? onFieldSubmitted = (value) {};
   void Function(String)? onChanged = (value) {};
+  void Function()? eventPressIconSuffix = () {};
   bool isPassword = false;
   bool isPasswordVisible = false;
 
@@ -25,8 +27,10 @@ class TextFieldGeneral extends StatefulWidget {
       required this.validator,
       this.onFieldSubmitted,
       this.onChanged,
+      this.eventPressIconSuffix,
       this.isPassword = false,
-      this.isPasswordVisible = false
+      this.isPasswordVisible = false,
+      this.icoSuffix,
     });
 
   @override
@@ -79,20 +83,37 @@ class _TextFieldGeneralState extends State<TextFieldGeneral> {
               ),
             ),
 
-            suffixIcon: widget.isPassword ? IconButton(
-              icon: Icon(
-                widget.isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-                color: MaterialStateColor.resolveWith((states) =>
-                  states.contains(MaterialState.focused)
-                      ? globals.primaryBlack
-                      : globals.primary),
+            suffixIcon: widget.isPassword ? Padding(
+              padding: const EdgeInsets.only(top: 20),
+              child: IconButton(
+                icon: Icon(
+                  widget.isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                  color: MaterialStateColor.resolveWith((states) =>
+                    states.contains(MaterialState.focused)
+                        ? globals.primaryBlack
+                        : globals.primary),
+                  size: 30,
+                ),
+                onPressed: () {
+                  setState(() {
+                    widget.isPasswordVisible = !widget.isPasswordVisible;
+                  });
+                },
               ),
-              onPressed: () {
-                setState(() {
-                  widget.isPasswordVisible = !widget.isPasswordVisible;
-                });
-              },
-            ) : null,
+            ) : widget.icoSuffix != null ? Padding(
+              padding: const EdgeInsets.only(top: 20),
+              child: IconButton(
+                icon: Icon(
+                  widget.icoSuffix,
+                  color: MaterialStateColor.resolveWith((states) =>
+                    states.contains(MaterialState.focused)
+                        ? globals.primaryBlack
+                        : globals.primary),
+                  size: 30,
+                ),
+                onPressed: widget.eventPressIconSuffix,
+              ),
+            ) : null
           ),
 
           validator: widget.validator,
@@ -101,57 +122,29 @@ class _TextFieldGeneralState extends State<TextFieldGeneral> {
 
           onChanged: widget.onChanged,
 
-          // value = value!.replaceFirst(',', '.');
-          //   if (int.tryParse(value) == null) {
-          //     return 'Entre com um valor numérico';
-          //   } else {
-          //     if (value.isEmpty) {
-          //       return 'Preencha o campo com as informações necessárias';
-          //     }
-          //     return null;
-          //   }
+          onTap: () {
+            setState(() {
+              globals.isUserTyping = true;
+            });
+          },
 
-          //email
-          // if (value == null || value.isEmpty) {
-          //     return 'Preencha o campo com as informações necessárias';
-          //   }
+          onEditingComplete: () {
+            setState(() {
+              globals.isUserTyping = false;
+            });
+          },
 
-          //   String pattern =
-          //   r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]"
-          //   r"{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]"
-          //   r"{0,253}[a-zA-Z0-9])?)*$";
-          //   RegExp regex = RegExp(pattern);
-          //   if (!regex.hasMatch(value)) {
-          //     return 'Informe um e-mail válido';
-          //   } else {
-          //     return null;
-          //   }
+          onSaved: (value) {
+            setState(() {
+              globals.isUserTyping = false;
+            });
+          },
 
-          //senha
-          // if (variavel.text == null || variavel.text.isEmpty) {
-          //       return 'Preencha o campo com as informações necessárias';
-          //     }
-          //csenha
-          //     if (variavel.text != fieldPassword.text) {
-          //       return 'As senhas devem ser iguais';
-          //     }
-
-          //     return null;
-
-          //num
-          // value = value!.replaceAll(RegExp('[^0-9A-Za-z]'), '');
-
-          //   if (int.tryParse(value) == null) {
-          //     return 'Entre com um valor numérico';
-          //   }
-
-          //   if (variavel.text.length < 14) {
-          //     return 'Informe um número de telefone válido';
-          //   }
-
-          //   return null;
-
-          
+          onTapOutside: (event) {
+            setState(() {
+              globals.isUserTyping = false;
+            });
+          },
         )
       )
     );
