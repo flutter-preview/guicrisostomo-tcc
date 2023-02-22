@@ -93,7 +93,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    button('Esqueci minha senha', 100, 50, Icons.question_mark, () {
+                    button('Esqueci minha senha', 300, 50, null, () {
                       Navigator.pushNamed(
                         context,
                         'login/forget_password',
@@ -106,11 +106,11 @@ class _ScreenLoginState extends State<ScreenLogin> {
 
               const SizedBox(height: 40,),
 
-              button('Entrar', 295, 50, Icons.arrow_right, () {
+              button('Entrar', 295, 50, Icons.input_outlined, () {
 
                 logIn();
 
-              }),
+              }, false),
 
               const SizedBox(height: 20,),
 
@@ -127,7 +127,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
 
               const SizedBox(height: 5,),
 
-              button('Registrar agora', 100, 50, Icons.check, () {
+              button('Registrar agora', 280, 50, Icons.person_add, () {
                 Navigator.popAndPushNamed(context, 'register');
               })
           ],),

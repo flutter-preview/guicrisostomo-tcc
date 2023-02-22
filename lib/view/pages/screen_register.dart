@@ -170,7 +170,7 @@ class _ScreenRegisterState extends State<ScreenRegister> {
 
               const SizedBox(height: 5,),
 
-              button('Entrar agora', 100, 50, Icons.input_outlined, () {
+              button('Entrar agora', 280, 50, Icons.input_outlined, () {
                 Navigator.popAndPushNamed(context, 'login');
               })
           ],),

@@ -112,7 +112,7 @@ class _ScreenEditDatasState extends State<ScreenEditDatas> {
 
               const SizedBox(height: 50,),
 
-              button('Salvar', 100, 50, Icons.save, () {
+              button('Salvar', 280, 50, Icons.save, () {
 
                 if (formKey.currentState!.validate()) {
           
