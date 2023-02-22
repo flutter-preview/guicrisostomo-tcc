@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/imageMainScreens.dart';
@@ -40,11 +42,11 @@ class ScreenPresentation extends StatelessWidget {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   
-                  button('Entrar', 100, 50, Icons.input, () {
+                  button('Entrar', MediaQuery.of(context).size.width * 0.4, 70, Icons.input, () {
                     Navigator.popAndPushNamed(context, 'login');
-                  }),
+                  }, false),
 
-                  button('Cadastrar', 100, 50, Icons.person_add_outlined, () {
+                  button('Cadastrar', MediaQuery.of(context).size.width * 0.4, 70, Icons.person_add_outlined, () {
                     Navigator.popAndPushNamed(context, 'register');
                   }),
                 ],
