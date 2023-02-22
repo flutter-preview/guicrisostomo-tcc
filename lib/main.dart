@@ -13,7 +13,7 @@ import 'package:tcc/view/pages/screen_add.dart';
 import 'package:tcc/view/pages/screen_cart.dart';
 import 'package:tcc/view/pages/screen_edit_datas.dart';
 import 'package:tcc/view/pages/screen_forget_password.dart';
-import 'package:tcc/view/pages/screen_home.dart';
+import 'package:tcc/view/pages/customer/screen_home.dart';
 import 'package:tcc/view/pages/screen_info_order.dart';
 import 'package:tcc/view/pages/screen_info_product.dart';
 import 'package:tcc/view/pages/screen_login.dart';
