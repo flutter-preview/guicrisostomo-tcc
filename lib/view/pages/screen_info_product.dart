@@ -1,18 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
+import 'package:tcc/view/widget/comments.dart';
 import 'package:tcc/view/widget/floatingButton.dart';
 import 'package:tcc/view/widget/listSizeAvailable.dart';
+import 'package:tcc/view/widget/textFieldGeneral.dart';
 
-class ScreenInfoProduct extends StatelessWidget {
+class ScreenInfoProduct extends StatefulWidget {
 
-  final String imgPizza = 'lib/images/imgPizza.png';
-  final String iconOrder = 'lib/images/iconOrder.svg';
 
   const ScreenInfoProduct({super.key});
 
   @override
+  State<ScreenInfoProduct> createState() => _ScreenInfoProductState();
+}
+
+class _ScreenInfoProductState extends State<ScreenInfoProduct> {
+  final String imgPizza = 'lib/images/imgPizza.png';
+
+  final String iconOrder = 'lib/images/iconOrder.svg';
+
+  var txtComment = TextEditingController();
+
+  @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       
       appBar: PreferredSize(
@@ -86,59 +99,93 @@ class ScreenInfoProduct extends StatelessWidget {
       ),
     
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const SizedBox(height: 10,),
-
-            const Center(
-              child: Text(
-                'Tamanhos disponíveis',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 10,),
-
-            listSize('PEQUENA (4 fatias)', 'R\$ 20,00'),
-            listSize('GRANDE (8 fatias)', 'R\$ 30,00'),
-            listSize('GIGANTE (12 fatias)', 'R\$ 40,00'),
-
-            const SizedBox(height: 10,),
-
-            const Center(
-              child: Text(
-                'Informações adicionais',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 10,),
-
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: Row(
-                children: [
-                  SvgPicture.asset(
-                    iconOrder,
-                    fit: BoxFit.scaleDown,
-                    height: 20,
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            children: [
+              const SizedBox(height: 10,),
+        
+              const Center(
+                child: Text(
+                  'Tamanhos disponíveis',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
                   ),
-            
-                  const Text(
-                    'Último pedido: 19:52 do dia 27/05/2022'
-                  )
-                ],
+                ),
               ),
-            ),
+        
+              const SizedBox(height: 10,),
+        
+              listSize('PEQUENA (4 fatias)', 'R\$ 20,00'),
+              listSize('GRANDE (8 fatias)', 'R\$ 30,00'),
+              listSize('GIGANTE (12 fatias)', 'R\$ 40,00'),
+        
+              const SizedBox(height: 10,),
+        
+              const Center(
+                child: Text(
+                  'Informações adicionais',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+        
+              const SizedBox(height: 10,),
+        
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: Row(
+                  children: [
+                    SvgPicture.asset(
+                      iconOrder,
+                      fit: BoxFit.scaleDown,
+                      height: 20,
+                    ),
+              
+                    const Text(
+                      'Último pedido: 19:52 do dia 27/05/2022'
+                    )
+                  ],
+                ),
+              ),
+        
+              const SizedBox(height: 10,),
+        
+              const Text(
+                'Comentários',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+        
+              const SizedBox(height: 10,),
+        
+              comments(context),
+        
+              const SizedBox(height: 10,),
+        
+              TextFieldGeneral(
+                label: 'Escrever comentário',
+                variavel: txtComment,
+                keyboardType: TextInputType.text,
+                context: context,
+                ico: Icons.person_outline,
+                icoSuffix: Icons.send_outlined,
+                validator: (value) {
+                  validatorString(value!);
+                },
 
-            const SizedBox(height: 10,),
-          ]
+                eventPressIconSuffix: () {
+                  
+                },
+        
+              ),
+            ]
+          ),
         )
       ),
 
