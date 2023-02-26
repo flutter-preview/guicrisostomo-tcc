@@ -4,11 +4,13 @@ import 'package:tcc/globals.dart' as globals;
 class SectionVisible extends StatefulWidget {
   final Widget child;
   final String nameSection;
+  bool isShowPart = false;
 
-  const SectionVisible({
+  SectionVisible({
     super.key,
     required this.nameSection,
     required this.child,
+    this.isShowPart = false,
   });
 
   @override
@@ -16,16 +18,14 @@ class SectionVisible extends StatefulWidget {
 }
 
 class _SectionVisibleState extends State<SectionVisible> {
-  bool isShowPart = false;
-  Icon iconPart = const Icon(Icons.arrow_right_rounded);
-
+  
   @override
   Widget build(BuildContext context) {
-
+    Icon iconPart = widget.isShowPart ? const Icon(Icons.arrow_right_rounded) : const Icon(Icons.arrow_drop_down_rounded);
     return Column(
       children: [
         sectionVisible(),
-        if (isShowPart) ...[
+        if (widget.isShowPart) ...[
           widget.child,
         ],
       ],
@@ -33,6 +33,7 @@ class _SectionVisibleState extends State<SectionVisible> {
   }
 
   Widget sectionVisible() {
+    Icon iconPart = widget.isShowPart ? const Icon(Icons.arrow_right_rounded) : const Icon(Icons.arrow_drop_down_rounded);
     return Container(
       margin: const EdgeInsets.all(10),
       child: Row(
@@ -55,10 +56,10 @@ class _SectionVisibleState extends State<SectionVisible> {
             color: globals.primary,
             onPressed: () {
               setState(() {
-                isShowPart = !isShowPart;
+                widget.isShowPart = !widget.isShowPart;
               });
                 
-              if (isShowPart) {
+              if (widget.isShowPart) {
                 setState(() {
                   iconPart = const Icon(Icons.arrow_drop_down_rounded);
                 });
