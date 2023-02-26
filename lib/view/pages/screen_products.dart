@@ -6,6 +6,7 @@ import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
 import 'package:tcc/view/widget/floatingButton.dart';
 import 'package:tcc/view/widget/productItem.dart';
 import 'package:tcc/globals.dart' as globals;
+import 'package:tcc/view/widget/sectionVisible.dart';
 import 'package:tcc/view/widget/textFieldGeneral.dart';
 
 class ScreenProducts extends StatefulWidget {
@@ -49,8 +50,14 @@ class _ScreenProductsState extends State<ScreenProducts> {
               icoSuffix: Icons.search,
               angleSufixIcon: 90 * 3.14 / 180,
             ),
-            
-            ProductItem(list),
+
+            const SizedBox(height: 20),
+
+            SectionVisible(
+              nameSection: 'Produtos',
+              isShowPart: true,
+              child: ProductItem(list),
+            ),
           ],
         ),
       ),
