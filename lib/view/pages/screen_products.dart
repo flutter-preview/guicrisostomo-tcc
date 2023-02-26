@@ -47,6 +47,7 @@ class _ScreenProductsState extends State<ScreenProducts> {
               },
 
               icoSuffix: Icons.search,
+              angleSufixIcon: 90 * 3.14 / 180,
             ),
             
             ProductItem(list),
