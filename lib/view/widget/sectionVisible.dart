@@ -21,7 +21,7 @@ class _SectionVisibleState extends State<SectionVisible> {
   
   @override
   Widget build(BuildContext context) {
-    Icon iconPart = widget.isShowPart ? const Icon(Icons.arrow_right_rounded) : const Icon(Icons.arrow_drop_down_rounded);
+    Icon iconPart = widget.isShowPart ? const Icon(Icons.arrow_right_rounded, size: 30,) : const Icon(Icons.arrow_drop_down_rounded, size: 30,);
     return Column(
       children: [
         sectionVisible(),
@@ -33,7 +33,7 @@ class _SectionVisibleState extends State<SectionVisible> {
   }
 
   Widget sectionVisible() {
-    Icon iconPart = widget.isShowPart ? const Icon(Icons.arrow_right_rounded) : const Icon(Icons.arrow_drop_down_rounded);
+    Icon iconPart = widget.isShowPart ? const Icon(Icons.arrow_right_rounded, size: 30,) : const Icon(Icons.arrow_drop_down_rounded, size: 30,);
     return Container(
       margin: const EdgeInsets.all(10),
       child: Row(
@@ -41,19 +41,23 @@ class _SectionVisibleState extends State<SectionVisible> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            widget.nameSection,
-            style: const TextStyle(
-              fontFamily: 'Roboto',
-              fontSize: 20,
-              fontWeight: FontWeight.w700,
-              color: Colors.black,
+          Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: Text(
+              widget.nameSection,
+              style: const TextStyle(
+                fontFamily: 'Roboto',
+                fontSize: 20,
+                fontWeight: FontWeight.w700,
+                color: Colors.black,
+              ),
             ),
           ),
     
           IconButton(
             icon: iconPart,
             color: globals.primary,
+
             onPressed: () {
               setState(() {
                 widget.isShowPart = !widget.isShowPart;
@@ -61,11 +65,11 @@ class _SectionVisibleState extends State<SectionVisible> {
                 
               if (widget.isShowPart) {
                 setState(() {
-                  iconPart = const Icon(Icons.arrow_drop_down_rounded);
+                  iconPart = const Icon(Icons.arrow_drop_down_rounded, size: 30,);
                 });
               } else {
                 setState(() {
-                  iconPart = const Icon(Icons.arrow_right_rounded);
+                  iconPart = const Icon(Icons.arrow_right_rounded, size: 30,);
                 });
               }
             },
