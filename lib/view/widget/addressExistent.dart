@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tcc/globals.dart' as globals;
 import 'package:tcc/utils.dart';
+import 'package:tcc/view/widget/sectionVisible.dart';
 
 import 'textFieldGeneral.dart';
 
@@ -34,71 +35,10 @@ class _AddressExistentState extends State<AddressExistent> {
     return Column(
       children: [
 
-        TextButton(
-          onPressed: () => {
-            setState(() {
-              isShowAddressExistent = !isShowAddressExistent;
-            }),
-              
-            if (isShowAddressExistent) {
-              setState(() {
-                iconAddressExistent = const Icon(Icons.arrow_drop_down_rounded);
-              }),
-            } else {
-              setState(() {
-                iconAddressExistent = const Icon(Icons.arrow_right_rounded);
-              }),
-            }
-          },
-
-          style: ButtonStyle(
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-            ),
-          ),
-          
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Endereços cadastrados',
-                style: TextStyle(
-                  fontFamily: 'Roboto',
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.black,
-                ),
-              ),
-        
-              IconButton(
-                icon: iconAddressExistent,
-                color: globals.primary,
-                onPressed: () {
-                  setState(() {
-                    isShowAddressExistent = !isShowAddressExistent;
-                  });
-                    
-                  if (isShowAddressExistent) {
-                    setState(() {
-                      iconAddressExistent = const Icon(Icons.arrow_drop_down_rounded);
-                    });
-                  } else {
-                    setState(() {
-                      iconAddressExistent = const Icon(Icons.arrow_right_rounded);
-                    });
-                  }
-                },
-              ),
-            ],
-          ),
-        ),
-
-        if (isShowAddressExistent)
-          Column(
+        SectionVisible(
+          nameSection: 'Endereços cadastrados',
+          isShowPart: true,
+          child: Column(
             children: [
               Container(
                 margin: const EdgeInsets.all(10),
@@ -264,6 +204,8 @@ class _AddressExistentState extends State<AddressExistent> {
               ),
             ],
           ),
+        ),
+          
         
         if (groupLocals == 'New address')
           Column(
