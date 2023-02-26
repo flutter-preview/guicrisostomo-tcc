@@ -41,15 +41,17 @@ class _SectionVisibleState extends State<SectionVisible> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 10),
-            child: Text(
-              widget.nameSection,
-              style: const TextStyle(
-                fontFamily: 'Roboto',
-                fontSize: 20,
-                fontWeight: FontWeight.w700,
-                color: Colors.black,
+          Flexible(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: Text(
+                widget.nameSection,
+                style: const TextStyle(
+                  fontFamily: 'Roboto',
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.black,
+                ),
               ),
             ),
           ),
