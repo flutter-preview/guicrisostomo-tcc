@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tcc/controller/firebase/auth.dart';
 import 'package:tcc/utils.dart';
+import 'package:tcc/view/widget/addressExistent.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/floatingButton.dart';
@@ -25,6 +26,7 @@ class _ScreenEditDatasState extends State<ScreenEditDatas> {
   bool autoValidation = false;
 
   var formKey = GlobalKey<FormState>();
+  var formKeyAddress = GlobalKey<FormState>();
   
   @override
   void initState() {
@@ -49,6 +51,11 @@ class _ScreenEditDatasState extends State<ScreenEditDatas> {
     // if (user.data()['phone'] != null) {
     //   txtPhone.text = user.data()['phone'];
     // }
+
+    var txtAddress = TextEditingController();
+    var txtNumberHome = TextEditingController();
+    var txtComplement = TextEditingController();
+    var txtNeighborhood = TextEditingController();
 
     return Scaffold(
       appBar: AppBar(
@@ -134,6 +141,19 @@ class _ScreenEditDatasState extends State<ScreenEditDatas> {
                     ]
                   ),
                 ),
+            ),
+
+            const SizedBox(height: 20,),
+
+            Form(
+              key: formKeyAddress,
+              autovalidateMode: autoValidation ? AutovalidateMode.always : AutovalidateMode.disabled,
+              child: Column(
+                children: [
+            
+                  AddressExistent(txtAddress: txtAddress, txtNumberHome: txtNumberHome, txtNeighborhood: txtNeighborhood, txtComplement: txtComplement)
+                ]
+              ),
             ),
 
             // Form(
