@@ -5,19 +5,17 @@ import 'package:tcc/utils.dart';
 import 'textFieldGeneral.dart';
 
 class AddressExistent extends StatefulWidget {
-  String groupLocals;
   final TextEditingController txtAddress;
   final TextEditingController txtNumberHome;
   final TextEditingController txtNeighborhood;
   final TextEditingController txtComplement;
 
-  AddressExistent({
+  const AddressExistent({
     super.key,
     required this.txtAddress,
     required this.txtNumberHome,
     required this.txtNeighborhood,
     required this.txtComplement,
-    this.groupLocals = 'Casa',
   });
 
   @override
@@ -27,6 +25,8 @@ class AddressExistent extends StatefulWidget {
 class _AddressExistentState extends State<AddressExistent> {
   bool isShowAddressExistent = true;
   Icon iconAddressExistent = const Icon(Icons.arrow_drop_down_rounded);
+
+  String groupLocals = 'Casa';
 
   @override
   Widget build(BuildContext context) {
@@ -127,10 +127,10 @@ class _AddressExistentState extends State<AddressExistent> {
                         ),
                         child: RadioListTile(
                           value: 'Casa',
-                          groupValue: widget.groupLocals,
+                          groupValue: groupLocals,
                           onChanged: (value) => {
                             setState(() {
-                              widget.groupLocals = value!;
+                              groupLocals = value!;
                             }),
                           },
                           
@@ -177,10 +177,10 @@ class _AddressExistentState extends State<AddressExistent> {
                         ),
                         child: RadioListTile(
                           value: 'Trabalho',
-                          groupValue: widget.groupLocals,
+                          groupValue: groupLocals,
                           onChanged: (value) => {
                             setState(() {
-                              widget.groupLocals = value!;
+                              groupLocals = value!;
                             }),
                           },
                           
@@ -227,10 +227,10 @@ class _AddressExistentState extends State<AddressExistent> {
                         ),
                         child: RadioListTile(
                           value: 'New address',
-                          groupValue: widget.groupLocals,
+                          groupValue: groupLocals,
                           onChanged: (value) => {
                             setState(() {
-                              widget.groupLocals = value!;
+                              groupLocals = value!;
                             }),
                           },
                           
@@ -265,7 +265,7 @@ class _AddressExistentState extends State<AddressExistent> {
             ],
           ),
         
-        if (widget.groupLocals == 'New address')
+        if (groupLocals == 'New address')
           Column(
             children: [
               const SizedBox(height: 20),
