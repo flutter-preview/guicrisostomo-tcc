@@ -9,6 +9,8 @@ import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
 import 'package:tcc/view/widget/floatingButton.dart';
 import 'package:tcc/view/widget/imageMainScreens.dart';
 import 'package:tcc/view/widget/listCart.dart';
+import 'package:tcc/view/widget/sectionVisible.dart';
+import 'package:tcc/globals.dart' as globals;
 
 class ScreenHome extends StatefulWidget {
   const ScreenHome({super.key});
@@ -74,7 +76,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                   children: [
                     Row(
                       children: [
-                        const Icon(Icons.timer_outlined, size: 20, color: Color.fromRGBO(242, 169, 34, 1)),
+                        Icon(Icons.timer_outlined, size: 20, color: globals.primary),
 
                         const SizedBox(width: 5,),
 
@@ -103,7 +105,7 @@ class _ScreenHomeState extends State<ScreenHome> {
 
                     Row(
                       children: [
-                        const Icon(Icons.attach_money, size: 20, color: Color.fromRGBO(242, 169, 34, 1)),
+                        Icon(Icons.attach_money, size: 20, color: globals.primary),
 
                         const SizedBox(width: 5,),
 
@@ -131,20 +133,18 @@ class _ScreenHomeState extends State<ScreenHome> {
             imgCenter(imgHome),
             const SizedBox(height: 10,),
 
-            const Text(
-              'Informações do seu pedido',
-              style: TextStyle(
-                fontFamily: 'Roboto',
-                fontSize: 20,
-                fontWeight: FontWeight.w700,
-              ),
+            SectionVisible(
+              nameSection: 'Informações do seu pedido atual',
+              isShowPart: true,
+              child: dataSales(),
             ),
-
-            const SizedBox(height: 10,),
             
-            dataSales(),
-
-            ProductsCart(list)
+            
+            SectionVisible(
+              nameSection: 'Carrinho de compras',
+              child: ProductsCart(list),
+            ),
+            
           ]
         )
       ),
