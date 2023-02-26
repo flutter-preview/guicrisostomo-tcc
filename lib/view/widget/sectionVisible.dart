@@ -33,41 +33,44 @@ class _SectionVisibleState extends State<SectionVisible> {
   }
 
   Widget sectionVisible() {
-    return Row(
-      mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          widget.nameSection,
-          style: const TextStyle(
-            fontFamily: 'Roboto',
-            fontSize: 20,
-            fontWeight: FontWeight.w700,
-            color: Colors.black,
+    return Container(
+      margin: const EdgeInsets.all(10),
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            widget.nameSection,
+            style: const TextStyle(
+              fontFamily: 'Roboto',
+              fontSize: 20,
+              fontWeight: FontWeight.w700,
+              color: Colors.black,
+            ),
           ),
-        ),
-
-        IconButton(
-          icon: iconPart,
-          color: globals.primary,
-          onPressed: () {
-            setState(() {
-              isShowPart = !isShowPart;
-            });
-              
-            if (isShowPart) {
+    
+          IconButton(
+            icon: iconPart,
+            color: globals.primary,
+            onPressed: () {
               setState(() {
-                iconPart = const Icon(Icons.arrow_drop_down_rounded);
+                isShowPart = !isShowPart;
               });
-            } else {
-              setState(() {
-                iconPart = const Icon(Icons.arrow_right_rounded);
-              });
-            }
-          },
-        ),
-      ],
+                
+              if (isShowPart) {
+                setState(() {
+                  iconPart = const Icon(Icons.arrow_drop_down_rounded);
+                });
+              } else {
+                setState(() {
+                  iconPart = const Icon(Icons.arrow_right_rounded);
+                });
+              }
+            },
+          ),
+        ],
+      ),
     );
   }
 }
