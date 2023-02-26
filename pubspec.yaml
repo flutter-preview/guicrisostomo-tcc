@@ -47,6 +47,7 @@ dependencies:
   intl: ^0.17.0
   google_sign_in: ^5.4.2
   cached_network_image: ^3.2.3
+  barcode_scan2: ^4.2.3
 
 dev_dependencies:
   flutter_test:
