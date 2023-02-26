@@ -9,6 +9,7 @@ class TextFieldGeneral extends StatefulWidget {
   TextInputType keyboardType;
   IconData? ico;
   IconData? icoSuffix;
+  double angleSufixIcon = 0;
   String? Function(String?)? validator = (value) {return null;};
   void Function(String)? onFieldSubmitted = (value) {};
   void Function(String)? onChanged = (value) {};
@@ -31,6 +32,7 @@ class TextFieldGeneral extends StatefulWidget {
       this.isPasswordVisible = false,
       this.ico,
       this.icoSuffix,
+      this.angleSufixIcon = 0,
     });
 
   @override
@@ -102,16 +104,19 @@ class _TextFieldGeneralState extends State<TextFieldGeneral> {
               ),
             ) : widget.icoSuffix != null ? Padding(
               padding: const EdgeInsets.only(top: 20),
-              child: IconButton(
-                icon: Icon(
-                  widget.icoSuffix,
-                  color: MaterialStateColor.resolveWith((states) =>
-                    states.contains(MaterialState.focused)
-                        ? globals.primaryBlack
-                        : globals.primary),
-                  size: 30,
+              child: Transform.rotate(
+                angle: widget.angleSufixIcon,
+                child: IconButton(
+                  icon: Icon(
+                    widget.icoSuffix,
+                    color: MaterialStateColor.resolveWith((states) =>
+                      states.contains(MaterialState.focused)
+                          ? globals.primaryBlack
+                          : globals.primary),
+                    size: 30,
+                  ),
+                  onPressed: widget.eventPressIconSuffix,
                 ),
-                onPressed: widget.eventPressIconSuffix,
               ),
             ) : null
           ),
