@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tcc/model/methodsPayment.dart';
+import 'package:tcc/model/standardListDropDown.dart';
 import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
 import 'package:tcc/view/widget/button.dart';
@@ -17,11 +17,11 @@ class ScreenFOPayment extends StatefulWidget {
 class _ScreenFOPaymentState extends State<ScreenFOPayment> {
   var txtMoney = TextEditingController();
 
-  List<MethodsPayment> paymentMethods = [
-    MethodsPayment(name: 'Dinheiro', icon: Icons.attach_money_outlined),
-    MethodsPayment(name: 'Cartão de crédito', icon: Icons.credit_card),
-    MethodsPayment(name: 'Cartão de débito', icon: Icons.credit_card),
-    MethodsPayment(name: 'Pix', icon: Icons.pix_sharp),
+  List<DropDownList> paymentMethods = [
+    DropDownList(name: 'Dinheiro', icon: Icons.attach_money_outlined),
+    DropDownList(name: 'Cartão de crédito', icon: Icons.credit_card),
+    DropDownList(name: 'Cartão de débito', icon: Icons.credit_card),
+    DropDownList(name: 'Pix', icon: Icons.pix_sharp),
   ];
 
   String methodSelected = 'Dinheiro';

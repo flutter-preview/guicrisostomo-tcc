@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class MethodsPayment {
+class DropDownList {
   String name;
   IconData icon;
 
-  MethodsPayment({
+  DropDownList({
     required this.name,
     required this.icon,
   });
