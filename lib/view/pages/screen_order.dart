@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tcc/controller/firebase/sales.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
+import 'package:tcc/view/widget/dropDownButton.dart';
 import 'package:tcc/view/widget/floatingButton.dart';
 import 'package:tcc/globals.dart' as globals;
+import 'package:tcc/view/widget/sectionVisible.dart';
 
 class ScreenOrder extends StatefulWidget {
   const ScreenOrder({super.key});
@@ -21,7 +23,89 @@ class _ScreenOrderState extends State<ScreenOrder> {
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-            listViewOrder(),
+
+            SectionVisible(
+              nameSection: 'Pedidos',
+              isShowPart: true,
+              child: Column(
+                children: [
+
+                  SectionVisible(
+                    nameSection: 'Filtros', 
+                    child: Column(
+                      children: [
+                        SectionVisible(
+                          nameSection: 'Filtrar pedidos por:',
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  ElevatedButton(
+                                    onPressed: () {},
+                                    style: ButtonStyle(
+                                      backgroundColor: MaterialStateProperty.all<Color>(globals.primary),
+                                    ),
+                                    child: const Text('Todos'),
+                                  ),
+
+                                  ElevatedButton(
+                                    onPressed: () {},
+                                    style: ButtonStyle(
+                                      backgroundColor: MaterialStateProperty.all<Color>(globals.primary),
+                                    ),
+                                    child: const Text('Em andamento'),
+                                  ),
+
+                                  ElevatedButton(
+                                    onPressed: () {},
+                                    style: ButtonStyle(
+                                      backgroundColor: MaterialStateProperty.all<Color>(globals.primary),
+                                    ),
+                                    child: const Text('Finalizados'),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        const SizedBox(height: 20),
+
+                        SectionVisible(
+                          nameSection: 'Data',
+
+                          child: DropDown(
+                            text: 'Data',
+                            itemsDropDownButton: const [
+                              'Hoje',
+                              'Ontem',
+                              'Últimos 7 dias',
+                              'Últimos 30 dias',
+                              'Últimos 90 dias',
+                              'Últimos 180 dias',
+                              'Últimos 365 dias',
+                              'Personalizado',
+                            ],
+                            callback: (value) {
+                              return const Text(
+                                'Personalizasfsdmhfvgshdkfgkuadsfhgsahkfjgasfjhsdgfsadfkjhagsdfkdo',
+                                style: TextStyle(
+                                  color: Colors.blue,
+                                  fontSize: 16,
+                                ),
+                              );
+                            },
+                          )
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  listViewOrder(),
+                ],
+              )
+            )
           ],
         ),
       ),
