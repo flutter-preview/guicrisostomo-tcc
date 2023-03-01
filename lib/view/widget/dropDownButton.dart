@@ -23,63 +23,56 @@ class DropDown extends StatefulWidget {
 class _DropDownState extends State<DropDown> {
 
   Widget dropDownGeneral() {
-    return DropdownButton(
-      dropdownColor: globals.primary,
-      iconEnabledColor: globals.secundary,
-      borderRadius: BorderRadius.circular(10),
-      underline: Container(),
-      style: const TextStyle(color: Colors.white),
-      hint: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Text(
-          widget.text,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 16,
-          ),
-        ),
-      ),
-      isExpanded: true,
-      value: widget.itemSelecionado,
-      items: widget.itemsDropDownButton.map((String item) {
-        return DropdownMenuItem<String> (
-          value: item,
-          child: Padding(
-            padding: const EdgeInsets.all(10),
-            child: Text(
-              item,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-              ),
+    return SizedBox(
+      width: MediaQuery.of(context).size.width * 0.8,
+      child: DropdownButtonFormField(
+        dropdownColor: Colors.white,
+        iconEnabledColor: globals.primary,
+        borderRadius: BorderRadius.circular(10),
+        decoration: InputDecoration(
+          label: Text(
+            widget.text,
+            style: const TextStyle(
+              color: Colors.black,
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
             ),
           ),
-        );
-      }).toList(),
-      onChanged: (dynamic value) {
-        setState(() {
-          widget.itemSelecionado = value;
-        });
-
-        widget.callback(widget.itemSelecionado!);
-      },
+      
+          hintText: 'Selecione o(a) ${widget.text.toLowerCase()}',
+          filled: true,
+          fillColor: Colors.transparent,
+          errorStyle: TextStyle(color: globals.primaryBlack),
+        ),
+        isExpanded: true,
+        value: widget.itemSelecionado,
+        items: widget.itemsDropDownButton.map((String item) {
+          return DropdownMenuItem<String> (
+            value: item,
+            child: DropdownButtonHideUnderline(
+              child: Text(
+                item,
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                ),
+              ),
+            ),
+          );
+        }).toList(),
+        onChanged: (dynamic value) {
+          setState(() {
+            widget.itemSelecionado = value;
+          });
+    
+          widget.callback(widget.itemSelecionado!);
+        },
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: globals.primary,
-        boxShadow: const [
-          BoxShadow(color: Colors.transparent, spreadRadius: 3),
-        ],
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(10),
-        child: dropDownGeneral(),
-      ),
-    );
+    return dropDownGeneral();
   }
 }
