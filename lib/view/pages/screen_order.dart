@@ -2,11 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tcc/controller/firebase/sales.dart';
+import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
 import 'package:tcc/view/widget/dropDownButton.dart';
 import 'package:tcc/view/widget/floatingButton.dart';
 import 'package:tcc/globals.dart' as globals;
 import 'package:tcc/view/widget/sectionVisible.dart';
+import 'package:tcc/view/widget/textFieldGeneral.dart';
 
 class ScreenOrder extends StatefulWidget {
   const ScreenOrder({super.key});
@@ -16,6 +18,10 @@ class ScreenOrder extends StatefulWidget {
 }
 
 class _ScreenOrderState extends State<ScreenOrder> {
+  String txtDropDown = 'Hoje';
+  var txtDateInitial = TextEditingController();
+  var txtDateFinal = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,6 +83,7 @@ class _ScreenOrderState extends State<ScreenOrder> {
 
                           child: DropDown(
                             text: 'Data',
+                            itemSelecionado: txtDropDown,
                             itemsDropDownButton: const [
                               'Hoje',
                               'Ontem',
@@ -88,19 +95,48 @@ class _ScreenOrderState extends State<ScreenOrder> {
                               'Personalizado',
                             ],
                             callback: (value) {
-                              return const Text(
-                                'Personalizasfsdmhfvgshdkfgkuadsfhgsahkfjgasfjhsdgfsadfkjhagsdfkdo',
-                                style: TextStyle(
-                                  color: Colors.blue,
-                                  fontSize: 16,
-                                ),
-                              );
+                              setState(() {
+                                txtDropDown = value;
+                              });
                             },
                           )
                         ),
                       ],
                     ),
                   ),
+
+                  const SizedBox(height: 20),
+
+                  if (txtDropDown == 'Personalizado')
+                    Column(
+                      children: [
+                        TextFieldGeneral(
+                          label: 'Data inicial',
+                          variavel: txtDateInitial,
+                          context: context,
+                          keyboardType: TextInputType.datetime,
+                          ico: Icons.date_range,
+                          validator: (value) {
+                            validatorString(value!);
+                          },
+                        ),
+
+                        const SizedBox(height: 20),
+
+                        TextFieldGeneral(
+                          label: 'Data final',
+                          variavel: txtDateFinal,
+                          context: context,
+                          keyboardType: TextInputType.datetime,
+                          ico: Icons.date_range,
+                          validator: (value) {
+                            validatorString(value!);
+                          },
+                        ),
+
+                        const SizedBox(height: 20),
+                      ],
+                    ),
 
                   listViewOrder(),
                 ],
