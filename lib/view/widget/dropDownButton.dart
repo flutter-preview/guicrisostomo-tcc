@@ -7,14 +7,20 @@ class DropDown extends StatefulWidget {
   final String text;
   final List<String> itemsDropDownButton;
   final Function(String) callback;
-  const DropDown({super.key, required this.text, required this.itemsDropDownButton, required this.callback});
+  String? itemSelecionado;
+  DropDown({
+    super.key,
+    required this.text,
+    required this.itemsDropDownButton,
+    required this.callback,
+    this.itemSelecionado
+  });
 
   @override
   State<DropDown> createState() => _DropDownState();
 }
 
 class _DropDownState extends State<DropDown> {
-  String? itemSelecionado;
 
   Widget dropDownGeneral() {
     return DropdownButton(
@@ -34,7 +40,7 @@ class _DropDownState extends State<DropDown> {
         ),
       ),
       isExpanded: true,
-      value: itemSelecionado,
+      value: widget.itemSelecionado,
       items: widget.itemsDropDownButton.map((String item) {
         return DropdownMenuItem<String> (
           value: item,
@@ -52,10 +58,10 @@ class _DropDownState extends State<DropDown> {
       }).toList(),
       onChanged: (dynamic value) {
         setState(() {
-          itemSelecionado = value;
+          widget.itemSelecionado = value;
         });
 
-        widget.callback(itemSelecionado!);
+        widget.callback(widget.itemSelecionado!);
       },
     );
   }
