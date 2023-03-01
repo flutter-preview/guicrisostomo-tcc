@@ -37,69 +37,62 @@ class _ScreenOrderState extends State<ScreenOrder> {
                 children: [
 
                   SectionVisible(
-                    nameSection: 'Filtros', 
+                    nameSection: 'Filtrar', 
                     child: Column(
                       children: [
-                        SectionVisible(
-                          nameSection: 'Filtrar pedidos por:',
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                children: [
-                                  ElevatedButton(
-                                    onPressed: () {},
-                                    style: ButtonStyle(
-                                      backgroundColor: MaterialStateProperty.all<Color>(globals.primary),
-                                    ),
-                                    child: const Text('Todos'),
+                        Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () {},
+                                  style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all<Color>(globals.primary),
                                   ),
+                                  child: const Text('Todos'),
+                                ),
 
-                                  ElevatedButton(
-                                    onPressed: () {},
-                                    style: ButtonStyle(
-                                      backgroundColor: MaterialStateProperty.all<Color>(globals.primary),
-                                    ),
-                                    child: const Text('Em andamento'),
+                                ElevatedButton(
+                                  onPressed: () {},
+                                  style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all<Color>(globals.primary),
                                   ),
+                                  child: const Text('Em andamento'),
+                                ),
 
-                                  ElevatedButton(
-                                    onPressed: () {},
-                                    style: ButtonStyle(
-                                      backgroundColor: MaterialStateProperty.all<Color>(globals.primary),
-                                    ),
-                                    child: const Text('Finalizados'),
+                                ElevatedButton(
+                                  onPressed: () {},
+                                  style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all<Color>(globals.primary),
                                   ),
-                                ],
-                              ),
-                            ],
-                          ),
+                                  child: const Text('Finalizados'),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
 
                         const SizedBox(height: 20),
 
-                        SectionVisible(
-                          nameSection: 'Data',
-
-                          child: DropDown(
-                            text: 'Data',
-                            itemSelecionado: txtDropDown,
-                            itemsDropDownButton: const [
-                              'Hoje',
-                              'Ontem',
-                              'Últimos 7 dias',
-                              'Últimos 30 dias',
-                              'Últimos 90 dias',
-                              'Últimos 180 dias',
-                              'Últimos 365 dias',
-                              'Personalizado',
-                            ],
-                            callback: (value) {
-                              setState(() {
-                                txtDropDown = value;
-                              });
-                            },
-                          )
+                        DropDown(
+                          text: 'Data',
+                          itemSelecionado: txtDropDown,
+                          itemsDropDownButton: const [
+                            'Hoje',
+                            'Ontem',
+                            'Últimos 7 dias',
+                            'Últimos 30 dias',
+                            'Últimos 90 dias',
+                            'Últimos 180 dias',
+                            'Últimos 365 dias',
+                            'Personalizado',
+                          ],
+                          callback: (value) {
+                            setState(() {
+                              txtDropDown = value;
+                            });
+                          },
                         ),
                       ],
                     ),
