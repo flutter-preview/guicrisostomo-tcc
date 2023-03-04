@@ -11,6 +11,7 @@ Widget button(
     [
       bool isLeftIconButon = true,
       double fontSize = 24,
+      Color? color,
     ]
 
   ) {
@@ -18,7 +19,7 @@ Widget button(
         
         style: ElevatedButton.styleFrom(
           minimumSize: Size(width, height), 
-          backgroundColor: globals.primary,
+          backgroundColor: color ?? globals.primary,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
