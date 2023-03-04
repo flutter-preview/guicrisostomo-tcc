@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:tcc/controller/firebase/sales.dart';
 import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
@@ -21,9 +22,8 @@ class ScreenOrder extends StatefulWidget {
 class _ScreenOrderState extends State<ScreenOrder> {
   String txtDropDown = 'Hoje';
   String buttonStatusSelected = 'Todos';
-  var txtDateInitial = TextEditingController();
-  var txtDateFinal = TextEditingController();
-
+  var txtDateFilter = TextEditingController();
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,29 +64,6 @@ class _ScreenOrderState extends State<ScreenOrder> {
                                         buttonStatusSelected = 'Finalizados';
                                       })
                                     }, true, 16, buttonStatusSelected == 'Finalizados' ? globals.primaryBlack : globals.primary),
-                                    // ElevatedButton(
-                                    //   onPressed: () {},
-                                    //   style: ButtonStyle(
-                                    //     backgroundColor: MaterialStateProperty.all<Color>(globals.primaryBlack),
-                                    //   ),
-                                    //   child: const Text('Todos'),
-                                    // ),
-                              
-                                    // ElevatedButton(
-                                    //   onPressed: () {},
-                                    //   style: ButtonStyle(
-                                    //     backgroundColor: MaterialStateProperty.all<Color>(globals.primary),
-                                    //   ),
-                                    //   child: const Text('Em andamento'),
-                                    // ),
-                              
-                                    // ElevatedButton(
-                                    //   onPressed: () {},
-                                    //   style: ButtonStyle(
-                                    //     backgroundColor: MaterialStateProperty.all<Color>(globals.primary),
-                                    //   ),
-                                    //   child: const Text('Finalizados'),
-                                    // ),
                               
                                   ],
                                 );
@@ -127,31 +104,13 @@ class _ScreenOrderState extends State<ScreenOrder> {
                                   Column(
                                     children: [
                                       TextFieldGeneral(
-                                        label: 'Data inicial',
-                                        variavel: txtDateInitial,
+                                        label: 'Data',
+                                        variavel: txtDateFilter,
                                         context: context,
                                         keyboardType: TextInputType.datetime,
                                         ico: Icons.date_range,
-                                        validator: (value) {
-                                          validatorString(value!);
-                                        },
                                       ),
 
-                                      const SizedBox(height: 20),
-
-                                      TextFieldGeneral(
-                                        label: 'Data final',
-                                        variavel: txtDateFinal,
-                                        context: context,
-                                        keyboardType: TextInputType.datetime,
-                                        ico: Icons.date_range,
-                                        validator: (value) {
-                                          validatorString(value!);
-                                        },
-                                      ),
-
-                                      const SizedBox(height: 20),
-                                      const SizedBox(height: 20),
                                       const SizedBox(height: 20),
                                     ],
                                   ),
