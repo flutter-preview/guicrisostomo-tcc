@@ -46,9 +46,9 @@ class _ScreenOrderState extends State<ScreenOrder> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                                button('Todos', 0, 0, null, () => null, true, 14),
-                                button('Em andamento', 0, 0, null, () => null, true, 14),
-                                button('Finalizados', 0, 0, null, () => null, true, 14),
+                                button('Todos', 0, 0, null, () => null, true, 16),
+                                button('Em andamento', 0, 0, null, () => null, true, 16),
+                                button('Finalizados', 0, 0, null, () => null, true, 16),
                                 // ElevatedButton(
                                 //   onPressed: () {},
                                 //   style: ButtonStyle(
