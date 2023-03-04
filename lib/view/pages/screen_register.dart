@@ -134,7 +134,7 @@ class _ScreenRegisterState extends State<ScreenRegister> {
 
               TextFieldGeneral(
                 label: 'Confirmar senha', 
-                variavel: txtPassword,
+                variavel: txtConfirmPassword,
                 context: context, 
                 keyboardType: TextInputType.text,
                 ico: Icons.lock,
@@ -146,11 +146,13 @@ class _ScreenRegisterState extends State<ScreenRegister> {
                 onFieldSubmitted: (value) => {
                   register()
                 },
+
+                isPassword: true,
               ),
 
               const SizedBox(height: 50,),
 
-              button('Cadastrar', 295, 50, Icons.person_add_outlined, () {
+              button('Cadastrar', 350, 70, Icons.person_add_outlined, () {
 
                 register();
 
