@@ -24,7 +24,7 @@ Widget button(
 
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-            maximumSize: Size(width, height), 
+            minimumSize: Size(width, height), 
             backgroundColor: globals.primary,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(40),
@@ -35,33 +35,29 @@ Widget button(
             onPressed();
           },
           
-          child: SizedBox(
-            height: height,
-            width: width,
-            child: Wrap(
-              direction: Axis.horizontal,
-              spacing: 10,
-              alignment: WrapAlignment.center,
-              runAlignment: WrapAlignment.center,
-              
-              children: [
-
-                if (isLeftIconButon && icon != null)
-                  Icon(icon, size: 30,),
+          child: Wrap(
+            direction: Axis.horizontal,
+            spacing: 10,
+            alignment: WrapAlignment.center,
+            runAlignment: WrapAlignment.center,
             
-                Text(
-                  text,
-                  style: const TextStyle(
-                    fontSize: 24,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
+            children: [
 
-                if (!isLeftIconButon && icon != null)
-                  Icon(icon, size: 30,),
-              ],
-            ),
+              if (isLeftIconButon && icon != null)
+                Icon(icon, size: 30,),
+          
+              Text(
+                text,
+                style: const TextStyle(
+                  fontSize: 24,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+
+              if (!isLeftIconButon && icon != null)
+                Icon(icon, size: 30,),
+            ],
           ),
 
         ),
