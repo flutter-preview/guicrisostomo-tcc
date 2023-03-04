@@ -1,5 +1,6 @@
 // ignore_for_file: file_names
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:tcc/globals.dart' as globals;
 
 class TextFieldGeneral extends StatefulWidget {
@@ -16,6 +17,7 @@ class TextFieldGeneral extends StatefulWidget {
   void Function()? eventPressIconSuffix = () {};
   bool isPassword = false;
   bool isPasswordVisible = false;
+  List<TextInputFormatter>? inputFormatter;
 
   TextFieldGeneral
     ({
@@ -33,6 +35,7 @@ class TextFieldGeneral extends StatefulWidget {
       this.ico,
       this.icoSuffix,
       this.angleSufixIcon = 0,
+      this.inputFormatter = null,
     });
 
   @override
@@ -52,6 +55,7 @@ class _TextFieldGeneralState extends State<TextFieldGeneral> {
       child: Center(
         child: TextFormField(
           controller: widget.variavel,
+          inputFormatters: widget.inputFormatter,
           keyboardType: widget.isPasswordVisible ? TextInputType.visiblePassword : widget.keyboardType,
           obscureText: widget.isPassword ? !widget.isPasswordVisible : false,
           style: const TextStyle(
@@ -157,8 +161,6 @@ class _TextFieldGeneralState extends State<TextFieldGeneral> {
 
   @override
   Widget build(BuildContext context) {
-    final String assetIconSeePassword = 'lib/images/iconSeePassword.svg';
-    final String assetIconHidePassword = 'lib/images/iconHidePassword.svg';
 
     return Container(
       decoration: BoxDecoration(
