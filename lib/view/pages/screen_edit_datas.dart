@@ -95,7 +95,7 @@ class _ScreenEditDatasState extends State<ScreenEditDatas> {
                         variavel: txtEmail,
                         context: context, 
                         keyboardType: TextInputType.emailAddress,
-                        ico: Icons.person,
+                        ico: Icons.email_outlined,
                         validator: (value) {
                           validatorEmail(value!);
                         },
@@ -108,7 +108,7 @@ class _ScreenEditDatasState extends State<ScreenEditDatas> {
                         variavel: txtPhone,
                         context: context, 
                         keyboardType: TextInputType.number,
-                        ico: Icons.person,
+                        ico: Icons.phone,
                         inputFormatter: [maskFormatter],
 
                         validator: (value) {
