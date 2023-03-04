@@ -22,6 +22,10 @@ class _ScreenEditDatasState extends State<ScreenEditDatas> {
   var txtEmail = TextEditingController();
   var txtName = TextEditingController();
   var txtPhone = TextEditingController();
+  var txtAddress = TextEditingController();
+  var txtNumberHome = TextEditingController();
+  var txtComplement = TextEditingController();
+  var txtNeighborhood = TextEditingController();
 
   bool autoValidation = false;
 
@@ -34,15 +38,11 @@ class _ScreenEditDatasState extends State<ScreenEditDatas> {
     super.initState();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    // var user = ModalRoute.of(context)!.settings.arguments as dynamic;
-    var maskFormatter = MaskTextInputFormatter(
-      mask: '(##) #####-####', 
-      filter: { "#": RegExp(r'[0-9]') },
-      type: MaskAutoCompletionType.eager,
-      initialText: txtPhone.text,
-    );
+  var maskFormatter = MaskTextInputFormatter(
+    mask: '(##) #####-####', 
+    filter: { "#": RegExp(r'[0-9]') },
+    type: MaskAutoCompletionType.eager,
+  );
 
 
     // txtName.text = user.data()['name'];
@@ -52,11 +52,9 @@ class _ScreenEditDatasState extends State<ScreenEditDatas> {
     //   txtPhone.text = user.data()['phone'];
     // }
 
-    var txtAddress = TextEditingController();
-    var txtNumberHome = TextEditingController();
-    var txtComplement = TextEditingController();
-    var txtNeighborhood = TextEditingController();
-
+  @override
+  Widget build(BuildContext context) {
+    // var user = ModalRoute.of(context)!.settings.arguments as dynamic;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Editar dados'),
@@ -111,6 +109,8 @@ class _ScreenEditDatasState extends State<ScreenEditDatas> {
                         context: context, 
                         keyboardType: TextInputType.number,
                         ico: Icons.person,
+                        inputFormatter: [maskFormatter],
+
                         validator: (value) {
                           validatorPhone(value!);
                         },

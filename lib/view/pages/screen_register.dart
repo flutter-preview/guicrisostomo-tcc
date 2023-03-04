@@ -33,14 +33,14 @@ class _ScreenRegisterState extends State<ScreenRegister> {
     super.initState();
   }
 
+  var maskFormatter = MaskTextInputFormatter(
+    mask: '(##) #####-####', 
+    filter: { "#": RegExp(r'[0-9]') },
+    type: MaskAutoCompletionType.lazy,
+  );
+
   @override
   Widget build(BuildContext context) {
-    var maskFormatter = MaskTextInputFormatter(
-      mask: '(##) #####-####', 
-      filter: { "#": RegExp(r'[0-9]') },
-      type: MaskAutoCompletionType.eager,
-      initialText: '',
-    );
 
     void register() {
       if (formKey.currentState!.validate()) {
@@ -105,12 +105,16 @@ class _ScreenRegisterState extends State<ScreenRegister> {
                 validator: (value) {
                   validatorPhone(value!);
                 },
+                inputFormatter: [maskFormatter],
+                
                 onChanged: (value) => {
-                  if (value.length <= 14) {
-                    txtPhone.value = maskFormatter.updateMask(mask: "(##) ####-#####")
-                  } else {
-                    txtPhone.value = maskFormatter.updateMask(mask: "(##) #####-####")
-                  }
+                  setState(() {
+                    if (value.length <= 14) {
+                      txtPhone.value =maskFormatter.updateMask(mask: "(##) ####-#####");
+                    } else {
+                      txtPhone.value =maskFormatter.updateMask(mask: "(##) #####-####");
+                    }
+                  }),
                 },
               ),
 
