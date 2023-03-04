@@ -9,57 +9,50 @@ Widget button(
     Function() onPressed,
 
     [
-      bool isLeftIconButon = true
+      bool isLeftIconButon = true,
+      double fontSize = 24,
     ]
 
   ) {
-      return Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(40),
-          color: globals.primary,
-          boxShadow: [
-            BoxShadow(color: globals.primaryBlack, spreadRadius: 3),
+      return ElevatedButton(
+        
+        style: ElevatedButton.styleFrom(
+          minimumSize: Size(width, height), 
+          backgroundColor: globals.primary,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          padding: const EdgeInsets.all(10)
+        ),
+        
+        onPressed: () {
+          onPressed();
+        },
+        
+        child: Wrap(
+          direction: Axis.horizontal,
+          spacing: 10,
+          alignment: WrapAlignment.center,
+          runAlignment: WrapAlignment.center,
+          
+          children: [
+
+            if (isLeftIconButon && icon != null)
+              Icon(icon, size: 30,),
+        
+            Text(
+              text,
+              style: TextStyle(
+                fontSize: fontSize,
+                color: Colors.white,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+
+            if (!isLeftIconButon && icon != null)
+              Icon(icon, size: 30,),
           ],
         ),
 
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            minimumSize: Size(width, height), 
-            backgroundColor: globals.primary,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(40),
-            )
-          ),
-          
-          onPressed: () {
-            onPressed();
-          },
-          
-          child: Wrap(
-            direction: Axis.horizontal,
-            spacing: 10,
-            alignment: WrapAlignment.center,
-            runAlignment: WrapAlignment.center,
-            
-            children: [
-
-              if (isLeftIconButon && icon != null)
-                Icon(icon, size: 30,),
-          
-              Text(
-                text,
-                style: const TextStyle(
-                  fontSize: 24,
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-
-              if (!isLeftIconButon && icon != null)
-                Icon(icon, size: 30,),
-            ],
-          ),
-
-        ),
       );
     }

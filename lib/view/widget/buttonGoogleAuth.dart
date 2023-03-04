@@ -14,66 +14,57 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(40),
-        color: globals.primary,
-        boxShadow: [
-          BoxShadow(color: globals.primaryBlack, spreadRadius: 3),
-        ],
-      ),
-
-      child: _isSigningIn
-        ? CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(globals.primary),
-          )
-        : OutlinedButton(
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(globals.primary),
-              shape: MaterialStateProperty.all(
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(40),
-                  side: BorderSide(color: Colors.red),
-                ),
+    return _isSigningIn
+      ? CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(globals.primary),
+        )
+      : OutlinedButton(
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(globals.primary),
+            shape: MaterialStateProperty.all(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
               ),
             ),
-            onPressed: () async {
-              
-              setState(() {
-                _isSigningIn = true;
-              });
-    
-              signIn(context);
-    
-              setState(() {
-                _isSigningIn = false;
-              });
-            },
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const <Widget> [
-                  Image(
-                    image: AssetImage("lib/images/google_logo.png"),
-                    height: 35.0,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 10),
-                    child: Text(
-                      'Entrar com Google',
-                      style: TextStyle(
-                        fontSize: 24,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  )
-                ],
-              ),
+            maximumSize: MaterialStateProperty.all(
+              Size(400, 70),
             ),
           ),
-    );
+          onPressed: () async {
+            
+            setState(() {
+              _isSigningIn = true;
+            });
+    
+            signIn(context);
+    
+            setState(() {
+              _isSigningIn = false;
+            });
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Wrap(
+              direction: Axis.horizontal,
+              spacing: 20,
+
+              children: const [
+                Image(
+                  image: AssetImage("lib/images/google_logo.png"),
+                  height: 35.0,
+                ),
+
+                Text(
+                  'Entrar com Google',
+                  style: TextStyle(
+                    fontSize: 24,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                  ),
+                )
+              ],
+            ),
+          ),
+        );
   }
 }
