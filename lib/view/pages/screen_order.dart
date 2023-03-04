@@ -20,6 +20,7 @@ class ScreenOrder extends StatefulWidget {
 
 class _ScreenOrderState extends State<ScreenOrder> {
   String txtDropDown = 'Hoje';
+  String buttonStatusSelected = 'Todos';
   var txtDateInitial = TextEditingController();
   var txtDateFinal = TextEditingController();
 
@@ -43,37 +44,53 @@ class _ScreenOrderState extends State<ScreenOrder> {
                       children: [
                         Column(
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                button('Todos', 0, 0, null, () => null, true, 16),
-                                button('Em andamento', 0, 0, null, () => null, true, 16),
-                                button('Finalizados', 0, 0, null, () => null, true, 16),
-                                // ElevatedButton(
-                                //   onPressed: () {},
-                                //   style: ButtonStyle(
-                                //     backgroundColor: MaterialStateProperty.all<Color>(globals.primaryBlack),
-                                //   ),
-                                //   child: const Text('Todos'),
-                                // ),
-
-                                // ElevatedButton(
-                                //   onPressed: () {},
-                                //   style: ButtonStyle(
-                                //     backgroundColor: MaterialStateProperty.all<Color>(globals.primary),
-                                //   ),
-                                //   child: const Text('Em andamento'),
-                                // ),
-
-                                // ElevatedButton(
-                                //   onPressed: () {},
-                                //   style: ButtonStyle(
-                                //     backgroundColor: MaterialStateProperty.all<Color>(globals.primary),
-                                //   ),
-                                //   child: const Text('Finalizados'),
-                                // ),
-
-                              ],
+                            StatefulBuilder(
+                              builder: (context, setState) {
+                                return Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                    button('Todos', 0, 0, null, () => {
+                                      setState(() {
+                                        buttonStatusSelected = 'Todos';
+                                      })
+                                    }, true, 16, buttonStatusSelected == 'Todos' ? globals.primaryBlack : globals.primary),
+                                    button('Em andamento', 0, 0, null, () => {
+                                      setState(() {
+                                        buttonStatusSelected = 'Em andamento';
+                                      })
+                                    }, true, 16, buttonStatusSelected == 'Em andamento' ? globals.primaryBlack : globals.primary),
+                                    button('Finalizados', 0, 0, null, () => {
+                                      setState(() {
+                                        buttonStatusSelected = 'Finalizados';
+                                      })
+                                    }, true, 16, buttonStatusSelected == 'Finalizados' ? globals.primaryBlack : globals.primary),
+                                    // ElevatedButton(
+                                    //   onPressed: () {},
+                                    //   style: ButtonStyle(
+                                    //     backgroundColor: MaterialStateProperty.all<Color>(globals.primaryBlack),
+                                    //   ),
+                                    //   child: const Text('Todos'),
+                                    // ),
+                              
+                                    // ElevatedButton(
+                                    //   onPressed: () {},
+                                    //   style: ButtonStyle(
+                                    //     backgroundColor: MaterialStateProperty.all<Color>(globals.primary),
+                                    //   ),
+                                    //   child: const Text('Em andamento'),
+                                    // ),
+                              
+                                    // ElevatedButton(
+                                    //   onPressed: () {},
+                                    //   style: ButtonStyle(
+                                    //     backgroundColor: MaterialStateProperty.all<Color>(globals.primary),
+                                    //   ),
+                                    //   child: const Text('Finalizados'),
+                                    // ),
+                              
+                                  ],
+                                );
+                              },
                             ),
                           ],
                         ),
