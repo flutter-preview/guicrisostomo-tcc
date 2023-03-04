@@ -75,61 +75,71 @@ class _ScreenOrderState extends State<ScreenOrder> {
 
                         const SizedBox(height: 20),
 
-                        DropDown(
-                          text: 'Data',
-                          itemSelecionado: txtDropDown,
-                          itemsDropDownButton: const [
-                            'Hoje',
-                            'Ontem',
-                            'Últimos 7 dias',
-                            'Últimos 30 dias',
-                            'Últimos 90 dias',
-                            'Últimos 180 dias',
-                            'Últimos 365 dias',
-                            'Personalizado',
-                          ],
-                          callback: (value) {
-                            setState(() {
-                              txtDropDown = value;
-                            });
+                        StatefulBuilder(
+                          builder: (context, setState) {
+                            return Column(
+                              children: [
+                                DropDown(
+                                  text: 'Data',
+                                  itemSelecionado: txtDropDown,
+                                  itemsDropDownButton: const [
+                                    'Hoje',
+                                    'Ontem',
+                                    'Últimos 7 dias',
+                                    'Últimos 30 dias',
+                                    'Últimos 90 dias',
+                                    'Últimos 180 dias',
+                                    'Últimos 365 dias',
+                                    'Personalizado',
+                                  ],
+                                  callback: (value) {
+                                    setState(() {
+                                      txtDropDown = value;
+                                    });
+                                  },
+                                ),
+
+                                const SizedBox(height: 20),
+
+                                if (txtDropDown == 'Personalizado')
+                                  Column(
+                                    children: [
+                                      TextFieldGeneral(
+                                        label: 'Data inicial',
+                                        variavel: txtDateInitial,
+                                        context: context,
+                                        keyboardType: TextInputType.datetime,
+                                        ico: Icons.date_range,
+                                        validator: (value) {
+                                          validatorString(value!);
+                                        },
+                                      ),
+
+                                      const SizedBox(height: 20),
+
+                                      TextFieldGeneral(
+                                        label: 'Data final',
+                                        variavel: txtDateFinal,
+                                        context: context,
+                                        keyboardType: TextInputType.datetime,
+                                        ico: Icons.date_range,
+                                        validator: (value) {
+                                          validatorString(value!);
+                                        },
+                                      ),
+
+                        const SizedBox(height: 20),
+                        const SizedBox(height: 20),
+                                      const SizedBox(height: 20),
+                                    ],
+                                  ),
+                              ],
+                            );
                           },
                         ),
                       ],
                     ),
                   ),
-
-                  const SizedBox(height: 20),
-
-                  if (txtDropDown == 'Personalizado')
-                    Column(
-                      children: [
-                        TextFieldGeneral(
-                          label: 'Data inicial',
-                          variavel: txtDateInitial,
-                          context: context,
-                          keyboardType: TextInputType.datetime,
-                          ico: Icons.date_range,
-                          validator: (value) {
-                            validatorString(value!);
-                          },
-                        ),
-
-                        const SizedBox(height: 20),
-
-                        TextFieldGeneral(
-                          label: 'Data final',
-                          variavel: txtDateFinal,
-                          context: context,
-                          keyboardType: TextInputType.datetime,
-                          ico: Icons.date_range,
-                          validator: (value) {
-                            validatorString(value!);
-                          },
-                        ),
-
-                        const SizedBox(height: 20),
-                      ],
-                    ),
 
                   listViewOrder(),
                 ],
