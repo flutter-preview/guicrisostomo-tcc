@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:tcc/globals.dart' as globals;
 
 class TextFieldGeneral extends StatefulWidget {
@@ -17,6 +18,7 @@ class TextFieldGeneral extends StatefulWidget {
   void Function()? eventPressIconSuffix = () {};
   bool isPassword = false;
   bool isPasswordVisible = false;
+  bool multipleDate = false;
   List<TextInputFormatter>? inputFormatter;
 
   TextFieldGeneral
@@ -35,7 +37,8 @@ class TextFieldGeneral extends StatefulWidget {
       this.ico,
       this.icoSuffix,
       this.angleSufixIcon = 0,
-      this.inputFormatter = null,
+      this.inputFormatter,
+      this.multipleDate = true,
     });
 
   @override
@@ -43,7 +46,7 @@ class TextFieldGeneral extends StatefulWidget {
 }
 
 class _TextFieldGeneralState extends State<TextFieldGeneral> {
-
+  
   Widget textField() {
     return Container(
       margin: const EdgeInsets.fromLTRB(0,0, 10, 15),
@@ -56,6 +59,7 @@ class _TextFieldGeneralState extends State<TextFieldGeneral> {
         child: TextFormField(
           controller: widget.variavel,
           inputFormatters: widget.inputFormatter,
+          readOnly: widget.keyboardType == TextInputType.datetime ? true : false,
           keyboardType: widget.isPasswordVisible ? TextInputType.visiblePassword : widget.keyboardType,
           obscureText: widget.isPassword ? !widget.isPasswordVisible : false,
           style: const TextStyle(
@@ -131,10 +135,52 @@ class _TextFieldGeneralState extends State<TextFieldGeneral> {
 
           onChanged: widget.onChanged,
 
-          onTap: () {
+          onTap: () async {
+            String? transformDate;
+            DateTime? date;
+            DateTime? pickedDateSingle;
+            DateTimeRange? pickedDate;
+
             setState(() {
               globals.isUserTyping = true;
             });
+            
+            widget.multipleDate ? {
+              pickedDate = await showDateRangePicker(
+                context: widget.context,
+                firstDate: DateTime(2022),
+                lastDate: DateTime.now(),
+              ),
+
+              if (pickedDate != null) {
+                setState(() {
+                  pickedDate!.start == pickedDate.end ? {
+                    widget.variavel.text = DateFormat('dd/MM/yyyy').format(pickedDate.start),
+                  } : {
+                    widget.variavel.text = '${DateFormat('dd/MM/yyyy').format(pickedDate.start)} - ${DateFormat('dd/MM/yyyy').format(pickedDate.end)}',
+                  };
+                })
+              }
+            }: {
+              widget.variavel.text == '' ? date = DateTime.now() : {
+                transformDate = widget.variavel.text.replaceAll('/', '-'),
+                transformDate = '${transformDate.split('-')[2]}-${transformDate.split('-')[1]}-${transformDate.split('-')[0]}',
+                date = DateTime.parse(transformDate),
+              },
+
+              pickedDateSingle = await showDatePicker(
+                context: widget.context,
+                initialDate: date,
+                firstDate: DateTime(2022),
+                lastDate: DateTime.now(),
+              ),
+
+              if (pickedDateSingle != null) {
+                setState(() {
+                  widget.variavel.text = DateFormat('dd/MM/yyyy').format(pickedDateSingle!);
+                })
+              }
+            };
           },
 
           onEditingComplete: () {
