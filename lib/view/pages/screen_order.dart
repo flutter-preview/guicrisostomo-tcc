@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:tcc/controller/firebase/sales.dart';
 import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
+import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/dropDownButton.dart';
 import 'package:tcc/view/widget/floatingButton.dart';
 import 'package:tcc/globals.dart' as globals;
@@ -45,29 +46,33 @@ class _ScreenOrderState extends State<ScreenOrder> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                                ElevatedButton(
-                                  onPressed: () {},
-                                  style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all<Color>(globals.primary),
-                                  ),
-                                  child: const Text('Todos'),
-                                ),
+                                button('Todos', 0, 0, null, () => null, true, 14),
+                                button('Em andamento', 0, 0, null, () => null, true, 14),
+                                button('Finalizados', 0, 0, null, () => null, true, 14),
+                                // ElevatedButton(
+                                //   onPressed: () {},
+                                //   style: ButtonStyle(
+                                //     backgroundColor: MaterialStateProperty.all<Color>(globals.primaryBlack),
+                                //   ),
+                                //   child: const Text('Todos'),
+                                // ),
 
-                                ElevatedButton(
-                                  onPressed: () {},
-                                  style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all<Color>(globals.primary),
-                                  ),
-                                  child: const Text('Em andamento'),
-                                ),
+                                // ElevatedButton(
+                                //   onPressed: () {},
+                                //   style: ButtonStyle(
+                                //     backgroundColor: MaterialStateProperty.all<Color>(globals.primary),
+                                //   ),
+                                //   child: const Text('Em andamento'),
+                                // ),
 
-                                ElevatedButton(
-                                  onPressed: () {},
-                                  style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all<Color>(globals.primary),
-                                  ),
-                                  child: const Text('Finalizados'),
-                                ),
+                                // ElevatedButton(
+                                //   onPressed: () {},
+                                //   style: ButtonStyle(
+                                //     backgroundColor: MaterialStateProperty.all<Color>(globals.primary),
+                                //   ),
+                                //   child: const Text('Finalizados'),
+                                // ),
+
                               ],
                             ),
                           ],
@@ -128,8 +133,8 @@ class _ScreenOrderState extends State<ScreenOrder> {
                                         },
                                       ),
 
-                        const SizedBox(height: 20),
-                        const SizedBox(height: 20),
+                                      const SizedBox(height: 20),
+                                      const SizedBox(height: 20),
                                       const SizedBox(height: 20),
                                     ],
                                   ),
