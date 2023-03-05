@@ -8,7 +8,10 @@ PreferredSizeWidget appBarWidget({
   String svg = '',
 }) {
   return AppBar(
-    leading: icon == null ? SvgPicture.asset(svg) : Icon(icon, color: Colors.white, size: 30),
+    leading: icon == null ? SvgPicture.asset(
+      svg,
+      fit: BoxFit.scaleDown,
+    ) : Icon(icon, color: Colors.white, size: 30),
     title: Text(pageName),
     
     flexibleSpace: Container(
