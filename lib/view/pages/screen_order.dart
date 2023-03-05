@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tcc/controller/firebase/sales.dart';
+import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/dropDownButton.dart';
@@ -25,6 +26,10 @@ class _ScreenOrderState extends State<ScreenOrder> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: appBarWidget(
+        pageName: 'Pedidos',
+        svg: 'lib/images/iconOrder.svg',
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(

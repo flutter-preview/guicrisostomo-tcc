@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:tcc/controller/firebase/products.dart';
+import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
 import 'package:tcc/view/widget/floatingButton.dart';
 import 'package:tcc/view/widget/productItem.dart';
@@ -31,8 +32,12 @@ class _ScreenProductsState extends State<ScreenProducts> {
   Widget build(BuildContext context) {
 
     return Scaffold(
+      appBar: appBarWidget(
+        pageName: 'Produtos',
+        icon: Icons.restaurant_menu,
+      ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(20, 50, 20, 20),
+        padding: const EdgeInsets.all(20),
         child: Column(
           children: [
 
@@ -54,7 +59,7 @@ class _ScreenProductsState extends State<ScreenProducts> {
             const SizedBox(height: 20),
 
             SectionVisible(
-              nameSection: 'Produtos',
+              nameSection: 'Tamanho',
               isShowPart: true,
               child: ProductItem(list),
             ),

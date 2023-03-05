@@ -3,11 +3,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tcc/controller/firebase/auth.dart';
+import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
 import 'package:tcc/view/widget/floatingButton.dart';
-import 'package:tcc/view/widget/snackBars.dart';
 
 class ScreenProfile extends StatefulWidget {
   const ScreenProfile({super.key});
@@ -54,8 +53,13 @@ class _ScreenProfileState extends State<ScreenProfile> {
     }
 
     return Scaffold(
+      appBar: appBarWidget(
+        pageName: 'Perfil',
+        icon: Icons.person,
+      ),
+
       body: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(20, 50, 20, 20),
+        padding: const EdgeInsets.all(20),
         child: Column(
           children: [
             Center(

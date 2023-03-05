@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tcc/utils.dart';
+import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/floatingButton.dart';
@@ -86,22 +87,16 @@ class _ScreenVerificationTableState extends State<ScreenVerificationTable> {
   Widget build(BuildContext context) {
     
     return Scaffold(
+      appBar: appBarWidget(
+        pageName: 'Vincular a uma mesa',
+        icon: Icons.table_restaurant_rounded,
+      ),
+
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 50, 20, 20),
+        padding: const EdgeInsets.all(20),
         child: Column(
           children: [
             imgCenter('lib/images/imgTable.svg'),
-
-            const SizedBox(height: 10),
-
-            const Text(
-              'Vincular a uma mesa',
-              style: TextStyle(
-                fontFamily: 'Roboto',
-                fontSize: 20,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
 
             const SizedBox(height: 10),
 

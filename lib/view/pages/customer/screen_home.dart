@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tcc/controller/firebase/productsCart.dart';
 import 'package:tcc/controller/firebase/sales.dart';
+import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
 import 'package:tcc/view/widget/floatingButton.dart';
 import 'package:tcc/view/widget/imageMainScreens.dart';
@@ -125,8 +126,13 @@ class _ScreenHomeState extends State<ScreenHome> {
     }
     
     return Scaffold(
+      appBar: appBarWidget(
+        pageName: 'Inicio',
+        icon: Icons.home
+      ),
+
       body: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(20, 50, 20, 20),
+        padding: const EdgeInsets.all(20),
         child: Column(
           children: [
             
