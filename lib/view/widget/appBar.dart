@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:tcc/globals.dart' as globals;
 
 PreferredSizeWidget appBarWidget({
   required String pageName,
-  required IconData icon,
+  IconData? icon,
+  String svg = '',
 }) {
   return AppBar(
-    leading: Icon(icon, color: Colors.white, size: 30),
+    leading: icon == null ? SvgPicture.asset(svg) : Icon(icon, color: Colors.white, size: 30),
     title: Text(pageName),
     
     flexibleSpace: Container(
