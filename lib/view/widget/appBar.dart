@@ -20,8 +20,8 @@ PreferredSizeWidget appBarWidget({
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            globals.primary,
-            Colors.white10
+            globals.primaryBlack,
+            globals.primary.withRed(100),
           ]
         )
       ),
