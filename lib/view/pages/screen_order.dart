@@ -56,17 +56,17 @@ class _ScreenOrderState extends State<ScreenOrder> {
                                       setState(() {
                                         buttonStatusSelected = 'Todos';
                                       })
-                                    }, true, 16, buttonStatusSelected == 'Todos' ? globals.primaryBlack : globals.primary),
+                                    }, true, 16, buttonStatusSelected == 'Todos' ? globals.primaryBlack : globals.primary.withOpacity(0.8)),
                                     button('Em andamento', 0, 0, null, () => {
                                       setState(() {
                                         buttonStatusSelected = 'Em andamento';
                                       })
-                                    }, true, 16, buttonStatusSelected == 'Em andamento' ? globals.primaryBlack : globals.primary),
+                                    }, true, 16, buttonStatusSelected == 'Em andamento' ? globals.primaryBlack : globals.primary.withOpacity(0.8)),
                                     button('Finalizados', 0, 0, null, () => {
                                       setState(() {
                                         buttonStatusSelected = 'Finalizados';
                                       })
-                                    }, true, 16, buttonStatusSelected == 'Finalizados' ? globals.primaryBlack : globals.primary),
+                                    }, true, 16, buttonStatusSelected == 'Finalizados' ? globals.primaryBlack : globals.primary.withOpacity(0.8)),
                               
                                   ],
                                 );
