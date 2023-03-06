@@ -145,42 +145,44 @@ class _TextFieldGeneralState extends State<TextFieldGeneral> {
               globals.isUserTyping = true;
             });
             
-            widget.multipleDate ? {
-              pickedDate = await showDateRangePicker(
-                context: widget.context,
-                firstDate: DateTime(2022),
-                lastDate: DateTime.now(),
-              ),
+            if (widget.keyboardType == TextInputType.datetime) {
+              widget.multipleDate ? {
+                pickedDate = await showDateRangePicker(
+                  context: widget.context,
+                  firstDate: DateTime(2022),
+                  lastDate: DateTime.now(),
+                ),
 
-              if (pickedDate != null) {
-                setState(() {
-                  pickedDate!.start == pickedDate.end ? {
-                    widget.variavel.text = DateFormat('dd/MM/yyyy').format(pickedDate.start),
-                  } : {
-                    widget.variavel.text = '${DateFormat('dd/MM/yyyy').format(pickedDate.start)} - ${DateFormat('dd/MM/yyyy').format(pickedDate.end)}',
-                  };
-                })
-              }
-            }: {
-              widget.variavel.text == '' ? date = DateTime.now() : {
-                transformDate = widget.variavel.text.replaceAll('/', '-'),
-                transformDate = '${transformDate.split('-')[2]}-${transformDate.split('-')[1]}-${transformDate.split('-')[0]}',
-                date = DateTime.parse(transformDate),
-              },
+                if (pickedDate != null) {
+                  setState(() {
+                    pickedDate!.start == pickedDate.end ? {
+                      widget.variavel.text = DateFormat('dd/MM/yyyy').format(pickedDate.start),
+                    } : {
+                      widget.variavel.text = '${DateFormat('dd/MM/yyyy').format(pickedDate.start)} - ${DateFormat('dd/MM/yyyy').format(pickedDate.end)}',
+                    };
+                  })
+                }
+              }: {
+                widget.variavel.text == '' ? date = DateTime.now() : {
+                  transformDate = widget.variavel.text.replaceAll('/', '-'),
+                  transformDate = '${transformDate.split('-')[2]}-${transformDate.split('-')[1]}-${transformDate.split('-')[0]}',
+                  date = DateTime.parse(transformDate),
+                },
 
-              pickedDateSingle = await showDatePicker(
-                context: widget.context,
-                initialDate: date,
-                firstDate: DateTime(2022),
-                lastDate: DateTime.now(),
-              ),
+                pickedDateSingle = await showDatePicker(
+                  context: widget.context,
+                  initialDate: date,
+                  firstDate: DateTime(2022),
+                  lastDate: DateTime.now(),
+                ),
 
-              if (pickedDateSingle != null) {
-                setState(() {
-                  widget.variavel.text = DateFormat('dd/MM/yyyy').format(pickedDateSingle!);
-                })
-              }
-            };
+                if (pickedDateSingle != null) {
+                  setState(() {
+                    widget.variavel.text = DateFormat('dd/MM/yyyy').format(pickedDateSingle!);
+                  })
+                }
+              };
+            }
           },
 
           onEditingComplete: () {
