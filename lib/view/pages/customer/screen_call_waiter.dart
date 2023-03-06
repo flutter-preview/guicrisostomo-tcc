@@ -8,6 +8,7 @@ import 'package:tcc/view/widget/floatingButton.dart';
 import 'package:tcc/view/widget/imageMainScreens.dart';
 import 'package:tcc/view/widget/listCart.dart';
 import 'package:tcc/globals.dart' as globals;
+import 'package:tcc/view/widget/sectionVisible.dart';
 
 class ScreenCallWaiter extends StatefulWidget {
   const ScreenCallWaiter({super.key});
@@ -65,67 +66,58 @@ class _ScreenCallWaiterState extends State<ScreenCallWaiter> {
 
             const SizedBox(height: 30),
 
-            const Text(
-              'Dados da mesa',
-              style: TextStyle(
-                fontFamily: 'Roboto',
-                fontSize: 20,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
+            SectionVisible(
+              nameSection: 'Dados da mesa',
+              isShowPart: true,
+              child: Column(
+                children: [
+                  const SizedBox(height: 10),
 
-            const SizedBox(height: 10),
+                  Row(
+                    children: [
+                      Icon(Icons.table_restaurant, color: globals.primary),
 
-            Row(
-              children: [
-                Icon(Icons.table_restaurant, color: globals.primary),
+                      const SizedBox(width: 10),
 
-                const SizedBox(width: 10),
-
-                const Text(
-                  'Mesa: 1',
-                  style: TextStyle(
-                    fontFamily: 'Roboto',
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
+                      const Text(
+                        'Mesa: 1',
+                        style: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            ),
 
-            const SizedBox(height: 5),
+                  const SizedBox(height: 5),
 
-            Row(
-              children: [
-                Icon(Icons.attach_money, color: globals.primary),
+                  Row(
+                    children: [
+                      Icon(Icons.attach_money, color: globals.primary),
 
-                const SizedBox(width: 10),
+                      const SizedBox(width: 10),
 
-                const Text(
-                  'Total: R\$ 0,00',
-                  style: TextStyle(
-                    fontFamily: 'Roboto',
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
+                      const Text(
+                        'Total: R\$ 0,00',
+                        style: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
+                ],
+              )
             ),
 
             const SizedBox(height: 10),
 
-            const Text(
-              'Itens pedidos',
-              style: TextStyle(
-                fontFamily: 'Roboto',
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
-              ),
+            SectionVisible(
+              nameSection: 'Itens pedidos',
+              child: ProductsCart(list),
             ),
-
-            const SizedBox(height: 10),
-
-            ProductsCart(list),
 
             const SizedBox(height: 20),
 
