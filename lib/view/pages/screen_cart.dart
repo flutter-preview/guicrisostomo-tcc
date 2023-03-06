@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:tcc/controller/firebase/productsCart.dart';
 import 'package:tcc/controller/firebase/sales.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
+import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/listCart.dart';
 import 'package:tcc/globals.dart' as globals;
 
@@ -49,48 +50,6 @@ class _ScreenCartState extends State<ScreenCart> {
     list = ProductsCartController().list(idSale);
   }
 
-  Widget? buttonFinalize() {
-    return StreamBuilder<QuerySnapshot>(
-      stream: list.snapshots(),
-      builder: (context, snapshot) {
-        switch (snapshot.connectionState) {
-          case ConnectionState.none:
-            return const Center(
-              child: Text('Não foi possível conectar.'),
-            );
-          case ConnectionState.waiting:
-            return const Center(child: CircularProgressIndicator());
-          default:
-            final dados = snapshot.requireData;
-            if (dados.size > 0) {
-              return Padding(
-                padding: const EdgeInsets.all(20),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: Size(largura, 50), 
-                    backgroundColor: globals.primary,
-                  ),
-                  
-                  child: const Text(
-                    'Finalizar pedido',
-                    style: TextStyle(
-                      fontSize: 24,
-                    )
-                  ),
-                  
-                  onPressed: () {
-                    Navigator.pushNamed(context, 'finalize_order_customer');
-                  },
-                ),
-              );
-            } else {
-              return const Text('');
-            }
-        }
-      }
-    );
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -112,7 +71,15 @@ class _ScreenCartState extends State<ScreenCart> {
 
             Container(
               alignment: Alignment.bottomCenter,
-              child: buttonFinalize(),
+              child: button(
+                'Finalizar',
+                300,
+                50,
+                Icons.check,
+                () => {
+                  Navigator.pushNamed(context, '/finalize_order_customer')
+                }
+              ),
             )
           ],
         ),
