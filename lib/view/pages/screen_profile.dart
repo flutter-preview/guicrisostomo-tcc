@@ -55,6 +55,7 @@ class _ScreenProfileState extends State<ScreenProfile> {
     return Scaffold(
       appBar: appBarWidget(
         pageName: 'Perfil',
+        context: context,
         icon: Icons.person,
       ),
 

@@ -89,6 +89,7 @@ class _ScreenVerificationTableState extends State<ScreenVerificationTable> {
     return Scaffold(
       appBar: appBarWidget(
         pageName: 'Vincular a uma mesa',
+        context: context,
         icon: Icons.table_restaurant_rounded,
       ),
 

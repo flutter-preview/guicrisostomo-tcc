@@ -28,6 +28,7 @@ class _ScreenOrderState extends State<ScreenOrder> {
     return Scaffold(
       appBar: appBarWidget(
         pageName: 'Pedidos',
+        context: context,
         svg: 'lib/images/iconOrder.svg',
       ),
       body: SingleChildScrollView(

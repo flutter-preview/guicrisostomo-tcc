@@ -34,6 +34,7 @@ class _ScreenProductsState extends State<ScreenProducts> {
     return Scaffold(
       appBar: appBarWidget(
         pageName: 'Produtos',
+        context: context,
         icon: Icons.restaurant_menu,
       ),
       body: SingleChildScrollView(

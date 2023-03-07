@@ -47,6 +47,7 @@ class _ScreenCallWaiterState extends State<ScreenCallWaiter> {
     return Scaffold(
       appBar: appBarWidget(
         pageName: 'Mesa',
+        context: context,
         icon: Icons.room_service,
       ),
 

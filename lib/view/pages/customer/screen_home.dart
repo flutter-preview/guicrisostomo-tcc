@@ -128,6 +128,7 @@ class _ScreenHomeState extends State<ScreenHome> {
     return Scaffold(
       appBar: appBarWidget(
         pageName: 'Inicio',
+        context: context,
         icon: Icons.home
       ),
 
