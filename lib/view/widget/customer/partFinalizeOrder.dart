@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tcc/globals.dart' as globals;
+import 'package:tcc/view/widget/sectionVisible.dart';
 
 class PartFinalizeOrder extends StatefulWidget {
   final int partUser;
@@ -27,73 +28,9 @@ class _PartFinalizeOrderState extends State<PartFinalizeOrder> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        TextButton(
-          onPressed: () => {
-            setState(() {
-              isShowPart = !isShowPart;
-            }),
-              
-            if (isShowPart) {
-              setState(() {
-                iconPart = const Icon(Icons.arrow_drop_down_rounded);
-              }),
-            } else {
-              setState(() {
-                iconPart = const Icon(Icons.arrow_right_rounded);
-              }),
-            }
-          },
-
-          style: ButtonStyle(
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-            ),
-          ),
-          
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Etapas',
-                style: TextStyle(
-                  fontFamily: 'Roboto',
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.black,
-                ),
-              ),
-        
-              IconButton(
-                icon: iconPart,
-                color: globals.primary,
-                onPressed: () {
-                  setState(() {
-                    isShowPart = !isShowPart;
-                  });
-                    
-                  if (isShowPart) {
-                    setState(() {
-                      iconPart = const Icon(Icons.arrow_drop_down_rounded);
-                    });
-                  } else {
-                    setState(() {
-                      iconPart = const Icon(Icons.arrow_right_rounded);
-                    });
-                  }
-                },
-              ),
-            ],
-          ),
-        ),
-
-        const SizedBox(height: 10),
-
-        if (isShowPart)
-          Column(
+        SectionVisible(
+          nameSection: 'Etapas',
+          child: Column(
             children: [
               TextButton(
                 onPressed: () => {
@@ -392,7 +329,8 @@ class _PartFinalizeOrderState extends State<PartFinalizeOrder> {
                 ),
             ],
           ),
-        ],
+        )
+      ]
     );
   }
 }
