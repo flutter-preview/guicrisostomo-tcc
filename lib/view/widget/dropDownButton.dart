@@ -2,10 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:tcc/globals.dart' as globals;
+import 'package:tcc/model/standardListDropDown.dart';
 
 class DropDown extends StatefulWidget {
   final String text;
-  final List<String> itemsDropDownButton;
+  final List<DropDownList> itemsDropDownButton;
   final Function(String) callback;
   String? itemSelecionado;
   DropDown({
@@ -46,16 +47,28 @@ class _DropDownState extends State<DropDown> {
         ),
         isExpanded: true,
         value: widget.itemSelecionado,
-        items: widget.itemsDropDownButton.map((String item) {
+        items: widget.itemsDropDownButton.map((map) {
           return DropdownMenuItem<String> (
-            value: item,
+            value: map.name,
             child: DropdownButtonHideUnderline(
-              child: Text(
-                item,
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 16,
-                ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisSize: MainAxisSize.max,
+                
+                children: [
+                  Text(
+                    map.name,
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                    ),
+                  ),
+
+                  Icon(
+                    map.icon,
+                    color: globals.primaryBlack,
+                  ),
+                ],
               ),
             ),
           );

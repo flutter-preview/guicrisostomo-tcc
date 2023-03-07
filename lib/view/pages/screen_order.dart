@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tcc/controller/firebase/sales.dart';
+import 'package:tcc/model/standardListDropDown.dart';
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
 import 'package:tcc/view/widget/button.dart';
@@ -20,6 +21,48 @@ class ScreenOrder extends StatefulWidget {
 class _ScreenOrderState extends State<ScreenOrder> {
   String txtDropDown = 'Hoje';
   String buttonStatusSelected = 'Todos';
+  List<DropDownList> listDropDown = [
+    DropDownList(
+      name: 'Hoje',
+      icon: Icons.calendar_month,
+    ),
+
+    DropDownList(
+      name: 'Ontem',
+      icon: Icons.calendar_today,
+    ),
+
+    DropDownList(
+      name: 'Últimos 7 dias',
+      icon: Icons.calendar_today,
+    ),
+
+    DropDownList(
+      name: 'Últimos 30 dias',
+      icon: Icons.calendar_today,
+    ),
+
+    DropDownList(
+      name: 'Últimos 90 dias',
+      icon: Icons.calendar_today,
+    ),
+
+    DropDownList(
+      name: 'Últimos 180 dias',
+      icon: Icons.calendar_today,
+    ),
+
+    DropDownList(
+      name: 'Últimos 365 dias',
+      icon: Icons.calendar_today,
+    ),
+
+    DropDownList(
+      name: 'Personalizado',
+      icon: Icons.calendar_today,
+    ),
+    
+  ];
   var txtDateFilter = TextEditingController();
   
   @override
@@ -84,16 +127,7 @@ class _ScreenOrderState extends State<ScreenOrder> {
                                 DropDown(
                                   text: 'Data',
                                   itemSelecionado: txtDropDown,
-                                  itemsDropDownButton: const [
-                                    'Hoje',
-                                    'Ontem',
-                                    'Últimos 7 dias',
-                                    'Últimos 30 dias',
-                                    'Últimos 90 dias',
-                                    'Últimos 180 dias',
-                                    'Últimos 365 dias',
-                                    'Personalizado',
-                                  ],
+                                  itemsDropDownButton: listDropDown,
                                   callback: (value) {
                                     setState(() {
                                       txtDropDown = value;

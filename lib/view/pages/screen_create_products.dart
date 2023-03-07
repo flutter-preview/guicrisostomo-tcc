@@ -89,19 +89,19 @@ class _ScreenCreateProductsState extends State<ScreenCreateProducts> {
 
               const SizedBox(height: 10,),
               
-              DropDown(text: 'Tamanho', itemsDropDownButton: listSize, callback: (text) {
-                   setState((){
-                     sizeSelected = text;
-                   });
-                }),
+              // DropDown(text: 'Tamanho', itemsDropDownButton: listSize, callback: (text) {
+              //      setState((){
+              //        sizeSelected = text;
+              //      });
+              //   }),
 
-              const SizedBox(height: 10,),
+              // const SizedBox(height: 10,),
 
-              DropDown(text: 'Categoria', itemsDropDownButton: listCategory, callback: (text) {
-                   setState((){
-                     categorySelected = text;
-                   });
-                }),
+              // DropDown(text: 'Categoria', itemsDropDownButton: listCategory, callback: (text) {
+              //      setState((){
+              //        categorySelected = text;
+              //      });
+              //   }),
 
               const SizedBox(height: 10,),
 
