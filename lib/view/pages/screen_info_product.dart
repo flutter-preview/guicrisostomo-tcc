@@ -3,7 +3,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
 import 'package:tcc/view/widget/comments.dart';
-import 'package:tcc/view/widget/floatingButton.dart';
 import 'package:tcc/view/widget/listSizeAvailable.dart';
 import 'package:tcc/view/widget/textFieldGeneral.dart';
 
@@ -190,7 +189,7 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
       ),
 
       bottomNavigationBar: const Bottom(),
-      floatingActionButton: floatingButton(context),
+      
     );
   }
 }

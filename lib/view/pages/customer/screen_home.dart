@@ -7,7 +7,7 @@ import 'package:tcc/controller/firebase/productsCart.dart';
 import 'package:tcc/controller/firebase/sales.dart';
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
-import 'package:tcc/view/widget/floatingButton.dart';
+import 'package:tcc/view/widget/cartInfo.dart';
 import 'package:tcc/view/widget/imageMainScreens.dart';
 import 'package:tcc/view/widget/listCart.dart';
 import 'package:tcc/view/widget/sectionVisible.dart';
@@ -157,7 +157,6 @@ class _ScreenHomeState extends State<ScreenHome> {
       ),
 
       bottomNavigationBar: const Bottom(),
-      floatingActionButton: floatingButton(context),
     );
   }
 }

@@ -4,7 +4,6 @@ import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/addressExistent.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
 import 'package:tcc/view/widget/button.dart';
-import 'package:tcc/view/widget/floatingButton.dart';
 import 'package:tcc/view/widget/sectionVisible.dart';
 import 'package:tcc/view/widget/textFieldGeneral.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -229,7 +228,6 @@ class _ScreenEditDatasState extends State<ScreenEditDatas> {
       ),
 
       bottomNavigationBar: const Bottom(),
-      floatingActionButton: floatingButton(context),
     );
   }
 }

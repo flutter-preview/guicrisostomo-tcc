@@ -4,9 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:tcc/controller/firebase/products.dart';
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
-import 'package:tcc/view/widget/floatingButton.dart';
 import 'package:tcc/view/widget/productItem.dart';
-import 'package:tcc/globals.dart' as globals;
 import 'package:tcc/view/widget/sectionVisible.dart';
 import 'package:tcc/view/widget/textFieldGeneral.dart';
 
@@ -69,7 +67,7 @@ class _ScreenProductsState extends State<ScreenProducts> {
       ),
 
       bottomNavigationBar: const Bottom(),
-      floatingActionButton: floatingButton(context),
+      
     );
   }
 }

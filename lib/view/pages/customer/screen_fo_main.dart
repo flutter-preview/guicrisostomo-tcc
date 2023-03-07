@@ -5,7 +5,7 @@ import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/customer/partFinalizeOrder.dart';
-import 'package:tcc/view/widget/floatingButton.dart';
+import 'package:tcc/view/widget/cartInfo.dart';
 import 'package:tcc/view/widget/textFieldGeneral.dart';
 
 class ScreenFOMain extends StatefulWidget {

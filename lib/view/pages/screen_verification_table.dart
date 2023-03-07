@@ -4,7 +4,6 @@ import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
 import 'package:tcc/view/widget/button.dart';
-import 'package:tcc/view/widget/floatingButton.dart';
 import 'package:tcc/view/widget/imageMainScreens.dart';
 import 'package:tcc/view/widget/textFieldGeneral.dart';
 import 'package:tcc/globals.dart' as globals;
@@ -150,7 +149,7 @@ class _ScreenVerificationTableState extends State<ScreenVerificationTable> {
       ),
 
       bottomNavigationBar: const Bottom(),
-      floatingActionButton: floatingButton(context),
+      
     );
   }
 }

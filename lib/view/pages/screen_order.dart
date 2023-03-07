@@ -6,7 +6,6 @@ import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/dropDownButton.dart';
-import 'package:tcc/view/widget/floatingButton.dart';
 import 'package:tcc/globals.dart' as globals;
 import 'package:tcc/view/widget/sectionVisible.dart';
 import 'package:tcc/view/widget/textFieldGeneral.dart';
@@ -135,7 +134,7 @@ class _ScreenOrderState extends State<ScreenOrder> {
       ),
 
       bottomNavigationBar: const Bottom(),
-      floatingActionButton: floatingButton(context),
+      
     );
   }
 }

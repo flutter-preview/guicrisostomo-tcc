@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tcc/controller/firebase/productsCart.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
-import 'package:tcc/view/widget/floatingButton.dart';
 import 'package:tcc/globals.dart' as globals;
 
 class ScreenInfoOrder extends StatefulWidget {
@@ -265,7 +264,6 @@ class _ScreenInfoOrderState extends State<ScreenInfoOrder> {
         ),
       ),
       bottomNavigationBar: const Bottom(),
-      floatingActionButton: floatingButton(context),
     );
   }
 }

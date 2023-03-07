@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:tcc/controller/firebase/auth.dart';
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
-import 'package:tcc/view/widget/floatingButton.dart';
 
 class ScreenProfile extends StatefulWidget {
   const ScreenProfile({super.key});
@@ -160,7 +159,7 @@ class _ScreenProfileState extends State<ScreenProfile> {
       ),
 
       bottomNavigationBar: Bottom(),
-      floatingActionButton: floatingButton(context),
+      
     );
   }
 }
