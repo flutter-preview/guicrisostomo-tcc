@@ -16,13 +16,33 @@ PreferredSizeWidget appBarWidget({
     actions: [
       Padding(
         padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-        child: IconButton(
-          icon: Icon(
-            Icons.abc,
-            size: 30,
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.transparent,
+            shape: const CircleBorder(),
+            shadowColor: Colors.transparent,
+          ),
+          
+          child: Row(
+            children: const [
+              Text(
+                '1',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                ),
+              ),
+
+              SizedBox(width: 10),
+
+              Icon(
+                Icons.notifications_active,
+                size: 30,
+              ),
+            ],
           ),
           onPressed: () { 
-            Navigator.pushNamed(context, '/cart');
+            Navigator.pushNamed(context, 'cart');
           },
         ),
       ),
