@@ -126,7 +126,7 @@ class _ScreenOrderState extends State<ScreenOrder> {
                               children: [
                                 DropDown(
                                   text: 'Data',
-                                  itemSelecionado: txtDropDown,
+                                  variavel: txtDropDown,
                                   itemsDropDownButton: listDropDown,
                                   callback: (value) {
                                     setState(() {

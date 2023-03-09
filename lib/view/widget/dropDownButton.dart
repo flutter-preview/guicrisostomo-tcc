@@ -8,13 +8,13 @@ class DropDown extends StatefulWidget {
   final String text;
   final List<DropDownList> itemsDropDownButton;
   final Function(String) callback;
-  String? itemSelecionado;
+  String? variavel;
   DropDown({
     super.key,
     required this.text,
     required this.itemsDropDownButton,
+    required this.variavel,
     required this.callback,
-    this.itemSelecionado
   });
 
   @override
@@ -46,7 +46,7 @@ class _DropDownState extends State<DropDown> {
           errorStyle: TextStyle(color: globals.primaryBlack),
         ),
         isExpanded: true,
-        value: widget.itemSelecionado,
+        value: widget.variavel,
         items: widget.itemsDropDownButton.map((map) {
           return DropdownMenuItem<String> (
             value: map.name,
@@ -75,10 +75,10 @@ class _DropDownState extends State<DropDown> {
         }).toList(),
         onChanged: (dynamic value) {
           setState(() {
-            widget.itemSelecionado = value;
+            widget.variavel = value;
           });
     
-          widget.callback(widget.itemSelecionado!);
+          widget.callback(widget.variavel!);
         },
       ),
     );
