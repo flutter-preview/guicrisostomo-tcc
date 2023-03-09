@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
 
 class ScreenManager extends StatefulWidget {
-  const ScreenManager({super.key});
+  const ScreenManager(Object arguments, {super.key});
 
   @override
   State<ScreenManager> createState() => _ScreenManagerState();

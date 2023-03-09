@@ -10,7 +10,7 @@ import 'package:tcc/globals.dart' as globals;
 import 'package:barcode_scan2/barcode_scan2.dart';
 
 class ScreenVerificationTable extends StatefulWidget {
-  const ScreenVerificationTable({super.key});
+  const ScreenVerificationTable(Object arguments, {super.key});
 
   @override
   State<ScreenVerificationTable> createState() => _ScreenVerificationTableState();

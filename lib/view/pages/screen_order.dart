@@ -12,7 +12,7 @@ import 'package:tcc/view/widget/sectionVisible.dart';
 import 'package:tcc/view/widget/textFieldGeneral.dart';
 
 class ScreenOrder extends StatefulWidget {
-  const ScreenOrder({super.key});
+  const ScreenOrder(Object arguments, {super.key});
 
   @override
   State<ScreenOrder> createState() => _ScreenOrderState();

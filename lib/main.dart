@@ -63,30 +63,78 @@ Future<void> main() async {
       theme: ThemeData(scaffoldBackgroundColor: const Color.fromRGBO(252, 252, 252, 1)),
 
       routes: <String, WidgetBuilder>{
-        'presentation' :(context) => const ScreenPresentation(),
-        'login' :(context) => const ScreenLogin(),
-        'login/forget_password' :(context) => const ScreenForgetPassword(),
-        'register' :(context) => const ScreenRegister(),
-        'home' :(context) => const ScreenHome(),
-        'manager' :(context) => const ScreenManager(),
-        'manager/products' :(context) => const ScreenCreateProducts(),
-        'table' :(context) => const ScreenVerificationTable(),
-        'waiter' :(context) => const ScreenCallWaiter(),
-        'cart' :(context) => const ScreenCart(),
-        'products' :(context) => const ScreenProducts(),
-        'products/info_product' :(context) => const ScreenInfoProduct(),
-        'products/add_product' :(context) => const ScreenAddItem(),
-        'profile' :(context) => const ScreenProfile(),
-        'profile/edit_datas' :(context) => const ScreenEditDatas(),
-        'profile/about' :(context) => const ScreenAbout(),
-        'order' :(context) => const ScreenOrder(),
-        'order/info' :(context) => const ScreenInfoOrder(),
-        'finalize_order_customer' :(context) => const ScreenFOMain(),
-        'finalize_order_customer/address' :(context) => const ScreenFOGetAddress(),
-        'finalize_order_customer/payment' :(context) => const ScreenFOPayment(),
+        'presentation' :(context) => const ScreenPresentation({}),
+        'login' :(context) => const ScreenLogin({}),
+        'login/forget_password' :(context) => const ScreenForgetPassword({}),
+        'register' :(context) => const ScreenRegister({}),
+        'home' :(context) => const ScreenHome({}),
+        'manager' :(context) => const ScreenManager({}),
+        'manager/products' :(context) => const ScreenCreateProducts({}),
+        'table' :(context) => const ScreenVerificationTable({}),
+        'waiter' :(context) => const ScreenCallWaiter({}),
+        'cart' :(context) => const ScreenCart({}),
+        'products' :(context) => const ScreenProducts({}),
+        'products/info_product' :(context) => const ScreenInfoProduct({}),
+        'products/add_product' :(context) => const ScreenAddItem({}),
+        'profile' :(context) => const ScreenProfile({}),
+        'profile/edit_datas' :(context) => const ScreenEditDatas({}),
+        'profile/about' :(context) => const ScreenAbout({}),
+        'order' :(context) => const ScreenOrder({}),
+        'order/info' :(context) => const ScreenInfoOrder({}),
+        'finalize_order_customer' :(context) => const ScreenFOMain({}),
+        'finalize_order_customer/address' :(context) => const ScreenFOGetAddress({}),
+        'finalize_order_customer/payment' :(context) => const ScreenFOPayment({}),
       },
 
-      onGenerateRoute: navigator,
+      onGenerateRoute: (settings) {
+        final arguments = settings.arguments ?? {};
+        switch (settings.name) {
+          case 'presentation' :(context) => ScreenPresentation(arguments);
+            break;
+          case 'login' :(context) => ScreenLogin(arguments);
+            break;
+          case 'login/forget_password' :(context) => ScreenForgetPassword(arguments);
+            break;
+          case 'register' :(context) => ScreenRegister(arguments);
+            break;
+          case 'home' :(context) => ScreenHome(arguments);
+            break;
+          case 'manager' :(context) => ScreenManager(arguments);
+            break;
+          case 'manager/products' :(context) => ScreenCreateProducts(arguments);
+            break;
+          case 'table' :(context) => ScreenVerificationTable(arguments);
+            break;
+          case 'waiter' :(context) => ScreenCallWaiter(arguments);
+            break;
+          case 'cart' :(context) => ScreenCart(arguments);
+            break;
+          case 'products' :(context) => ScreenProducts(arguments);
+            break;
+          case 'products/info_product' :(context) => ScreenInfoProduct(arguments);
+            break;
+          case 'products/add_product' :(context) => ScreenAddItem(arguments);
+            break;
+          case 'profile' :(context) => ScreenProfile(arguments);
+            break;
+          case 'profile/edit_datas' :(context) => ScreenEditDatas(arguments);
+            break;
+          case 'profile/about' :(context) => ScreenAbout(arguments);
+            break;
+          case 'order' :(context) => ScreenOrder(arguments);
+            break;
+          case 'order/info' :(context) => ScreenInfoOrder(arguments);
+            break;
+          case 'finalize_order_customer' :(context) => ScreenFOMain(arguments);
+            break;
+          case 'finalize_order_customer/address' :(context) => ScreenFOGetAddress(arguments);
+            break;
+          case 'finalize_order_customer/payment' :(context) => ScreenFOPayment(arguments);
+            break;
+          default:
+            return null;
+        }
+      },
     )
   );
 }

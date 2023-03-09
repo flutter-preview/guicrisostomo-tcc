@@ -6,7 +6,7 @@ import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
 import 'package:tcc/globals.dart' as globals;
 
 class ScreenInfoOrder extends StatefulWidget {
-  const ScreenInfoOrder({super.key});
+  const ScreenInfoOrder(Object arguments, {super.key});
 
   @override
   State<ScreenInfoOrder> createState() => _ScreenInfoOrderState();

@@ -10,7 +10,7 @@ import 'package:tcc/view/widget/listCart.dart';
 import 'package:tcc/globals.dart' as globals;
 
 class ScreenCart extends StatefulWidget {
-  const ScreenCart({super.key});
+  const ScreenCart(Object arguments, {super.key});
 
   @override
   State<ScreenCart> createState() => _ScreenCartState();

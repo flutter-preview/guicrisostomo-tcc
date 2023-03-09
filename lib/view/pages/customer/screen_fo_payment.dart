@@ -8,7 +8,7 @@ import 'package:tcc/globals.dart' as globals;
 import 'package:tcc/view/widget/textFieldGeneral.dart';
 
 class ScreenFOPayment extends StatefulWidget {
-  const ScreenFOPayment({super.key});
+  const ScreenFOPayment(Object arguments, {super.key});
 
   @override
   State<ScreenFOPayment> createState() => _ScreenFOPaymentState();

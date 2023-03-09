@@ -9,7 +9,7 @@ import 'package:tcc/view/widget/textFieldGeneral.dart';
 import 'package:tcc/globals.dart' as globals;
 
 class ScreenFOGetAddress extends StatefulWidget {
-  const ScreenFOGetAddress({super.key});
+  const ScreenFOGetAddress(Object arguments, {super.key});
 
   @override
   State<ScreenFOGetAddress> createState() => _ScreenFOGetAddressState();
