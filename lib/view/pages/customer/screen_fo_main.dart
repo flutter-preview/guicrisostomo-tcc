@@ -6,6 +6,8 @@ import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/customer/partFinalizeOrder.dart';
 import 'package:tcc/view/widget/cartInfo.dart';
+import 'package:tcc/view/widget/dropDownButton.dart';
+import 'package:tcc/view/widget/radioButton.dart';
 import 'package:tcc/view/widget/textFieldGeneral.dart';
 
 class ScreenFOMain extends StatefulWidget {
@@ -16,17 +18,7 @@ class ScreenFOMain extends StatefulWidget {
 }
 
 class _ScreenFOMainState extends State<ScreenFOMain> {
-  bool isShowPart = false;
-  Icon iconPart = const Icon(Icons.arrow_right_rounded);
-
-  bool isShowDescriptionPart1 = false;
-  Icon iconDescriptionPart1 = const Icon(Icons.arrow_right_rounded);
-
-  bool isShowDescriptionPart2 = false;
-  Icon iconDescriptionPart2 = const Icon(Icons.arrow_right_rounded);
-
-  bool isShowDescriptionPart3 = false;
-  Icon iconDescriptionPart3 = const Icon(Icons.arrow_right_rounded);
+  String groupSaleType = 'Entrega';
 
   @override
   Widget build(BuildContext context) {
@@ -103,35 +95,42 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
             const PartFinalizeOrder(partUser: 1),
 
             TextFieldGeneral(
-                label: 'Nome',
-                variavel: txtName,
-                context: context,
-                keyboardType: TextInputType.name,
-                ico: Icons.person,
-                validator: (value) {
-                  validatorString(value!);
-                },
-              ),
+              label: 'Nome',
+              variavel: txtName,
+              context: context,
+              keyboardType: TextInputType.name,
+              ico: Icons.person,
+              validator: (value) {
+                validatorString(value!);
+              },
+            ),
 
-              const SizedBox(height: 20,),
+            const SizedBox(height: 20,),
 
-              TextFieldGeneral(
-                label: 'Telefone',
-                variavel: txtPhone,
-                context: context,
-                keyboardType: TextInputType.phone,
-                ico: Icons.phone,
-                validator: (value) {
-                  validatorPhone(value!);
-                },
-                onChanged: (value) => {
-                  if (value.length <= 14) {
-                    txtPhone.value = maskFormatter.updateMask(mask: "(##) ####-#####")
-                  } else {
-                    txtPhone.value = maskFormatter.updateMask(mask: "(##) #####-####")
-                  }
-                },
-              ),
+            TextFieldGeneral(
+              label: 'Telefone',
+              variavel: txtPhone,
+              context: context,
+              keyboardType: TextInputType.phone,
+              ico: Icons.phone,
+              validator: (value) {
+                validatorPhone(value!);
+              },
+              onChanged: (value) => {
+                if (value.length <= 14) {
+                  txtPhone.value = maskFormatter.updateMask(mask: "(##) ####-#####")
+                } else {
+                  txtPhone.value = maskFormatter.updateMask(mask: "(##) #####-####")
+                }
+              },
+            ),
+
+            const SizedBox(height: 20,),
+
+            RadioButon(
+              valueRadio: 'Entrega',
+              group: groupSaleType,
+            ),
 
             const SizedBox(height: 50),
 
