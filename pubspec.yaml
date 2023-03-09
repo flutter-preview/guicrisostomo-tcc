@@ -48,6 +48,7 @@ dependencies:
   google_sign_in: ^5.4.2
   cached_network_image: ^3.2.3
   barcode_scan2: ^4.2.3
+  page_transition: ^2.0.9
 
 dev_dependencies:
   flutter_test:
