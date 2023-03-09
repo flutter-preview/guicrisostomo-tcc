@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:tcc/controller/firebase/auth.dart';
 import 'package:tcc/firebase_options.dart';
+import 'package:tcc/utils.dart';
 import 'package:tcc/view/pages/customer/screen_call_waiter.dart';
 import 'package:tcc/view/pages/customer/screen_fo_get_adress.dart';
 import 'package:tcc/view/pages/customer/screen_fo_main.dart';
@@ -61,7 +62,7 @@ Future<void> main() async {
 
       theme: ThemeData(scaffoldBackgroundColor: const Color.fromRGBO(252, 252, 252, 1)),
 
-      routes: {
+      routes: <String, WidgetBuilder>{
         'presentation' :(context) => const ScreenPresentation(),
         'login' :(context) => const ScreenLogin(),
         'login/forget_password' :(context) => const ScreenForgetPassword(),
@@ -84,6 +85,8 @@ Future<void> main() async {
         'finalize_order_customer/address' :(context) => const ScreenFOGetAddress(),
         'finalize_order_customer/payment' :(context) => const ScreenFOPayment(),
       },
+
+      onGenerateRoute: navigator,
     )
   );
 }
