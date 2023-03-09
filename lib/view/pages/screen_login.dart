@@ -72,7 +72,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
                 label: 'Senha', 
                 variavel: txtPassword,
                 context: context, 
-                keyboardType: TextInputType.none,
+                keyboardType: TextInputType.text,
                 ico: Icons.lock,
 
                 validator: (value) {
