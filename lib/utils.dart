@@ -85,15 +85,16 @@ Function validatorPhone(String text) {
 Route navigator(otherPage) {
   return PageRouteBuilder(
     pageBuilder: (context, animation, secondaryAnimation) => otherPage,
-    transitionsBuilder: (context, animation, secondaryAnimation, child) {
-      const begin = Offset(0.0, 1.0);
-      const end = Offset.zero;
-      final tween = Tween(begin: begin, end: end);
-      final offsetAnimation = animation.drive(tween);
-      return SlideTransition(
-        position: offsetAnimation,
-        child: child,
-      );
-    },
+    transitionDuration: Duration(seconds: 5),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(opacity: animation, child: child), //{
+      // const begin = Offset(0.0, 1.0);
+      // const end = Offset.zero;
+      // final tween = Tween(begin: begin, end: end);
+      // final offsetAnimation = animation.drive(tween);
+      // return SlideTransition(
+      //   position: offsetAnimation,
+      //   child: child,
+      // );
+    // },
   );
 }

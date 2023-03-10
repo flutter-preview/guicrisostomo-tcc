@@ -62,7 +62,7 @@ Future<void> main() async {
 
       theme: ThemeData(scaffoldBackgroundColor: const Color.fromRGBO(252, 252, 252, 1)),
 
-      routes: <String, WidgetBuilder>{
+      routes: {
         'presentation' :(context) => const ScreenPresentation({}),
         'login' :(context) => const ScreenLogin({}),
         'login/forget_password' :(context) => const ScreenForgetPassword({}),
@@ -86,55 +86,308 @@ Future<void> main() async {
         'finalize_order_customer/payment' :(context) => const ScreenFOPayment({}),
       },
 
-      onGenerateRoute: (settings) {
-        final arguments = settings.arguments ?? {};
-        switch (settings.name) {
-          case 'presentation' :(context) => ScreenPresentation(arguments);
-            break;
-          case 'login' :(context) => ScreenLogin(arguments);
-            break;
-          case 'login/forget_password' :(context) => ScreenForgetPassword(arguments);
-            break;
-          case 'register' :(context) => ScreenRegister(arguments);
-            break;
-          case 'home' :(context) => ScreenHome(arguments);
-            break;
-          case 'manager' :(context) => ScreenManager(arguments);
-            break;
-          case 'manager/products' :(context) => ScreenCreateProducts(arguments);
-            break;
-          case 'table' :(context) => ScreenVerificationTable(arguments);
-            break;
-          case 'waiter' :(context) => ScreenCallWaiter(arguments);
-            break;
-          case 'cart' :(context) => ScreenCart(arguments);
-            break;
-          case 'products' :(context) => ScreenProducts(arguments);
-            break;
-          case 'products/info_product' :(context) => ScreenInfoProduct(arguments);
-            break;
-          case 'products/add_product' :(context) => ScreenAddItem(arguments);
-            break;
-          case 'profile' :(context) => ScreenProfile(arguments);
-            break;
-          case 'profile/edit_datas' :(context) => ScreenEditDatas(arguments);
-            break;
-          case 'profile/about' :(context) => ScreenAbout(arguments);
-            break;
-          case 'order' :(context) => ScreenOrder(arguments);
-            break;
-          case 'order/info' :(context) => ScreenInfoOrder(arguments);
-            break;
-          case 'finalize_order_customer' :(context) => ScreenFOMain(arguments);
-            break;
-          case 'finalize_order_customer/address' :(context) => ScreenFOGetAddress(arguments);
-            break;
-          case 'finalize_order_customer/payment' :(context) => ScreenFOPayment(arguments);
-            break;
-          default:
-            return null;
-        }
-      },
+      // onGenerateRoute: (settings) {
+      //   final arguments = settings.arguments ?? {};
+      //   switch (settings.name?.replaceFirst('/', '')) {
+      //     case 'presentation' :PageRouteBuilder(
+      //         pageBuilder: (context, animation, secondaryAnimation) => ScreenPresentation(arguments),
+      //         transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      //           const begin = Offset(0.0, 1.0);
+      //           const end = Offset.zero;
+      //           final tween = Tween(begin: begin, end: end);
+      //           final offsetAnimation = animation.drive(tween);
+      //           return SlideTransition(
+      //             position: offsetAnimation,
+      //             child: child,
+      //           );
+      //         },
+      //       );
+      //       break;
+      //     case 'login' : PageRouteBuilder(
+      //         pageBuilder:(context, animation, secondaryAnimation) => ScreenLogin(arguments),
+      //         transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      //           const begin = Offset(0.0, 1.0);
+      //           const end = Offset.zero;
+      //           final tween = Tween(begin: begin, end: end);
+      //           final offsetAnimation = animation.drive(tween);
+      //           return SlideTransition(
+      //             position: offsetAnimation,
+      //             child: child,
+      //           );
+      //         },
+      //       );
+      //       break;
+      //     case 'login/forget_password' : PageRouteBuilder(
+      //         pageBuilder:(context, animation, secondaryAnimation) => ScreenForgetPassword(arguments),
+      //         transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      //           const begin = Offset(0.0, 1.0);
+      //           const end = Offset.zero;
+      //           final tween = Tween(begin: begin, end: end);
+      //           final offsetAnimation = animation.drive(tween);
+      //           return SlideTransition(
+      //             position: offsetAnimation,
+      //             child: child,
+      //           );
+      //         },
+      //       );
+      //       break;
+      //     case 'register' : PageRouteBuilder(
+      //         pageBuilder:(context, animation, secondaryAnimation) => ScreenRegister(arguments),
+      //         transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      //           const begin = Offset(0.0, 1.0);
+      //           const end = Offset.zero;
+      //           final tween = Tween(begin: begin, end: end);
+      //           final offsetAnimation = animation.drive(tween);
+      //           return SlideTransition(
+      //             position: offsetAnimation,
+      //             child: child,
+      //           );
+      //         },
+      //       );
+      //       break;
+      //     case 'home' : PageRouteBuilder(
+      //         pageBuilder:(context, animation, secondaryAnimation) => ScreenHome(arguments),
+      //         transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      //           const begin = Offset(0.0, 1.0);
+      //           const end = Offset.zero;
+      //           final tween = Tween(begin: begin, end: end);
+      //           final offsetAnimation = animation.drive(tween);
+      //           return SlideTransition(
+      //             position: offsetAnimation,
+      //             child: child,
+      //           );
+      //         },
+      //       );
+      //       break;
+      //     case 'manager' : PageRouteBuilder(
+      //         pageBuilder:(context, animation, secondaryAnimation) => ScreenManager(arguments),
+      //         transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      //           const begin = Offset(0.0, 1.0);
+      //           const end = Offset.zero;
+      //           final tween = Tween(begin: begin, end: end);
+      //           final offsetAnimation = animation.drive(tween);
+      //           return SlideTransition(
+      //             position: offsetAnimation,
+      //             child: child,
+      //           );
+      //         },
+      //       );
+      //       break;
+      //     case 'manager/products' : PageRouteBuilder(
+      //         pageBuilder:(context, animation, secondaryAnimation) => ScreenCreateProducts(arguments),
+      //         transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      //           const begin = Offset(0.0, 1.0);
+      //           const end = Offset.zero;
+      //           final tween = Tween(begin: begin, end: end);
+      //           final offsetAnimation = animation.drive(tween);
+      //           return SlideTransition(
+      //             position: offsetAnimation,
+      //             child: child,
+      //           );
+      //         },
+      //       );
+      //       break;
+      //     case 'table' : PageRouteBuilder(
+      //         pageBuilder:(context, animation, secondaryAnimation) => ScreenVerificationTable(arguments),
+      //         transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      //           const begin = Offset(0.0, 1.0);
+      //           const end = Offset.zero;
+      //           final tween = Tween(begin: begin, end: end);
+      //           final offsetAnimation = animation.drive(tween);
+      //           return SlideTransition(
+      //             position: offsetAnimation,
+      //             child: child,
+      //           );
+      //         },
+      //       );
+      //       break;
+      //     case 'waiter' : PageRouteBuilder(
+      //         pageBuilder:(context, animation, secondaryAnimation) => ScreenCallWaiter(arguments),
+      //         transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      //           const begin = Offset(0.0, 1.0);
+      //           const end = Offset.zero;
+      //           final tween = Tween(begin: begin, end: end);
+      //           final offsetAnimation = animation.drive(tween);
+      //           return SlideTransition(
+      //             position: offsetAnimation,
+      //             child: child,
+      //           );
+      //         },
+      //       );
+      //       break;
+      //     case 'cart' : PageRouteBuilder(
+      //         pageBuilder:(context, animation, secondaryAnimation) => ScreenCart(arguments),
+      //         transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      //           const begin = Offset(0.0, 1.0);
+      //           const end = Offset.zero;
+      //           final tween = Tween(begin: begin, end: end);
+      //           final offsetAnimation = animation.drive(tween);
+      //           return SlideTransition(
+      //             position: offsetAnimation,
+      //             child: child,
+      //           );
+      //         },
+      //       );
+      //       break;
+      //     case 'products' : PageRouteBuilder(
+      //         pageBuilder:(context, animation, secondaryAnimation) => ScreenProducts(arguments),
+      //         transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      //           const begin = Offset(0.0, 1.0);
+      //           const end = Offset.zero;
+      //           final tween = Tween(begin: begin, end: end);
+      //           final offsetAnimation = animation.drive(tween);
+      //           return SlideTransition(
+      //             position: offsetAnimation,
+      //             child: child,
+      //           );
+      //         },
+      //       );
+      //       break;
+      //     case 'products/info_product' : PageRouteBuilder(
+      //         pageBuilder:(context, animation, secondaryAnimation) => ScreenInfoProduct(arguments),
+      //         transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      //           const begin = Offset(0.0, 1.0);
+      //           const end = Offset.zero;
+      //           final tween = Tween(begin: begin, end: end);
+      //           final offsetAnimation = animation.drive(tween);
+      //           return SlideTransition(
+      //             position: offsetAnimation,
+      //             child: child,
+      //           );
+      //         },
+      //       );
+      //       break;
+      //     case 'products/add_product' : PageRouteBuilder(
+      //         pageBuilder:(context, animation, secondaryAnimation) => ScreenAddItem(arguments),
+      //         transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      //           const begin = Offset(0.0, 1.0);
+      //           const end = Offset.zero;
+      //           final tween = Tween(begin: begin, end: end);
+      //           final offsetAnimation = animation.drive(tween);
+      //           return SlideTransition(
+      //             position: offsetAnimation,
+      //             child: child,
+      //           );
+      //         },
+      //       );
+      //       break;
+      //     case 'profile' : PageRouteBuilder(
+      //         pageBuilder:(context, animation, secondaryAnimation) => ScreenProfile(arguments),
+      //         transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      //           const begin = Offset(0.0, 1.0);
+      //           const end = Offset.zero;
+      //           final tween = Tween(begin: begin, end: end);
+      //           final offsetAnimation = animation.drive(tween);
+      //           return SlideTransition(
+      //             position: offsetAnimation,
+      //             child: child,
+      //           );
+      //         },
+      //       );
+      //       break;
+      //     case 'profile/edit_datas' : PageRouteBuilder(
+      //         pageBuilder:(context, animation, secondaryAnimation) => ScreenEditDatas(arguments),
+      //         transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      //           const begin = Offset(0.0, 1.0);
+      //           const end = Offset.zero;
+      //           final tween = Tween(begin: begin, end: end);
+      //           final offsetAnimation = animation.drive(tween);
+      //           return SlideTransition(
+      //             position: offsetAnimation,
+      //             child: child,
+      //           );
+      //         },
+      //       );
+      //       break;
+      //     case 'profile/about' : PageRouteBuilder(
+      //         pageBuilder:(context, animation, secondaryAnimation) => ScreenAbout(arguments),
+      //         transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      //           const begin = Offset(0.0, 1.0);
+      //           const end = Offset.zero;
+      //           final tween = Tween(begin: begin, end: end);
+      //           final offsetAnimation = animation.drive(tween);
+      //           return SlideTransition(
+      //             position: offsetAnimation,
+      //             child: child,
+      //           );
+      //         },
+      //       );
+      //       break;
+      //     case 'order' : 
+      //       return PageRouteBuilder(
+      //         pageBuilder:(context, animation, secondaryAnimation) => ScreenAbout(arguments),
+      //         transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      //           const begin = Offset(0.0, 1.0);
+      //           const end = Offset.zero;
+      //           final tween = Tween(begin: begin, end: end);
+      //           final offsetAnimation = animation.drive(tween);
+      //           return SlideTransition(
+      //             position: offsetAnimation,
+      //             child: child,
+      //           );
+      //         },
+      //       );
+      //       break;
+      //     case 'order/info' : PageRouteBuilder(
+      //         pageBuilder:(context, animation, secondaryAnimation) => ScreenInfoOrder(arguments),
+      //         transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      //           const begin = Offset(0.0, 1.0);
+      //           const end = Offset.zero;
+      //           final tween = Tween(begin: begin, end: end);
+      //           final offsetAnimation = animation.drive(tween);
+      //           return SlideTransition(
+      //             position: offsetAnimation,
+      //             child: child,
+      //           );
+      //         },
+      //       );
+      //       break;
+      //     case 'finalize_order_customer' : PageRouteBuilder(
+      //         pageBuilder:(context, animation, secondaryAnimation) => ScreenFOMain(arguments),
+      //         transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      //           const begin = Offset(0.0, 1.0);
+      //           const end = Offset.zero;
+      //           final tween = Tween(begin: begin, end: end);
+      //           final offsetAnimation = animation.drive(tween);
+      //           return SlideTransition(
+      //             position: offsetAnimation,
+      //             child: child,
+      //           );
+      //         },
+      //       );
+      //       break;
+      //     case 'finalize_order_customer/address' : PageRouteBuilder(
+      //         pageBuilder:(context, animation, secondaryAnimation) => ScreenFOGetAddress(arguments),
+      //         transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      //           const begin = Offset(0.0, 1.0);
+      //           const end = Offset.zero;
+      //           final tween = Tween(begin: begin, end: end);
+      //           final offsetAnimation = animation.drive(tween);
+      //           return SlideTransition(
+      //             position: offsetAnimation,
+      //             child: child,
+      //           );
+      //         },
+      //       );
+      //       break;
+      //     case 'finalize_order_customer/payment' : PageRouteBuilder(
+      //         pageBuilder:(context, animation, secondaryAnimation) => ScreenFOPayment(arguments),
+      //         transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      //           const begin = Offset(0.0, 1.0);
+      //           const end = Offset.zero;
+      //           final tween = Tween(begin: begin, end: end);
+      //           final offsetAnimation = animation.drive(tween);
+      //           return SlideTransition(
+      //             position: offsetAnimation,
+      //             child: child,
+      //           );
+      //         },
+      //       );
+      //       break;
+      //     default:
+      //       return null;
+      //   }
+      // },
     )
   );
 }

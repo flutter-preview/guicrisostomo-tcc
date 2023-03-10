@@ -1,6 +1,8 @@
 // ignore_for_file: file_names
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:tcc/utils.dart';
+import 'package:tcc/view/pages/screen_about.dart';
 import 'package:tcc/view/widget/cartInfo.dart';
 import '../../globals.dart' as globals;
 
@@ -85,7 +87,8 @@ class _BottomState extends State<Bottom> {
                   break;
                 case 1:
                   Navigator.of(context).pop();
-                  Navigator.pushNamed(context, 'order');
+                  // Navigator.pushNamed(context, 'order');
+                  Navigator.push(context, navigator(ScreenAbout({})));
                   break;
                 case 2:
                   Navigator.of(context).pop();
