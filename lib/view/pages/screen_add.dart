@@ -10,7 +10,7 @@ import 'package:tcc/globals.dart' as globals;
 import 'package:tcc/view/widget/textFieldGeneral.dart';
 
 class ScreenAddItem extends StatefulWidget {
-  const ScreenAddItem(Object arguments, {super.key});
+  const ScreenAddItem({super.key});
 
   @override
   State<ScreenAddItem> createState() => _ScreenAddItemState();

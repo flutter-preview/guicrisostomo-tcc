@@ -6,7 +6,7 @@ import 'package:tcc/globals.dart' as globals;
 import 'package:tcc/view/widget/textFieldGeneral.dart';
 
 class ScreenForgetPassword extends StatefulWidget {
-  const ScreenForgetPassword(Object arguments, {super.key});
+  const ScreenForgetPassword({super.key});
 
   @override
   State<ScreenForgetPassword> createState() => _ScreenForgetPasswordState();

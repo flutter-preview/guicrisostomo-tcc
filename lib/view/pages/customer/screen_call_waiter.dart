@@ -10,7 +10,7 @@ import 'package:tcc/globals.dart' as globals;
 import 'package:tcc/view/widget/sectionVisible.dart';
 
 class ScreenCallWaiter extends StatefulWidget {
-  const ScreenCallWaiter(Object arguments, {super.key});
+  const ScreenCallWaiter({super.key});
 
   @override
   State<ScreenCallWaiter> createState() => _ScreenCallWaiterState();

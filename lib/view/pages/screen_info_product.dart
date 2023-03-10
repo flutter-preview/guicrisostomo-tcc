@@ -9,7 +9,7 @@ import 'package:tcc/view/widget/textFieldGeneral.dart';
 class ScreenInfoProduct extends StatefulWidget {
 
 
-  const ScreenInfoProduct(Object arguments, {super.key});
+  const ScreenInfoProduct({super.key});
 
   @override
   State<ScreenInfoProduct> createState() => _ScreenInfoProductState();

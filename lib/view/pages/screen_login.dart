@@ -7,7 +7,7 @@ import 'package:tcc/view/widget/imageMainScreens.dart';
 import 'package:tcc/view/widget/textFieldGeneral.dart';
 
 class ScreenLogin extends StatefulWidget {
-  const ScreenLogin(Object arguments, {super.key});
+  const ScreenLogin({super.key});
 
   @override
   State<ScreenLogin> createState() => _ScreenLoginState();

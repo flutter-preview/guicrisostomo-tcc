@@ -9,7 +9,7 @@ import 'package:tcc/globals.dart' as globals;
 import '../widget/bottonNavigationCustomer.dart';
 
 class ScreenCreateProducts extends StatefulWidget {
-  const ScreenCreateProducts(Object arguments, {super.key});
+  const ScreenCreateProducts({super.key});
 
   @override
   State<ScreenCreateProducts> createState() => _ScreenCreateProductsState();

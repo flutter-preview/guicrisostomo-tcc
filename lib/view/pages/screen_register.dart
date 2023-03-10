@@ -8,7 +8,7 @@ import 'package:tcc/view/widget/imageMainScreens.dart';
 import 'package:tcc/view/widget/textFieldGeneral.dart';
 
 class ScreenRegister extends StatefulWidget {
-  const ScreenRegister(Object arguments, {super.key});
+  const ScreenRegister({super.key});
 
   @override
   State<ScreenRegister> createState() => _ScreenRegisterState();

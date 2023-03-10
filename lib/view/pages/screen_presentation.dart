@@ -7,7 +7,7 @@ import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/imageMainScreens.dart';
 
 class ScreenPresentation extends StatelessWidget {
-  const ScreenPresentation(Object? arguments, {super.key});
+  const ScreenPresentation({super.key});
 
   final String imgPresentation = 'lib/images/imgPresentation.svg';
   

@@ -4,7 +4,7 @@ import 'package:tcc/view/widget/listViewTeam.dart';
 import 'package:tcc/globals.dart' as globals;
 
 class ScreenAbout extends StatelessWidget {
-  const ScreenAbout(Object arguments, {super.key});
+  const ScreenAbout({super.key});
 
   @override
   Widget build(BuildContext context) {

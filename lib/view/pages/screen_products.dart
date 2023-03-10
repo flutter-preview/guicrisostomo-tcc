@@ -9,7 +9,7 @@ import 'package:tcc/view/widget/sectionVisible.dart';
 import 'package:tcc/view/widget/textFieldGeneral.dart';
 
 class ScreenProducts extends StatefulWidget {
-  const ScreenProducts(Object arguments, {super.key});
+  const ScreenProducts({super.key});
 
   @override
   State<ScreenProducts> createState() => _ScreenProductsState();

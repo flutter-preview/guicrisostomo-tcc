@@ -11,7 +11,7 @@ import 'package:tcc/view/widget/radioButton.dart';
 import 'package:tcc/view/widget/textFieldGeneral.dart';
 
 class ScreenFOMain extends StatefulWidget {
-  const ScreenFOMain(Object arguments, {super.key});
+  const ScreenFOMain({super.key});
 
   @override
   State<ScreenFOMain> createState() => _ScreenFOMainState();

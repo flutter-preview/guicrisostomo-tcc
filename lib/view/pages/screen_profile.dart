@@ -8,7 +8,7 @@ import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
 
 class ScreenProfile extends StatefulWidget {
-  const ScreenProfile(Object arguments, {super.key});
+  const ScreenProfile({super.key});
 
   @override
   State<ScreenProfile> createState() => _ScreenProfileState();

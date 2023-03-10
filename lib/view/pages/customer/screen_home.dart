@@ -14,7 +14,7 @@ import 'package:tcc/view/widget/sectionVisible.dart';
 import 'package:tcc/globals.dart' as globals;
 
 class ScreenHome extends StatefulWidget {
-  const ScreenHome(Object arguments, {super.key});
+  const ScreenHome({super.key});
 
   @override
   State<ScreenHome> createState() => _ScreenHomeState();
