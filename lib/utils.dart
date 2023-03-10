@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tcc/view/pages/screen_presentation.dart';
 
 Function validatorString(String text) {
   return (String? value) {
@@ -79,22 +80,4 @@ Function validatorPhone(String text) {
 
     return null;
   };
-}
-
-//route to effect transition screen
-Route navigator(otherPage) {
-  return PageRouteBuilder(
-    pageBuilder: (context, animation, secondaryAnimation) => otherPage,
-    transitionDuration: Duration(seconds: 5),
-    transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(opacity: animation, child: child), //{
-      // const begin = Offset(0.0, 1.0);
-      // const end = Offset.zero;
-      // final tween = Tween(begin: begin, end: end);
-      // final offsetAnimation = animation.drive(tween);
-      // return SlideTransition(
-      //   position: offsetAnimation,
-      //   child: child,
-      // );
-    // },
-  );
 }

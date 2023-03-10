@@ -26,6 +26,92 @@ import 'package:tcc/view/pages/screen_profile.dart';
 import 'package:tcc/view/pages/screen_register.dart';
 import 'package:tcc/view/pages/screen_verification_table.dart';
 
+Route navigator(String name) {
+  Widget page;
+
+  switch (name) {
+    case 'presentation' :
+      page = const ScreenPresentation();
+      break;
+    case 'login' :
+      page = const ScreenLogin();
+      break;
+    case 'login/forget_password' :
+      page = const ScreenForgetPassword();
+      break;
+    case 'register' :
+      page = const ScreenRegister();
+      break;
+    case 'home' :
+      page = const ScreenHome();
+      break;
+    case 'manager' :
+      page = const ScreenManager();
+      break;
+    case 'manager/products' :
+      page = const ScreenCreateProducts();
+      break;
+    case 'table' :
+      page = const ScreenVerificationTable();
+      break;
+    case 'waiter' :
+      page = const ScreenCallWaiter();
+      break;
+    case 'cart' :
+      page = const ScreenCart();
+      break;
+    case 'products' :
+      page = const ScreenProducts();
+      break;
+    case 'products/info_product' :
+      page = const ScreenInfoProduct();
+      break;
+    case 'products/add_product' :
+      page = const ScreenAddItem();
+      break;
+    case 'profile' :
+      page = const ScreenProfile();
+      break;
+    case 'profile/edit_datas' :
+      page = const ScreenEditDatas();
+      break;
+    case 'profile/about' :
+      page = const ScreenAbout();
+      break;
+    case 'order' : 
+      page = const ScreenOrder();
+     break;
+    case 'order/info' :
+      page = const ScreenInfoOrder();
+      break;
+    case 'finalize_order_customer' :
+      page = const ScreenFOMain();
+      break;
+    case 'finalize_order_customer/address' :
+      page = const ScreenFOGetAddress();
+      break;
+    case 'finalize_order_customer/payment' : 
+      page = const ScreenFOPayment();
+      break;
+    default:
+      page = const ScreenPresentation();
+    }
+  return PageRouteBuilder(
+    pageBuilder: (context, animation, secondaryAnimation) => page,
+    transitionDuration: const Duration(seconds: 0),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(opacity: animation, child: child), //{
+      // const begin = Offset(0.0, 1.0);
+      // const end = Offset.zero;
+      // final tween = Tween(begin: begin, end: end);
+      // final offsetAnimation = animation.drive(tween);
+      // return SlideTransition(
+      //   position: offsetAnimation,
+      //   child: child,
+      // );
+    // },
+  );
+}
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   var route = 'presentation';
@@ -63,33 +149,33 @@ Future<void> main() async {
       theme: ThemeData(scaffoldBackgroundColor: const Color.fromRGBO(252, 252, 252, 1)),
 
       routes: {
-        'presentation' :(context) => const ScreenPresentation({}),
-        'login' :(context) => const ScreenLogin({}),
-        'login/forget_password' :(context) => const ScreenForgetPassword({}),
-        'register' :(context) => const ScreenRegister({}),
-        'home' :(context) => const ScreenHome({}),
-        'manager' :(context) => const ScreenManager({}),
-        'manager/products' :(context) => const ScreenCreateProducts({}),
-        'table' :(context) => const ScreenVerificationTable({}),
-        'waiter' :(context) => const ScreenCallWaiter({}),
-        'cart' :(context) => const ScreenCart({}),
-        'products' :(context) => const ScreenProducts({}),
-        'products/info_product' :(context) => const ScreenInfoProduct({}),
-        'products/add_product' :(context) => const ScreenAddItem({}),
-        'profile' :(context) => const ScreenProfile({}),
-        'profile/edit_datas' :(context) => const ScreenEditDatas({}),
-        'profile/about' :(context) => const ScreenAbout({}),
-        'order' :(context) => const ScreenOrder({}),
-        'order/info' :(context) => const ScreenInfoOrder({}),
-        'finalize_order_customer' :(context) => const ScreenFOMain({}),
-        'finalize_order_customer/address' :(context) => const ScreenFOGetAddress({}),
-        'finalize_order_customer/payment' :(context) => const ScreenFOPayment({}),
+        'presentation' :(context) => const ScreenPresentation(),
+        'login' :(context) => const ScreenLogin(),
+        'login/forget_password' :(context) => const ScreenForgetPassword(),
+        'register' :(context) => const ScreenRegister(),
+        'home' :(context) => const ScreenHome(),
+        'manager' :(context) => const ScreenManager(),
+        'manager/products' :(context) => const ScreenCreateProducts(),
+        'table' :(context) => const ScreenVerificationTable(),
+        'waiter' :(context) => const ScreenCallWaiter(),
+        'cart' :(context) => const ScreenCart(),
+        'products' :(context) => const ScreenProducts(),
+        'products/info_product' :(context) => const ScreenInfoProduct(),
+        'products/add_product' :(context) => const ScreenAddItem(),
+        'profile' :(context) => const ScreenProfile(),
+        'profile/edit_datas' :(context) => const ScreenEditDatas(),
+        'profile/about' :(context) => const ScreenAbout(),
+        'order' :(context) => const ScreenOrder(),
+        'order/info' :(context) => const ScreenInfoOrder(),
+        'finalize_order_customer' :(context) => const ScreenFOMain(),
+        'finalize_order_customer/address' :(context) => const ScreenFOGetAddress(),
+        'finalize_order_customer/payment' :(context) => const ScreenFOPayment(),
       },
 
       // onGenerateRoute: (settings) {
       //   final arguments = settings.arguments ?? {};
       //   switch (settings.name?.replaceFirst('/', '')) {
-      //     case 'presentation' :PageRouteBuilder(
+      //     case 'presentation' : return PageRouteBuilder(
       //         pageBuilder: (context, animation, secondaryAnimation) => ScreenPresentation(arguments),
       //         transitionsBuilder: (context, animation, secondaryAnimation, child) {
       //           const begin = Offset(0.0, 1.0);
@@ -103,7 +189,7 @@ Future<void> main() async {
       //         },
       //       );
       //       break;
-      //     case 'login' : PageRouteBuilder(
+      //     case 'login' : return PageRouteBuilder(
       //         pageBuilder:(context, animation, secondaryAnimation) => ScreenLogin(arguments),
       //         transitionsBuilder: (context, animation, secondaryAnimation, child) {
       //           const begin = Offset(0.0, 1.0);
@@ -117,7 +203,7 @@ Future<void> main() async {
       //         },
       //       );
       //       break;
-      //     case 'login/forget_password' : PageRouteBuilder(
+      //     case 'login/forget_password' :return PageRouteBuilder(
       //         pageBuilder:(context, animation, secondaryAnimation) => ScreenForgetPassword(arguments),
       //         transitionsBuilder: (context, animation, secondaryAnimation, child) {
       //           const begin = Offset(0.0, 1.0);
@@ -131,7 +217,7 @@ Future<void> main() async {
       //         },
       //       );
       //       break;
-      //     case 'register' : PageRouteBuilder(
+      //     case 'register' :return PageRouteBuilder(
       //         pageBuilder:(context, animation, secondaryAnimation) => ScreenRegister(arguments),
       //         transitionsBuilder: (context, animation, secondaryAnimation, child) {
       //           const begin = Offset(0.0, 1.0);
@@ -145,7 +231,7 @@ Future<void> main() async {
       //         },
       //       );
       //       break;
-      //     case 'home' : PageRouteBuilder(
+      //     case 'home' :return PageRouteBuilder(
       //         pageBuilder:(context, animation, secondaryAnimation) => ScreenHome(arguments),
       //         transitionsBuilder: (context, animation, secondaryAnimation, child) {
       //           const begin = Offset(0.0, 1.0);
@@ -159,7 +245,7 @@ Future<void> main() async {
       //         },
       //       );
       //       break;
-      //     case 'manager' : PageRouteBuilder(
+      //     case 'manager' :return PageRouteBuilder(
       //         pageBuilder:(context, animation, secondaryAnimation) => ScreenManager(arguments),
       //         transitionsBuilder: (context, animation, secondaryAnimation, child) {
       //           const begin = Offset(0.0, 1.0);
@@ -173,7 +259,7 @@ Future<void> main() async {
       //         },
       //       );
       //       break;
-      //     case 'manager/products' : PageRouteBuilder(
+      //     case 'manager/products' :return PageRouteBuilder(
       //         pageBuilder:(context, animation, secondaryAnimation) => ScreenCreateProducts(arguments),
       //         transitionsBuilder: (context, animation, secondaryAnimation, child) {
       //           const begin = Offset(0.0, 1.0);
@@ -187,7 +273,7 @@ Future<void> main() async {
       //         },
       //       );
       //       break;
-      //     case 'table' : PageRouteBuilder(
+      //     case 'table' :return PageRouteBuilder(
       //         pageBuilder:(context, animation, secondaryAnimation) => ScreenVerificationTable(arguments),
       //         transitionsBuilder: (context, animation, secondaryAnimation, child) {
       //           const begin = Offset(0.0, 1.0);
@@ -201,7 +287,7 @@ Future<void> main() async {
       //         },
       //       );
       //       break;
-      //     case 'waiter' : PageRouteBuilder(
+      //     case 'waiter' :return PageRouteBuilder(
       //         pageBuilder:(context, animation, secondaryAnimation) => ScreenCallWaiter(arguments),
       //         transitionsBuilder: (context, animation, secondaryAnimation, child) {
       //           const begin = Offset(0.0, 1.0);
@@ -215,7 +301,7 @@ Future<void> main() async {
       //         },
       //       );
       //       break;
-      //     case 'cart' : PageRouteBuilder(
+      //     case 'cart' :return PageRouteBuilder(
       //         pageBuilder:(context, animation, secondaryAnimation) => ScreenCart(arguments),
       //         transitionsBuilder: (context, animation, secondaryAnimation, child) {
       //           const begin = Offset(0.0, 1.0);
@@ -229,7 +315,7 @@ Future<void> main() async {
       //         },
       //       );
       //       break;
-      //     case 'products' : PageRouteBuilder(
+      //     case 'products' :return PageRouteBuilder(
       //         pageBuilder:(context, animation, secondaryAnimation) => ScreenProducts(arguments),
       //         transitionsBuilder: (context, animation, secondaryAnimation, child) {
       //           const begin = Offset(0.0, 1.0);
@@ -243,7 +329,7 @@ Future<void> main() async {
       //         },
       //       );
       //       break;
-      //     case 'products/info_product' : PageRouteBuilder(
+      //     case 'products/info_product' :return PageRouteBuilder(
       //         pageBuilder:(context, animation, secondaryAnimation) => ScreenInfoProduct(arguments),
       //         transitionsBuilder: (context, animation, secondaryAnimation, child) {
       //           const begin = Offset(0.0, 1.0);
@@ -257,7 +343,7 @@ Future<void> main() async {
       //         },
       //       );
       //       break;
-      //     case 'products/add_product' : PageRouteBuilder(
+      //     case 'products/add_product' :return PageRouteBuilder(
       //         pageBuilder:(context, animation, secondaryAnimation) => ScreenAddItem(arguments),
       //         transitionsBuilder: (context, animation, secondaryAnimation, child) {
       //           const begin = Offset(0.0, 1.0);
@@ -271,7 +357,7 @@ Future<void> main() async {
       //         },
       //       );
       //       break;
-      //     case 'profile' : PageRouteBuilder(
+      //     case 'profilea' :return PageRouteBuilder(
       //         pageBuilder:(context, animation, secondaryAnimation) => ScreenProfile(arguments),
       //         transitionsBuilder: (context, animation, secondaryAnimation, child) {
       //           const begin = Offset(0.0, 1.0);
@@ -285,7 +371,7 @@ Future<void> main() async {
       //         },
       //       );
       //       break;
-      //     case 'profile/edit_datas' : PageRouteBuilder(
+      //     case 'profile/edit_datas' :return PageRouteBuilder(
       //         pageBuilder:(context, animation, secondaryAnimation) => ScreenEditDatas(arguments),
       //         transitionsBuilder: (context, animation, secondaryAnimation, child) {
       //           const begin = Offset(0.0, 1.0);
@@ -299,7 +385,7 @@ Future<void> main() async {
       //         },
       //       );
       //       break;
-      //     case 'profile/about' : PageRouteBuilder(
+      //     case 'profile/about' :return PageRouteBuilder(
       //         pageBuilder:(context, animation, secondaryAnimation) => ScreenAbout(arguments),
       //         transitionsBuilder: (context, animation, secondaryAnimation, child) {
       //           const begin = Offset(0.0, 1.0);
@@ -328,7 +414,7 @@ Future<void> main() async {
       //         },
       //       );
       //       break;
-      //     case 'order/info' : PageRouteBuilder(
+      //     case 'order/info' :return PageRouteBuilder(
       //         pageBuilder:(context, animation, secondaryAnimation) => ScreenInfoOrder(arguments),
       //         transitionsBuilder: (context, animation, secondaryAnimation, child) {
       //           const begin = Offset(0.0, 1.0);
@@ -342,7 +428,7 @@ Future<void> main() async {
       //         },
       //       );
       //       break;
-      //     case 'finalize_order_customer' : PageRouteBuilder(
+      //     case 'finalize_order_customer' :return PageRouteBuilder(
       //         pageBuilder:(context, animation, secondaryAnimation) => ScreenFOMain(arguments),
       //         transitionsBuilder: (context, animation, secondaryAnimation, child) {
       //           const begin = Offset(0.0, 1.0);
@@ -356,7 +442,7 @@ Future<void> main() async {
       //         },
       //       );
       //       break;
-      //     case 'finalize_order_customer/address' : PageRouteBuilder(
+      //     case 'finalize_order_customer/address' :return PageRouteBuilder(
       //         pageBuilder:(context, animation, secondaryAnimation) => ScreenFOGetAddress(arguments),
       //         transitionsBuilder: (context, animation, secondaryAnimation, child) {
       //           const begin = Offset(0.0, 1.0);
@@ -370,7 +456,7 @@ Future<void> main() async {
       //         },
       //       );
       //       break;
-      //     case 'finalize_order_customer/payment' : PageRouteBuilder(
+      //     case 'finalize_order_customer/payment' :return PageRouteBuilder(
       //         pageBuilder:(context, animation, secondaryAnimation) => ScreenFOPayment(arguments),
       //         transitionsBuilder: (context, animation, secondaryAnimation, child) {
       //           const begin = Offset(0.0, 1.0);
