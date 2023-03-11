@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tcc/controller/firebase/auth.dart';
+import 'package:tcc/main.dart';
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
 
@@ -110,11 +111,9 @@ class _ScreenProfileState extends State<ScreenProfile> {
                     trailing: Icon(Icons.arrow_right, size: 20),
 
                     onTap: () async => {
-                      Navigator.pushNamed(
+                      Navigator.push(
                         context,
-                        'profile/edit_datas',
-
-                        arguments: user
+                        navigator('profile/edit_datas', user),
                       )
                     },
                   ),

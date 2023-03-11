@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 import 'package:flutter/material.dart';
 import 'package:tcc/globals.dart' as globals;
+import 'package:tcc/main.dart';
 
 Widget listSize(nameSize, price) {
   return (
@@ -30,9 +31,9 @@ Widget listSize(nameSize, price) {
             child: ElevatedButton(
                 
               onPressed: () {
-                Navigator.pushNamed(
+                Navigator.push(
                   context,
-                  'products/add_product',
+                  navigator('products/add_product'),
                 );
               },
               

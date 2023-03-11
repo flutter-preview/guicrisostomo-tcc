@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:tcc/controller/firebase/auth.dart';
+import 'package:tcc/main.dart';
 import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/buttonGoogleAuth.dart';
@@ -177,7 +178,8 @@ class _ScreenRegisterState extends State<ScreenRegister> {
               const SizedBox(height: 5,),
 
               button('Entrar agora', 280, 50, Icons.input_outlined, () {
-                Navigator.popAndPushNamed(context, 'login');
+                Navigator.pop(context);
+                Navigator.push(context, navigator('login'));
               })
           ],),
         )

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tcc/main.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
 
 class ScreenManager extends StatefulWidget {
@@ -24,9 +25,9 @@ class _ScreenManagerState extends State<ScreenManager> {
                 trailing: const Icon(Icons.arrow_right, size: 20),
 
                 onTap: () => {
-                  Navigator.pushNamed(
+                  Navigator.push(
                     context,
-                    'manager/products',
+                    navigator('manager/products'),
                   )
                 },
               ),

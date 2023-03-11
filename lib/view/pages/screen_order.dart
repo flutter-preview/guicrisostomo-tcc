@@ -2,7 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tcc/controller/firebase/sales.dart';
+import 'package:tcc/main.dart';
 import 'package:tcc/model/standardListDropDown.dart';
+import 'package:tcc/view/pages/screen_info_order.dart';
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
 import 'package:tcc/view/widget/button.dart';
@@ -239,13 +241,15 @@ listViewOrder() {
                         ),
 
                         //EVENTO DE CLIQUE
-                        onTap: () {
-                          Navigator.pushNamed(
+                        onTap: ()  {
+                          // print('Clicou no item ${dados.docs[index]}');
+                          Navigator.push(
                             context,
-                            'order/info',
+                            // 'order/info',
+                            navigator('order/info', dados.docs[index])
 
-                            //Passagem de parâmetro
-                            arguments: dados.docs[index],
+                          //   //Passagem de parâmetro
+                            // arguments: dados.docs[index],
 
                           );
                         },

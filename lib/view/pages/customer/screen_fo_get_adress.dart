@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tcc/main.dart';
 import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/addressExistent.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
@@ -116,7 +117,7 @@ class _ScreenFOGetAddressState extends State<ScreenFOGetAddress> {
                   50,
                   Icons.arrow_forward,
                   () => {
-                    Navigator.pushNamed(context, 'finalize_order_customer/payment'),
+                    Navigator.push(context, navigator('finalize_order_customer/payment')),
                   },
                   false
                 ),

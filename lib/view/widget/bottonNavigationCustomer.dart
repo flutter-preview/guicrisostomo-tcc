@@ -1,8 +1,9 @@
 // ignore_for_file: file_names
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:tcc/main.dart';
 import 'package:tcc/utils.dart';
-import 'package:tcc/view/pages/screen_about.dart';
+import 'package:tcc/view/pages/screen_order.dart';
 import 'package:tcc/view/widget/cartInfo.dart';
 import '../../globals.dart' as globals;
 
@@ -83,32 +84,33 @@ class _BottomState extends State<Bottom> {
               switch (index) {
                 case 0:
                   Navigator.of(context).pop();
-                  Navigator.pushNamed(context, 'home');
+                  Navigator.push(context, navigator('home'));
                   break;
                 case 1:
                   Navigator.of(context).pop();
                   // Navigator.pushNamed(context, 'order');
-                  Navigator.push(context, navigator(ScreenAbout({})));
+
+                  Navigator.push(context, navigator('order'));
                   break;
                 case 2:
                   Navigator.of(context).pop();
-                  Navigator.pushNamed(context, 'products');
+                  Navigator.push(context, navigator('products'));
                   break;
                 case 3:
                   
                   if (globals.isSaleInTable) {
                     Navigator.of(context).pop();
-                    Navigator.pushNamed(context, 'waiter');
+                    Navigator.push(context, navigator('waiter'));
                     break;
                   } else {
                     Navigator.of(context).pop();
-                    Navigator.pushNamed(context, 'table');
+                    Navigator.push(context, navigator('table'));
                     break;
                   }
         
                 case 4:
                   Navigator.of(context).pop();
-                  Navigator.pushNamed(context, 'profile');
+                  Navigator.push(context, navigator('profile'));
                   break;
               }
         

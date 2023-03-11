@@ -10,7 +10,12 @@ import 'package:tcc/globals.dart' as globals;
 import 'package:tcc/view/widget/textFieldGeneral.dart';
 
 class ScreenAddItem extends StatefulWidget {
-  const ScreenAddItem({super.key});
+  Object? arguments;
+
+  ScreenAddItem({
+    super.key,
+    this.arguments,
+  });
 
   @override
   State<ScreenAddItem> createState() => _ScreenAddItemState();
@@ -32,7 +37,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
 
   @override
   Widget build(BuildContext context) {
-    dynamic productSelect = ModalRoute.of(context)!.settings.arguments as QueryDocumentSnapshot;
+    dynamic productSelect = widget.arguments as QueryDocumentSnapshot;
 
     String idProduct = productSelect.id;
     String nameProduct = productSelect['name'];

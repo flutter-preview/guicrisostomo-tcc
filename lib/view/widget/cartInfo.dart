@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:tcc/globals.dart' as globals;
+import 'package:tcc/main.dart';
 
 Widget cartInfo(context) {
   return !globals.isUserTyping ? Container(
@@ -12,7 +13,7 @@ Widget cartInfo(context) {
       children: [
         ElevatedButton(
           onPressed: () {
-            Navigator.pushNamed(context, 'cart');
+            Navigator.push(context, navigator('cart'));
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.transparent,
@@ -92,7 +93,7 @@ Widget cartInfo(context) {
     
         ElevatedButton(
           onPressed: () {
-            Navigator.pushNamed(context, 'finalize_order_customer');
+            Navigator.push(context, navigator('finalize_order_customer'));
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.transparent,

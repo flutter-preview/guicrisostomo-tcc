@@ -3,6 +3,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tcc/globals.dart' as globals;
+import 'package:tcc/main.dart';
+import 'package:tcc/view/pages/screen_add.dart';
 
 class ProductItem extends StatefulWidget {
   final product;
@@ -91,11 +93,13 @@ class _ProductItemState extends State<ProductItem> {
                             child: ElevatedButton(
                                 
                               onPressed: () {
-                                Navigator.pushNamed(
-                                  context,
-                                  'products/add_product',
-                                  arguments: dados.docs[index],
-                                );
+                                // Navigator.pushNamed(
+                                //   context,
+                                //   'products/add_product',
+                                //   arguments: dados.docs[index],
+                                // );
+
+                                Navigator.push(context, navigator('products/add_product', dados.docs[index]));
                               },
                               
                               style: ElevatedButton.styleFrom(
@@ -122,9 +126,9 @@ class _ProductItemState extends State<ProductItem> {
                               
                               
                               onPressed: () {
-                                Navigator.pushNamed(
+                                Navigator.push(
                                   context,
-                                  'products/info_product',
+                                  navigator('products/info_product'),
                                 );
                               },
                               
@@ -143,9 +147,9 @@ class _ProductItemState extends State<ProductItem> {
                         ),
                         
                         onTap: () {
-                          Navigator.pushNamed(
+                          Navigator.push(
                             context,
-                            'products/info_product',
+                            navigator('products/info_product'),
                           );
                         },
                       )

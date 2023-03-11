@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:tcc/globals.dart' as globals;
+import 'package:tcc/main.dart';
 
 PreferredSizeWidget appBarWidget({
   required String pageName,
@@ -42,7 +43,7 @@ PreferredSizeWidget appBarWidget({
             ],
           ),
           onPressed: () { 
-            Navigator.pushNamed(context, 'cart');
+            Navigator.push(context, navigator('cart'));
           },
         ),
       ),

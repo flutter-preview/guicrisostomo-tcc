@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:tcc/main.dart';
 import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
@@ -114,7 +115,8 @@ class _ScreenVerificationTableState extends State<ScreenVerificationTable> {
             button('Ler QR code', 250, 50, Icons.qr_code_scanner, () => {
               _scan(),
               globals.isSaleInTable = !globals.isSaleInTable,
-              Navigator.popAndPushNamed(context, 'home')
+              Navigator.pop(context),
+              Navigator.push(context, navigator('home'))
             }),
 
             const SizedBox(height: 20),

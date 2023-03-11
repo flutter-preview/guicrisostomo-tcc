@@ -26,7 +26,7 @@ import 'package:tcc/view/pages/screen_profile.dart';
 import 'package:tcc/view/pages/screen_register.dart';
 import 'package:tcc/view/pages/screen_verification_table.dart';
 
-Route navigator(String name) {
+Route navigator([String? name, Object? arguments]) {
   Widget page;
 
   switch (name) {
@@ -67,13 +67,13 @@ Route navigator(String name) {
       page = const ScreenInfoProduct();
       break;
     case 'products/add_product' :
-      page = const ScreenAddItem();
+      page = ScreenAddItem(arguments: arguments);
       break;
     case 'profile' :
       page = const ScreenProfile();
       break;
     case 'profile/edit_datas' :
-      page = const ScreenEditDatas();
+      page = ScreenEditDatas(arguments: arguments);
       break;
     case 'profile/about' :
       page = const ScreenAbout();
@@ -82,7 +82,7 @@ Route navigator(String name) {
       page = const ScreenOrder();
      break;
     case 'order/info' :
-      page = const ScreenInfoOrder();
+      page = ScreenInfoOrder(arguments: arguments);
       break;
     case 'finalize_order_customer' :
       page = const ScreenFOMain();
@@ -96,6 +96,7 @@ Route navigator(String name) {
     default:
       page = const ScreenPresentation();
     }
+
   return PageRouteBuilder(
     pageBuilder: (context, animation, secondaryAnimation) => page,
     transitionDuration: const Duration(seconds: 0),
@@ -161,12 +162,12 @@ Future<void> main() async {
         'cart' :(context) => const ScreenCart(),
         'products' :(context) => const ScreenProducts(),
         'products/info_product' :(context) => const ScreenInfoProduct(),
-        'products/add_product' :(context) => const ScreenAddItem(),
+        'products/add_product' :(context) => ScreenAddItem(),
         'profile' :(context) => const ScreenProfile(),
-        'profile/edit_datas' :(context) => const ScreenEditDatas(),
+        'profile/edit_datas' :(context) => ScreenEditDatas(),
         'profile/about' :(context) => const ScreenAbout(),
         'order' :(context) => const ScreenOrder(),
-        'order/info' :(context) => const ScreenInfoOrder(),
+        'order/info' :(context) => ScreenInfoOrder(),
         'finalize_order_customer' :(context) => const ScreenFOMain(),
         'finalize_order_customer/address' :(context) => const ScreenFOGetAddress(),
         'finalize_order_customer/payment' :(context) => const ScreenFOPayment(),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:tcc/globals.dart' as globals;
+import 'package:tcc/main.dart';
 import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
 import 'package:tcc/view/widget/button.dart';
@@ -152,7 +153,7 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
                   50,
                   Icons.arrow_forward,
                   () => {
-                    Navigator.pushNamed(context, 'finalize_order_customer/address'),
+                    Navigator.push(context, navigator('finalize_order_customer/address')),
                   },
                   false
                 ),

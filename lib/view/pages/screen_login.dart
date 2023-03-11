@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tcc/controller/firebase/auth.dart';
+import 'package:tcc/main.dart';
 import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/buttonGoogleAuth.dart';
@@ -94,9 +95,9 @@ class _ScreenLoginState extends State<ScreenLogin> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     button('Esqueci minha senha', 300, 50, null, () {
-                      Navigator.pushNamed(
+                      Navigator.push(
                         context,
-                        'login/forget_password',
+                        navigator('login/forget_password'),
                       );
                     }),
                   ],
@@ -128,7 +129,8 @@ class _ScreenLoginState extends State<ScreenLogin> {
               const SizedBox(height: 5,),
 
               button('Registrar agora', 280, 50, Icons.person_add, () {
-                Navigator.popAndPushNamed(context, 'register');
+                Navigator.pop(context);
+                Navigator.push(context, navigator('register'));
               })
           ],),
         )

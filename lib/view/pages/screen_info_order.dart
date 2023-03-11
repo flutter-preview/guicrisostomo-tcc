@@ -6,7 +6,12 @@ import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
 import 'package:tcc/globals.dart' as globals;
 
 class ScreenInfoOrder extends StatefulWidget {
-  const ScreenInfoOrder({super.key});
+  Object? arguments;
+
+  ScreenInfoOrder({
+    super.key,
+    this.arguments,
+  });
 
   @override
   State<ScreenInfoOrder> createState() => _ScreenInfoOrderState();
@@ -15,7 +20,7 @@ class ScreenInfoOrder extends StatefulWidget {
 class _ScreenInfoOrderState extends State<ScreenInfoOrder> {
   @override
   Widget build(BuildContext context) {
-    var orderSelect = ModalRoute.of(context)!.settings.arguments as QueryDocumentSnapshot;
+    var orderSelect = widget.arguments as QueryDocumentSnapshot;
 
     dynamic item = orderSelect.data();
     Map<String, dynamic> map = item!;
