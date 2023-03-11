@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:tcc/controller/firebase/auth.dart';
 import 'package:tcc/firebase_options.dart';
 import 'package:tcc/utils.dart';
@@ -114,6 +115,8 @@ Route navigator([String? name, Object? arguments]) {
 }
 
 Future<void> main() async {
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   WidgetsFlutterBinding.ensureInitialized();
   var route = 'presentation';
 
@@ -475,6 +478,8 @@ Future<void> main() async {
       //       return null;
       //   }
       // },
-    )
+    ),
   );
+
+  FlutterNativeSplash.remove();
 }
