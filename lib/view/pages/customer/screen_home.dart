@@ -5,13 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tcc/controller/firebase/productsCart.dart';
 import 'package:tcc/controller/firebase/sales.dart';
+import 'package:tcc/model/standardSlideShow.dart';
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
-import 'package:tcc/view/widget/cartInfo.dart';
 import 'package:tcc/view/widget/imageMainScreens.dart';
 import 'package:tcc/view/widget/listCart.dart';
 import 'package:tcc/view/widget/sectionVisible.dart';
 import 'package:tcc/globals.dart' as globals;
+import 'package:tcc/view/widget/slideShow.dart';
 
 class ScreenHome extends StatefulWidget {
   const ScreenHome({super.key});
@@ -30,6 +31,23 @@ class _ScreenHomeState extends State<ScreenHome> {
   var list;
   var listSale;
   String? idSale;
+
+  List<SlideShow> listSlideShow = [
+    SlideShow(
+      path: 'lib/images/imgPizza.png',
+      title: 'Pizzas',
+      onTap: () {
+        print('Pizzas');
+      },
+    ),
+    SlideShow(
+      path: 'lib/images/imgFood.jpg',
+      title: 'Comidas',
+      onTap: () {
+        print('Comidas');
+      },
+    ),
+  ];
 
   void getIdSale() async {
     await SalesController().idSale().then((value){
@@ -133,25 +151,30 @@ class _ScreenHomeState extends State<ScreenHome> {
       ),
 
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
         child: Column(
           children: [
+            // imgCenter(imgHome),
+            SlideShowWidget(listSlideShow: listSlideShow,),
             
-            imgCenter(imgHome),
             const SizedBox(height: 10,),
-
-            SectionVisible(
-              nameSection: 'Informações do seu pedido atual',
-              isShowPart: true,
-              child: dataSales(),
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                children: [
+                  SectionVisible(
+                    nameSection: 'Informações do seu pedido atual',
+                    isShowPart: true,
+                    child: dataSales(),
+                  ),
+                  
+                  
+                  SectionVisible(
+                    nameSection: 'Carrinho de compras',
+                    child: ProductsCart(list),
+                  ),
+                ],
+              ),
             ),
-            
-            
-            SectionVisible(
-              nameSection: 'Carrinho de compras',
-              child: ProductsCart(list),
-            ),
-            
           ]
         )
       ),
