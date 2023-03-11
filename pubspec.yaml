@@ -89,6 +89,7 @@ flutter:
     - lib/images/iconSeePassword.svg
     - lib/images/iconHidePassword.svg
     - lib/images/imgPizza.png
+    - lib/images/imgFood.jpg
     - lib/images/imgMe.png
     - lib/images/imgProfessor.png
     - lib/images/google_logo.png
