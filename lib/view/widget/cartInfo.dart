@@ -7,6 +7,7 @@ import 'package:tcc/main.dart';
 Widget cartInfo(context) {
   return !globals.isUserTyping ? Container(
     margin: const EdgeInsets.fromLTRB(0, 0, 10, 10),
+    padding: const EdgeInsets.only(top: 10),
     child: Row(
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.spaceAround,
