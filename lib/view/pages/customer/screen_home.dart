@@ -8,7 +8,6 @@ import 'package:tcc/controller/firebase/sales.dart';
 import 'package:tcc/model/standardSlideShow.dart';
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
-import 'package:tcc/view/widget/imageMainScreens.dart';
 import 'package:tcc/view/widget/listCart.dart';
 import 'package:tcc/view/widget/sectionVisible.dart';
 import 'package:tcc/globals.dart' as globals;
@@ -26,15 +25,13 @@ class _ScreenHomeState extends State<ScreenHome> {
   final String iconOrder = 'lib/images/iconOrder.svg';
   final String iconMenu = 'lib/images/iconMenu.svg';
 
-  final String imgHome = 'lib/images/imgHomeCustomer.svg';
-
   var list;
   var listSale;
   String? idSale;
 
   List<SlideShow> listSlideShow = [
     SlideShow(
-      path: 'lib/images/imgPizza.png',
+      path: 'lib/images/imgPizza.jpg',
       title: 'Pizzas',
       onTap: () {
         print('Pizzas');
