@@ -15,89 +15,165 @@ class SlideShowWidget extends StatefulWidget {
 
 class _SlideShowWidgetState extends State<SlideShowWidget> {
   PageController indicator = PageController();
+  int page = 0;
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(
-          width: MediaQuery.of(context).size.width,
-          height: 200,
-          child: PageView(
-            controller: indicator,
-            children: [
-              for (int i = 0; i < widget.listSlideShow.length; i++)
-                ElevatedButton(
-                  onPressed: widget.listSlideShow[i].onTap,
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.transparent),
-                    shadowColor: MaterialStateProperty.all(Colors.transparent),
-                    padding: MaterialStateProperty.all(EdgeInsets.zero),
+  void initState() {
+    super.initState();
+    indicator.addListener(() {
+      setState(() {
+        page = indicator.page!.round();
+      });
+    });
+  }
+
+  Widget CircleIndicator() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          if (page >= 1)
+            IconButton(
+              onPressed: () {
+                indicator.animateToPage(
+                  indicator.page!.round() - 1,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeIn,
+                );
+              },
+              icon: const Icon(
+                Icons.arrow_left,
+                color: Colors.white,
+              ),
+            ),
+          
+          for (int i = 0; i < widget.listSlideShow.length; i++)
+            IconButton(
+              
+              onPressed: () {
+                indicator.animateToPage(
+                  i,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeIn,
+                );
+              },
+
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.transparent),
+                shadowColor: MaterialStateProperty.all(Colors.transparent),
+                padding: MaterialStateProperty.all(EdgeInsets.zero),
+              ),
+
+              icon: Icon(
+                Icons.circle,
+                color: page == i ? Colors.white : Colors.grey,
+                size: 10,
+              ),
+            ),
+          
+          if (page < widget.listSlideShow.length - 1)
+            IconButton(
+              onPressed: () {
+                indicator.animateToPage(
+                  indicator.page!.round() + 1,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeIn,
+                );
+              },
+              icon: const Icon(
+                Icons.arrow_right,
+                color: Colors.white,
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget SlideShow() {
+    return PageView.builder(
+      controller: indicator,
+      itemCount: widget.listSlideShow.length,
+
+      onPageChanged: (value) {
+        setState(() {
+          page = value;
+          indicator.animateToPage(
+            page,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeIn,
+          );
+        });
+      },
+      itemBuilder: (context, index) {
+
+        
+        return  ElevatedButton(
+            onPressed: widget.listSlideShow[index].onTap,
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.transparent),
+              shadowColor: MaterialStateProperty.all(Colors.transparent),
+              padding: MaterialStateProperty.all(EdgeInsets.zero),
+            ),
+            child: Container(
+              
+              decoration: BoxDecoration(
+                color: Colors.black,
+                image: DecorationImage(
+                  image: AssetImage(
+                    widget.listSlideShow[index].path,
                   ),
-                  child: Container(
-                    
-                    decoration: BoxDecoration(
-                      color: Colors.black,
-                      image: DecorationImage(
-                        image: AssetImage(
-                          widget.listSlideShow[i].path,
-                        ),
-                        opacity: 0.5,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(30),
-                      child: Row(
-                        children: [
-                          Align(
-                            alignment: Alignment.bottomLeft,
-                            child: Text(
-                              widget.listSlideShow[i].title,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-
-                          const Spacer(),
-
-                          const Align(
-                            alignment: Alignment.bottomRight,
-                            child: Icon(
-                              Icons.arrow_forward_ios,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-            ],
-          ),
-        ),
-
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            for (int i = 0; i < widget.listSlideShow.length; i++)
-              Container(
-                width: 10,
-                height: 10,
-                margin: const EdgeInsets.symmetric(horizontal: 2),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: i == indicator.page!.round()
-                      ? Colors.black
-                      : Colors.grey,
+                  opacity: 0.5,
+                  fit: BoxFit.cover,
                 ),
               ),
-          ],
-        ),
-      ],
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(30, 30, 30, 60),
+                child: Row(
+                  children: [
+                    Align(
+                      alignment: Alignment.bottomLeft,
+                      child: Text(
+                        widget.listSlideShow[index].title,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+    
+                    const Spacer(),
+    
+                    const Align(
+                      alignment: Alignment.bottomRight,
+                      child: Icon(
+                        Icons.arrow_forward_ios,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+    );
+  }
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * 0.3,
+      width: double.infinity,
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          SlideShow(),
+          CircleIndicator(),
+        ],
+      ),
     );
   }
 }
