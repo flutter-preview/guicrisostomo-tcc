@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:tcc/globals.dart' as globals;
 import 'package:tcc/main.dart';
+import 'package:tcc/model/standardRadioButton.dart';
 import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
 import 'package:tcc/view/widget/button.dart';
@@ -19,8 +20,6 @@ class ScreenFOMain extends StatefulWidget {
 }
 
 class _ScreenFOMainState extends State<ScreenFOMain> {
-  String groupSaleType = 'Entrega';
-
   @override
   Widget build(BuildContext context) {
     var txtName = TextEditingController();
@@ -31,6 +30,18 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
       type: MaskAutoCompletionType.eager,
       initialText: txtPhone.text,
     );
+
+    List<RadioButtonList> listRadioButton = [
+      RadioButtonList(
+        name: 'Entrega',
+        icon: Icons.local_shipping,
+      ),
+
+      RadioButtonList(
+        name: 'Retirada',
+        icon: Icons.person,
+      ),
+    ];
     
     return Scaffold(
       appBar: PreferredSize(
@@ -129,8 +140,7 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
             const SizedBox(height: 20,),
 
             RadioButon(
-              valueRadio: 'Entrega',
-              group: groupSaleType,
+              list: listRadioButton,
             ),
 
             const SizedBox(height: 50),
