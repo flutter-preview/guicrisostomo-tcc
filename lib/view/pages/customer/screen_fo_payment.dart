@@ -223,8 +223,6 @@ class _ScreenFOPaymentState extends State<ScreenFOPayment> {
           ],
         ),
       ),
-
-      bottomNavigationBar: const Bottom(),
     );
   }
 }

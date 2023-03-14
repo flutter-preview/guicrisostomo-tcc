@@ -127,8 +127,6 @@ class _ScreenFOGetAddressState extends State<ScreenFOGetAddress> {
           ],
         ),
       ),
-
-      bottomNavigationBar: const Bottom(),
     );
   }
 }

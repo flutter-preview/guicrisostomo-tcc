@@ -78,7 +78,7 @@ class _ScreenCartState extends State<ScreenCart> {
                 50,
                 Icons.check,
                 () => {
-                  Navigator.push(context, navigator('/finalize_order_customer'))
+                  Navigator.push(context, navigator('finalize_order_customer'))
                 }
               ),
             )

@@ -20,16 +20,16 @@ class ScreenFOMain extends StatefulWidget {
 }
 
 class _ScreenFOMainState extends State<ScreenFOMain> {
+  var txtName = TextEditingController();
+  var txtPhone = TextEditingController();
+  var maskFormatter = MaskTextInputFormatter(
+    mask: '(##) #####-####', 
+    filter: { "#": RegExp(r'[0-9]') },
+    type: MaskAutoCompletionType.eager,
+  );
+
   @override
   Widget build(BuildContext context) {
-    var txtName = TextEditingController();
-    var txtPhone = TextEditingController();
-    var maskFormatter = MaskTextInputFormatter(
-      mask: '(##) #####-####', 
-      filter: { "#": RegExp(r'[0-9]') },
-      type: MaskAutoCompletionType.eager,
-      initialText: txtPhone.text,
-    );
 
     List<RadioButtonList> listRadioButton = [
       RadioButtonList(
@@ -128,6 +128,8 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
               validator: (value) {
                 validatorPhone(value!);
               },
+              inputFormatter: [maskFormatter],
+              
               onChanged: (value) => {
                 if (value.length <= 14) {
                   txtPhone.value = maskFormatter.updateMask(mask: "(##) ####-#####")
@@ -173,8 +175,6 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
           ],
         ),
       ),
-
-      bottomNavigationBar: const Bottom(),
     );
   }
 }
