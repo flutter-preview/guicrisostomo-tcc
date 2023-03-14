@@ -20,6 +20,7 @@ import 'package:tcc/view/pages/screen_info_order.dart';
 import 'package:tcc/view/pages/screen_info_product.dart';
 import 'package:tcc/view/pages/screen_login.dart';
 import 'package:tcc/view/pages/customer/screen_manager.dart';
+import 'package:tcc/view/pages/screen_notificaties.dart';
 import 'package:tcc/view/pages/screen_order.dart';
 import 'package:tcc/view/pages/screen_presentation.dart';
 import 'package:tcc/view/pages/screen_products.dart';
@@ -93,6 +94,9 @@ Route navigator([String? name, Object? arguments]) {
       break;
     case 'finalize_order_customer/payment' : 
       page = const ScreenFOPayment();
+      break;
+    case 'notifications' :
+      page = const ScreenNotifications();
       break;
     default:
       page = const ScreenPresentation();
@@ -174,6 +178,7 @@ Future<void> main() async {
         'finalize_order_customer' :(context) => const ScreenFOMain(),
         'finalize_order_customer/address' :(context) => const ScreenFOGetAddress(),
         'finalize_order_customer/payment' :(context) => const ScreenFOPayment(),
+        'notifications' :(context) => const ScreenNotifications(),
       },
 
       // onGenerateRoute: (settings) {

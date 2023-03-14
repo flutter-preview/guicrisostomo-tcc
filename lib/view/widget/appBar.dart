@@ -8,12 +8,15 @@ PreferredSizeWidget appBarWidget({
   required BuildContext context,
   IconData? icon,
   String svg = '',
+  bool withoutIcons = false,
 }) {
   return AppBar(
-    leading: icon == null ? SvgPicture.asset(
+    leading: icon == null ? withoutIcons == false ? SvgPicture.asset(
       svg,
       fit: BoxFit.scaleDown,
-    ) : Icon(icon, color: Colors.white, size: 30),
+    ) : null
+      : Icon(icon, color: Colors.white, size: 30),
+      
     actions: [
       Padding(
         padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
@@ -43,7 +46,7 @@ PreferredSizeWidget appBarWidget({
             ],
           ),
           onPressed: () { 
-            Navigator.push(context, navigator('cart'));
+            Navigator.push(context, navigator('notifications'));
           },
         ),
       ),
