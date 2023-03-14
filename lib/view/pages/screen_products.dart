@@ -2,16 +2,19 @@
 
 import 'package:flutter/material.dart';
 import 'package:tcc/controller/firebase/products.dart';
+import 'package:tcc/model/standardSlideShow.dart';
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
+import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/productItem.dart';
 import 'package:tcc/view/widget/sectionVisible.dart';
 import 'package:tcc/view/widget/textFieldGeneral.dart';
+import 'package:tcc/globals.dart' as globals;
 
 class ScreenProducts extends StatefulWidget {
-  final Object? arguments;
+  Object? arguments;
 
-  const ScreenProducts({
+  ScreenProducts({
     super.key,
     this.arguments,
   });
@@ -21,6 +24,8 @@ class ScreenProducts extends StatefulWidget {
 }
 
 class _ScreenProductsState extends State<ScreenProducts> {
+  String categorySelected = 'Pizzas';
+
   var txtProd = TextEditingController();
 
   var list;
@@ -31,9 +36,24 @@ class _ScreenProductsState extends State<ScreenProducts> {
     list = ProductsController().list();
   }
   
+  List<String> categories = [
+    'Pizzas',
+    'Comidas',
+    'Bebidas',
+    'Lanches',
+    'Salgados',
+    'Doces',
+    'Sobremesas',
+    'Outros',
+  ];
+
+  
+
   @override
   Widget build(BuildContext context) {
-
+    dynamic categorySelect = widget.arguments != null ? widget.arguments as SlideShow : SlideShow(path: '', title: '', onTap: () {});
+    categorySelected = widget.arguments != null ? categorySelect.title : categorySelected;
+    
     return Scaffold(
       appBar: appBarWidget(
         pageName: 'Produtos',
@@ -58,6 +78,41 @@ class _ScreenProductsState extends State<ScreenProducts> {
 
               icoSuffix: Icons.search,
               angleSufixIcon: 90 * 3.14 / 180,
+            ),
+
+            const SizedBox(height: 10),
+
+            SectionVisible(
+              nameSection: 'Categorias',
+              isShowPart: true,
+              child: SizedBox(
+                height: 50,
+                width: double.infinity,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  shrinkWrap: true,
+                  itemCount: categories.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      margin: const EdgeInsets.only(right: 10),
+                      child: button(
+                        categories[index],
+                        0,
+                        0,
+                        null,
+                        () {
+                          setState(() {
+                            categorySelected = categories[index];
+                          });
+                        },
+                        true,
+                        24,
+                        categorySelected == categories[index] ? globals.primaryBlack : null,
+                      ),
+                    );
+                  },
+                ),
+              ),
             ),
 
             const SizedBox(height: 20),

@@ -30,7 +30,6 @@ import 'package:tcc/view/pages/screen_verification_table.dart';
 
 Route navigator([String? name, Object? arguments]) {
   Widget page;
-
   switch (name) {
     case 'presentation' :
       page = const ScreenPresentation();
@@ -167,7 +166,7 @@ Future<void> main() async {
         'table' :(context) => const ScreenVerificationTable(),
         'waiter' :(context) => const ScreenCallWaiter(),
         'cart' :(context) => const ScreenCart(),
-        'products' :(context) => const ScreenProducts(),
+        'products' :(context) => ScreenProducts(),
         'products/info_product' :(context) => const ScreenInfoProduct(),
         'products/add_product' :(context) => ScreenAddItem(),
         'profile' :(context) => const ScreenProfile(),

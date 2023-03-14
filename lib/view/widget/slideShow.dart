@@ -108,10 +108,13 @@ class _SlideShowWidgetState extends State<SlideShowWidget> {
         });
       },
       itemBuilder: (context, index) {
-
         
         return  ElevatedButton(
-            onPressed: widget.listSlideShow[index].onTap,
+            onPressed: () {
+              Navigator.pushNamed(context, 'products', arguments: widget.listSlideShow[index]);
+              widget.listSlideShow[index].onTap;
+            },
+
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(Colors.transparent),
               shadowColor: MaterialStateProperty.all(Colors.transparent),

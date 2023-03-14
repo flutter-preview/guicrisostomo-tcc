@@ -29,23 +29,6 @@ class _ScreenHomeState extends State<ScreenHome> {
   var listSale;
   String? idSale;
 
-  List<SlideShow> listSlideShow = [
-    SlideShow(
-      path: 'lib/images/imgPizza.jpg',
-      title: 'Pizzas',
-      onTap: () {
-        print('Pizzas');
-      },
-    ),
-    SlideShow(
-      path: 'lib/images/imgFood.jpg',
-      title: 'Comidas',
-      onTap: () {
-        print('Comidas');
-      },
-    ),
-  ];
-
   void getIdSale() async {
     await SalesController().idSale().then((value){
       setState(() {
@@ -139,6 +122,21 @@ class _ScreenHomeState extends State<ScreenHome> {
         }
       );
     }
+
+    List<SlideShow> listSlideShow = [
+      SlideShow(
+        path: 'lib/images/imgPizza.jpg',
+        title: 'Pizzas',
+        onTap: () {
+        },
+      ),
+      SlideShow(
+        path: 'lib/images/imgFood.jpg',
+        title: 'Comidas',
+        onTap: () {
+        },
+      ),
+    ];
     
     return Scaffold(
       appBar: appBarWidget(
