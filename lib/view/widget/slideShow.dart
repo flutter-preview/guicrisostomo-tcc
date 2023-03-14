@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tcc/main.dart';
 import 'package:tcc/model/standardSlideShow.dart';
 
 class SlideShowWidget extends StatefulWidget {
@@ -111,7 +112,7 @@ class _SlideShowWidgetState extends State<SlideShowWidget> {
         
         return  ElevatedButton(
             onPressed: () {
-              Navigator.pushNamed(context, 'products', arguments: widget.listSlideShow[index]);
+              Navigator.push(context, navigator('products', widget.listSlideShow[index]));
               widget.listSlideShow[index].onTap;
             },
 
