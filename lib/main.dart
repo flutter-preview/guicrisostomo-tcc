@@ -63,7 +63,7 @@ Route navigator([String? name, Object? arguments]) {
       page = const ScreenCart();
       break;
     case 'products' :
-      page = const ScreenProducts();
+      page = ScreenProducts(arguments: arguments);
       break;
     case 'products/info_product' :
       page = const ScreenInfoProduct();
