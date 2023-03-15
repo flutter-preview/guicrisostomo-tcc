@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:tcc/controller/firebase/auth.dart';
 import 'package:tcc/main.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/imageMainScreens.dart';
@@ -63,6 +64,7 @@ class ScreenPresentation extends StatelessWidget {
               children: [
                 Center(
                   child: button('Continuar sem logar', MediaQuery.of(context).size.width - 100, 50, Icons.arrow_forward, () {
+                    LoginController().signInAnonymously();
                     Navigator.pop(context);
                     Navigator.push(context, navigator('home'));
                   }, false),
