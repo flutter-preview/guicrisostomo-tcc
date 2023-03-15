@@ -12,6 +12,7 @@ Widget button(
       bool isLeftIconButon = true,
       double fontSize = 24,
       Color? color,
+      String? pathImage = null,
     ]
 
   ) {
@@ -50,8 +51,14 @@ Widget button(
             
             children: [
       
-              if (isLeftIconButon && icon != null)
-                Icon(icon, size: 30,),
+              if (isLeftIconButon)
+                if(icon != null) 
+                  Icon(icon, size: 30,),
+                if(pathImage != null)
+                  Image.asset(
+                    pathImage,
+                    height: 35.0,
+                  ),
           
               Text(
                 text,
