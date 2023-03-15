@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:tcc/main.dart';
 import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/appBar.dart';
-import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
+import 'package:tcc/view/widget/customer/bottonNavigationCustomer.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/imageMainScreens.dart';
 import 'package:tcc/view/widget/textFieldGeneral.dart';
@@ -150,7 +150,7 @@ class _ScreenVerificationTableState extends State<ScreenVerificationTable> {
         ),
       ),
 
-      bottomNavigationBar: const Bottom(),
+      bottomNavigationBar: const BottomCustomer(),
       
     );
   }

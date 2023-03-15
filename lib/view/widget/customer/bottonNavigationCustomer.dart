@@ -5,16 +5,16 @@ import 'package:tcc/main.dart';
 import 'package:tcc/utils.dart';
 import 'package:tcc/view/pages/screen_order.dart';
 import 'package:tcc/view/widget/cartInfo.dart';
-import '../../globals.dart' as globals;
+import '../../../globals.dart' as globals;
 
-class Bottom extends StatefulWidget {
-  const Bottom({super.key});
+class BottomCustomer extends StatefulWidget {
+  const BottomCustomer({super.key});
 
   @override
-  State<Bottom> createState() => _BottomState();
+  State<BottomCustomer> createState() => _BottomCustomerState();
 }
 
-class _BottomState extends State<Bottom> {
+class _BottomCustomerState extends State<BottomCustomer> {
 
   @override
   Widget build(BuildContext context) {

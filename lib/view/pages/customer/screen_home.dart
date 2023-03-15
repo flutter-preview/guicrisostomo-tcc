@@ -7,7 +7,7 @@ import 'package:tcc/controller/firebase/productsCart.dart';
 import 'package:tcc/controller/firebase/sales.dart';
 import 'package:tcc/model/standardSlideShow.dart';
 import 'package:tcc/view/widget/appBar.dart';
-import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
+import 'package:tcc/view/widget/customer/bottonNavigationCustomer.dart';
 import 'package:tcc/view/widget/listCart.dart';
 import 'package:tcc/view/widget/sectionVisible.dart';
 import 'package:tcc/globals.dart' as globals;
@@ -174,7 +174,7 @@ class _ScreenHomeState extends State<ScreenHome> {
         )
       ),
 
-      bottomNavigationBar: const Bottom(),
+      bottomNavigationBar: const BottomCustomer(),
     );
   }
 }

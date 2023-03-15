@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tcc/main.dart';
-import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
+import 'package:tcc/view/widget/customer/bottonNavigationCustomer.dart';
 
 class ScreenManager extends StatefulWidget {
   const ScreenManager({super.key});
@@ -36,7 +36,7 @@ class _ScreenManagerState extends State<ScreenManager> {
         )
       ),
 
-      bottomNavigationBar: const Bottom(),
+      bottomNavigationBar: const BottomCustomer(),
     );
   }
 }

@@ -6,7 +6,7 @@ import 'package:tcc/view/widget/dropDownButton.dart';
 import 'package:tcc/view/widget/textFieldGeneral.dart';
 import 'package:tcc/globals.dart' as globals;
 
-import '../widget/bottonNavigationCustomer.dart';
+import '../widget/customer/bottonNavigationCustomer.dart';
 
 class ScreenCreateProducts extends StatefulWidget {
   const ScreenCreateProducts({super.key});
@@ -148,7 +148,7 @@ class _ScreenCreateProductsState extends State<ScreenCreateProducts> {
         )
       ),
 
-      bottomNavigationBar: const Bottom(),
+      bottomNavigationBar: const BottomCustomer(),
     );
   }
 }

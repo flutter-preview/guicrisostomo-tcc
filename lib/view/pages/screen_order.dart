@@ -6,7 +6,7 @@ import 'package:tcc/main.dart';
 import 'package:tcc/model/standardListDropDown.dart';
 import 'package:tcc/view/pages/screen_info_order.dart';
 import 'package:tcc/view/widget/appBar.dart';
-import 'package:tcc/view/widget/bottonNavigationCustomer.dart';
+import 'package:tcc/view/widget/customer/bottonNavigationCustomer.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/dropDownButton.dart';
 import 'package:tcc/globals.dart' as globals;
@@ -169,7 +169,7 @@ class _ScreenOrderState extends State<ScreenOrder> {
         ),
       ),
 
-      bottomNavigationBar: const Bottom(),
+      bottomNavigationBar: const BottomCustomer(),
       
     );
   }
