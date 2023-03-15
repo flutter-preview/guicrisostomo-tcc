@@ -9,6 +9,7 @@ import 'package:tcc/view/pages/customer/screen_call_waiter.dart';
 import 'package:tcc/view/pages/customer/screen_fo_get_adress.dart';
 import 'package:tcc/view/pages/customer/screen_fo_main.dart';
 import 'package:tcc/view/pages/customer/screen_fo_payment.dart';
+import 'package:tcc/view/pages/employee/screen_home.dart';
 import 'package:tcc/view/pages/screen_about.dart';
 import 'package:tcc/view/pages/screen_create_products.dart';
 import 'package:tcc/view/pages/screen_add.dart';
@@ -26,6 +27,7 @@ import 'package:tcc/view/pages/screen_presentation.dart';
 import 'package:tcc/view/pages/screen_products.dart';
 import 'package:tcc/view/pages/screen_profile.dart';
 import 'package:tcc/view/pages/screen_register.dart';
+import 'package:tcc/view/pages/screen_terms.dart';
 import 'package:tcc/view/pages/screen_verification_table.dart';
 
 Route navigator([String? name, Object? arguments]) {
@@ -45,6 +47,9 @@ Route navigator([String? name, Object? arguments]) {
       break;
     case 'home' :
       page = const ScreenHome();
+      break;
+    case 'home_employee' :
+      page = const ScreenHomeEmployee();
       break;
     case 'manager' :
       page = const ScreenManager();
@@ -96,6 +101,9 @@ Route navigator([String? name, Object? arguments]) {
       break;
     case 'notifications' :
       page = const ScreenNotifications();
+      break;
+    case 'terms' :
+      page = const ScreenTerms();
       break;
     default:
       page = const ScreenPresentation();
@@ -161,6 +169,7 @@ Future<void> main() async {
         'login/forget_password' :(context) => const ScreenForgetPassword(),
         'register' :(context) => const ScreenRegister(),
         'home' :(context) => const ScreenHome(),
+        'home_employee' :(context) => const ScreenHomeEmployee(),
         'manager' :(context) => const ScreenManager(),
         'manager/products' :(context) => const ScreenCreateProducts(),
         'table' :(context) => const ScreenVerificationTable(),
@@ -178,6 +187,7 @@ Future<void> main() async {
         'finalize_order_customer/address' :(context) => const ScreenFOGetAddress(),
         'finalize_order_customer/payment' :(context) => const ScreenFOPayment(),
         'notifications' :(context) => const ScreenNotifications(),
+        'terms' :(context) => const ScreenTerms(),
       },
 
       // onGenerateRoute: (settings) {

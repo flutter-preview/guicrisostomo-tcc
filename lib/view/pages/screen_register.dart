@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:tcc/controller/firebase/auth.dart';
+import 'package:tcc/controller/firebase/authGoogle.dart';
 import 'package:tcc/main.dart';
 import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/button.dart';
-import 'package:tcc/view/widget/buttonGoogleAuth.dart';
 import 'package:tcc/view/widget/imageMainScreens.dart';
 import 'package:tcc/view/widget/textFieldGeneral.dart';
 
@@ -165,7 +165,10 @@ class _ScreenRegisterState extends State<ScreenRegister> {
 
               const SizedBox(height: 20,),
 
-              GoogleSignInButton(),
+              button('Entrar com Google', 295, 50, null, () {
+                signIn(context);
+              }, true, 24, null, 'lib/images/google_logo.png'),
+
               const SizedBox(height: 50,),
 
               const Text(
