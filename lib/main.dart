@@ -48,6 +48,9 @@ Route navigator([String? name, Object? arguments]) {
     case 'home' :
       page = const ScreenHome();
       break;
+    case 'home_employee' :
+      page = const ScreenHomeEmployee();
+      break;
     case 'manager' :
       page = const ScreenManager();
       break;
@@ -166,6 +169,7 @@ Future<void> main() async {
         'login/forget_password' :(context) => const ScreenForgetPassword(),
         'register' :(context) => const ScreenRegister(),
         'home' :(context) => const ScreenHome(),
+        'home_employee' :(context) => const ScreenHomeEmployee(),
         'manager' :(context) => const ScreenManager(),
         'manager/products' :(context) => const ScreenCreateProducts(),
         'table' :(context) => const ScreenVerificationTable(),
