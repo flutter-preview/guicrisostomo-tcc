@@ -80,7 +80,9 @@ class ScreenPresentation extends StatelessWidget {
                       ),
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(context, navigator('terms'));
+                      },
                       child: Text(
                         'Termos de Uso',
                         style: TextStyle(
