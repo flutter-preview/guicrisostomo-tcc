@@ -70,6 +70,20 @@ class ScreenPresentation extends StatelessWidget {
                   }, false),
                 ),
 
+                Center(
+                  child: button('Funcionário', MediaQuery.of(context).size.width - 100, 50, Icons.arrow_forward, () {
+                    Navigator.pop(context);
+                    Navigator.push(context, navigator('home_employee'));
+                  }, false),
+                ),
+
+                Center(
+                  child: button('Gerente', MediaQuery.of(context).size.width - 100, 50, Icons.arrow_forward, () {
+                    Navigator.pop(context);
+                    Navigator.push(context, navigator('home_manager'));
+                  }, false),
+                ),
+
                 SizedBox(height: 10,),
 
                 Row(
