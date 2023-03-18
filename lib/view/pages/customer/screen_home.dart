@@ -51,6 +51,10 @@ class _ScreenHomeState extends State<ScreenHome> {
       getIdSale();
     }
 
+    setState(() {
+      globals.userType = 'customer';
+    });
+
     Widget dataSales() {
       return StreamBuilder<QuerySnapshot>(
         stream: listSale.snapshots(),

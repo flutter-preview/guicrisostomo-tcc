@@ -16,6 +16,10 @@ class ScreenHomeEmployee extends StatefulWidget {
 class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
   @override
   Widget build(BuildContext context) {
+    setState(() {
+      globals.userType = 'employee';
+    });
+    
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(250),
