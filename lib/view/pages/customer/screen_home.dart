@@ -88,19 +88,19 @@ class _ScreenHomeState extends State<ScreenHome> {
                     
                     const SizedBox(height: 10,),
 
-                    /*Row(
+                    Row(
                       children: [
-                        const Icon(Icons.people_rounded, size: 20, color: Color.fromRGBO(242, 169, 34, 1)),
+                        Icon(Icons.room_service_outlined, size: 20, color: globals.primary),
 
                         const SizedBox(width: 5,),
 
-                        Text(
+                        const Text(
                           'Mesa criada pelo garçom José'
                         )
                       ],
                     ),
 
-                    const SizedBox(height: 10,),*/
+                    const SizedBox(height: 10,),
 
                     Row(
                       children: [
@@ -164,9 +164,17 @@ class _ScreenHomeState extends State<ScreenHome> {
                   
                   
                   SectionVisible(
-                    nameSection: 'Carrinho de compras',
+                    nameSection: 'Favoritos',
+                    isShowPart: false,
                     child: ProductsCart(list),
                   ),
+
+                  SectionVisible(
+                    nameSection: 'Mais pedidos',
+                    isShowPart: false,
+                    child: ProductsCart(list),
+                  ),
+
                 ],
               ),
             ),
