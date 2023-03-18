@@ -113,6 +113,7 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
       ),
 
       body: SingleChildScrollView(
+        padding: EdgeInsets.all(20),
         child: Column(
           mainAxisSize: MainAxisSize.max,
           children: [
@@ -127,7 +128,7 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                   'MESA 30 CHAMANDO',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 30,
+                    fontSize: 24,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -136,30 +137,25 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                   height: 50,
                   width: 100,
                   child: Center(
-                    child: Wrap(
-                      direction: Axis.horizontal,
-                      children: [
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.green,
-                            padding: const EdgeInsets.all(10),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                        padding: const EdgeInsets.all(10),
+                      ),
+                      onPressed: () {
+                        
+                      },
+                      
+                      child: Row(
+                        children: const [
+                          Icon(Icons.check, size: 20, color: Colors.white,),
+                          SizedBox(width: 5),
+                          Text(
+                            'Atender',
+                            style: TextStyle(color: Colors.white),
                           ),
-                          onPressed: () {
-                            
-                          },
-                                  
-                          child: Row(
-                            children: const [
-                              Icon(Icons.check, size: 20, color: Colors.white,),
-                              SizedBox(width: 10),
-                              Text(
-                                'Atender',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ]
+                        ],
+                      ),
                     ),
                   ),
                 ),
