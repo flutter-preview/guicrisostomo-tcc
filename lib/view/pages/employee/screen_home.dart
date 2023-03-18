@@ -5,6 +5,7 @@ import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/customer/bottonNavigationCustomer.dart';
 import 'package:tcc/globals.dart' as globals
 ;
+import 'package:tcc/view/widget/sectionVisible.dart';
 class ScreenHomeEmployee extends StatefulWidget {
   const ScreenHomeEmployee({super.key});
 
@@ -172,173 +173,232 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
 
             const SizedBox(height: 20),
 
-            Card(
-              color: globals.primaryBlack,
-              child: ListTile(
-                contentPadding: const EdgeInsets.all(10),
-                title: const Text(
-                  'Acessar pedidos',
-                  style: TextStyle(color: Colors.white),
-                ),
+            SectionVisible(
+              nameSection: 'Acesso rápido',
+              child: Column(
+                children: [
+                  Card(
+                    color: globals.primaryBlack,
+                    child: ListTile(
+                      contentPadding: const EdgeInsets.all(10),
+                      title: const Text(
+                        'Acessar pedidos',
+                        style: TextStyle(color: Colors.white),
+                      ),
 
-                trailing: const Icon(Icons.arrow_right, size: 20, color: Colors.white,),
-                leading: const Icon(Icons.shopping_cart, size: 20, color: Colors.white,),
+                      trailing: const Icon(Icons.arrow_right, size: 20, color: Colors.white,),
+                      leading: const Icon(Icons.shopping_cart, size: 20, color: Colors.white,),
+                      
+                      onTap: () => {
+                        Navigator.push(
+                          context,
+                          navigator('manager/products'),
+                        )
+                      },
+                    ),
+                  ),
+                  
+                  Card(
+                    color: globals.primaryBlack,
+                    child: ListTile(
+                      contentPadding: const EdgeInsets.all(10),
+                      title: const Text(
+                        'Fazer novo pedido',
+                        style: TextStyle(color: Colors.white),
+                      ),
+
+                      trailing: const Icon(Icons.arrow_right, size: 20, color: Colors.white,),
+                      leading: const Icon(Icons.shopping_cart, size: 20, color: Colors.white,),
+                      
+                      onTap: () => {
+                        Navigator.push(
+                          context,
+                          navigator('manager/products'),
+                        )
+                      },
+                    ),
+                  ),
+
+                  Card(
+                    color: globals.primaryBlack,
+                    child: ListTile(
+                      contentPadding: const EdgeInsets.all(10),
+                      title: const Text(
+                        'Acessar cardápio',
+                        style: TextStyle(color: Colors.white),
+                      ),
+
+                      trailing: const Icon(Icons.arrow_right, size: 20, color: Colors.white,),
+                      leading: SvgPicture.asset('lib/images/iconMenu.svg', height: 25, fit: BoxFit.fill,),
+                      
+                      onTap: () => {
+                        Navigator.push(
+                          context,
+                          navigator('manager/products'),
+                        )
+                      },
+                    ),
+                  ),
+
+                  Card(
+                    color: globals.primaryBlack,
+                    child: ListTile(
+                      contentPadding: const EdgeInsets.all(10),
+                      title: const Text(
+                        'Cadastrar novo produto',
+                        style: TextStyle(color: Colors.white),
+                      ),
+
+                      trailing: const Icon(Icons.arrow_right, size: 20, color: Colors.white,),
+                      leading: const Icon(Icons.add, size: 20, color: Colors.white,),
+
+                      onTap: () => {
+                        Navigator.push(
+                          context,
+                          navigator('manager/products'),
+                        )
+                      },
+                    ),
+                  ),
+
+                  Card(
+                    color: globals.primaryBlack,
+                    child: ListTile(
+                      contentPadding: const EdgeInsets.all(10),
+                      title: const Text(
+                        'Acessar avaliações',
+                        style: TextStyle(color: Colors.white),
+                      ),
+
+                      trailing: const Icon(Icons.arrow_right, size: 20, color: Colors.white,),
+                      leading: const Icon(Icons.star, size: 20, color: Colors.white,),
+                      
+                      onTap: () => {
+                        Navigator.push(
+                          context,
+                          navigator('manager/products'),
+                        )
+                      },
+                    ),
+                  ),
+
+                  Card(
+                    color: globals.primaryBlack,
+                    child: ListTile(
+                      contentPadding: const EdgeInsets.all(10),
+                      title: const Text(
+                        'Rotas de entrega',
+                        style: TextStyle(color: Colors.white),
+                      ),
+
+                      trailing: const Icon(Icons.arrow_right, size: 20, color: Colors.white,),
+                      leading: const Icon(Icons.delivery_dining, size: 20, color: Colors.white,),
+                      
+                      onTap: () => {
+                        Navigator.push(
+                          context,
+                          navigator('manager/products'),
+                        )
+                      },
+                    ),
+                  ),
+
+                  Card(
+                    color: globals.primaryBlack,
+                    child: ListTile(
+                      contentPadding: const EdgeInsets.all(10),
+                      title: const Text(
+                        'Acessar dados da empresa',
+                        style: TextStyle(color: Colors.white),
+                      ),
+
+                      trailing: const Icon(Icons.arrow_right, size: 20, color: Colors.white,),
+                      leading: const Icon(Icons.business, size: 20, color: Colors.white,),
+                      
+                      onTap: () => {
+                        Navigator.push(
+                          context,
+                          navigator('manager/products'),
+                        )
+                      },
+                    ),
+                  ),
+
+                  Card(
+                    color: globals.primaryBlack,
+                    child: ListTile(
+                      contentPadding: const EdgeInsets.all(10),
+                      title: const Text(
+                        'Acessar dados do usuário',
+                        style: TextStyle(color: Colors.white),
+                      ),
+
+                      trailing: const Icon(Icons.arrow_right, size: 20, color: Colors.white,),
+                      leading: const Icon(Icons.person, size: 20, color: Colors.white,),
+                      
+                      onTap: () => {
+                        Navigator.push(
+                          context,
+                          navigator('manager/products'),
+                        )
+                      },
+                    ),
+                  ),
+                ],
+              )
+            ),
+
+            const SizedBox(height: 20),
+
+            SectionVisible(
+              nameSection: 'Mesas ativas',
+              isShowPart: true,
+              child: SizedBox(
+                height: 50,
+                width: double.infinity,
                 
-                onTap: () => {
-                  Navigator.push(
-                    context,
-                    navigator('manager/products'),
-                  )
-                },
-              ),
+                child: ListView.builder(
+                  itemCount: 10,
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  
+                  itemBuilder: (context, index) {
+                    return Container(
+                      margin: const EdgeInsets.only(right: 10),
+                      child: ElevatedButton(
+                        
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(globals.primaryBlack),
+                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            )
+                          ),
+                          padding: MaterialStateProperty.all<EdgeInsets>(const EdgeInsets.all(5)),
+                        ),
+                        onPressed: () => {
+                          Navigator.push(
+                            context,
+                            navigator('manager/products'),
+                          )
+                        },
+                        child: Row(
+                          children: [
+                            const Icon(Icons.table_bar, size: 20, color: Colors.white,),
+                            const SizedBox(width: 5),
+                            Text(
+                              '${index + 1}',
+                              style: const TextStyle(color: Colors.white, fontSize: 20),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }
+                )
+              )
             ),
             
-            Card(
-              color: globals.primaryBlack,
-              child: ListTile(
-                contentPadding: const EdgeInsets.all(10),
-                title: const Text(
-                  'Fazer novo pedido',
-                  style: TextStyle(color: Colors.white),
-                ),
-
-                trailing: const Icon(Icons.arrow_right, size: 20, color: Colors.white,),
-                leading: const Icon(Icons.shopping_cart, size: 20, color: Colors.white,),
-                
-                onTap: () => {
-                  Navigator.push(
-                    context,
-                    navigator('manager/products'),
-                  )
-                },
-              ),
-            ),
-
-            Card(
-              color: globals.primaryBlack,
-              child: ListTile(
-                contentPadding: const EdgeInsets.all(10),
-                title: const Text(
-                  'Acessar cardápio',
-                  style: TextStyle(color: Colors.white),
-                ),
-
-                trailing: const Icon(Icons.arrow_right, size: 20, color: Colors.white,),
-                leading: SvgPicture.asset('lib/images/iconMenu.svg', height: 25, fit: BoxFit.fill,),
-                
-                onTap: () => {
-                  Navigator.push(
-                    context,
-                    navigator('manager/products'),
-                  )
-                },
-              ),
-            ),
-
-            Card(
-              color: globals.primaryBlack,
-              child: ListTile(
-                contentPadding: const EdgeInsets.all(10),
-                title: const Text(
-                  'Cadastrar novo produto',
-                  style: TextStyle(color: Colors.white),
-                ),
-
-                trailing: const Icon(Icons.arrow_right, size: 20, color: Colors.white,),
-                leading: const Icon(Icons.add, size: 20, color: Colors.white,),
-
-                onTap: () => {
-                  Navigator.push(
-                    context,
-                    navigator('manager/products'),
-                  )
-                },
-              ),
-            ),
-
-            Card(
-              color: globals.primaryBlack,
-              child: ListTile(
-                contentPadding: const EdgeInsets.all(10),
-                title: const Text(
-                  'Acessar avaliações',
-                  style: TextStyle(color: Colors.white),
-                ),
-
-                trailing: const Icon(Icons.arrow_right, size: 20, color: Colors.white,),
-                leading: const Icon(Icons.star, size: 20, color: Colors.white,),
-                
-                onTap: () => {
-                  Navigator.push(
-                    context,
-                    navigator('manager/products'),
-                  )
-                },
-              ),
-            ),
-
-            Card(
-              color: globals.primaryBlack,
-              child: ListTile(
-                contentPadding: const EdgeInsets.all(10),
-                title: const Text(
-                  'Rotas de entrega',
-                  style: TextStyle(color: Colors.white),
-                ),
-
-                trailing: const Icon(Icons.arrow_right, size: 20, color: Colors.white,),
-                leading: const Icon(Icons.delivery_dining, size: 20, color: Colors.white,),
-                
-                onTap: () => {
-                  Navigator.push(
-                    context,
-                    navigator('manager/products'),
-                  )
-                },
-              ),
-            ),
-
-            Card(
-              color: globals.primaryBlack,
-              child: ListTile(
-                contentPadding: const EdgeInsets.all(10),
-                title: const Text(
-                  'Acessar dados da empresa',
-                  style: TextStyle(color: Colors.white),
-                ),
-
-                trailing: const Icon(Icons.arrow_right, size: 20, color: Colors.white,),
-                leading: const Icon(Icons.business, size: 20, color: Colors.white,),
-                
-                onTap: () => {
-                  Navigator.push(
-                    context,
-                    navigator('manager/products'),
-                  )
-                },
-              ),
-            ),
-
-            Card(
-              color: globals.primaryBlack,
-              child: ListTile(
-                contentPadding: const EdgeInsets.all(10),
-                title: const Text(
-                  'Acessar dados do usuário',
-                  style: TextStyle(color: Colors.white),
-                ),
-
-                trailing: const Icon(Icons.arrow_right, size: 20, color: Colors.white,),
-                leading: const Icon(Icons.person, size: 20, color: Colors.white,),
-                
-                onTap: () => {
-                  Navigator.push(
-                    context,
-                    navigator('manager/products'),
-                  )
-                },
-              ),
-            ),
           ]
         )
       ),
