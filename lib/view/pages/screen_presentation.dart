@@ -72,6 +72,7 @@ class ScreenPresentation extends StatelessWidget {
 
                 Center(
                   child: button('Funcionário', MediaQuery.of(context).size.width - 100, 50, Icons.arrow_forward, () {
+                    LoginController().signInAnonymously();
                     Navigator.pop(context);
                     Navigator.push(context, navigator('home_employee'));
                   }, false),
@@ -79,6 +80,7 @@ class ScreenPresentation extends StatelessWidget {
 
                 Center(
                   child: button('Gerente', MediaQuery.of(context).size.width - 100, 50, Icons.arrow_forward, () {
+                    LoginController().signInAnonymously();
                     Navigator.pop(context);
                     Navigator.push(context, navigator('home_manager'));
                   }, false),
