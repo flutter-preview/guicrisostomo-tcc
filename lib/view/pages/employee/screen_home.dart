@@ -175,6 +175,27 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
               ),
             ),
 
+            Card(
+              color: globals.primaryBlack,
+
+              child: const ListTile(
+                contentPadding: EdgeInsets.all(10),
+
+                leading: Icon(Icons.add, size: 40, color: Colors.white,),
+
+                title: Text(
+                  'Fazer novo pedido',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+
+                trailing: Icon(Icons.arrow_right, size: 30, color: Colors.white,),
+              ),
+            ),
+
             const SizedBox(height: 20),
 
             SectionVisible(
