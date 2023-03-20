@@ -89,6 +89,12 @@ class SalesController {
   }
 
   listSalesFinalize() {
+    if (FirebaseAuth.instance.currentUser == null) {
+      return FirebaseFirestore.instance
+        .collection('sales')
+        .where('status', isEqualTo: 1);
+    }
+    
     var uid = FirebaseAuth.instance.currentUser!.uid;
 
     return FirebaseFirestore.instance
