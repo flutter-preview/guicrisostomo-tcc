@@ -47,22 +47,33 @@ class _BottomCustomerState extends State<BottomCustomer> {
               fontWeight: FontWeight.bold,
               fontSize: 14,
             ),
-        
+
             items: <BottomNavigationBarItem>[
               const BottomNavigationBarItem(
                 icon: Icon(Icons.home, color: Colors.white),
                 label: 'Inicio',
               ),
-              BottomNavigationBarItem(
-                icon: SvgPicture.asset(iconOrder, height: 25, fit: BoxFit.fill,),
-                label: 'Pedidos',
-              ),
-              BottomNavigationBarItem(
-                icon: SvgPicture.asset(iconMenu, height: 25, fit: BoxFit.fill,),
-                label: 'Cardápio',
-              ),
-        
-              globals.isSaleInTable ?
+
+              globals.userType != 'admin' ? 
+                const BottomNavigationBarItem(
+                  icon: Icon(Icons.shopping_cart_outlined, color: Colors.white),
+                  label: 'Pedidos',
+                ) :
+                BottomNavigationBarItem(
+                  icon: SvgPicture.asset(iconOrder, height: 25, fit: BoxFit.fill,),
+                  label: 'Relatório',
+                ),
+
+              globals.userType != 'admin' ?
+                BottomNavigationBarItem(
+                  icon: SvgPicture.asset(iconMenu, height: 25, fit: BoxFit.fill,),
+                  label: 'Cardápio',
+                ) : BottomNavigationBarItem(
+                  icon: SvgPicture.asset(iconMenu, height: 25, fit: BoxFit.fill,),
+                  label: 'Cadastrar produto',
+                ),
+
+              globals.isSaleInTable && globals.userType == 'customer' ?
                 const BottomNavigationBarItem(
                   icon: Icon(Icons.room_service_outlined, color: Colors.white),
                   label: 'Garçom',
@@ -71,12 +82,15 @@ class _BottomCustomerState extends State<BottomCustomer> {
                   icon: Icon(Icons.table_restaurant, color: Colors.white),
                   label: 'Mesa',
                 ),
-        
-              
-              const BottomNavigationBarItem(
-                icon: Icon(Icons.perm_identity, color: Colors.white),
-                label: 'Perfil',
-              ),
+      
+              globals.userType != 'admin' ?
+                const BottomNavigationBarItem(
+                  icon: Icon(Icons.perm_identity, color: Colors.white),
+                  label: 'Perfil',
+                ) : const BottomNavigationBarItem(
+                  icon: Icon(Icons.more_vert_rounded, color: Colors.white),
+                  label: 'Mais',
+                )
             ],
         
             currentIndex: globals.globalSelectedIndexBotton,
@@ -84,34 +98,66 @@ class _BottomCustomerState extends State<BottomCustomer> {
               switch (index) {
                 case 0:
                   Navigator.of(context).pop();
-                  Navigator.push(context, navigator('home'));
-                  break;
+                  if (globals.userType == 'admin') {
+                    Navigator.push(context, navigator('home_admin'));
+                    break;
+                  } else if (globals.userType == 'employee') {
+                    Navigator.push(context, navigator('home_employee'));
+                    break;
+                  } else {
+                    Navigator.push(context, navigator('home'));
+                    break;
+                  }
                 case 1:
                   Navigator.of(context).pop();
                   // Navigator.pushNamed(context, 'order');
-
-                  Navigator.push(context, navigator('order'));
-                  break;
+                  if (globals.userType == 'admin') {
+                    Navigator.push(context, navigator('insights'));
+                    break;
+                  } else {
+                    Navigator.push(context, navigator('order'));
+                    break;
+                  }
                 case 2:
                   Navigator.of(context).pop();
-                  Navigator.push(context, navigator('products'));
-                  break;
+                  if (globals.userType == 'admin') {
+                    Navigator.push(context, navigator('list_products'));
+                    break;
+                  } else {
+                    Navigator.push(context, navigator('products'));
+                    break;
+                  }
+
                 case 3:
                   
-                  if (globals.isSaleInTable) {
+                  if (globals.isSaleInTable && globals.userType == 'customer') {
                     Navigator.of(context).pop();
                     Navigator.push(context, navigator('waiter'));
                     break;
                   } else {
                     Navigator.of(context).pop();
-                    Navigator.push(context, navigator('table'));
-                    break;
+                    if (globals.userType == 'employee') {
+                      Navigator.push(context, navigator('table_employee'));
+                      break;
+                    } else {
+                      Navigator.push(context, navigator('table'));
+                      break;
+                    }
                   }
         
                 case 4:
                   Navigator.of(context).pop();
-                  Navigator.push(context, navigator('profile'));
-                  break;
+                  
+                  if (globals.userType == 'admin') {
+                    Navigator.push(context, navigator('more_admin'));
+                    break;
+                  } else if (globals.userType == 'employee') {
+                    Navigator.push(context, navigator('profile_employee'));
+                    break;
+                  } else {
+                    Navigator.push(context, navigator('profile'));
+                    break;
+                  }
               }
         
               setState(
