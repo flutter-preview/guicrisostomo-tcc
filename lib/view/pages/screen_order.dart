@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:tcc/controller/firebase/sales.dart';
 import 'package:tcc/main.dart';
 import 'package:tcc/model/standardListDropDown.dart';
-import 'package:tcc/view/pages/screen_info_order.dart';
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/customer/bottonNavigationCustomer.dart';
 import 'package:tcc/view/widget/button.dart';
@@ -66,7 +65,8 @@ class _ScreenOrderState extends State<ScreenOrder> {
     
   ];
   var txtDateFilter = TextEditingController();
-  
+  var txtCode = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -122,41 +122,57 @@ class _ScreenOrderState extends State<ScreenOrder> {
 
                         const SizedBox(height: 20),
 
-                        StatefulBuilder(
-                          builder: (context, setState) {
-                            return Column(
-                              children: [
-                                DropDown(
-                                  text: 'Data',
-                                  variavel: txtDropDown,
-                                  itemsDropDownButton: listDropDown,
-                                  callback: (value) {
-                                    setState(() {
-                                      txtDropDown = value;
-                                    });
-                                  },
-                                ),
+                        if (globals.userType != 'customer')
+                          Column(
+                            children: [
+                              TextFieldGeneral(
+                                label: 'Código do pedido',
+                                variavel: txtCode,
+                                context: context,
+                                keyboardType: TextInputType.number,
+                                ico: Icons.numbers,
+                              ),
 
-                                const SizedBox(height: 20),
+                              const SizedBox(height: 20),
+                            ],
+                          ),
 
-                                if (txtDropDown == 'Personalizado')
-                                  Column(
-                                    children: [
-                                      TextFieldGeneral(
-                                        label: 'Data',
-                                        variavel: txtDateFilter,
-                                        context: context,
-                                        keyboardType: TextInputType.datetime,
-                                        ico: Icons.date_range,
-                                      ),
-
-                                      const SizedBox(height: 20),
-                                    ],
+                        if (globals.userType != 'employee')
+                          StatefulBuilder(
+                            builder: (context, setState) {
+                              return Column(
+                                children: [
+                                  DropDown(
+                                    text: 'Data',
+                                    variavel: txtDropDown,
+                                    itemsDropDownButton: listDropDown,
+                                    callback: (value) {
+                                      setState(() {
+                                        txtDropDown = value;
+                                      });
+                                    },
                                   ),
-                              ],
-                            );
-                          },
-                        ),
+
+                                  const SizedBox(height: 20),
+
+                                  if (txtDropDown == 'Personalizado')
+                                    Column(
+                                      children: [
+                                        TextFieldGeneral(
+                                          label: 'Data',
+                                          variavel: txtDateFilter,
+                                          context: context,
+                                          keyboardType: TextInputType.datetime,
+                                          ico: Icons.date_range,
+                                        ),
+
+                                        const SizedBox(height: 20),
+                                      ],
+                                    ),
+                                ],
+                              );
+                            },
+                          ),
                       ],
                     ),
                   ),
