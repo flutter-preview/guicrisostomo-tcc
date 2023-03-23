@@ -299,10 +299,7 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                       leading: const Icon(Icons.star, size: 20, color: Colors.white,),
                       
                       onTap: () => {
-                        Navigator.push(
-                          context,
-                          navigator('manager/products'),
-                        )
+                        Navigator.push(context, navigator('employee/evaluation', '1'))
                       },
                     ),
                   ),

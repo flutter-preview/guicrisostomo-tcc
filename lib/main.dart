@@ -4,12 +4,12 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:tcc/controller/firebase/auth.dart';
 import 'package:tcc/firebase_options.dart';
-import 'package:tcc/utils.dart';
 import 'package:tcc/view/pages/customer/screen_call_waiter.dart';
 import 'package:tcc/view/pages/customer/screen_fo_get_adress.dart';
 import 'package:tcc/view/pages/customer/screen_fo_main.dart';
 import 'package:tcc/view/pages/customer/screen_fo_payment.dart';
 import 'package:tcc/view/pages/employee/screen_home.dart';
+import 'package:tcc/view/pages/scree_rating_employee.dart';
 import 'package:tcc/view/pages/screen_about.dart';
 import 'package:tcc/view/pages/screen_create_products.dart';
 import 'package:tcc/view/pages/screen_add.dart';
@@ -105,6 +105,10 @@ Route navigator([String? name, Object? arguments]) {
     case 'terms' :
       page = const ScreenTerms();
       break;
+    case 'employee/evaluation' :
+      page = ScreenRatingEmployee(idEmployee: arguments.toString());
+      break;
+    /* screens for employee */
     default:
       page = const ScreenPresentation();
     }
@@ -188,6 +192,7 @@ Future<void> main() async {
         'finalize_order_customer/payment' :(context) => const ScreenFOPayment(),
         'notifications' :(context) => const ScreenNotifications(),
         'terms' :(context) => const ScreenTerms(),
+        'employee/evaluation' :(context) => const ScreenRatingEmployee(idEmployee: null,),
       },
 
       // onGenerateRoute: (settings) {
