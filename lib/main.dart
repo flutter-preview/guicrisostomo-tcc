@@ -9,6 +9,7 @@ import 'package:tcc/view/pages/customer/screen_fo_get_adress.dart';
 import 'package:tcc/view/pages/customer/screen_fo_main.dart';
 import 'package:tcc/view/pages/customer/screen_fo_payment.dart';
 import 'package:tcc/view/pages/employee/screen_home.dart';
+import 'package:tcc/view/pages/manager/screen_home.dart';
 import 'package:tcc/view/pages/scree_rating_employee.dart';
 import 'package:tcc/view/pages/screen_about.dart';
 import 'package:tcc/view/pages/screen_create_products.dart';
@@ -50,6 +51,9 @@ Route navigator([String? name, Object? arguments]) {
       break;
     case 'home_employee' :
       page = const ScreenHomeEmployee();
+      break;
+    case 'home_manager' :
+      page = const ScreenHomeManager();
       break;
     case 'manager' :
       page = const ScreenManager();
@@ -174,6 +178,7 @@ Future<void> main() async {
         'register' :(context) => const ScreenRegister(),
         'home' :(context) => const ScreenHome(),
         'home_employee' :(context) => const ScreenHomeEmployee(),
+        'home_manager' :(context) => const ScreenHomeManager(),
         'manager' :(context) => const ScreenManager(),
         'manager/products' :(context) => const ScreenCreateProducts(),
         'table' :(context) => const ScreenVerificationTable(),
