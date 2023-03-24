@@ -20,6 +20,7 @@ import 'package:tcc/view/pages/screen_forget_password.dart';
 import 'package:tcc/view/pages/customer/screen_home.dart';
 import 'package:tcc/view/pages/screen_info_order.dart';
 import 'package:tcc/view/pages/screen_info_product.dart';
+import 'package:tcc/view/pages/screen_info_table.dart';
 import 'package:tcc/view/pages/screen_login.dart';
 import 'package:tcc/view/pages/customer/screen_manager.dart';
 import 'package:tcc/view/pages/screen_notificaties.dart';
@@ -63,6 +64,9 @@ Route navigator([String? name, Object? arguments]) {
       break;
     case 'table' :
       page = const ScreenVerificationTable();
+      break;
+    case 'table/info' :
+      page = ScreenInfoTable(arguments: arguments);
       break;
     case 'waiter' :
       page = const ScreenCallWaiter();
@@ -182,6 +186,7 @@ Future<void> main() async {
         'manager' :(context) => const ScreenManager(),
         'manager/products' :(context) => const ScreenCreateProducts(),
         'table' :(context) => const ScreenVerificationTable(),
+        'table/info' :(context) => const ScreenInfoTable(),
         'waiter' :(context) => const ScreenCallWaiter(),
         'cart' :(context) => const ScreenCart(),
         'products' :(context) => ScreenProducts(),

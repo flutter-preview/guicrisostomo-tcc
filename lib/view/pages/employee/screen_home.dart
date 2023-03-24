@@ -401,7 +401,7 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                         onPressed: () => {
                           Navigator.push(
                             context,
-                            navigator('manager/products'),
+                            navigator('table/info', index + 1),
                           )
                         },
                         child: Row(
