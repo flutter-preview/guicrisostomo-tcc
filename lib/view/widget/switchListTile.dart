@@ -5,11 +5,13 @@ import 'package:flutter/src/widgets/placeholder.dart';
 class SwitchListTileWidget extends StatefulWidget {
   final String text;
   bool isEnabled = true;
+  Function(bool)? onChanged;
 
   SwitchListTileWidget({
     super.key,
     required this.text,
     this.isEnabled = true,
+    this.onChanged,
   });
 
   @override
@@ -25,6 +27,8 @@ class _SwitchListTileWidgetState extends State<SwitchListTileWidget> {
         setState(() {
           widget.isEnabled = value;
         });
+
+        widget.onChanged!(value);
       },
 
       activeColor: Colors.green,
