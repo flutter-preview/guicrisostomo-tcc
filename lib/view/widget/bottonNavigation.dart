@@ -106,13 +106,8 @@ class _BottomState extends State<Bottom> {
                 case 1:
                   Navigator.of(context).pop();
                   // Navigator.pushNamed(context, 'order');
-                  if (globals.userType == 'admin') {
-                    Navigator.push(context, navigator('insights'));
-                    break;
-                  } else {
-                    Navigator.push(context, navigator('order'));
-                    break;
-                  }
+                  Navigator.push(context, navigator('order'));
+                  break;
                 case 2:
                   Navigator.of(context).pop();
                   if (globals.userType == 'admin') {
@@ -135,7 +130,7 @@ class _BottomState extends State<Bottom> {
                       Navigator.push(context, navigator('table_employee'));
                       break;
                     } else {
-                      Navigator.push(context, navigator('table'));
+                      Navigator.push(context, navigator('table_admin'));
                       break;
                     }
                   }
