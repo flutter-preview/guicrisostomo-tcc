@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tcc/main.dart';
 import 'package:tcc/view/widget/appBar.dart';
-import 'package:tcc/view/widget/customer/bottonNavigationCustomer.dart';
+import 'package:tcc/view/widget/bottonNavigation.dart';
 import 'package:tcc/globals.dart' as globals
 ;
 import 'package:tcc/view/widget/sectionVisible.dart';

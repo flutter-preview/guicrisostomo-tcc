@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:tcc/controller/firebase/auth.dart';
 import 'package:tcc/main.dart';
 import 'package:tcc/view/widget/appBar.dart';
-import 'package:tcc/view/widget/customer/bottonNavigationCustomer.dart';
+import 'package:tcc/view/widget/bottonNavigation.dart';
 
 class ScreenProfile extends StatefulWidget {
   const ScreenProfile({super.key});

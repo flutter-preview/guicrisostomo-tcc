@@ -5,7 +5,7 @@ import 'package:tcc/controller/firebase/sales.dart';
 import 'package:tcc/main.dart';
 import 'package:tcc/model/standardListDropDown.dart';
 import 'package:tcc/view/widget/appBar.dart';
-import 'package:tcc/view/widget/customer/bottonNavigationCustomer.dart';
+import 'package:tcc/view/widget/bottonNavigation.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/dropDownButton.dart';
 import 'package:tcc/globals.dart' as globals;

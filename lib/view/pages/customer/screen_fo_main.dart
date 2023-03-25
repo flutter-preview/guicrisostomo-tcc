@@ -4,7 +4,7 @@ import 'package:tcc/globals.dart' as globals;
 import 'package:tcc/main.dart';
 import 'package:tcc/model/standardRadioButton.dart';
 import 'package:tcc/utils.dart';
-import 'package:tcc/view/widget/customer/bottonNavigationCustomer.dart';
+import 'package:tcc/view/widget/bottonNavigation.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/customer/partFinalizeOrder.dart';
 import 'package:tcc/view/widget/cartInfo.dart';

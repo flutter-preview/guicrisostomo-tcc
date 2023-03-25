@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tcc/globals.dart' as globals;
 import 'package:tcc/model/standardListDropDown.dart';
 import 'package:tcc/view/widget/appBar.dart';
-import 'package:tcc/view/widget/customer/bottonNavigationCustomer.dart';
+import 'package:tcc/view/widget/bottonNavigation.dart';
 import 'package:tcc/view/widget/dropDownButton.dart';
 import 'package:tcc/view/widget/sectionVisible.dart';
 import 'package:tcc/view/widget/switchListTile.dart';

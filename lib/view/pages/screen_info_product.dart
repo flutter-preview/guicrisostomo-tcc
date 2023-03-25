@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tcc/utils.dart';
-import 'package:tcc/view/widget/customer/bottonNavigationCustomer.dart';
+import 'package:tcc/view/widget/bottonNavigation.dart';
 import 'package:tcc/view/widget/comments.dart';
 import 'package:tcc/view/widget/listSizeAvailable.dart';
 import 'package:tcc/view/widget/textFieldGeneral.dart';

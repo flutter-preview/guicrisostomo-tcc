@@ -5,7 +5,7 @@ import 'package:tcc/main.dart';
 import 'package:tcc/utils.dart';
 import 'package:tcc/view/pages/screen_order.dart';
 import 'package:tcc/view/widget/cartInfo.dart';
-import '../../../globals.dart' as globals;
+import '../../globals.dart' as globals;
 
 class Bottom extends StatefulWidget {
   const Bottom({super.key});
