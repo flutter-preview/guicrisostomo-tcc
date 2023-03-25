@@ -148,7 +148,7 @@ class _ScreenCreateProductsState extends State<ScreenCreateProducts> {
         )
       ),
 
-      bottomNavigationBar: const BottomCustomer(),
+      bottomNavigationBar: const Bottom(),
     );
   }
 }

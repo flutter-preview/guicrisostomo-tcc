@@ -86,7 +86,7 @@ class _ScreenCartState extends State<ScreenCart> {
         ),
       ),
 
-      bottomNavigationBar: const BottomCustomer(),
+      bottomNavigationBar: const Bottom(),
     );
   }
 }

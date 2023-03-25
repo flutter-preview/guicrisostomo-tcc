@@ -126,7 +126,7 @@ class _ScreenCallWaiterState extends State<ScreenCallWaiter> {
         ),
       ),
 
-      bottomNavigationBar: const BottomCustomer(),
+      bottomNavigationBar: const Bottom(),
     );
   }
 }

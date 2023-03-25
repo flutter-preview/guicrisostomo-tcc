@@ -7,14 +7,14 @@ import 'package:tcc/view/pages/screen_order.dart';
 import 'package:tcc/view/widget/cartInfo.dart';
 import '../../../globals.dart' as globals;
 
-class BottomCustomer extends StatefulWidget {
-  const BottomCustomer({super.key});
+class Bottom extends StatefulWidget {
+  const Bottom({super.key});
 
   @override
-  State<BottomCustomer> createState() => _BottomCustomerState();
+  State<Bottom> createState() => _BottomState();
 }
 
-class _BottomCustomerState extends State<BottomCustomer> {
+class _BottomState extends State<Bottom> {
 
   @override
   Widget build(BuildContext context) {

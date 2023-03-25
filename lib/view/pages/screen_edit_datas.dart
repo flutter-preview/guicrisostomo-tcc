@@ -229,7 +229,7 @@ class _ScreenEditDatasState extends State<ScreenEditDatas> {
         ),
       ),
 
-      bottomNavigationBar: const BottomCustomer(),
+      bottomNavigationBar: const Bottom(),
     );
   }
 }

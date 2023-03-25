@@ -185,7 +185,7 @@ class _ScreenOrderState extends State<ScreenOrder> {
         ),
       ),
 
-      bottomNavigationBar: const BottomCustomer(),
+      bottomNavigationBar: const Bottom(),
       
     );
   }

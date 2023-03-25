@@ -274,7 +274,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
         ),
       ),
       
-      bottomNavigationBar: const BottomCustomer(),
+      bottomNavigationBar: const Bottom(),
     );
   }
 }

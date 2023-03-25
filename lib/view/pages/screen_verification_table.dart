@@ -150,7 +150,7 @@ class _ScreenVerificationTableState extends State<ScreenVerificationTable> {
         ),
       ),
 
-      bottomNavigationBar: const BottomCustomer(),
+      bottomNavigationBar: const Bottom(),
       
     );
   }

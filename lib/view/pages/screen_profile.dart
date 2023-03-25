@@ -157,7 +157,7 @@ class _ScreenProfileState extends State<ScreenProfile> {
         )
       ),
 
-      bottomNavigationBar: BottomCustomer(),
+      bottomNavigationBar: Bottom(),
       
     );
   }

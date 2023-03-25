@@ -36,7 +36,7 @@ class _ScreenManagerState extends State<ScreenManager> {
         )
       ),
 
-      bottomNavigationBar: const BottomCustomer(),
+      bottomNavigationBar: const Bottom(),
     );
   }
 }

@@ -48,7 +48,7 @@ class ScreenAbout extends StatelessWidget {
         ),
       ),
 
-      bottomNavigationBar: const BottomCustomer(),
+      bottomNavigationBar: const Bottom(),
     );
   }
 }

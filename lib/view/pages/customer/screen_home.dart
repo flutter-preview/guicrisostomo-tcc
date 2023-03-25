@@ -186,7 +186,7 @@ class _ScreenHomeState extends State<ScreenHome> {
         )
       ),
 
-      bottomNavigationBar: const BottomCustomer(),
+      bottomNavigationBar: const Bottom(),
     );
   }
 }

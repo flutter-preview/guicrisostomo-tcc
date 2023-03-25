@@ -188,7 +188,7 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
         )
       ),
 
-      bottomNavigationBar: const BottomCustomer(),
+      bottomNavigationBar: const Bottom(),
       
     );
   }

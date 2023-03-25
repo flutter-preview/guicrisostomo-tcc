@@ -167,7 +167,7 @@ class _ScreenHomeManagerState extends State<ScreenHomeManager> {
                 isShowPart: true,
                 child: Column(
                   children: [
-                    
+
                     DropDown(
                       text: 'Clique aqui para selecionar um período',
                       itemsDropDownButton: listData,
@@ -284,7 +284,7 @@ class _ScreenHomeManagerState extends State<ScreenHomeManager> {
         ),
       ),
 
-      bottomNavigationBar: const BottomCustomer(),
+      bottomNavigationBar: const Bottom(),
     );
   }
 }

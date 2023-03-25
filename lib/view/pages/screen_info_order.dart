@@ -268,7 +268,7 @@ class _ScreenInfoOrderState extends State<ScreenInfoOrder> {
           
         ),
       ),
-      bottomNavigationBar: const BottomCustomer(),
+      bottomNavigationBar: const Bottom(),
     );
   }
 }

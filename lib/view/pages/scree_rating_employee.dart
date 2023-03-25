@@ -63,7 +63,7 @@ class _ScreenRatingEmployeeState extends State<ScreenRatingEmployee> {
         ),
       ),
 
-      bottomNavigationBar: const BottomCustomer(),
+      bottomNavigationBar: const Bottom(),
     );
   }
 }

@@ -425,7 +425,7 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
         )
       ),
 
-      bottomNavigationBar: const BottomCustomer(),
+      bottomNavigationBar: const Bottom(),
     );
   }
 }

@@ -131,7 +131,7 @@ class _ScreenInfoTableState extends State<ScreenInfoTable> {
         ),
       ),
 
-      bottomNavigationBar: const BottomCustomer(),
+      bottomNavigationBar: const Bottom(),
     );
   }
 }
