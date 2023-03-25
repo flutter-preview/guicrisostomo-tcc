@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tcc/globals.dart' as globals;
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/customer/bottonNavigationCustomer.dart';
+import 'package:tcc/view/widget/switchListTile.dart';
 
 class ScreenHomeManager extends StatefulWidget {
   const ScreenHomeManager({super.key});
@@ -11,6 +12,10 @@ class ScreenHomeManager extends StatefulWidget {
 }
 
 class _ScreenHomeManagerState extends State<ScreenHomeManager> {
+  String lucro = '0,00';
+  bool valueShowMoney = false;
+  bool valueOpen = false;
+
   @override
   Widget build(BuildContext context) {
     setState(() {
@@ -45,49 +50,49 @@ class _ScreenHomeManagerState extends State<ScreenHomeManager> {
               ),
               child: Column(
                 children: [
-                  const Text(
-                    'R\$ 0,00',
-                    style: TextStyle(
+                  Text(
+                    (valueShowMoney == true) ?
+                      'R\$ $lucro' : 'R\$ *,**',
+
+                    style: const TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
                   ),
 
-                  const SizedBox(height: 10),
-
-                  SwitchListTile(
-                    value: true,
-                    onChanged: (value) {},
-                    title: Row(
-                      children: [
-                        const Icon(Icons.visibility, color: Colors.white),
-                        const SizedBox(width: 10),
-                        const Text(
-                          'Visualizar valor',
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
-                    )
+                  SwitchListTileWidget(
+                    title: const Text(
+                      'Visualizar lucro ?',
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    value: valueShowMoney,
+                    onChanged: (value) {
+                      setState(() {
+                        valueShowMoney = !valueShowMoney;
+                        value = valueShowMoney;
+                      });
+                    },
                   ),
 
-                  SwitchListTile(
-                    value: true,
-                    onChanged: (value) {},
-                    title: Row(
-                      children: [
-                        const Icon(Icons.store, color: Colors.white),
-                        const SizedBox(width: 10),
-                        const Text(
-                          'Loja aberta',
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
-                    )
+                  const SizedBox(height: 20),
+
+                  SwitchListTileWidget(
+                    title: Text(
+                      'Aberto ?',
+                      style: const TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    value: valueOpen,
+                    onChanged: (value) {
+                      setState(() {
+                        valueOpen = !valueOpen;
+                        value = valueOpen;
+                      });
+                    },
                   ),
                 ],
               ),
