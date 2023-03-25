@@ -54,15 +54,10 @@ class _BottomState extends State<Bottom> {
                 label: 'Inicio',
               ),
 
-              globals.userType != 'admin' ? 
-                const BottomNavigationBarItem(
-                  icon: Icon(Icons.shopping_cart_outlined, color: Colors.white),
-                  label: 'Pedidos',
-                ) :
-                BottomNavigationBarItem(
-                  icon: SvgPicture.asset(iconOrder, height: 25, fit: BoxFit.fill,),
-                  label: 'Relatório',
-                ),
+              const BottomNavigationBarItem(
+                icon: Icon(Icons.shopping_cart_outlined, color: Colors.white),
+                label: 'Pedidos',
+              ),
 
               globals.userType != 'admin' ?
                 BottomNavigationBarItem(
