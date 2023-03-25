@@ -33,7 +33,7 @@ class _ScreenHomeManagerState extends State<ScreenHomeManager> {
   @override
   Widget build(BuildContext context) {
     setState(() {
-      globals.userType = 'admin';
+      globals.userType = 'manager';
     });
 
     return Scaffold(

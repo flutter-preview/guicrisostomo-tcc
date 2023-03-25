@@ -59,7 +59,7 @@ class _BottomState extends State<Bottom> {
                 label: 'Pedidos',
               ),
 
-              globals.userType != 'admin' ?
+              globals.userType != 'manager' ?
                 BottomNavigationBarItem(
                   icon: SvgPicture.asset(iconMenu, height: 25, fit: BoxFit.fill,),
                   label: 'Cardápio',
@@ -78,7 +78,7 @@ class _BottomState extends State<Bottom> {
                   label: 'Mesa',
                 ),
       
-              globals.userType != 'admin' ?
+              globals.userType != 'manager' ?
                 const BottomNavigationBarItem(
                   icon: Icon(Icons.perm_identity, color: Colors.white),
                   label: 'Perfil',
@@ -93,8 +93,8 @@ class _BottomState extends State<Bottom> {
               switch (index) {
                 case 0:
                   Navigator.of(context).pop();
-                  if (globals.userType == 'admin') {
-                    Navigator.push(context, navigator('home_admin'));
+                  if (globals.userType == 'manager') {
+                    Navigator.push(context, navigator('home_manager'));
                     break;
                   } else if (globals.userType == 'employee') {
                     Navigator.push(context, navigator('home_employee'));
@@ -110,7 +110,7 @@ class _BottomState extends State<Bottom> {
                   break;
                 case 2:
                   Navigator.of(context).pop();
-                  if (globals.userType == 'admin') {
+                  if (globals.userType == 'manager') {
                     Navigator.push(context, navigator('list_products'));
                     break;
                   } else {
@@ -130,7 +130,7 @@ class _BottomState extends State<Bottom> {
                       Navigator.push(context, navigator('table_employee'));
                       break;
                     } else {
-                      Navigator.push(context, navigator('table_admin'));
+                      Navigator.push(context, navigator('table_manager'));
                       break;
                     }
                   }
@@ -138,8 +138,8 @@ class _BottomState extends State<Bottom> {
                 case 4:
                   Navigator.of(context).pop();
                   
-                  if (globals.userType == 'admin') {
-                    Navigator.push(context, navigator('more_admin'));
+                  if (globals.userType == 'manager') {
+                    Navigator.push(context, navigator('more_manager'));
                     break;
                   } else if (globals.userType == 'employee') {
                     Navigator.push(context, navigator('profile_employee'));
