@@ -65,7 +65,7 @@ class _BottomState extends State<Bottom> {
                   label: 'Cardápio',
                 ) : BottomNavigationBarItem(
                   icon: SvgPicture.asset(iconMenu, height: 25, fit: BoxFit.fill,),
-                  label: 'Cadastrar produto',
+                  label: 'Produtos',
                 ),
 
               globals.isSaleInTable && globals.userType == 'customer' ?
@@ -139,7 +139,7 @@ class _BottomState extends State<Bottom> {
                   Navigator.of(context).pop();
                   
                   if (globals.userType == 'manager') {
-                    Navigator.push(context, navigator('more_manager'));
+                    Navigator.push(context, navigator('more'));
                     break;
                   } else if (globals.userType == 'employee') {
                     Navigator.push(context, navigator('profile_employee'));

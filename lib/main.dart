@@ -11,6 +11,7 @@ import 'package:tcc/view/pages/customer/screen_fo_payment.dart';
 import 'package:tcc/view/pages/employee/screen_home.dart';
 import 'package:tcc/view/pages/manager/screen_home.dart';
 import 'package:tcc/view/pages/manager/screen_info_employee.dart';
+import 'package:tcc/view/pages/manager/screen_more_option.dart';
 import 'package:tcc/view/pages/screen_rating_employee.dart';
 import 'package:tcc/view/pages/screen_about.dart';
 import 'package:tcc/view/pages/screen_create_products.dart';
@@ -117,10 +118,15 @@ Route navigator([String? name, Object? arguments]) {
     case 'employee/evaluation' :
       page = ScreenRatingEmployee(idEmployee: arguments.toString());
       break;
+
     /* screens for manager */
 
     case 'employee/info' :
       page = ScreenInfoEmployee(id: arguments.toString());
+      break;
+
+    case 'more' :
+      page = const ScreenMoreOption();
       break;
     default:
       page = const ScreenPresentation();
@@ -210,6 +216,7 @@ Future<void> main() async {
         // manager routes
         'employee/evaluation' :(context) => const ScreenRatingEmployee(idEmployee: null,),
         'employee/info' :(context) => const ScreenInfoEmployee(id: null,),
+        'more' :(context) => const ScreenMoreOption(),
       },
 
       // onGenerateRoute: (settings) {
