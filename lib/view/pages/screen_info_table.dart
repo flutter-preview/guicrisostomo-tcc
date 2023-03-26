@@ -20,7 +20,7 @@ class _ScreenInfoTableState extends State<ScreenInfoTable> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBarWidget(
-        pageName: 'Informações da mesa ${widget.arguments}}',
+        pageName: 'Informações da mesa ${widget.arguments}',
         context: context,
         withoutIcons: true,
       ),
