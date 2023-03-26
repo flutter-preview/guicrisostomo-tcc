@@ -11,6 +11,7 @@ import 'package:tcc/view/pages/customer/screen_fo_payment.dart';
 import 'package:tcc/view/pages/employee/screen_home.dart';
 import 'package:tcc/view/pages/manager/screen_home.dart';
 import 'package:tcc/view/pages/manager/screen_info_employee.dart';
+import 'package:tcc/view/pages/manager/screen_list_products.dart';
 import 'package:tcc/view/pages/manager/screen_more_option.dart';
 import 'package:tcc/view/pages/manager/screen_tables.dart';
 import 'package:tcc/view/pages/screen_rating_employee.dart';
@@ -131,6 +132,9 @@ Route navigator([String? name, Object? arguments]) {
     case 'more' :
       page = const ScreenMoreOption();
       break;
+    case 'list_products' :
+      page = const ScreenListProducts();
+      break;
     default:
       page = const ScreenPresentation();
     }
@@ -206,6 +210,7 @@ Future<void> main() async {
         'products' :(context) => ScreenProducts(),
         'products/info_product' :(context) => const ScreenInfoProduct(),
         'products/add_product' :(context) => ScreenAddItem(),
+        'list_products' :(context) => const ScreenListProducts(),
         'profile' :(context) => const ScreenProfile(),
         'profile/edit_datas' :(context) => ScreenEditDatas(),
         'profile/about' :(context) => const ScreenAbout(),
