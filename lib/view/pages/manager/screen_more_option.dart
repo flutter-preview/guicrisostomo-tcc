@@ -28,7 +28,7 @@ class _ScreenMoreOptionState extends State<ScreenMoreOption> {
                 onTap: () => {
                   Navigator.push(
                     context,
-                    navigator('manager/employees'),
+                    navigator('employees'),
                   )
                 },
               ),
@@ -44,7 +44,7 @@ class _ScreenMoreOptionState extends State<ScreenMoreOption> {
                 onTap: () => {
                   Navigator.push(
                     context,
-                    navigator('manager/categories'),
+                    navigator('categories'),
                   )
                 },
               ),
@@ -60,7 +60,7 @@ class _ScreenMoreOptionState extends State<ScreenMoreOption> {
                 onTap: () => {
                   Navigator.push(
                     context,
-                    navigator('manager/promotions'),
+                    navigator('promotions'),
                   )
                 },
               ),
@@ -76,7 +76,7 @@ class _ScreenMoreOptionState extends State<ScreenMoreOption> {
                 onTap: () => {
                   Navigator.push(
                     context,
-                    navigator('manager/customers'),
+                    navigator('customers'),
                   )
                 },
               ),
@@ -92,23 +92,7 @@ class _ScreenMoreOptionState extends State<ScreenMoreOption> {
                 onTap: () => {
                   Navigator.push(
                     context,
-                    navigator('manager/suppliers'),
-                  )
-                },
-              ),
-            ),
-
-            Card(
-              child: ListTile(
-                contentPadding: const EdgeInsets.all(10),
-                title: const Text('Permissões de acesso'),
-
-                trailing: const Icon(Icons.arrow_right, size: 20),
-
-                onTap: () => {
-                  Navigator.push(
-                    context,
-                    navigator('manager/permissions'),
+                    navigator('suppliers'),
                   )
                 },
               ),
@@ -124,7 +108,7 @@ class _ScreenMoreOptionState extends State<ScreenMoreOption> {
                 onTap: () => {
                   Navigator.push(
                     context,
-                    navigator('manager/products'),
+                    navigator('products'),
                   )
                 },
               ),
@@ -140,7 +124,7 @@ class _ScreenMoreOptionState extends State<ScreenMoreOption> {
                 onTap: () => {
                   Navigator.push(
                     context,
-                    navigator('manager/products'),
+                    navigator('products'),
                   )
                 },
               ),
