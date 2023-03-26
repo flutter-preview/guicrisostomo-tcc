@@ -12,6 +12,7 @@ import 'package:tcc/view/pages/employee/screen_home.dart';
 import 'package:tcc/view/pages/manager/screen_home.dart';
 import 'package:tcc/view/pages/manager/screen_info_employee.dart';
 import 'package:tcc/view/pages/manager/screen_more_option.dart';
+import 'package:tcc/view/pages/manager/screen_tables.dart';
 import 'package:tcc/view/pages/screen_rating_employee.dart';
 import 'package:tcc/view/pages/screen_about.dart';
 import 'package:tcc/view/pages/screen_create_products.dart';
@@ -124,7 +125,9 @@ Route navigator([String? name, Object? arguments]) {
     case 'employee/info' :
       page = ScreenInfoEmployee(id: arguments.toString());
       break;
-
+    case 'table_manager' :
+      page = const ScreenTables();
+      break;
     case 'more' :
       page = const ScreenMoreOption();
       break;
@@ -216,6 +219,7 @@ Future<void> main() async {
         // manager routes
         'employee/evaluation' :(context) => const ScreenRatingEmployee(idEmployee: null,),
         'employee/info' :(context) => const ScreenInfoEmployee(id: null,),
+        'table_manager' :(context) => const ScreenTables(),
         'more' :(context) => const ScreenMoreOption(),
       },
 
