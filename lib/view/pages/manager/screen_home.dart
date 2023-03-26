@@ -39,7 +39,7 @@ class _ScreenHomeManagerState extends State<ScreenHomeManager> {
 
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(250),
+        preferredSize: const Size.fromHeight(180),
 
         child: Column(
           mainAxisSize: MainAxisSize.max,
@@ -90,24 +90,12 @@ class _ScreenHomeManagerState extends State<ScreenHomeManager> {
                         value = valueShowMoney;
                       });
                     },
-                  ),
-
-                  const SizedBox(height: 20),
-
-                  SwitchListTileWidget(
-                    title: Text(
-                      'Aberto ?',
-                      style: const TextStyle(
-                        color: Colors.white,
-                      ),
+                    icon: Icon(
+                      (valueShowMoney == true) ?
+                        Icons.visibility : Icons.visibility_off,
+                      color: Colors.white,
+                      size: 30,
                     ),
-                    value: valueOpen,
-                    onChanged: (value) {
-                      setState(() {
-                        valueOpen = !valueOpen;
-                        value = valueOpen;
-                      });
-                    },
                   ),
                 ],
               ),
@@ -121,6 +109,26 @@ class _ScreenHomeManagerState extends State<ScreenHomeManager> {
           padding: const EdgeInsets.all(20),
           child: Column(
             children: [
+
+              SwitchListTileWidget(
+                title: Text(
+                  'Aberto ?',
+                ),
+                value: valueOpen,
+                onChanged: (value) {
+                  setState(() {
+                    valueOpen = !valueOpen;
+                    value = valueOpen;
+                  });
+                },
+                icon: Icon(
+                  (valueOpen == true) ?
+                    Icons.lock_open : Icons.lock,
+                  color: globals.primary,
+                  size: 30,
+                ),
+              ),
+
               SectionVisible(
                 nameSection: 'Funcionários ativos',
                 child: Column(

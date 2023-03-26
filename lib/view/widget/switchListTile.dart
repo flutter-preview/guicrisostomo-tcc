@@ -6,12 +6,14 @@ class SwitchListTileWidget extends StatefulWidget {
   Widget title;
   bool value = true;
   void Function(bool)? onChanged;
+  Icon? icon;
 
   SwitchListTileWidget({
     super.key,
     required this.title,
     required this.onChanged,
     required this.value,
+    this.icon,
   });
 
   @override
@@ -32,7 +34,13 @@ class _SwitchListTileWidgetState extends State<SwitchListTileWidget> {
       inactiveTrackColor: Colors.red[100],
       activeTrackColor: Colors.green[100],
       
-      title: widget.title,
+      title: (widget.icon != null) ? Row(
+        children: [
+          widget.icon!,
+          const SizedBox(width: 10),
+          widget.title,
+        ],
+      ) : widget.title,
     );
   }
 }
