@@ -5,10 +5,10 @@ import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/switchListTile.dart';
 
 class ScreenPermissions extends StatefulWidget {
-  final Object? arguments;
+  final String? id;
   const ScreenPermissions({
     super.key,
-    this.arguments,
+    required this.id,
   });
 
   @override
@@ -35,7 +35,7 @@ class _ScreenPermissionsState extends State<ScreenPermissions> {
         child: Column(
           children: [
             Text(
-              'Permissões - funcionário ${widget.arguments}',
+              'Permissões - funcionário ${widget.id}',
               style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -45,7 +45,7 @@ class _ScreenPermissionsState extends State<ScreenPermissions> {
             const SizedBox(height: 20),
 
             Text(
-              'Aqui você pode ver as permissões do funcionário ${widget.arguments}.',
+              'Aqui você pode ver as permissões do funcionário ${widget.id}.',
               style: const TextStyle(
                 fontSize: 16,
               ),

@@ -128,7 +128,7 @@ Route navigator([String? name, Object? arguments]) {
       page = ScreenInfoEmployee(id: arguments.toString());
       break;
     case 'permissions' :
-      page = const ScreenPermissions();
+      page = ScreenPermissions(id: arguments.toString());
       break;
     case 'table_manager' :
       page = const ScreenTables();
@@ -228,7 +228,7 @@ Future<void> main() async {
         // manager routes
         'employee/evaluation' :(context) => const ScreenRatingEmployee(idEmployee: null,),
         'employee/info' :(context) => const ScreenInfoEmployee(id: null,),
-        'permissions' :(context) => const ScreenPermissions(),
+        'permissions' :(context) => const ScreenPermissions(id: null),
         'table_manager' :(context) => const ScreenTables(),
         'more' :(context) => const ScreenMoreOption(),
       },
