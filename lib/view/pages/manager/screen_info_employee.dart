@@ -70,6 +70,7 @@ class _ScreenInfoEmployeeState extends State<ScreenInfoEmployee> {
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
+
             Row(
               children: [
                 Icon(Icons.person, color: globals.primary, size: 50,),
@@ -84,12 +85,32 @@ class _ScreenInfoEmployeeState extends State<ScreenInfoEmployee> {
               ],
             ),
 
+            const SizedBox(height: 10),
+
+            button('Excluir funcionário', MediaQuery.of(context).size.width * 0.8, 70, Icons.delete, () => null),
+            
+            const SizedBox(height: 10),
+
+            button(
+              'Alterar permissões', 
+              MediaQuery.of(context).size.width * 0.8, 
+              70, 
+              Icons.edit, 
+              () => Navigator.push(
+                context,
+                navigator('permissions', widget.id)
+              )
+            ),
+
             const SizedBox(height: 30),
 
             SectionVisible(
               nameSection: 'Informações importantes',
               child: Column(
                 children: [
+
+                  button('Editar informações', MediaQuery.of(context).size.width * 0.8, 70, Icons.edit, () => null),
+
                   Row(
                     children: [
                       Icon(Icons.email, color: globals.primary, size: 30,),
