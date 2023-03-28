@@ -51,22 +51,14 @@ class _ScreenSmartphoneEmployeeState extends State<ScreenSmartphoneEmployee> {
                     title: const Text('Smartphone'),
                     subtitle: const Text('Modelo: Samsung Galaxy S20\nIMEI: 123456789012345\nNúmero: (11) 99999-9999'),
                     leading: Icon(Icons.smartphone, size: 40, color: globals.primary),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-
-                      children: [
-                        ElevatedButton(
-                          child: Icon(Icons.delete, size: 20, color: Colors.white,),
-                          onPressed: () => null,
-                          style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.all(2),
-                            backgroundColor: globals.primary,
-                            shape: const CircleBorder(),
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        Icon(Icons.arrow_right, size: 20, color: globals.primary),
-                      ],
+                    trailing: ElevatedButton(
+                      child: Icon(Icons.delete, size: 20, color: Colors.white,),
+                      onPressed: () => null,
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.all(2),
+                        backgroundColor: globals.primary,
+                        shape: const CircleBorder(),
+                      ),
                     ),
                     onTap: () => {
                       Navigator.push(
