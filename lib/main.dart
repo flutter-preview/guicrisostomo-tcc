@@ -13,6 +13,7 @@ import 'package:tcc/view/pages/manager/screen_employees.dart';
 import 'package:tcc/view/pages/manager/screen_home.dart';
 import 'package:tcc/view/pages/manager/screen_info_employee.dart';
 import 'package:tcc/view/pages/manager/screen_list_products.dart';
+import 'package:tcc/view/pages/manager/screen_list_smartphone_employee.dart';
 import 'package:tcc/view/pages/manager/screen_more_option.dart';
 import 'package:tcc/view/pages/manager/screen_permissions.dart';
 import 'package:tcc/view/pages/manager/screen_register_employee.dart';
@@ -135,6 +136,9 @@ Route navigator([String? name, Object? arguments]) {
     case 'employee/register' :
       page = const ScreenRegisterEmployee();
       break;
+    case 'employee/smartphone' :
+      page = ScreenSmartphoneEmployee(id: arguments.toString());
+      break;
     case 'permissions' :
       page = ScreenPermissions(id: arguments.toString());
       break;
@@ -238,6 +242,7 @@ Future<void> main() async {
         'employee/register' :(context) => const ScreenRegisterEmployee(),
         'employee/evaluation' :(context) => const ScreenRatingEmployee(idEmployee: null,),
         'employee/info' :(context) => const ScreenInfoEmployee(id: null,),
+        'employee/smartphone' :(context) => const ScreenSmartphoneEmployee(id: null,),
         'permissions' :(context) => const ScreenPermissions(id: null),
         'table_manager' :(context) => const ScreenTables(),
         'more' :(context) => const ScreenMoreOption(),
