@@ -9,6 +9,7 @@ import 'package:tcc/view/pages/customer/screen_fo_get_adress.dart';
 import 'package:tcc/view/pages/customer/screen_fo_main.dart';
 import 'package:tcc/view/pages/customer/screen_fo_payment.dart';
 import 'package:tcc/view/pages/employee/screen_home.dart';
+import 'package:tcc/view/pages/manager/screen_employees.dart';
 import 'package:tcc/view/pages/manager/screen_home.dart';
 import 'package:tcc/view/pages/manager/screen_info_employee.dart';
 import 'package:tcc/view/pages/manager/screen_list_products.dart';
@@ -124,6 +125,9 @@ Route navigator([String? name, Object? arguments]) {
 
     /* screens for manager */
 
+    case 'employees' :
+      page = const ScreenEmployees();
+      break;
     case 'employee/info' :
       page = ScreenInfoEmployee(id: arguments.toString());
       break;
@@ -226,6 +230,7 @@ Future<void> main() async {
         'notifications' :(context) => const ScreenNotifications(),
         'terms' :(context) => const ScreenTerms(),
         // manager routes
+        'employees' :(context) => const ScreenEmployees(),
         'employee/evaluation' :(context) => const ScreenRatingEmployee(idEmployee: null,),
         'employee/info' :(context) => const ScreenInfoEmployee(id: null,),
         'permissions' :(context) => const ScreenPermissions(id: null),
