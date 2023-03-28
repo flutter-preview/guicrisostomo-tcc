@@ -139,6 +139,15 @@ class _ScreenEmployeesState extends State<ScreenEmployees> {
         ),
       ),
 
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => Navigator.push(context, navigator('employee/register')), 
+        backgroundColor: globals.primary,
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+          size: 30,
+        ),
+      ),
       bottomNavigationBar: const Bottom(),
     );
   }
