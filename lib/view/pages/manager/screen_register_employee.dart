@@ -134,7 +134,7 @@ class _ScreenRegisterEmployeeState extends State<ScreenRegisterEmployee> {
                 Icons.add, 
                 () {
                   Navigator.pop(context);
-                  Navigator.push(context, navigator('employee/smartphone'));
+                  Navigator.push(context, navigator('employee/smartphone', '1'));
                 }
               ),
             ),

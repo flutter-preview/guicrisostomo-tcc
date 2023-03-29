@@ -91,14 +91,20 @@ class _ScreenInfoEmployeeState extends State<ScreenInfoEmployee> {
             
             const SizedBox(height: 10),
 
-            button(
-              'Alterar permissões', 
-              MediaQuery.of(context).size.width * 0.8, 
-              70, 
-              Icons.edit, 
-              () => Navigator.push(
-                context,
-                navigator('permissions', widget.id)
+            SectionVisible(
+              nameSection: 'Mais configurações do funcionário', 
+              child: Column(
+                children: [
+                  button('Editar permissões', MediaQuery.of(context).size.width * 0.8, 70, Icons.local_police, () => Navigator.push(context, navigator('permissions', widget.id))),
+
+                  const SizedBox(height: 10),
+
+                  button('Editar smartphones autorizados', MediaQuery.of(context).size.width * 0.8, 70, Icons.smartphone, () => Navigator.push(context, navigator('employee/smartphone', widget.id))),
+                  
+                  const SizedBox(height: 10),
+                  
+                  button('Editar horário de trabalho', MediaQuery.of(context).size.width * 0.8, 70, Icons.work, () => Navigator.push(context, navigator('employee/work_time', widget.id))),
+                ],
               )
             ),
 

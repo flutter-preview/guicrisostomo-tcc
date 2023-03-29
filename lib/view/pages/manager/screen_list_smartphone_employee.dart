@@ -23,7 +23,7 @@ class _ScreenSmartphoneEmployeeState extends State<ScreenSmartphoneEmployee> {
       appBar: appBarWidget(
         pageName: 'Smartphones do funcionário', 
         context: context,
-        icon: Icons.smartphone,
+        withoutIcons: true,
       ),
 
       body: SingleChildScrollView(
@@ -44,7 +44,7 @@ class _ScreenSmartphoneEmployeeState extends State<ScreenSmartphoneEmployee> {
               Navigator.pop(context);
               Navigator.push(
                 context,
-                navigator('employee/work_time'),
+                navigator('employee/work_time', widget.id),
               );
             }, false),
             ListView.builder(

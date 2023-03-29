@@ -48,7 +48,7 @@ class _ScreenTimeWorkEmployeeState extends State<ScreenTimeWorkEmployee> {
       appBar: appBarWidget(
         pageName: 'Horário de trabalho do funcionário ${widget.id}',
         context: context,
-        icon: Icons.access_time,
+        withoutIcons: true,
       ),
 
       body: SingleChildScrollView(
