@@ -44,7 +44,6 @@ class _BottomState extends State<Bottom> {
             selectedItemColor: Colors.white,
             backgroundColor: Colors.transparent,
             selectedLabelStyle: const TextStyle(
-              fontWeight: FontWeight.bold,
               fontSize: 14,
             ),
 

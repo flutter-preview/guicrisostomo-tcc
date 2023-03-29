@@ -65,7 +65,6 @@ Widget button(
                 style: TextStyle(
                   fontSize: fontSize,
                   color: Colors.white,
-                  fontWeight: FontWeight.w600,
                 ),
               ),
       
