@@ -54,6 +54,7 @@ class _ScreenCategoriesState extends State<ScreenCategories> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: globals.primary,
         onPressed: () {
           showDialog(
             context: context, 
@@ -64,7 +65,7 @@ class _ScreenCategoriesState extends State<ScreenCategories> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     TextFieldGeneral(
-                      label: 'Categoria', 
+                      label: 'Nome', 
                       variavel: txtCategoryAdd, 
                       context: context, 
                       keyboardType: TextInputType.text,

@@ -12,6 +12,7 @@ import 'package:tcc/view/pages/employee/screen_home.dart';
 import 'package:tcc/view/pages/manager/screen_employee_time_work.dart';
 import 'package:tcc/view/pages/manager/screen_employees.dart';
 import 'package:tcc/view/pages/manager/screen_home.dart';
+import 'package:tcc/view/pages/manager/screen_info_category.dart';
 import 'package:tcc/view/pages/manager/screen_info_employee.dart';
 import 'package:tcc/view/pages/manager/screen_list_products.dart';
 import 'package:tcc/view/pages/manager/screen_list_smartphone_employee.dart';
@@ -131,6 +132,9 @@ Route navigator([String? name, Object? arguments]) {
     case 'categories' :
       page = const ScreenCategories();
       break;
+    case 'categories/category' :
+      page = ScreenInfoCategory(id: arguments.toString());
+      break;
     case 'employees' :
       page = const ScreenEmployees();
       break;
@@ -246,6 +250,7 @@ Future<void> main() async {
         'terms' :(context) => const ScreenTerms(),
         // manager routes
         'categories' :(context) => const ScreenCategories(),
+        'categories/category' :(context) => const ScreenInfoCategory(id: '1'),
         'employees' :(context) => const ScreenEmployees(),
         'employee/register' :(context) => const ScreenRegisterEmployee(),
         'employee/evaluation' :(context) => const ScreenRatingEmployee(idEmployee: null,),
