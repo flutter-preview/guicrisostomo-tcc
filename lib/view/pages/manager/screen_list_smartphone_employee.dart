@@ -40,7 +40,13 @@ class _ScreenSmartphoneEmployeeState extends State<ScreenSmartphoneEmployee> {
 
             const SizedBox(height: 20),
 
-            button('Pular', 150, 70, Icons.skip_next, () => null),
+            button('Avançar', 150, 70, Icons.arrow_forward_ios, () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                navigator('employee/work_time'),
+              );
+            }, false),
             ListView.builder(
               shrinkWrap: true,
               itemCount: 10,

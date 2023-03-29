@@ -9,6 +9,7 @@ import 'package:tcc/view/pages/customer/screen_fo_get_adress.dart';
 import 'package:tcc/view/pages/customer/screen_fo_main.dart';
 import 'package:tcc/view/pages/customer/screen_fo_payment.dart';
 import 'package:tcc/view/pages/employee/screen_home.dart';
+import 'package:tcc/view/pages/manager/screen_employee_time_work.dart';
 import 'package:tcc/view/pages/manager/screen_employees.dart';
 import 'package:tcc/view/pages/manager/screen_home.dart';
 import 'package:tcc/view/pages/manager/screen_info_employee.dart';
@@ -139,6 +140,9 @@ Route navigator([String? name, Object? arguments]) {
     case 'employee/smartphone' :
       page = ScreenSmartphoneEmployee(id: arguments.toString());
       break;
+    case 'employee/work_time' :
+      page = ScreenTimeWorkEmployee(id: arguments.toString());
+      break;
     case 'permissions' :
       page = ScreenPermissions(id: arguments.toString());
       break;
@@ -243,6 +247,7 @@ Future<void> main() async {
         'employee/evaluation' :(context) => const ScreenRatingEmployee(idEmployee: null,),
         'employee/info' :(context) => const ScreenInfoEmployee(id: null,),
         'employee/smartphone' :(context) => const ScreenSmartphoneEmployee(id: null,),
+        'employee/work_time' :(context) => const ScreenTimeWorkEmployee(id: null,),
         'permissions' :(context) => const ScreenPermissions(id: null),
         'table_manager' :(context) => const ScreenTables(),
         'more' :(context) => const ScreenMoreOption(),
