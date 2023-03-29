@@ -57,6 +57,7 @@ class _ScreenTimeWorkEmployeeState extends State<ScreenTimeWorkEmployee> {
           children: [
             SectionVisible(
               nameSection: 'Horário de trabalho do funcionário ${widget.id}', 
+              isShowPart: true,
               child: Column(
                 children: [
                   StatefulBuilder(
@@ -89,6 +90,7 @@ class _ScreenTimeWorkEmployeeState extends State<ScreenTimeWorkEmployee> {
                                   variavel: txtSundayStart, 
                                   context: context, 
                                   keyboardType: TextInputType.number,
+                                  isHour: true,
                                 ),
 
                                 const SizedBox(height: 20),
@@ -98,6 +100,7 @@ class _ScreenTimeWorkEmployeeState extends State<ScreenTimeWorkEmployee> {
                                   variavel: txtSundayEnd, 
                                   context: context, 
                                   keyboardType: TextInputType.number,
+                                  isHour: true,
                                 ),
                               ],
                             ),
@@ -138,6 +141,7 @@ class _ScreenTimeWorkEmployeeState extends State<ScreenTimeWorkEmployee> {
                                   variavel: txtMondayStart, 
                                   context: context, 
                                   keyboardType: TextInputType.number,
+                                  isHour: true,
                                 ),
 
                                 const SizedBox(height: 20),
@@ -147,6 +151,7 @@ class _ScreenTimeWorkEmployeeState extends State<ScreenTimeWorkEmployee> {
                                   variavel: txtMondayEnd, 
                                   context: context, 
                                   keyboardType: TextInputType.number,
+                                  isHour: true,
                                 ),
                               ],
                             ),
@@ -187,6 +192,7 @@ class _ScreenTimeWorkEmployeeState extends State<ScreenTimeWorkEmployee> {
                                   variavel: txtTuesdayStart, 
                                   context: context, 
                                   keyboardType: TextInputType.number,
+                                  isHour: true,
                                 ),
 
                                 const SizedBox(height: 20),
@@ -196,6 +202,7 @@ class _ScreenTimeWorkEmployeeState extends State<ScreenTimeWorkEmployee> {
                                   variavel: txtTuesdayEnd, 
                                   context: context, 
                                   keyboardType: TextInputType.number,
+                                  isHour: true,
                                 ),
                               ],
                             ),
@@ -236,6 +243,7 @@ class _ScreenTimeWorkEmployeeState extends State<ScreenTimeWorkEmployee> {
                                   variavel: txtWednesdayStart, 
                                   context: context, 
                                   keyboardType: TextInputType.number,
+                                  isHour: true,
                                 ),
 
                                 const SizedBox(height: 20),
@@ -245,6 +253,7 @@ class _ScreenTimeWorkEmployeeState extends State<ScreenTimeWorkEmployee> {
                                   variavel: txtWednesdayEnd, 
                                   context: context, 
                                   keyboardType: TextInputType.number,
+                                  isHour: true,
                                 ),
                               ],
                             ),
@@ -285,6 +294,7 @@ class _ScreenTimeWorkEmployeeState extends State<ScreenTimeWorkEmployee> {
                                   variavel: txtThursdayStart, 
                                   context: context, 
                                   keyboardType: TextInputType.number,
+                                  isHour: true,
                                 ),
 
                                 const SizedBox(height: 20),
@@ -294,6 +304,7 @@ class _ScreenTimeWorkEmployeeState extends State<ScreenTimeWorkEmployee> {
                                   variavel: txtThursdayEnd, 
                                   context: context, 
                                   keyboardType: TextInputType.number,
+                                  isHour: true,
                                 ),
                               ],
                             ),
@@ -334,6 +345,7 @@ class _ScreenTimeWorkEmployeeState extends State<ScreenTimeWorkEmployee> {
                                   variavel: txtFridayStart, 
                                   context: context, 
                                   keyboardType: TextInputType.number,
+                                  isHour: true,
                                 ),
 
                                 const SizedBox(height: 20),
@@ -343,6 +355,7 @@ class _ScreenTimeWorkEmployeeState extends State<ScreenTimeWorkEmployee> {
                                   variavel: txtFridayEnd, 
                                   context: context, 
                                   keyboardType: TextInputType.number,
+                                  isHour: true,
                                 ),
                               ],
                             ),
@@ -384,7 +397,7 @@ class _ScreenTimeWorkEmployeeState extends State<ScreenTimeWorkEmployee> {
                                   variavel: txtSaturdayStart, 
                                   context: context, 
                                   keyboardType: TextInputType.number,
-                                
+                                  isHour: true,
                                 ),
 
                                 const SizedBox(height: 20),
@@ -394,6 +407,7 @@ class _ScreenTimeWorkEmployeeState extends State<ScreenTimeWorkEmployee> {
                                   variavel: txtSaturdayEnd, 
                                   context: context, 
                                   keyboardType: TextInputType.number,
+                                  isHour: true,
                                 ),
                               ],
                             ),

@@ -19,6 +19,7 @@ class TextFieldGeneral extends StatefulWidget {
   bool isPassword = false;
   bool isPasswordVisible = false;
   bool multipleDate = false;
+  bool isHour = false;
   List<TextInputFormatter>? inputFormatter;
 
   TextFieldGeneral
@@ -39,6 +40,7 @@ class TextFieldGeneral extends StatefulWidget {
       this.angleSufixIcon = 0,
       this.inputFormatter,
       this.multipleDate = true,
+      this.isHour = false,
     });
 
   @override
@@ -47,6 +49,69 @@ class TextFieldGeneral extends StatefulWidget {
 
 class _TextFieldGeneralState extends State<TextFieldGeneral> {
   
+  Future<void> onTapDate() async {
+    String? transformDate;
+    DateTime? date;
+    DateTime? pickedDateSingle;
+    DateTimeRange? pickedDate;
+
+    setState(() {
+      globals.isUserTyping = true;
+    });
+    
+    if (widget.keyboardType == TextInputType.datetime) {
+      widget.multipleDate ? {
+        pickedDate = await showDateRangePicker(
+          context: widget.context,
+          firstDate: DateTime(2022),
+          lastDate: DateTime.now(),
+        ),
+
+        if (pickedDate != null) {
+          setState(() {
+            pickedDate!.start == pickedDate.end ? {
+              widget.variavel.text = DateFormat('dd/MM/yyyy').format(pickedDate.start),
+            } : {
+              widget.variavel.text = '${DateFormat('dd/MM/yyyy').format(pickedDate.start)} - ${DateFormat('dd/MM/yyyy').format(pickedDate.end)}',
+            };
+          })
+        }
+      }: {
+        widget.variavel.text == '' ? date = DateTime.now() : {
+          transformDate = widget.variavel.text.replaceAll('/', '-'),
+          transformDate = '${transformDate.split('-')[2]}-${transformDate.split('-')[1]}-${transformDate.split('-')[0]}',
+          date = DateTime.parse(transformDate),
+        },
+
+        pickedDateSingle = await showDatePicker(
+          context: widget.context,
+          initialDate: date,
+          firstDate: DateTime(2022),
+          lastDate: DateTime.now(),
+        ),
+
+        if (pickedDateSingle != null) {
+          setState(() {
+            widget.variavel.text = DateFormat('dd/MM/yyyy').format(pickedDateSingle!);
+          })
+        }
+      };
+    }
+  }
+
+  Future<void> onTapHour() async {
+    TimeOfDay? pickedTime = await showTimePicker(
+      initialTime: TimeOfDay.now(),
+      context: context,
+    );
+    
+    if(pickedTime != null ){
+      setState(() {
+        widget.variavel.text = pickedTime.format(context).toString().trim();
+      });
+    }
+  }
+
   Widget textField() {
     return Container(
       margin: const EdgeInsets.fromLTRB(0,0, 10, 15),
@@ -136,52 +201,12 @@ class _TextFieldGeneralState extends State<TextFieldGeneral> {
           onChanged: widget.onChanged,
 
           onTap: () async {
-            String? transformDate;
-            DateTime? date;
-            DateTime? pickedDateSingle;
-            DateTimeRange? pickedDate;
-
-            setState(() {
-              globals.isUserTyping = true;
-            });
-            
             if (widget.keyboardType == TextInputType.datetime) {
-              widget.multipleDate ? {
-                pickedDate = await showDateRangePicker(
-                  context: widget.context,
-                  firstDate: DateTime(2022),
-                  lastDate: DateTime.now(),
-                ),
+              await onTapDate();
+            }
 
-                if (pickedDate != null) {
-                  setState(() {
-                    pickedDate!.start == pickedDate.end ? {
-                      widget.variavel.text = DateFormat('dd/MM/yyyy').format(pickedDate.start),
-                    } : {
-                      widget.variavel.text = '${DateFormat('dd/MM/yyyy').format(pickedDate.start)} - ${DateFormat('dd/MM/yyyy').format(pickedDate.end)}',
-                    };
-                  })
-                }
-              }: {
-                widget.variavel.text == '' ? date = DateTime.now() : {
-                  transformDate = widget.variavel.text.replaceAll('/', '-'),
-                  transformDate = '${transformDate.split('-')[2]}-${transformDate.split('-')[1]}-${transformDate.split('-')[0]}',
-                  date = DateTime.parse(transformDate),
-                },
-
-                pickedDateSingle = await showDatePicker(
-                  context: widget.context,
-                  initialDate: date,
-                  firstDate: DateTime(2022),
-                  lastDate: DateTime.now(),
-                ),
-
-                if (pickedDateSingle != null) {
-                  setState(() {
-                    widget.variavel.text = DateFormat('dd/MM/yyyy').format(pickedDateSingle!);
-                  })
-                }
-              };
+            if (widget.isHour) {
+              await onTapHour();
             }
           },
 
