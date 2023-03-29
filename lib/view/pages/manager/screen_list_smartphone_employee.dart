@@ -4,6 +4,7 @@ import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigation.dart';
 import 'package:tcc/globals.dart' as globals;
 import 'package:tcc/view/widget/button.dart';
+import 'package:tcc/view/widget/textFieldGeneral.dart';
 
 class ScreenSmartphoneEmployee extends StatefulWidget {
   final String? id;
@@ -17,6 +18,9 @@ class ScreenSmartphoneEmployee extends StatefulWidget {
 }
 
 class _ScreenSmartphoneEmployeeState extends State<ScreenSmartphoneEmployee> {
+  var txtNameSmartphoneAdd = TextEditingController();
+  var txtIMEISmartphoneAdd = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,9 +86,60 @@ class _ScreenSmartphoneEmployeeState extends State<ScreenSmartphoneEmployee> {
 
       floatingActionButton: FloatingActionButton(
         onPressed: () => {
-          Navigator.push(
-            context,
-            navigator('smartphone'),
+          showDialog(
+            context: context,
+            builder: (context) => 
+            Dialog(
+              child: Container(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      'Adicionar smartphone',
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    TextFieldGeneral(
+                      label: 'Nome do smartphone', 
+                      variavel: txtNameSmartphoneAdd, 
+                      context: context, 
+                      keyboardType: TextInputType.text,
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    TextFieldGeneral(
+                      label: 'IMEI do smartphone', 
+                      variavel: txtIMEISmartphoneAdd, 
+                      context: context, 
+                      keyboardType: TextInputType.number,
+                    ),
+
+                    const SizedBox(height: 20),
+                    
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        button('Cancelar', 150, 70, Icons.cancel, () {
+                          Navigator.pop(context);
+                        }),
+                        const SizedBox(width: 20),
+                        button('Adicionar', 150, 70, Icons.add, () {
+                          Navigator.pop(context);
+                        }),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            )
           )
         },
         child: const Icon(Icons.add),
