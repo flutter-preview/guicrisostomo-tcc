@@ -91,7 +91,7 @@ class _ScreenTimeWorkEmployeeState extends State<ScreenTimeWorkEmployee> {
                                   keyboardType: TextInputType.number,
                                 ),
 
-                                const SizedBox(width: 20),
+                                const SizedBox(height: 20),
 
                                 TextFieldGeneral(
                                   label: 'Até', 
@@ -140,7 +140,7 @@ class _ScreenTimeWorkEmployeeState extends State<ScreenTimeWorkEmployee> {
                                   keyboardType: TextInputType.number,
                                 ),
 
-                                const SizedBox(width: 20),
+                                const SizedBox(height: 20),
 
                                 TextFieldGeneral(
                                   label: 'Até', 
@@ -189,7 +189,7 @@ class _ScreenTimeWorkEmployeeState extends State<ScreenTimeWorkEmployee> {
                                   keyboardType: TextInputType.number,
                                 ),
 
-                                const SizedBox(width: 20),
+                                const SizedBox(height: 20),
 
                                 TextFieldGeneral(
                                   label: 'Até', 
@@ -238,7 +238,7 @@ class _ScreenTimeWorkEmployeeState extends State<ScreenTimeWorkEmployee> {
                                   keyboardType: TextInputType.number,
                                 ),
 
-                                const SizedBox(width: 20),
+                                const SizedBox(height: 20),
 
                                 TextFieldGeneral(
                                   label: 'Até', 
@@ -287,7 +287,7 @@ class _ScreenTimeWorkEmployeeState extends State<ScreenTimeWorkEmployee> {
                                   keyboardType: TextInputType.number,
                                 ),
 
-                                const SizedBox(width: 20),
+                                const SizedBox(height: 20),
 
                                 TextFieldGeneral(
                                   label: 'Até', 
@@ -336,7 +336,7 @@ class _ScreenTimeWorkEmployeeState extends State<ScreenTimeWorkEmployee> {
                                   keyboardType: TextInputType.number,
                                 ),
 
-                                const SizedBox(width: 20),
+                                const SizedBox(height: 20),
 
                                 TextFieldGeneral(
                                   label: 'Até', 
@@ -387,7 +387,7 @@ class _ScreenTimeWorkEmployeeState extends State<ScreenTimeWorkEmployee> {
                                 
                                 ),
 
-                                const SizedBox(width: 20),
+                                const SizedBox(height: 20),
 
                                 TextFieldGeneral(
                                   label: 'Até', 
