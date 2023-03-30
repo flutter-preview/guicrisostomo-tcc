@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:tcc/main.dart';
+import 'package:tcc/model/standardListDropDown.dart';
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigation.dart';
 import 'package:tcc/globals.dart' as globals;
+import 'package:tcc/view/widget/dropDownButton.dart';
 import 'package:tcc/view/widget/textFieldGeneral.dart';
 
 class ScreenListSize extends StatefulWidget {
@@ -14,6 +16,29 @@ class ScreenListSize extends StatefulWidget {
 
 class _ScreenListSizeState extends State<ScreenListSize> {
   var txtEditSize = TextEditingController();
+  var txtSizeAdd = TextEditingController();
+
+  String txtCategorySizeAdd = 'Pizza';
+  List<DropDownList> itemCategory= [
+    DropDownList(
+      icon: Icons.local_pizza, 
+      name: 'Pizza'
+    ),
+    DropDownList(
+      icon: Icons.dinner_dining, 
+      name: 'Comida'
+    ),
+
+    DropDownList(
+      name: 'Lanche', 
+      icon: Icons.fastfood,
+    ),
+
+    DropDownList(
+      icon: Icons.local_drink, 
+      name: 'Bebida'
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -129,6 +154,53 @@ class _ScreenListSizeState extends State<ScreenListSize> {
           },
           itemCount: 10,
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showDialog(
+            context: context, 
+            builder: (context) {
+              return AlertDialog(
+                title: const Text('Adicionar tamanho'),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    TextFieldGeneral(
+                      label: 'Nome', 
+                      variavel: txtEditSize, 
+                      context: context, 
+                      keyboardType: TextInputType.text,
+                      ico: Icons.category,
+                    ),
+
+                    const SizedBox(height: 10),
+
+                    DropDown(
+                      text: 'Categoria', 
+                      itemsDropDownButton: itemCategory, 
+                      variavel: txtCategorySizeAdd, 
+                      callback: (value) {
+
+                      }
+                    ),
+                  ],
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context), 
+                    child: const Text('Cancelar')
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.pop(context), 
+                    child: const Text('Adicionar')
+                  ),
+                ],
+              );
+            }
+          );
+        }, 
+        child: const Icon(Icons.add), 
+        backgroundColor: globals.primary
       ),
 
       bottomNavigationBar: const Bottom(),
