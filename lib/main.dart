@@ -14,6 +14,7 @@ import 'package:tcc/view/pages/manager/screen_employees.dart';
 import 'package:tcc/view/pages/manager/screen_home.dart';
 import 'package:tcc/view/pages/manager/screen_info_category.dart';
 import 'package:tcc/view/pages/manager/screen_info_employee.dart';
+import 'package:tcc/view/pages/manager/screen_info_size.dart';
 import 'package:tcc/view/pages/manager/screen_list_products.dart';
 import 'package:tcc/view/pages/manager/screen_list_size.dart';
 import 'package:tcc/view/pages/manager/screen_list_smartphone_employee.dart';
@@ -166,6 +167,9 @@ Route navigator([String? name, Object? arguments]) {
     case 'size' :
       page = const ScreenListSize();
       break;
+    case 'size/info' :
+      page = ScreenInfoSize(id: arguments.toString());
+      break;
     default:
       page = const ScreenPresentation();
     }
@@ -265,6 +269,7 @@ Future<void> main() async {
         'table_manager' :(context) => const ScreenTables(),
         'more' :(context) => const ScreenMoreOption(),
         'size' :(context) => const ScreenListSize(),
+        'size/info' :(context) => const ScreenInfoSize(id: '1'),
       },
 
       // onGenerateRoute: (settings) {
