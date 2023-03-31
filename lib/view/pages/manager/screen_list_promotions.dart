@@ -50,7 +50,7 @@ class _ScreenListPromotionsState extends State<ScreenListPromotions> {
 
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(context, navigator('screen_add_promotion'));
+          Navigator.push(context, navigator('promotion/create'));
         }, 
         backgroundColor: globals.primary,
         child: Icon(Icons.add)
