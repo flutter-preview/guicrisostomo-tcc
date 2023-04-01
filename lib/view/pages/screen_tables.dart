@@ -21,7 +21,7 @@ class _ScreenTablesState extends State<ScreenTables> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
+      appBar: (globals.userType == 'manager') ? PreferredSize(
         preferredSize: const Size.fromHeight(250),
         child: Column(
           children: [
@@ -83,6 +83,10 @@ class _ScreenTablesState extends State<ScreenTables> {
             ),
           ],
         )
+      ) : appBarWidget(
+        pageName: 'Mesas',
+        context: context,
+        icon: Icons.table_restaurant,
       ),
       
       body: SingleChildScrollView(

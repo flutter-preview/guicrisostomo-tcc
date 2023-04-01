@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tcc/controller/firebase/auth.dart';
 import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/addressExistent.dart';
+import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigation.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/sectionVisible.dart';
@@ -57,11 +58,15 @@ class _ScreenEditDatasState extends State<ScreenEditDatas> {
   Widget build(BuildContext context) {
     // var user = ModalRoute.of(context)!.settings.arguments as dynamic;
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Editar dados'),
-        centerTitle: true,
-        backgroundColor: globals.primary,
-      ),
+      appBar: (globals.userType != 'employee') ? appBarWidget(
+        pageName: 'Editar dados',
+        context: context,
+        withoutIcons: true,
+      ) : appBarWidget(
+            pageName: 'Perfil', 
+            context: context, 
+            icon: Icons.person,
+          ),
 
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),

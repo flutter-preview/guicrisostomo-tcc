@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tcc/controller/firebase/auth.dart';
 import 'package:tcc/main.dart';
 import 'package:tcc/view/widget/bottonNavigation.dart';
 
@@ -108,11 +109,40 @@ class _ScreenMoreOptionState extends State<ScreenMoreOption> {
                 onTap: () => {
                   Navigator.push(
                     context,
-                    navigator('products'),
+                    navigator('profile/edit_datas', {}),
                   )
                 },
               ),
-            )
+            ),
+            
+            Card(
+              child: ListTile(
+                contentPadding: const EdgeInsets.all(10),
+                title: const Text('Sobre'),
+
+                trailing: const Icon(Icons.arrow_right, size: 20),
+
+                onTap: () => {
+                  Navigator.push(
+                    context,
+                    navigator('profile/about'),
+                  )
+                },
+              ),
+            ),
+
+            Card(
+              child: ListTile(
+                contentPadding: const EdgeInsets.all(10),
+                title: const Text('Sair'),
+
+                trailing: const Icon(Icons.arrow_right, size: 20),
+
+                onTap: () => {
+                  LoginController().logout(context)
+                },
+              ),
+            ),
           ]
         )
       ),

@@ -25,7 +25,7 @@ import 'package:tcc/view/pages/manager/screen_list_smartphone_employee.dart';
 import 'package:tcc/view/pages/manager/screen_more_option.dart';
 import 'package:tcc/view/pages/manager/screen_permissions.dart';
 import 'package:tcc/view/pages/manager/screen_register_employee.dart';
-import 'package:tcc/view/pages/manager/screen_tables.dart';
+import 'package:tcc/view/pages/screen_tables.dart';
 import 'package:tcc/view/pages/manager/screen_category.dart';
 import 'package:tcc/view/pages/screen_rating_employee.dart';
 import 'package:tcc/view/pages/screen_about.dart';

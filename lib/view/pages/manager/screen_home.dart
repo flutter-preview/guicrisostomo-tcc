@@ -214,12 +214,12 @@ class _ScreenHomeManagerState extends State<ScreenHomeManager> {
                         leading: Icon(Icons.attach_money, color: globals.primary, size: 30,),
                         title: Text('Lucro total do(e) ${selectedData.toLowerCase()}'),
                         subtitle: const Text('R\$ 0,00'),
-                        trailing: Icon(Icons.arrow_forward_ios, color: globals.primary),
                       ),
                     ),
                     
                     SectionVisible(
                       nameSection: 'Tipos de venda',
+                      isShowPart: true,
                       child: Column(
                         children: [
                           Card(
@@ -227,7 +227,6 @@ class _ScreenHomeManagerState extends State<ScreenHomeManager> {
                               leading: Icon(Icons.delivery_dining_outlined, color: globals.primary, size: 30,),
                               title: const Text('Lucro entrega'),
                               subtitle: const Text('R\$ 0,00'),
-                              trailing: Icon(Icons.arrow_forward_ios, color: globals.primary),
                             ),
                           ),
 
@@ -236,7 +235,6 @@ class _ScreenHomeManagerState extends State<ScreenHomeManager> {
                               leading: Icon(Icons.local_dining, color: globals.primary, size: 30,),
                               title: const Text('Lucro retirada'),
                               subtitle: const Text('R\$ 0,00'),
-                              trailing: Icon(Icons.arrow_forward_ios, color: globals.primary),
                             ),
                           ),
 
@@ -245,7 +243,6 @@ class _ScreenHomeManagerState extends State<ScreenHomeManager> {
                               leading: Icon(Icons.table_restaurant, color: globals.primary, size: 30,),
                               title: const Text('Lucro mesa'),
                               subtitle: const Text('R\$ 0,00'),
-                              trailing: Icon(Icons.arrow_forward_ios, color: globals.primary),
                             ),
                           ),
                         ],
@@ -256,6 +253,7 @@ class _ScreenHomeManagerState extends State<ScreenHomeManager> {
 
                     SectionVisible(
                       nameSection: 'Formas de pagamento',
+                      isShowPart: true,
                       child: Column(
                         children: [
                           Card(
@@ -263,7 +261,6 @@ class _ScreenHomeManagerState extends State<ScreenHomeManager> {
                               leading: Icon(Icons.credit_card, color: globals.primary, size: 30,),
                               title: const Text('Lucro cartão'),
                               subtitle: const Text('R\$ 0,00'),
-                              trailing: Icon(Icons.arrow_forward_ios, color: globals.primary),
                             ),
                           ),
 
@@ -272,7 +269,6 @@ class _ScreenHomeManagerState extends State<ScreenHomeManager> {
                               leading: Icon(Icons.money, color: globals.primary, size: 30,),
                               title: const Text('Lucro dinheiro'),
                               subtitle: const Text('R\$ 0,00'),
-                              trailing: Icon(Icons.arrow_forward_ios, color: globals.primary),
                             ),
                           ),
 
@@ -281,7 +277,6 @@ class _ScreenHomeManagerState extends State<ScreenHomeManager> {
                               leading: Icon(Icons.pix_outlined, color: globals.primary, size: 30,),
                               title: const Text('Lucro pix'),
                               subtitle: const Text('R\$ 0,00'),
-                              trailing: Icon(Icons.arrow_forward_ios, color: globals.primary),
                             ),
                           ),
                         ]

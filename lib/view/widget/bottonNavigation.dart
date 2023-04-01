@@ -122,18 +122,12 @@ class _BottomState extends State<Bottom> {
                   if (globals.isSaleInTable && globals.userType == 'customer') {
                     Navigator.of(context).pop();
                     Navigator.push(context, navigator('waiter'));
-                    break;
                   } else {
                     Navigator.of(context).pop();
-                    if (globals.userType == 'employee') {
-                      Navigator.push(context, navigator('table_employee'));
-                      break;
-                    } else {
-                      Navigator.push(context, navigator('table_manager'));
-                      break;
-                    }
+                    Navigator.push(context, navigator('table_manager'));
                   }
-        
+
+                  break;
                 case 4:
                   Navigator.of(context).pop();
                   
@@ -141,7 +135,7 @@ class _BottomState extends State<Bottom> {
                     Navigator.push(context, navigator('more'));
                     break;
                   } else if (globals.userType == 'employee') {
-                    Navigator.push(context, navigator('profile_employee'));
+                    Navigator.push(context, navigator('profile/edit_datas'));
                     break;
                   } else {
                     Navigator.push(context, navigator('profile'));
