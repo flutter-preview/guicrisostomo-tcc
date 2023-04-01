@@ -85,38 +85,6 @@ class _ScreenMoreOptionState extends State<ScreenMoreOption> {
             Card(
               child: ListTile(
                 contentPadding: const EdgeInsets.all(10),
-                title: const Text('Cliente'),
-
-                trailing: const Icon(Icons.arrow_right, size: 20),
-
-                onTap: () => {
-                  Navigator.push(
-                    context,
-                    navigator('customers'),
-                  )
-                },
-              ),
-            ),
-
-            Card(
-              child: ListTile(
-                contentPadding: const EdgeInsets.all(10),
-                title: const Text('Fornecedor'),
-
-                trailing: const Icon(Icons.arrow_right, size: 20),
-
-                onTap: () => {
-                  Navigator.push(
-                    context,
-                    navigator('suppliers'),
-                  )
-                },
-              ),
-            ),
-
-            Card(
-              child: ListTile(
-                contentPadding: const EdgeInsets.all(10),
                 title: const Text('Dados da empresa'),
 
                 trailing: const Icon(Icons.arrow_right, size: 20),
@@ -124,7 +92,7 @@ class _ScreenMoreOptionState extends State<ScreenMoreOption> {
                 onTap: () => {
                   Navigator.push(
                     context,
-                    navigator('products'),
+                    navigator('business'),
                   )
                 },
               ),
