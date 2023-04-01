@@ -9,11 +9,13 @@ import 'package:tcc/view/pages/customer/screen_fo_get_adress.dart';
 import 'package:tcc/view/pages/customer/screen_fo_main.dart';
 import 'package:tcc/view/pages/customer/screen_fo_payment.dart';
 import 'package:tcc/view/pages/employee/screen_home.dart';
+import 'package:tcc/view/pages/manager/screen_create_edit_promotions.dart';
 import 'package:tcc/view/pages/manager/screen_employee_time_work.dart';
 import 'package:tcc/view/pages/manager/screen_employees.dart';
 import 'package:tcc/view/pages/manager/screen_home.dart';
 import 'package:tcc/view/pages/manager/screen_info_category.dart';
 import 'package:tcc/view/pages/manager/screen_info_employee.dart';
+import 'package:tcc/view/pages/manager/screen_info_promotion.dart';
 import 'package:tcc/view/pages/manager/screen_info_size.dart';
 import 'package:tcc/view/pages/manager/screen_list_products.dart';
 import 'package:tcc/view/pages/manager/screen_list_promotions.dart';
@@ -168,6 +170,12 @@ Route navigator([String? name, Object? arguments]) {
     case 'promotions' :
       page = const ScreenListPromotions();
       break;
+    case 'promotion/info' :
+      page = ScreenInfoPromotion(id: arguments.toString());
+      break;
+    case 'promotion/create' :
+      page = ScreenCreateEditPromotion(id: arguments?.toString());
+      break;
     case 'size' :
       page = const ScreenListSize();
       break;
@@ -273,6 +281,8 @@ Future<void> main() async {
         'table_manager' :(context) => const ScreenTables(),
         'more' :(context) => const ScreenMoreOption(),
         'promotions' :(context) => const ScreenListPromotions(),
+        'promotion/info' :(context) => const ScreenInfoPromotion(id: '1'),
+        'promotion/create' :(context) => const ScreenCreateEditPromotion(),
         'size' :(context) => const ScreenListSize(),
         'size/info' :(context) => const ScreenInfoSize(id: '1'),
       },

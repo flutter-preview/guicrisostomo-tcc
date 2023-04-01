@@ -39,6 +39,9 @@ class _ScreenListPromotionsState extends State<ScreenListPromotions> {
                       leading: Icon(Icons.local_offer, color: globals.primary),
                       subtitle: Text('Descrição da promoção $index'),
                       trailing: Icon(Icons.arrow_forward_ios, color: globals.primary),
+                      onTap: () {
+                        Navigator.push(context, navigator('promotion/info', index));
+                      },
                     ),
                   );
                 },
