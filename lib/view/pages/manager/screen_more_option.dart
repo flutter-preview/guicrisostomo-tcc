@@ -70,22 +70,6 @@ class _ScreenMoreOptionState extends State<ScreenMoreOption> {
             Card(
               child: ListTile(
                 contentPadding: const EdgeInsets.all(10),
-                title: const Text('Promoção'),
-
-                trailing: const Icon(Icons.arrow_right, size: 20),
-
-                onTap: () => {
-                  Navigator.push(
-                    context,
-                    navigator('promotions'),
-                  )
-                },
-              ),
-            ),
-
-            Card(
-              child: ListTile(
-                contentPadding: const EdgeInsets.all(10),
                 title: const Text('Dados da empresa'),
 
                 trailing: const Icon(Icons.arrow_right, size: 20),
