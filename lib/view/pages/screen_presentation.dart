@@ -64,25 +64,9 @@ class ScreenPresentation extends StatelessWidget {
               children: [
                 Center(
                   child: button('Continuar sem logar', MediaQuery.of(context).size.width - 100, 50, Icons.arrow_forward, () {
-                    LoginController().signInAnonymously();
+                    LoginController().signInAnonymously(context);
                     Navigator.pop(context);
                     Navigator.push(context, navigator('home'));
-                  }, false),
-                ),
-
-                Center(
-                  child: button('Funcionário', MediaQuery.of(context).size.width - 100, 50, Icons.arrow_forward, () {
-                    LoginController().signInAnonymously();
-                    Navigator.pop(context);
-                    Navigator.push(context, navigator('home_employee'));
-                  }, false),
-                ),
-
-                Center(
-                  child: button('Gerente', MediaQuery.of(context).size.width - 100, 50, Icons.arrow_forward, () {
-                    LoginController().signInAnonymously();
-                    Navigator.pop(context);
-                    Navigator.push(context, navigator('home_manager'));
                   }, false),
                 ),
 
