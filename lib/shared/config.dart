@@ -12,5 +12,11 @@ class Config {
   static String get apiKeyAndroid => _get('APIKEYANDROID');
   static String get appIdAndroid => _get('APPIDANDROID');
 
+  static String get mysqlHost => _get('MYSQLHOST');
+  static String get mysqlUser => _get('MYSQLUSER');
+  static String get mysqlPassword => _get('MYSQLPASSWORD');
+  static String get mysqlDatabase => _get('MYSQLDB');
+  static String get mysqlPort => _get('MYSQLPORT');
+
   static String _get(String name) => dotenv.env[name] ?? '';
 }
