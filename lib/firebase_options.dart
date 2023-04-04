@@ -3,6 +3,7 @@
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
+import 'package:tcc/shared/config.dart';
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
@@ -49,20 +50,20 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCPK36fb0x37WVhTMfUk9R4tgz2PNFmDjs',
-    appId: '1:108810329631:web:660cd2fe74e4c97567ff2a',
-    messagingSenderId: '108810329631',
-    projectId: 'exam-f8642',
-    authDomain: 'exam-f8642.firebaseapp.com',
-    storageBucket: 'exam-f8642.appspot.com',
+  static FirebaseOptions web = FirebaseOptions(
+    apiKey: Config.apiKeyWeb,
+    appId: Config.appIdWeb,
+    messagingSenderId: Config.messagingSenderId,
+    projectId: Config.projectId,
+    authDomain: Config.authDomainWeb,
+    storageBucket: Config.storageBucket,
   );
 
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBjFhJkLVXM9fU6oX_pRtGjk6iptt30w7M',
-    appId: '1:108810329631:android:cccd61d1deb939dd67ff2a',
-    messagingSenderId: '108810329631',
-    projectId: 'exam-f8642',
-    storageBucket: 'exam-f8642.appspot.com',
+  static FirebaseOptions android = FirebaseOptions(
+    apiKey: Config.apiKeyAndroid,
+    appId: Config.appIdAndroid,
+    messagingSenderId: Config.messagingSenderId,
+    projectId: Config.projectId,
+    storageBucket: Config.storageBucket,
   );
 }
