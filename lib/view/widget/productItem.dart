@@ -37,12 +37,25 @@ class _ProductItemState extends State<ProductItem> {
                 String description = dados.description;
                 String category = dados.category;
                 String size = dados.size;
+                String? link_image = dados.link_image;
 
                 return Card(
                   color: Colors.white,
                   child: ListTile(
                     contentPadding: const EdgeInsets.fromLTRB(10, 10, 20, 10),
-                    leading: Icon(Icons.local_pizza, size: 50, color: globals.primary),
+                    leading: Container(
+                      width: 80,
+                      height: 80,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: NetworkImage(
+                            (link_image != null) ? link_image : 'https://lh5.googleusercontent.com/p/AF1QipOBoD7baOHV4zR4Do0NrU7Vsi75ZTRM4eq9UgmL=s443-k-no',
+                          ),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
                     
                     title: Text(
                       name,
