@@ -4,10 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mysql1/mysql1.dart';
 import 'package:tcc/controller/mysql/connect.dart';
+import 'package:tcc/main.dart';
 import 'package:tcc/shared/config.dart';
 import 'package:tcc/view/widget/snackBars.dart';
       
 class LoginController {
+  Future<String> getTypeUser() async {
+    final user = FirebaseAuth.instance.currentUser;
+    final MySqlConnection conn = await connectMySQL();
+    Results results = await conn.query('select tu.name from user u where uid = ? INNER JOIN type_user tu ON u.type = tu.id', [user?.uid]);
+    conn.close();
+    return results.first[0];
+  }
 
   Future<void> signInAnonymously(context) async {
     try {
@@ -31,10 +39,26 @@ class LoginController {
 
         success(context, 'Usuário criado com sucesso.');
         Navigator.pop(context);
-        Navigator.pushNamed(
-          context,
-          'home',
-        );
+        switch (await getTypeUser()) {
+          case 'Cliente':
+            Navigator.push(
+              context,
+              navigator('home'),
+            );
+            break;
+          case 'Gerente':
+            Navigator.push(
+              context,
+              navigator('home_manager'),
+            );
+            break;
+          default:
+            Navigator.push(
+              context,
+              navigator('home_employee'),
+            );
+            break;
+        }
     }).catchError((e) {
       switch (e.code) {
         case 'email-already-in-use':
@@ -52,13 +76,29 @@ class LoginController {
   void login(context, String email, String senha) {
     FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: senha)
-        .then((res) {
+        .then((res) async {
       success(context, 'Usuário autenticado com sucesso.');
       Navigator.of(context).pop();
-      Navigator.pushNamed(
-        context,
-        'home',
-      );
+      switch (await getTypeUser()) {
+        case 'Cliente':
+          Navigator.push(
+            context,
+            navigator('home'),
+          );
+          break;
+        case 'Gerente':
+          Navigator.push(
+            context,
+            navigator('home_manager'),
+          );
+          break;
+        default:
+          Navigator.push(
+            context,
+            navigator('home_employee'),
+          );
+          break;
+      }
     }).catchError((e) {
       switch (e.code) {
         case 'invalid-email':
@@ -144,10 +184,27 @@ class LoginController {
     conn.close();
 
     Navigator.of(context).pop();
-    Navigator.pushNamed(
-      context,
-      'home',
-    );
+
+    switch (await getTypeUser()) {
+      case 'Cliente':
+        Navigator.push(
+          context,
+          navigator('home'),
+        );
+        break;
+      case 'Gerente':
+        Navigator.push(
+          context,
+          navigator('home_manager'),
+        );
+        break;
+      default:
+        Navigator.push(
+          context,
+          navigator('home_employee'),
+        );
+        break;
+    }
 
     success(context, 'Usuário atualizado com sucesso.');
 
@@ -197,10 +254,26 @@ class LoginController {
           
 
       Navigator.of(context).pop();
-      Navigator.pushNamed(
-        context,
-        'home',
-      );
+      switch (await getTypeUser()) {
+        case 'Cliente':
+          Navigator.push(
+            context,
+            navigator('home'),
+          );
+          break;
+        case 'Gerente':
+          Navigator.push(
+            context,
+            navigator('home_manager'),
+          );
+          break;
+        default:
+          Navigator.push(
+            context,
+            navigator('home_employee'),
+          );
+          break;
+      }
       
       //value.additionalUserInfo?.profile!['email']
     }).catchError((onError) {
