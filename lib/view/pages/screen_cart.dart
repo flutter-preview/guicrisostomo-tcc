@@ -1,9 +1,8 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:tcc/controller/firebase/productsCart.dart';
-import 'package:tcc/controller/firebase/sales.dart';
+import 'package:tcc/controller/mysql/Lists/productsCart.dart';
+import 'package:tcc/controller/mysql/Lists/sales.dart';
 import 'package:tcc/main.dart';
 import 'package:tcc/view/widget/bottonNavigation.dart';
 import 'package:tcc/view/widget/button.dart';
@@ -68,7 +67,7 @@ class _ScreenCartState extends State<ScreenCart> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            ProductsCart(list),
+            ProductsCart(product: list),
 
             Container(
               alignment: Alignment.bottomCenter,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tcc/controller/firebase/productsCart.dart';
-import 'package:tcc/controller/firebase/sales.dart';
+import 'package:tcc/controller/mysql/Lists/productsCart.dart';
+import 'package:tcc/controller/mysql/Lists/sales.dart';
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigation.dart';
 import 'package:tcc/view/widget/button.dart';
@@ -116,7 +116,7 @@ class _ScreenCallWaiterState extends State<ScreenCallWaiter> {
 
             SectionVisible(
               nameSection: 'Itens pedidos',
-              child: ProductsCart(list),
+              child: ProductsCart(product: list,),
             ),
 
             const SizedBox(height: 20),
