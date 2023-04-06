@@ -2,15 +2,41 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tcc/controller/mysql/utils.dart';
+import 'package:tcc/model/ProductsCart.dart';
+import 'package:tcc/view/widget/listCart.dart';
 
 class ProductsCartController {
 
-  list(idSale) {
-    return connectMySQL().then((conn) async {
-      var results = await conn.query('SELECT * FROM items WHERE id_order = ?', [idSale]);
+  List<ProductsCartList> list(String? idSale) {
+    List<ProductsCartList> list = [];
+    num total = 0;
+    
+    connectMySQL().then((conn) async {
+      var querySelect = 'SELECT i.id, i.id_product, p.name, i.price, i.qtd, p.id_variation';
+      querySelect += ' FROM items';
+      querySelect += ' WHERE id_order = ?';
+      querySelect += ' INNER JOIN products p ON p.id = i.id_product';
+      var results = await conn.query(querySelect, [idSale]);
       await conn.close();
-      return results;
+      for (var row in results) {
+        list.add(
+          ProductsCartList(
+            id: row[0],
+            idProduct: row[1],
+            name: row[2],
+            price: row[3],
+            qtd: row[4],
+            idVariation: row[5],
+          )
+        );
+
+        total += row[3] * row[4];
+      }
+
+      ProductsCartList().setTotal(total);
     });
+
+    return list;
   }
 
   void add(String idSale, String idItem, String name, num price, int qtd, String category, String size) {
