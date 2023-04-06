@@ -1,10 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mysql1/mysql1.dart';
-import 'package:tcc/controller/mysql/connect.dart';
+import 'package:tcc/controller/mysql/utils.dart';
 import 'package:tcc/main.dart';
+import 'package:tcc/model/ProductsCart.dart';
 import 'package:tcc/shared/config.dart';
 import 'package:tcc/view/widget/snackBars.dart';
       
@@ -18,14 +18,18 @@ class LoginController {
   }
 
   Future<void> signInAnonymously(context) async {
-    try {
-      final userCredential =
-      await FirebaseAuth.instance.signInAnonymously();
-      success(context, 'Usuário autenticado com sucesso.');
-    } on FirebaseAuthException catch (e) {
-      error(context, 'Ocooreu um erro ao fazer login: ${e.code.toString()}');
-    }
+    (FirebaseAuth.instance.currentUser?.uid != null) ? {
+      await userLogin(),
+      success(context, 'Usuário autenticado com sucesso.')
+    } : {
+      await FirebaseAuth.instance.signInAnonymously().then((value) {
+        userLogin();
+      }).catchError((e) {
+        error(context, 'Ocorreu um erro ao fazer login: ${e.code.toString()}');
+      })
+    };
   }
+
   void createAccount(context, String name, String email, String phone, String password) {
     FirebaseAuth.instance
       .createUserWithEmailAndPassword(email: email, password: password)
@@ -78,7 +82,7 @@ class LoginController {
         .signInWithEmailAndPassword(email: email, password: senha)
         .then((res) async {
       success(context, 'Usuário autenticado com sucesso.');
-      Navigator.of(context).pop();
+      // Navigator.of(context).pop();
       switch (await getTypeUser()) {
         case 'Cliente':
           Navigator.push(
@@ -146,37 +150,17 @@ class LoginController {
   }
 
   Future<dynamic> userLogin() async {
-    var uid = FirebaseAuth.instance.currentUser!.uid;
-    dynamic res = '';
-    await FirebaseFirestore.instance
-        .collection('users')
-        .where('uid', isEqualTo: uid)
-        .get()
-        .then(
-      (q) {
-        if (q.docs.isNotEmpty) {
-          res = q.docs[0];
-          return res;
-        } else {
-          res = null;
-        }
-      },
-    ).catchError((e) {
-      res = null;
-    });
 
-    return res;
+    var uid = FirebaseAuth.instance.currentUser!.uid;
+
+    return connectMySQL().then((conn) async {
+      Results results = await conn.query('select * from user where uid = ?', [uid]);
+      conn.close();
+      return results.first;
+    });
   }
 
   Future<void> updateUser(id, name, email, phone, context) async {
-    FirebaseFirestore.instance.collection('users').doc(id).update(
-      {
-        "name": name,
-        "email": email,
-        "phone": phone,
-      },
-    );
-
     final MySqlConnection conn = await connectMySQL();
     await conn.query('update user set name=?, email=?, phone=? where uid=?',
     [name, email, phone, id]);
@@ -234,24 +218,16 @@ class LoginController {
     await signInGoogle(context).then((value) async {
       success(context, 'Usuário autenticado com sucesso');
 
-      FirebaseFirestore.instance.collection('users')
-          .add(
-            {
-              "uid" : value.user?.uid,
-              "name" : value.user?.displayName,
-              "email" : value.user?.email,
-              "phone" : null,
-              "photo" : value.user?.photoURL,
-            }
-          );
+      await connectMySQL().then((value1) {
+        value1.query('select * from user where email=?', [value.user?.email]).then((value2) {
+          if (value2.isEmpty) {
+            value1.query('insert into user (uid, name, email, phone, type, image) values (?, ?, ?, ?, ?, ?)',
+            [value.user?.uid, value.user?.displayName, value.user?.email, null, 1, value.user?.photoURL]);
+          }
+        });
 
-          final MySqlConnection conn = await connectMySQL();
-          await conn.query('insert into user (uid, name, email, phone, type, image) values (?, ?, ?, ?, ?, ?)',
-          [value.user?.uid, value.user?.displayName, value.user?.email, null, 1, value.user?.photoURL]);
-
-          conn.close();
-
-          
+        value1.close();
+      });
 
       Navigator.of(context).pop();
       switch (await getTypeUser()) {
