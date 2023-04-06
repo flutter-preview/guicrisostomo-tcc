@@ -1,7 +1,8 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
 
 import 'package:flutter/material.dart';
-import 'package:tcc/controller/firebase/products.dart';
+import 'package:tcc/controller/mysql/Lists/products.dart';
+import 'package:tcc/model/ProductItemList.dart';
 import 'package:tcc/model/standardSlideShow.dart';
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigation.dart';
@@ -27,14 +28,6 @@ class _ScreenProductsState extends State<ScreenProducts> {
   String categorySelected = 'Pizzas';
 
   var txtProd = TextEditingController();
-
-  var list;
-
-  @override
-  void initState() {
-    super.initState();
-    list = ProductsController().list();
-  }
   
   List<String> categories = [
     'Pizzas',
@@ -47,12 +40,25 @@ class _ScreenProductsState extends State<ScreenProducts> {
     'Outros',
   ];
 
-  
+  List<ProductItemList> list = [];
 
+
+  void getProduct() async {
+    await ProductsController().list().then((value) {
+      setState(() {
+        list = value;
+      });
+    });
+  }
   @override
   Widget build(BuildContext context) {
+
     dynamic categorySelect = widget.arguments != null ? widget.arguments as SlideShow : SlideShow(path: '', title: '', onTap: () {});
     categorySelected = widget.arguments != null ? categorySelect.title : categorySelected;
+    
+    if (list.isEmpty) {
+      getProduct();
+    }
     
     return Scaffold(
       appBar: appBarWidget(
@@ -120,7 +126,9 @@ class _ScreenProductsState extends State<ScreenProducts> {
             SectionVisible(
               nameSection: 'Tamanho',
               isShowPart: true,
-              child: ProductItem(list),
+              child: ProductItem(
+                product: list,
+              ),
             ),
           ],
         ),

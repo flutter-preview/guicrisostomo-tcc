@@ -1,7 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:tcc/controller/firebase/productsCart.dart';
-import 'package:tcc/controller/firebase/sales.dart';
+import 'package:tcc/controller/mysql/Lists/productsCart.dart';
+import 'package:tcc/controller/mysql/Lists/sales.dart';
+import 'package:tcc/model/ProductItemList.dart';
 import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/bottonNavigation.dart';
 import 'package:tcc/view/widget/button.dart';
@@ -37,15 +37,15 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
 
   @override
   Widget build(BuildContext context) {
-    dynamic productSelect = widget.arguments as QueryDocumentSnapshot;
+    ProductItemList productSelect = widget.arguments as ProductItemList;
 
-    String idProduct = productSelect.id;
-    String nameProduct = productSelect['name'];
-    num priceProduct = productSelect['price'];
-    String descriptionProduct = productSelect['description'];
-    String urlImageProduct = productSelect['urlImage'];
-    String categoryProduct = productSelect['category'];
-    String sizeProduct = productSelect['size'];
+    int idProduct = productSelect.id;
+    String nameProduct = productSelect.name;
+    num priceProduct = productSelect.price;
+    String descriptionProduct = productSelect.description;
+    String? urlImageProduct = productSelect.link_image;
+    String categoryProduct = productSelect.category;
+    String sizeProduct = productSelect.size;
 
     if (txtQtd.text == '1' || txtQtd.text == '') {
       setState(() {
@@ -71,13 +71,12 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
 
           flexibleSpace: Container(
             alignment: Alignment.centerLeft,
-            height: 180,
+            height: 220,
+            width: double.infinity,
             decoration: BoxDecoration(
               image: DecorationImage(
-                colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.7), BlendMode.darken),
-                image: NetworkImage(
-                  urlImageProduct,
-                ),
+                colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.5), BlendMode.darken),
+                image: NetworkImage(urlImageProduct ?? 'https://lh5.googleusercontent.com/p/AF1QipOBoD7baOHV4zR4Do0NrU7Vsi75ZTRM4eq9UgmL=s443-k-no'),
                 fit: BoxFit.cover,
               ),
             ),
@@ -244,10 +243,10 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                             String idSale;
                             await SalesController().idSale().then((res) async {
                               idSale = res;
-                              ProductsCartController().add(idSale, idProduct, nameProduct, priceProduct, int.parse(txtQtd.text), subTotal, categoryProduct, sizeProduct);
+                              ProductsCartController().add(idSale, idProduct.toString(), nameProduct, priceProduct, int.parse(txtQtd.text), categoryProduct, sizeProduct);
       
                               await SalesController().getTotal().then((res){
-                                SalesController().updateTotal(idSale, res + subTotal);
+                                // SalesController().updateTotal(idSale, res + subTotal);
                                 Navigator.pop(context);
                                 success(context, 'Produto adicionado com sucesso');
                               }).catchError((e){

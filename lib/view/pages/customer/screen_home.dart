@@ -1,10 +1,11 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:tcc/controller/firebase/productsCart.dart';
-import 'package:tcc/controller/firebase/sales.dart';
+import 'package:mysql1/mysql1.dart';
+import 'package:tcc/controller/mysql/Lists/productsCart.dart';
+import 'package:tcc/controller/mysql/Lists/sales.dart';
+import 'package:tcc/model/ProductsCart.dart';
 import 'package:tcc/model/standardSlideShow.dart';
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigation.dart';
@@ -25,8 +26,8 @@ class _ScreenHomeState extends State<ScreenHome> {
   final String iconOrder = 'lib/images/iconOrder.svg';
   final String iconMenu = 'lib/images/iconMenu.svg';
 
-  var list;
-  var listSale;
+  late List<ProductsCartList> list = [];
+  ProductsCartList? listSale;
   String? idSale;
 
   void getIdSale() async {
@@ -38,17 +39,19 @@ class _ScreenHomeState extends State<ScreenHome> {
     });
   }
 
-  @override
-  void initState() {
-    super.initState();
-    list = ProductsCartController().list(idSale);
-    listSale = SalesController().listSalesOnDemand();
+  void getSaleOnDemand() async {
+    await SalesController().listSalesOnDemand().then((value){
+      setState(() {
+        listSale = value;
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     if (idSale == null) {
       getIdSale();
+      getSaleOnDemand();
     }
 
     setState(() {
@@ -56,75 +59,139 @@ class _ScreenHomeState extends State<ScreenHome> {
     });
 
     Widget dataSales() {
-      return StreamBuilder<QuerySnapshot>(
-        stream: listSale.snapshots(),
-        builder: (context, snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.none:
-              return const Center(
-                child: Text('Não foi possível conectar.'),
-              );
-            case ConnectionState.waiting:
-              return const Center(child: CircularProgressIndicator());
-            default:
-              final dados = snapshot.requireData;
-              if (dados.size > 0) {
-                dynamic item = dados.docs[0].data();
-                Map<String, dynamic> map = item!;
-                DateTime date = (map['date'] as Timestamp).toDate();
-                String dateText = DateFormat("d 'de' MMMM 'de' y 'às' HH':'mm':'ss", "pt_BR").format(date);
-                num total = item['total'];
 
-                return Column(
-                  children: [
-                    Row(
-                      children: [
-                        Icon(Icons.timer_outlined, size: 20, color: globals.primary),
+      if (listSale == null) {
+        setState(() {
+          globals.isSaleNull = true;
+        });
 
-                        const SizedBox(width: 5,),
+        return const Center(
+          child: Padding(
+            padding: EdgeInsets.all(20),
+            child: Text(
+              'Nenhuma venda em andamento',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.black54
+              ),
+            ),
+          ),
+        );
+      } else {
+        setState(() {
+          globals.isSaleNull = false;
+        });
+      }
 
-                        Text(
-                          // ignore: unnecessary_string_escapes
-                          'Criado \às $dateText'
-                        )
-                      ],
-                    ),
-                    
-                    const SizedBox(height: 10,),
+      DateTime date = listSale!.date!;
+      String dateText = DateFormat("d 'de' MMMM 'de' y 'às' HH':'mm':'ss", "pt_BR").format(date);
+      num total = listSale!.getTotal();
 
-                    Row(
-                      children: [
-                        Icon(Icons.room_service_outlined, size: 20, color: globals.primary),
+      return Column(
+        children: [
+          Row(
+            children: [
+              Icon(Icons.timer_outlined, size: 20, color: globals.primary),
 
-                        const SizedBox(width: 5,),
+              const SizedBox(width: 5,),
 
-                        const Text(
-                          'Mesa criada pelo garçom José'
-                        )
-                      ],
-                    ),
+              Text(
+                // ignore: unnecessary_string_escapes
+                'Criado \às $dateText'
+              )
+            ],
+          ),
+          
+          const SizedBox(height: 10,),
 
-                    const SizedBox(height: 10,),
+          Row(
+            children: [
+              Icon(Icons.room_service_outlined, size: 20, color: globals.primary),
 
-                    Row(
-                      children: [
-                        Icon(Icons.attach_money, size: 20, color: globals.primary),
+              const SizedBox(width: 5,),
 
-                        const SizedBox(width: 5,),
+              const Text(
+                'Mesa criada pelo garçom José'
+              )
+            ],
+          ),
 
-                        Text(
-                          'TOTAL: R\$ ${total.toStringAsFixed(2).replaceAll('.', ',')}'
-                        )
-                      ],
-                    ),
-                  ],
-                );
-              } else {
-                return const Text('Nenhuma venda iniciada');
-              }
-          }
-        }
+          const SizedBox(height: 10,),
+
+          Row(
+            children: [
+              Icon(Icons.attach_money, size: 20, color: globals.primary),
+
+              const SizedBox(width: 5,),
+
+              Text(
+                'TOTAL: R\$ ${total.toStringAsFixed(2).replaceAll('.', ',')}',
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20
+                ),
+              )
+            ],
+          ),
+
+          const SizedBox(height: 10,),
+
+          Row(
+            children: [
+              Icon(Icons.payment_outlined, size: 20, color: globals.primary),
+
+              const SizedBox(width: 5,),
+
+              const Text(
+                'Pagamento: Cartão de crédito'
+              )
+            ],
+          ),
+
+          const SizedBox(height: 10,),
+
+          Row(
+            children: [
+              Icon(Icons.star_border_outlined, size: 20, color: globals.primary),
+
+              const SizedBox(width: 5,),
+
+              const Text(
+                'Avaliação: 5 estrelas'
+              )
+            ],
+          ),
+
+          const SizedBox(height: 10,),
+
+          Row(
+            children: [
+              Icon(Icons.comment_outlined, size: 20, color: globals.primary),
+
+              const SizedBox(width: 5,),
+
+              const Text(
+                'Comentário: Ótimo atendimento'
+              )
+            ],
+          ),
+
+          const SizedBox(height: 10,),
+
+          Row(
+            children: [
+              Icon(Icons.check_circle_outline, size: 20, color: globals.primary),
+
+              const SizedBox(width: 5,),
+
+              const Text(
+                'Status: Finalizado'
+              )
+            ],
+          ),
+        ],
       );
+
     }
 
     List<SlideShow> listSlideShow = [
@@ -141,6 +208,8 @@ class _ScreenHomeState extends State<ScreenHome> {
         },
       ),
     ];
+
+    
     
     return Scaffold(
       appBar: appBarWidget(
@@ -170,13 +239,13 @@ class _ScreenHomeState extends State<ScreenHome> {
                   SectionVisible(
                     nameSection: 'Favoritos',
                     isShowPart: false,
-                    child: ProductsCart(list),
+                    child: ProductsCart(product: list),
                   ),
 
                   SectionVisible(
                     nameSection: 'Mais pedidos',
                     isShowPart: false,
-                    child: ProductsCart(list),
+                    child: ProductsCart(product: list),
                   ),
 
                 ],
