@@ -1,14 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:tcc/controller/mysql/connect.dart';
+import 'package:tcc/controller/mysql/utils.dart';
 
 class ProductsController {
-  getIdVariation(String category, String size) async {
-    return await connectMySQL().then((conn) async {
-      var results = await conn.query('SELECT id FROM variations WHERE category = ? AND size = ?', [category, size]);
-      await conn.close();
-      return results;
-    });
-  }
 
   list() async {
     return await connectMySQL().then((conn) async {

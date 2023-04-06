@@ -10,3 +10,11 @@ Future<MySqlConnection> connectMySQL() async {
       password: Config.mysqlPassword,
     ));
 }
+
+getIdVariation(String category, String size) async {
+  return await connectMySQL().then((conn) async {
+    var results = await conn.query('SELECT id FROM variations WHERE category = ? AND size = ?', [category, size]);
+    await conn.close();
+    return results;
+  });
+}
