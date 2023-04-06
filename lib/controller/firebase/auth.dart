@@ -128,7 +128,7 @@ class LoginController {
     return res;
   }
 
-  void updateUser(id, name, email, phone, context) {
+  Future<void> updateUser(id, name, email, phone, context) async {
     FirebaseFirestore.instance.collection('users').doc(id).update(
       {
         "name": name,
@@ -137,11 +137,19 @@ class LoginController {
       },
     );
 
+    final MySqlConnection conn = await connectMySQL();
+    await conn.query('update user set name=?, email=?, phone=? where uid=?',
+    [name, email, phone, id]);
+
+    conn.close();
+
     Navigator.of(context).pop();
     Navigator.pushNamed(
       context,
       'home',
     );
+
+    success(context, 'Usuário atualizado com sucesso.');
 
   }
 
