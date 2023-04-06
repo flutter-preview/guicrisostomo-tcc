@@ -2,9 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:mysql1/mysql1.dart';
+import 'package:tcc/controller/mysql/connect.dart';
+import 'package:tcc/shared/config.dart';
 import 'package:tcc/view/widget/snackBars.dart';
-
+      
 class LoginController {
+
   Future<void> signInAnonymously(context) async {
     try {
       final userCredential =
@@ -16,26 +20,21 @@ class LoginController {
   }
   void createAccount(context, String name, String email, String phone, String password) {
     FirebaseAuth.instance
-        .createUserWithEmailAndPassword(email: email, password: password)
-        .then((res) {
+      .createUserWithEmailAndPassword(email: email, password: password)
+      .then((res) async {
 
-      FirebaseFirestore.instance.collection('users')
-        .add(
-          {
-            "uid" : res.user!.uid.toString(),
-            "name" : name,
-            "email" : email,
-            "phone" : phone,
-            "photo" : 'https://i.pinimg.com/originals/0c/3b/3a/0c3b3adb1a7530892e55ef36d3be6cb8.png',
-          }
+        final MySqlConnection conn = await connectMySQL();
+        await conn.query('insert into user (uid, name, email, phone, type) values (?, ?, ?, ?, ?)',
+        [res.user?.uid, name, email, phone.replaceAll(RegExp(r'[-() ]'), ''), 1]);
+
+        conn.close();
+
+        success(context, 'Usuário criado com sucesso.');
+        Navigator.pop(context);
+        Navigator.pushNamed(
+          context,
+          'home',
         );
-
-      success(context, 'Usuário criado com sucesso.');
-      Navigator.pop(context);
-      Navigator.pushNamed(
-        context,
-        'home',
-      );
     }).catchError((e) {
       switch (e.code) {
         case 'email-already-in-use':
@@ -144,5 +143,60 @@ class LoginController {
       'home',
     );
 
+  }
+
+  // Sign in with Google
+
+  Future<UserCredential> signInGoogle(context) async {
+  
+    // Trigger the authentication flow
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+
+    // Create a new credential
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+    
+    // Once signed in, return the UserCredential
+    return await FirebaseAuth.instance.signInWithCredential(credential);
+  }
+
+  Future<void> signIn(context) async {
+    await signInGoogle(context).then((value) async {
+      success(context, 'Usuário autenticado com sucesso');
+
+      FirebaseFirestore.instance.collection('users')
+          .add(
+            {
+              "uid" : value.user?.uid,
+              "name" : value.user?.displayName,
+              "email" : value.user?.email,
+              "phone" : null,
+              "photo" : value.user?.photoURL,
+            }
+          );
+
+          final MySqlConnection conn = await connectMySQL();
+          await conn.query('insert into user (uid, name, email, phone, type, image) values (?, ?, ?, ?, ?, ?)',
+          [value.user?.uid, value.user?.displayName, value.user?.email, null, 1, value.user?.photoURL]);
+
+          conn.close();
+
+          
+
+      Navigator.of(context).pop();
+      Navigator.pushNamed(
+        context,
+        'home',
+      );
+      
+      //value.additionalUserInfo?.profile!['email']
+    }).catchError((onError) {
+      error(context, "Ocorreu um erro ao entrar: $onError");
+    });
   }
 }
