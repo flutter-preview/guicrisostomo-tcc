@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -219,15 +220,12 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   
-
-  await LoginController().userLogin().then((dynamic value){
-    if (value == '' || value == null) {
+  (FirebaseAuth.instance).authStateChanges().listen((User? user) {
+    if (user == null) {
       route = 'presentation';
     } else {
       route = 'home';
     }
-  }).catchError((erro) {
-    route = 'presentation';
   });
   
   runApp(
