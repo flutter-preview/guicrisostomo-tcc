@@ -56,11 +56,11 @@ class _ScreenListProductsState extends State<ScreenListProducts> {
 
             const SizedBox(height: 20),
             
-            SectionVisible(
-              nameSection: 'Produtos',
-              isShowPart: true,
-              child: const ProductItem({}),
-            ),
+            // SectionVisible(
+            //   nameSection: 'Produtos',
+            //   isShowPart: true,
+            //   child: const ProductItem({}),
+            // ),
             
           ],
         ),
