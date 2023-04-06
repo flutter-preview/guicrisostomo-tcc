@@ -42,7 +42,7 @@ import 'package:tcc/view/pages/screen_info_product.dart';
 import 'package:tcc/view/pages/screen_info_table.dart';
 import 'package:tcc/view/pages/screen_login.dart';
 import 'package:tcc/view/pages/customer/screen_manager.dart';
-import 'package:tcc/view/pages/screen_notificaties.dart';
+// import 'package:tcc/view/pages/screen_notificaties.dart';
 import 'package:tcc/view/pages/screen_order.dart';
 import 'package:tcc/view/pages/screen_presentation.dart';
 import 'package:tcc/view/pages/screen_products.dart';
@@ -126,9 +126,9 @@ Route navigator([String? name, Object? arguments]) {
     case 'finalize_order_customer/payment' : 
       page = const ScreenFOPayment();
       break;
-    case 'notifications' :
-      page = const ScreenNotifications();
-      break;
+    // case 'notifications' :
+    //   page = const ScreenNotifications();
+    //   break;
     case 'terms' :
       page = const ScreenTerms();
       break;
@@ -272,7 +272,7 @@ Future<void> main() async {
         'finalize_order_customer' :(context) => const ScreenFOMain(),
         'finalize_order_customer/address' :(context) => const ScreenFOGetAddress(),
         'finalize_order_customer/payment' :(context) => const ScreenFOPayment(),
-        'notifications' :(context) => const ScreenNotifications(),
+        // 'notifications' :(context) => const ScreenNotifications(),
         'terms' :(context) => const ScreenTerms(),
         // manager routes
         'business' :(context) => const ScreenBusiness(),

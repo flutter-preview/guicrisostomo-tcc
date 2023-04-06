@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:tcc/controller/firebase/auth.dart';
 import 'package:tcc/globals.dart' as globals;
 import 'package:tcc/main.dart';
 
@@ -40,13 +41,13 @@ PreferredSizeWidget appBarWidget({
               SizedBox(width: 10),
 
               Icon(
-                Icons.notifications_active,
+                Icons.exit_to_app,
                 size: 30,
               ),
             ],
           ),
           onPressed: () { 
-            Navigator.push(context, navigator('notifications'));
+            LoginController().logout(context);
           },
         ),
       ),
