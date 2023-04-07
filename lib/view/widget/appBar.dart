@@ -28,24 +28,10 @@ PreferredSizeWidget appBarWidget({
             shadowColor: Colors.transparent,
           ),
           
-          child: Row(
-            children: const [
-              Text(
-                '1',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                ),
-              ),
-
-              SizedBox(width: 10),
-
-              Icon(
-                Icons.exit_to_app,
-                size: 30,
-              ),
-            ],
-          ),
+          child: const Icon(
+              Icons.exit_to_app,
+              size: 30,
+            ),
           onPressed: () { 
             LoginController().logout(context);
           },
