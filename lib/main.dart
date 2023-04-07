@@ -50,6 +50,7 @@ import 'package:tcc/view/pages/screen_profile.dart';
 import 'package:tcc/view/pages/screen_register.dart';
 import 'package:tcc/view/pages/screen_terms.dart';
 import 'package:tcc/view/pages/screen_verification_table.dart';
+import 'package:tcc/view/widget/snackBars.dart';
 
 Route navigator([String? name, Object? arguments]) {
   Widget page;
@@ -212,7 +213,7 @@ Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   WidgetsFlutterBinding.ensureInitialized();
-  var route = 'presentation';
+  String route;
 
   await dotenv.load(fileName: ".env");
   
@@ -220,13 +221,23 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   
-  (FirebaseAuth.instance).authStateChanges().listen((User? user) {
-    if (user == null) {
-      route = 'presentation';
-    } else {
-      route = 'home';
-    }
-  });
+  FirebaseAuth auth = FirebaseAuth.instance;
+  User? user = auth.currentUser;
+
+  print('Bem vindo ${user?.displayName}!');
+  if (user != null) {
+    route = await LoginController().getTypeUser().then((value) {
+      if (value == 'Cliente') {
+        return 'home';
+      } else if (value == 'Gerente') {
+        return 'home_manager';
+      } else {
+        return 'home_employee';
+      }
+    });
+  } else {
+    route = 'presentation';
+  }
   
   runApp(
     MaterialApp(

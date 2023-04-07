@@ -4,17 +4,22 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mysql1/mysql1.dart';
 import 'package:tcc/controller/mysql/utils.dart';
 import 'package:tcc/main.dart';
-import 'package:tcc/model/ProductsCart.dart';
-import 'package:tcc/shared/config.dart';
 import 'package:tcc/view/widget/snackBars.dart';
       
 class LoginController {
-  Future<String> getTypeUser() async {
+  Future<String?> getTypeUser() async {
     final user = FirebaseAuth.instance.currentUser;
     final MySqlConnection conn = await connectMySQL();
-    Results results = await conn.query('select tu.name from user u where uid = ? INNER JOIN type_user tu ON u.type = tu.id', [user?.uid]);
+    Results results = await conn.query('select tu.name from user u INNER JOIN type_user tu ON u.type = tu.id where uid = ?', [user?.uid]);
     conn.close();
-    return results.first[0];
+
+    if (results.isEmpty) {
+      return null;
+    }
+
+    for (var row in results) {
+      return row[0];
+    }
   }
 
   Future<void> signInAnonymously(context) async {
@@ -42,27 +47,7 @@ class LoginController {
         conn.close();
 
         success(context, 'Usuário criado com sucesso.');
-        Navigator.pop(context);
-        switch (await getTypeUser()) {
-          case 'Cliente':
-            Navigator.push(
-              context,
-              navigator('home'),
-            );
-            break;
-          case 'Gerente':
-            Navigator.push(
-              context,
-              navigator('home_manager'),
-            );
-            break;
-          default:
-            Navigator.push(
-              context,
-              navigator('home_employee'),
-            );
-            break;
-        }
+        redirectUser(context);
     }).catchError((e) {
       switch (e.code) {
         case 'email-already-in-use':
@@ -83,26 +68,8 @@ class LoginController {
         .then((res) async {
       success(context, 'Usuário autenticado com sucesso.');
       // Navigator.of(context).pop();
-      switch (await getTypeUser()) {
-        case 'Cliente':
-          Navigator.push(
-            context,
-            navigator('home'),
-          );
-          break;
-        case 'Gerente':
-          Navigator.push(
-            context,
-            navigator('home_manager'),
-          );
-          break;
-        default:
-          Navigator.push(
-            context,
-            navigator('home_employee'),
-          );
-          break;
-      }
+      redirectUser(context);
+
     }).catchError((e) {
       switch (e.code) {
         case 'invalid-email':
@@ -167,28 +134,7 @@ class LoginController {
 
     conn.close();
 
-    Navigator.of(context).pop();
-
-    switch (await getTypeUser()) {
-      case 'Cliente':
-        Navigator.push(
-          context,
-          navigator('home'),
-        );
-        break;
-      case 'Gerente':
-        Navigator.push(
-          context,
-          navigator('home_manager'),
-        );
-        break;
-      default:
-        Navigator.push(
-          context,
-          navigator('home_employee'),
-        );
-        break;
-    }
+    redirectUser(context);
 
     success(context, 'Usuário atualizado com sucesso.');
 
@@ -217,43 +163,59 @@ class LoginController {
   Future<void> signIn(context) async {
     await signInGoogle(context).then((value) async {
       success(context, 'Usuário autenticado com sucesso');
+      redirectUser(context, value);
+      //value.additionalUserInfo?.profile!['email']
+    }).catchError((onError) {
+      error(context, "Ocorreu um erro ao entrar: $onError");
+    });
+  }
 
-      await connectMySQL().then((value1) {
-        value1.query('select * from user where email=?', [value.user?.email]).then((value2) {
-          if (value2.isEmpty) {
-            value1.query('insert into user (uid, name, email, phone, type, image) values (?, ?, ?, ?, ?, ?)',
+  Future<void> redirectUser(context, [value]) async {
+    // Navigator.of(context).pop();
+      // var t = await getTypeUser() ?? 'Cliente';
+      // success(context, t);
+      // return;
+    await getTypeUser().then((String? typeUser) async {
+      success(context, typeUser.toString());
+
+      if (typeUser == null) {
+        await connectMySQL().then((insert) {
+          insert.query('insert into user (uid, name, email, phone, type, image) values (?, ?, ?, ?, ?, ?)',
             [value.user?.uid, value.user?.displayName, value.user?.email, null, 1, value.user?.photoURL]);
-          }
-        });
+        },);
 
-        value1.close();
-      });
+        Navigator.of(context).pop();
+        Navigator.push(
+          context,
+          navigator('home'),
+        );
 
-      Navigator.of(context).pop();
-      switch (await getTypeUser()) {
+        return;
+      }
+
+      switch (typeUser) {
         case 'Cliente':
+          Navigator.of(context).pop();
           Navigator.push(
             context,
             navigator('home'),
           );
           break;
         case 'Gerente':
+          Navigator.of(context).pop();
           Navigator.push(
             context,
             navigator('home_manager'),
           );
           break;
         default:
+          Navigator.of(context).pop();
           Navigator.push(
             context,
             navigator('home_employee'),
           );
           break;
       }
-      
-      //value.additionalUserInfo?.profile!['email']
-    }).catchError((onError) {
-      error(context, "Ocorreu um erro ao entrar: $onError");
     });
   }
 }
