@@ -126,7 +126,7 @@ class _SlideShowWidgetState extends State<SlideShowWidget> {
               decoration: BoxDecoration(
                 color: Colors.black,
                 image: DecorationImage(
-                  image: AssetImage(
+                  image: NetworkImage(
                     widget.listSlideShow[index].path,
                   ),
                   opacity: 0.5,

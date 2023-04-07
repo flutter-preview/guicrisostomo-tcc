@@ -27,6 +27,7 @@ class _ScreenHomeState extends State<ScreenHome> {
   final String iconMenu = 'lib/images/iconMenu.svg';
 
   late List<ProductsCartList> list = [];
+  List<SlideShow> listSlideShow = [];
   ProductsCartList? listSale;
   String? idSale;
 
@@ -49,13 +50,27 @@ class _ScreenHomeState extends State<ScreenHome> {
 
   @override
   Widget build(BuildContext context) {
+
+    void getSlideShow() async {
+      await SlideShow.list(globals.businessId).then((value){
+        setState(() {
+          listSlideShow = value;
+        });
+      });
+    }
+
     if (idSale == null) {
       getIdSale();
       getSaleOnDemand();
     }
 
+    if (listSlideShow.isEmpty) {
+      getSlideShow();
+    }
+    
     setState(() {
       globals.userType = 'customer';
+      globals.businessId = '1';
     });
 
     Widget dataSales() {
@@ -194,23 +209,6 @@ class _ScreenHomeState extends State<ScreenHome> {
 
     }
 
-    List<SlideShow> listSlideShow = [
-      SlideShow(
-        path: 'lib/images/imgPizza.jpg',
-        title: 'Pizzas',
-        onTap: () {
-        },
-      ),
-      SlideShow(
-        path: 'lib/images/imgFood.jpg',
-        title: 'Comidas',
-        onTap: () {
-        },
-      ),
-    ];
-
-    
-    
     return Scaffold(
       appBar: appBarWidget(
         pageName: 'Inicio',
@@ -259,3 +257,4 @@ class _ScreenHomeState extends State<ScreenHome> {
     );
   }
 }
+
