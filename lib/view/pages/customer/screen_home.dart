@@ -31,14 +31,14 @@ class _ScreenHomeState extends State<ScreenHome> {
   ProductsCartList? listSale;
   String? idSale;
 
-  void getIdSale() async {
-    await SalesController().idSale().then((value){
-      setState(() {
-        idSale = value;
-        list = ProductsCartController().list(idSale);
-      });
-    });
-  }
+  // void getIdSale() async {
+  //   await SalesController().idSale().then((value){
+  //     setState(() {
+  //       idSale = value;
+  //       list = ProductsCartController().list(idSale);
+  //     });
+  //   });
+  // }
 
   void getSaleOnDemand() async {
     await SalesController().listSalesOnDemand().then((value){
@@ -48,30 +48,30 @@ class _ScreenHomeState extends State<ScreenHome> {
     });
   }
 
+  void getSlideShow() async {
+    await SlideShow.list(globals.businessId).then((value){
+      setState(() {
+        listSlideShow = value;
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // getIdSale();
+    globals.userType = 'customer';
+    globals.businessId = '1';
+    getSaleOnDemand();
+    getSlideShow();
+  }
+
   @override
   Widget build(BuildContext context) {
-
-    void getSlideShow() async {
-      await SlideShow.list(globals.businessId).then((value){
-        setState(() {
-          listSlideShow = value;
-        });
-      });
-    }
-
-    if (idSale == null) {
-      getIdSale();
-      getSaleOnDemand();
-    }
-
+    
     if (listSlideShow.isEmpty) {
       getSlideShow();
     }
-    
-    setState(() {
-      globals.userType = 'customer';
-      globals.businessId = '1';
-    });
 
     Widget dataSales() {
 
