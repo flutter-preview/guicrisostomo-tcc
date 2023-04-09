@@ -1,24 +1,18 @@
-// ignore_for_file: prefer_typing_uninitialized_variables
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:tcc/controller/mysql/Lists/products.dart';
 import 'package:tcc/model/ProductItemList.dart';
-import 'package:tcc/model/standardSlideShow.dart';
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigation.dart';
 import 'package:tcc/view/widget/button.dart';
-import 'package:tcc/view/widget/listCart.dart';
 import 'package:tcc/view/widget/productItem.dart';
 import 'package:tcc/view/widget/sectionVisible.dart';
-import 'package:tcc/view/widget/snackBars.dart';
 import 'package:tcc/view/widget/textFieldGeneral.dart';
 import 'package:tcc/globals.dart' as globals;
 
 class ScreenProducts extends StatefulWidget {
-  Object? arguments;
+  final Object? arguments;
 
-  ScreenProducts({
+  const ScreenProducts({
     super.key,
     this.arguments,
   });
@@ -37,9 +31,12 @@ class _ScreenProductsState extends State<ScreenProducts> {
   List<String> sizes = [];
 
   Future<List<ProductItemList>> getProduct(category, size) async {
-    return await ProductsController().list(category, size, txtProd.text).then((value) {
-      return value;
+    List<ProductItemList> list = [];
+    await ProductsController().list(category, size, txtProd.text).then((value) {
+      list = value;
     });
+
+    return list;
   } 
 
   void getCategories() async {
@@ -78,19 +75,20 @@ class _ScreenProductsState extends State<ScreenProducts> {
 
         if (list.isEmpty) {
           if (sizes.length == 1) {
-            getProduct(categorySelected, sizes[0]);
-
-            listWidget.add(
-              SectionVisible(
-                nameSection: 'Produtos',
-                isShowPart: true,
-                child: SizedBox(
-                  height: 200,
-                  width: double.infinity,
-                  child: ProductItem(product: list,),
+            await getProduct(categorySelected, sizes[0]).then((value) {
+              listWidget.add(
+                SectionVisible(
+                  nameSection: 'Produtos',
+                  isShowPart: true,
+                  child: SizedBox(
+                    height: 200,
+                    width: double.infinity,
+                    child: ProductItem(product: list,),
+                  ),
                 ),
-              ),
-            );
+              );
+            });
+
           } else {
             for (int i = 0; i < sizes.length; i++) {
               await getProduct(categorySelected, sizes[i]).then((value) {
