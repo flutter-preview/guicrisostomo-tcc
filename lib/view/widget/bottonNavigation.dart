@@ -2,8 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:tcc/main.dart';
-import 'package:tcc/utils.dart';
-import 'package:tcc/view/pages/screen_order.dart';
 import 'package:tcc/view/widget/cartInfo.dart';
 import '../../globals.dart' as globals;
 
@@ -118,14 +116,23 @@ class _BottomState extends State<Bottom> {
                   }
 
                 case 3:
+                  globals.userType == 'customer' ?
+                    globals.isSaleInTable ? {
+                      Navigator.of(context).pop(),
+                      Navigator.push(context, navigator('table_info'))
+                    } : {
+                    Navigator.of(context).pop(),
+                    Navigator.push(context, navigator('table'))
+                  } : {
                   
-                  if (globals.isSaleInTable && globals.userType == 'customer') {
-                    Navigator.of(context).pop();
-                    Navigator.push(context, navigator('waiter'));
-                  } else {
-                    Navigator.of(context).pop();
-                    Navigator.push(context, navigator('table_manager'));
-                  }
+                    if (globals.isSaleInTable) {
+                      Navigator.of(context).pop(),
+                      Navigator.push(context, navigator('waiter'))
+                    } else {
+                      Navigator.of(context).pop(),
+                      Navigator.push(context, navigator('table_manager'))
+                    }
+                  };
 
                   break;
                 case 4:
