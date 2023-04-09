@@ -45,8 +45,6 @@ class ProductsController {
       var results = await conn.query(querySelect, [category]);
       await conn.close();
 
-      print(results);
-
       if (results.isEmpty) {
         listSizes.add('Unico');
       }
