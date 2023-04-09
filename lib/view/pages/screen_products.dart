@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:tcc/controller/mysql/Lists/products.dart';
 import 'package:tcc/model/ProductItemList.dart';
@@ -7,8 +8,10 @@ import 'package:tcc/model/standardSlideShow.dart';
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigation.dart';
 import 'package:tcc/view/widget/button.dart';
+import 'package:tcc/view/widget/listCart.dart';
 import 'package:tcc/view/widget/productItem.dart';
 import 'package:tcc/view/widget/sectionVisible.dart';
+import 'package:tcc/view/widget/snackBars.dart';
 import 'package:tcc/view/widget/textFieldGeneral.dart';
 import 'package:tcc/globals.dart' as globals;
 
@@ -25,41 +28,118 @@ class ScreenProducts extends StatefulWidget {
 }
 
 class _ScreenProductsState extends State<ScreenProducts> {
+  
   String categorySelected = 'Pizzas';
 
   var txtProd = TextEditingController();
   
-  List<String> categories = [
-    'Pizzas',
-    'Comidas',
-    'Bebidas',
-    'Lanches',
-    'Salgados',
-    'Doces',
-    'Sobremesas',
-    'Outros',
-  ];
+  List<String> categories = [];
+  List<String> sizes = [];
 
-  List<ProductItemList> list = [];
+  Future<List<ProductItemList>> getProduct(category, size) async {
+    return await ProductsController().list(category, size, txtProd.text).then((value) {
+      return value;
+    });
+  } 
 
-
-  void getProduct() async {
-    await ProductsController().list().then((value) {
+  void getCategories() async {
+    await ProductsController().listCategories().then((value) {
       setState(() {
-        list = value;
+        categories = value;
+      });
+    });
+    
+  }
+
+  void getSize() async {
+    await ProductsController().listSizes(categorySelected).then((value) {
+      setState(() {
+        sizes = value;
       });
     });
   }
+
   @override
   Widget build(BuildContext context) {
-
-    dynamic categorySelect = widget.arguments != null ? widget.arguments as SlideShow : SlideShow(path: '', title: '', onTap: () {});
-    categorySelected = widget.arguments != null ? categorySelect.title : categorySelected;
     
-    if (list.isEmpty) {
-      getProduct();
+    if (categories.isEmpty) {
+      getCategories();
     }
-    
+
+    Future<Widget> listProduct() async {
+      List<Widget> listWidget = [];
+      List<ProductItemList> list = [];
+      list.clear();
+
+      try {
+        if (sizes.isEmpty) {
+          getSize();
+        }
+
+        if (list.isEmpty) {
+          if (sizes.length == 1) {
+            getProduct(categorySelected, sizes[0]);
+
+            listWidget.add(
+              SectionVisible(
+                nameSection: 'Produtos',
+                isShowPart: true,
+                child: SizedBox(
+                  height: 200,
+                  width: double.infinity,
+                  child: ProductItem(product: list,),
+                ),
+              ),
+            );
+          } else {
+            for (int i = 0; i < sizes.length; i++) {
+              await getProduct(categorySelected, sizes[i]).then((value) {
+                listWidget.add(
+                  SectionVisible(
+                    nameSection: sizes[i],
+                    isShowPart: true,
+                    child: SizedBox(
+                      height: 100,
+                      width: double.infinity,
+                      child: ProductItem(product: value,),
+                    ),
+                  ),
+                );
+              });
+            }
+          }
+        }
+
+        if (listWidget.isNotEmpty) {
+          return Column(
+            children: listWidget,
+          );
+        } else {
+          return const SizedBox(
+            height: 50,
+            child: Text(
+              'Produto não encontrado',
+              style: TextStyle(
+                fontSize: 20,
+                color: Colors.black45,
+              ),
+            ),
+          );
+        }
+      } catch (e) {
+        return const SizedBox(
+          height: 50,
+          child: Text(
+            'Produto não encontrado',
+            style: TextStyle(
+              fontSize: 20,
+              color: Colors.black45,
+            ),
+          ),
+        );
+      }
+    }
+
     return Scaffold(
       appBar: appBarWidget(
         pageName: 'Produtos',
@@ -78,7 +158,6 @@ class _ScreenProductsState extends State<ScreenProducts> {
               keyboardType: TextInputType.text,
               onChanged: (value) {
                 setState(() {
-                  list = ProductsController().listSearch(value);
                 });
               },
 
@@ -123,12 +202,20 @@ class _ScreenProductsState extends State<ScreenProducts> {
 
             const SizedBox(height: 20),
 
-            SectionVisible(
-              nameSection: 'Tamanho',
-              isShowPart: true,
-              child: ProductItem(
-                product: list,
-              ),
+            FutureBuilder(
+              future: listProduct(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return snapshot.data as Widget;
+                } else {
+                  return const SizedBox(
+                    height: 200,
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                }
+              },
             ),
           ],
         ),
