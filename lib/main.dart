@@ -4,8 +4,10 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tcc/controller/firebase/auth.dart';
 import 'package:tcc/firebase_options.dart';
+import 'package:tcc/shared/config.dart';
 import 'package:tcc/view/pages/customer/screen_call_waiter.dart';
 import 'package:tcc/view/pages/customer/screen_fo_get_adress.dart';
 import 'package:tcc/view/pages/customer/screen_fo_main.dart';
@@ -220,24 +222,28 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  await Supabase.initialize(
+    url: Config.supabaseUrl,
+    anonKey: Config.supabaseKey,
+  );
   
   FirebaseAuth auth = FirebaseAuth.instance;
-  User? user = auth.currentUser;
-
-  print('Bem vindo ${user?.displayName}!');
-  if (user != null) {
-    route = await LoginController().getTypeUser().then((value) {
-      if (value == 'Cliente') {
-        return 'home';
-      } else if (value == 'Gerente') {
-        return 'home_manager';
-      } else {
-        return 'home_employee';
-      }
-    });
-  } else {
+  var user = auth.currentUser;
+  
+  // if (user != null) {
+  //   route = await LoginController().getTypeUser().then((value) {
+  //     if (value == 'Cliente') {
+  //       return 'home';
+  //     } else if (value == 'Gerente') {
+  //       return 'home_manager';
+  //     } else {
+  //       return 'home_employee';
+  //     }
+  //   });
+  // } else {
     route = 'presentation';
-  }
+  // }
   
   runApp(
     MaterialApp(
@@ -271,7 +277,7 @@ Future<void> main() async {
         'table/info' :(context) => const ScreenInfoTable(),
         'waiter' :(context) => const ScreenCallWaiter(),
         'cart' :(context) => const ScreenCart(),
-        'products' :(context) => ScreenProducts(),
+        'products' :(context) => const ScreenProducts(),
         'products/info_product' :(context) => const ScreenInfoProduct(),
         'products/add_product' :(context) => ScreenAddItem(),
         'list_products' :(context) => const ScreenListProducts(),
