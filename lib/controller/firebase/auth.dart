@@ -2,26 +2,27 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mysql1/mysql1.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' hide User;
 import 'package:tcc/controller/mysql/utils.dart';
 import 'package:tcc/main.dart';
 import 'package:tcc/view/widget/snackBars.dart';
       
 class LoginController {
   Future<String?> getTypeUser() async {
-    final user = FirebaseAuth.instance.currentUser;
+    User? user = FirebaseAuth.instance.currentUser;
     return await connectSupadatabase().then((value) async {
-      final results = await value.from(
+      PostgrestTransformBuilder<dynamic> results = await value.from(
         'type_user'
       ).select(
-        'name'
+        'name, tb_user!inner(*)'
       ).eq(
-        'tb_user.uid', user?.uid, {inner: true}
+        'tb_user.uid', user?.uid
       ).single();
 
-      if (results.isEmpty) {
-        return null;
-      }
+      // final results = await conn.query('select tu.name from user u INNER JOIN type_user tu ON u.type = tu.id where uid = ?', [user?.uid]);
+      // conn.close();
+
+      
 
       print(results['name']);
 

@@ -4,7 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' hide User;
 import 'package:tcc/controller/firebase/auth.dart';
 import 'package:tcc/firebase_options.dart';
 import 'package:tcc/shared/config.dart';
@@ -229,7 +229,7 @@ Future<void> main() async {
   );
   
   FirebaseAuth auth = FirebaseAuth.instance;
-  var user = auth.currentUser;
+  User? user = auth.currentUser;
   
   // if (user != null) {
   //   route = await LoginController().getTypeUser().then((value) {
