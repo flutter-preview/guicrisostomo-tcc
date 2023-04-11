@@ -63,6 +63,8 @@ class _ScreenProductsState extends State<ScreenProducts> {
       getCategories();
     }
 
+    print(DateTime.now().toUtc());
+
     Future<Widget> listProduct() async {
       List<Widget> listWidget = [];
       List<ProductItemList> list = [];

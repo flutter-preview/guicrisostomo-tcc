@@ -18,5 +18,8 @@ class Config {
   static String get mysqlDatabase => _get('MYSQLDB');
   static String get mysqlPort => _get('MYSQLPORT');
 
+  static String get supabaseUrl => _get('SUPABASEURL');
+  static String get supabaseKey => _get('SUPABASEKEY');
+
   static String _get(String name) => dotenv.env[name] ?? '';
 }

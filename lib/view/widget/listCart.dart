@@ -155,7 +155,7 @@ class _ProductsCartState extends State<ProductsCart> {
                                           ),
                                           onPressed: () async {
                                             if (txtQtd.text.isNotEmpty) {
-                                              String? idSale;
+                                              int idSale = 0;
 
                                               await SalesController().idSale().then((res) async {
                                                 idSale = res;

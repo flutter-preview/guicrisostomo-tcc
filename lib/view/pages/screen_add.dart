@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:tcc/controller/mysql/Lists/businessInfo.dart';
 import 'package:tcc/controller/mysql/Lists/productsCart.dart';
 import 'package:tcc/controller/mysql/Lists/sales.dart';
+import 'package:tcc/main.dart';
 import 'package:tcc/model/ProductItemList.dart';
 import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/bottonNavigation.dart';
@@ -46,12 +48,43 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
     String? urlImageProduct = productSelect.link_image;
     String categoryProduct = productSelect.category;
     String sizeProduct = productSelect.size;
+    int idVariation = productSelect.id_variation;
+    int idCurrentItem = 0;
 
-    if (txtQtd.text == '1' || txtQtd.text == '') {
-      setState(() {
-        subTotal = priceProduct * 1;
+    Future<void> calcSubtotal() async {
+      await BusinessInformationController().getInfoCalcValue().then((result) async {
+        await SalesController().idSale().then((idOrder) async {
+          await ProductsCartController().listItemCurrent(idOrder, idVariation).then((res) {
+            res.isEmpty ? setState(() {
+              subTotal = priceProduct;
+            }) : null;
+
+            bool value = result ?? false;
+
+            for (var element in res) {
+              value ?
+                element.price! > subTotal ?
+                  setState(() {
+                    subTotal = element.price!;
+                  })
+                : null
+                
+              : setState(() {
+                subTotal += element.price!;
+              });
+            }
+
+            if (!value) {
+              setState(() {
+                subTotal /= res.length;
+              });
+            }
+          });
+        });
       });
     }
+
+    calcSubtotal();
 
     return Scaffold(
       appBar: PreferredSize(
@@ -148,26 +181,6 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                 ),
 
                 const SizedBox(height: 20),
-            
-                /*Padding(
-                  padding: const EdgeInsets.only(bottom: 80),
-                  child: Row(
-                    children: [
-                      Container(
-                        alignment: Alignment.bottomLeft,
-                        height: 60,
-                        width: MediaQuery.of(context).size.width,
-                        child: textFieldNumberGeneral('Quantidade', txtQtd, context),
-                      ),
-                      Container(
-                        alignment: Alignment.bottomRight,
-                        width: MediaQuery.of(context).size.width,
-                        height: 60,
-                        child: button('Salvar', context, 'home'),
-                      ),
-                    ]
-                  ),
-                )*/
 
                 Container(
                   decoration: BoxDecoration(
@@ -183,32 +196,52 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                   child: Padding(
                     padding: const EdgeInsets.all(10),
 
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.add,
-                          color: globals.primary,
-                          size: 30,
-                        ),
-                  
-                        const SizedBox(width: 10),
-                  
-                        Flexible(
-                          child: Padding(
-                            padding: const EdgeInsets.only(bottom: 10),
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        Navigator.pop(context);
+                        Navigator.push(context, navigator('products'));
+                        selectItem(context, 'Selecione o outro item');
+                        await SalesController().idSale().then((res) async {
+                          await ProductsCartController().add(res, idProduct, nameProduct, int.parse(txtQtd.text), idVariation);
+                        });
+                      },
 
-                            child: Container(
-                              alignment: Alignment.center,
-                              child: const Text(
-                                'Agregar outro item ao produto',
-                                style: TextStyle(
-                                  fontSize: 20,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.transparent,
+                        foregroundColor: Colors.black,
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.add,
+                            color: globals.primary,
+                            size: 30,
+                          ),
+                                      
+                          const SizedBox(width: 10),
+                                      
+                          Flexible(
+                            child: Padding(
+                              padding: const EdgeInsets.only(bottom: 10),
+                          
+                              child: Container(
+                                alignment: Alignment.center,
+                                child: const Text(
+                                  'Agregar outro item ao produto',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   )
                 ),
@@ -232,6 +265,10 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                           validator: (value) {
                             validatorNumber(value!);
                           },
+                          onChanged: (value) {
+                            calcSubtotal();
+                            subTotal *= int.parse(value);
+                          },
                         ),
                       ),
       
@@ -240,10 +277,10 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                         height: 60,
                         child: button('Adicionar R\$ ${subTotal.toStringAsFixed(2).replaceFirst('.', ',')}', 100, 50, Icons.add_shopping_cart, () async {
                           if (formKey.currentState!.validate()) {
-                            String idSale;
+                            int idSale;
                             await SalesController().idSale().then((res) async {
                               idSale = res;
-                              ProductsCartController().add(idSale, idProduct.toString(), nameProduct, priceProduct, int.parse(txtQtd.text), categoryProduct, sizeProduct);
+                              await ProductsCartController().add(idSale, idProduct, nameProduct, int.parse(txtQtd.text), idVariation, 0);
       
                               await SalesController().getTotal().then((res){
                                 // SalesController().updateTotal(idSale, res + subTotal);

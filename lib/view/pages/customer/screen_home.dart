@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:mysql1/mysql1.dart';
 import 'package:tcc/controller/mysql/Lists/productsCart.dart';
 import 'package:tcc/controller/mysql/Lists/sales.dart';
+import 'package:tcc/controller/mysql/utils.dart';
 import 'package:tcc/model/ProductsCart.dart';
 import 'package:tcc/model/standardSlideShow.dart';
 import 'package:tcc/view/widget/appBar.dart';
@@ -48,12 +49,28 @@ class _ScreenHomeState extends State<ScreenHome> {
     });
   }
 
-  void getSlideShow() async {
-    await SlideShow.list(globals.businessId).then((value){
-      setState(() {
-        listSlideShow = value;
-      });
+  static Future<List<SlideShow>> getSlideShow() async {
+    List<SlideShow> list = [];
+    
+    await connectSupadatabase().then((conn) async {
+
+      var results = await conn.from('get_slideshow').select('''
+        category, 
+        url_image
+      ''').eq('business', globals.businessId);
+      // var results = await conn.query(querySelect, [business]);
+      // await conn.close();
+      for (var row in results) {
+        list.add(
+          SlideShow(
+            title: row[0],
+            path: row[1],
+          )
+        );
+      }
     });
+
+    return list;
   }
 
   @override
@@ -62,23 +79,20 @@ class _ScreenHomeState extends State<ScreenHome> {
     // getIdSale();
     globals.userType = 'customer';
     globals.businessId = '1';
-    getSaleOnDemand();
-    getSlideShow();
+    // getSaleOnDemand();
+    // getSlideShow();
   }
 
   @override
   Widget build(BuildContext context) {
     
     if (listSlideShow.isEmpty) {
-      getSlideShow();
+      // getSlideShow();
     }
 
     Widget dataSales() {
 
       if (listSale == null) {
-        setState(() {
-          globals.isSaleNull = true;
-        });
 
         return const Center(
           child: Padding(
@@ -92,10 +106,6 @@ class _ScreenHomeState extends State<ScreenHome> {
             ),
           ),
         );
-      } else {
-        setState(() {
-          globals.isSaleNull = false;
-        });
       }
 
       DateTime date = listSale!.date!;
@@ -227,24 +237,24 @@ class _ScreenHomeState extends State<ScreenHome> {
               padding: const EdgeInsets.all(20),
               child: Column(
                 children: [
-                  SectionVisible(
-                    nameSection: 'Informações do seu pedido atual',
-                    isShowPart: true,
-                    child: dataSales(),
-                  ),
+                  // SectionVisible(
+                  //   nameSection: 'Informações do seu pedido atual',
+                  //   isShowPart: true,
+                  //   child: dataSales(),
+                  // ),
                   
                   
-                  SectionVisible(
-                    nameSection: 'Favoritos',
-                    isShowPart: false,
-                    child: ProductsCart(product: list),
-                  ),
+                  // SectionVisible(
+                  //   nameSection: 'Favoritos',
+                  //   isShowPart: false,
+                  //   child: ProductsCart(product: list),
+                  // ),
 
-                  SectionVisible(
-                    nameSection: 'Mais pedidos',
-                    isShowPart: false,
-                    child: ProductsCart(product: list),
-                  ),
+                  // SectionVisible(
+                  //   nameSection: 'Mais pedidos',
+                  //   isShowPart: false,
+                  //   child: ProductsCart(product: list),
+                  // ),
 
                 ],
               ),

@@ -1,11 +1,14 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:tcc/controller/mysql/Lists/sales.dart';
 import 'package:tcc/globals.dart' as globals;
 import 'package:tcc/main.dart';
 
-Widget cartInfo(context) {
-  return !globals.isUserTyping && globals.userType != 'manager' && !globals.isSaleNull ? Container(
+Future<Widget> cartInfo(context) async {
+  num total = 0;
+  total = await SalesController().getTotal();
+  return !globals.isUserTyping && globals.userType != 'manager' && total != 0 ? Container(
     margin: const EdgeInsets.fromLTRB(0, 0, 10, 10),
     padding: const EdgeInsets.only(top: 10),
     child: Row(
@@ -69,9 +72,9 @@ Widget cartInfo(context) {
                 const SizedBox(width: 5),
         
                 Row(
-                  children: const [
+                  children: [
                     Text(
-                      'R\$ 10,00',
+                      'R\$ ${total.toStringAsFixed(2)}',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 14,

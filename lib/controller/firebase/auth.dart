@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mysql1/mysql1.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tcc/controller/mysql/utils.dart';
 import 'package:tcc/main.dart';
 import 'package:tcc/view/widget/snackBars.dart';
@@ -9,17 +10,27 @@ import 'package:tcc/view/widget/snackBars.dart';
 class LoginController {
   Future<String?> getTypeUser() async {
     final user = FirebaseAuth.instance.currentUser;
-    final MySqlConnection conn = await connectMySQL();
-    Results results = await conn.query('select tu.name from user u INNER JOIN type_user tu ON u.type = tu.id where uid = ?', [user?.uid]);
-    conn.close();
+    return await connectSupadatabase().then((value) async {
+      final results = await value.from(
+        'type_user'
+      ).select(
+        'name'
+      ).eq(
+        'tb_user.uid', user?.uid, {inner: true}
+      ).single();
 
-    if (results.isEmpty) {
-      return null;
-    }
+      if (results.isEmpty) {
+        return null;
+      }
 
-    for (var row in results) {
-      return row[0];
-    }
+      print(results['name']);
+
+      return results['name'];
+    });
+
+    
+    // final results = await conn.query('select tu.name from user u INNER JOIN type_user tu ON u.type = tu.id where uid = ?', [user?.uid]);
+    // conn.close();
   }
 
   Future<void> signInAnonymously(context) async {
@@ -39,15 +50,26 @@ class LoginController {
     FirebaseAuth.instance
       .createUserWithEmailAndPassword(email: email, password: password)
       .then((res) async {
+        
+        await connectSupadatabase().then((conn) async {
+          await conn.from('tb_user').insert({
+            'uid': res.user?.uid,
+            'name': name,
+            'email': email,
+            'phone': phone.replaceAll(RegExp(r'[-() ]'), ''),
+            'type': 1,
+          });
 
-        final MySqlConnection conn = await connectMySQL();
-        await conn.query('insert into user (uid, name, email, phone, type) values (?, ?, ?, ?, ?)',
-        [res.user?.uid, name, email, phone.replaceAll(RegExp(r'[-() ]'), ''), 1]);
+          success(context, 'Usuário criado com sucesso.');
+          redirectUser(context);
+        });
+        // final MySqlConnection conn = await connectMySQL();
+        // await conn.query('insert into user (uid, name, email, phone, type) values (?, ?, ?, ?, ?)',
+        // [res.user?.uid, name, email, phone.replaceAll(RegExp(r'[-() ]'), ''), 1]);
 
-        conn.close();
+        // conn.close();
 
-        success(context, 'Usuário criado com sucesso.');
-        redirectUser(context);
+        
     }).catchError((e) {
       switch (e.code) {
         case 'email-already-in-use':
@@ -120,31 +142,56 @@ class LoginController {
 
     var uid = FirebaseAuth.instance.currentUser!.uid;
 
-    return connectMySQL().then((conn) async {
-      Results results = await conn.query('select * from user where uid = ?', [uid]);
-      conn.close();
-      return results.first;
+    return connectSupadatabase().then((conn) async {
+      return await conn.from('tb_user').select(
+        '*'
+      ).eq(
+        'uid', uid
+      ).single().then((value) {
+        return value;
+      }).then((value) {
+
+      });
+      // Results results = await conn.query('select * from user where uid = ?', [uid]);
+      // conn.close();
     });
   }
 
   Future<void> updateUser(id, name, email, phone, context) async {
-    final MySqlConnection conn = await connectMySQL();
-    await conn.query('update user set name=?, email=?, phone=? where uid=?',
-    [name, email, phone, id]);
+    await connectSupadatabase().then((conn) async {
+      await conn.from('tb_user').update({
+        'name': name,
+        'email': email,
+        'phone': phone.replaceAll(RegExp(r'[-() ]'), ''),
+      }).eq(
+        'uid', id
+      ).then((value) {
+        redirectUser(context);
+        success(context, 'Usuário atualizado com sucesso.');
+      });
+    });
+    // await conn.query('update user set name=?, email=?, phone=? where uid=?',
+    // [name, email, phone, id]);
 
-    conn.close();
+    // conn.close();
 
-    redirectUser(context);
+    // redirectUser(context);
 
-    success(context, 'Usuário atualizado com sucesso.');
+    // success(context, 'Usuário atualizado com sucesso.');
 
   }
 
   // Sign in with Google
 
-  Future<UserCredential> signInGoogle(context) async {
+  Future<dynamic> signInGoogle(context) async {
   
     // Trigger the authentication flow
+    // await connectSupadatabase().then((value) async {
+    //   await value.auth.signInWithOAuth(Provider.google);
+    // });
+
+    // redirectUser(context);
+    
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
     // Obtain the auth details from the request
@@ -163,8 +210,19 @@ class LoginController {
   Future<void> signIn(context) async {
     await signInGoogle(context).then((value) async {
       success(context, 'Usuário autenticado com sucesso');
+
+      await connectSupadatabase().then((connect) {
+        connect.auth.signInWithOtp(
+          email: value.user?.email,
+        );
+      });
+
       redirectUser(context, value);
       //value.additionalUserInfo?.profile!['email']
+
+      
+      
+
     }).catchError((onError) {
       error(context, "Ocorreu um erro ao entrar: $onError");
     });
@@ -179,9 +237,17 @@ class LoginController {
       success(context, typeUser.toString());
 
       if (typeUser == null) {
-        await connectMySQL().then((insert) {
-          insert.query('insert into user (uid, name, email, phone, type, image) values (?, ?, ?, ?, ?, ?)',
-            [value.user?.uid, value.user?.displayName, value.user?.email, null, 1, value.user?.photoURL]);
+        await connectSupadatabase().then((insert) {
+          insert.from('tb_user').insert({
+            'uid': value.user?.uid,
+            'name': value.user?.displayName,
+            'email': value.user?.email,
+            'phone': null,
+            'type': 1,
+            'image': value.user?.photoURL,
+          });
+          // insert.query('insert into user (uid, name, email, phone, type, image) values (?, ?, ?, ?, ?, ?)',
+          //   [value.user?.uid, value.user?.displayName, value.user?.email, null, 1, value.user?.photoURL]);
         },);
 
         Navigator.of(context).pop();

@@ -27,3 +27,16 @@ void success(context, String msg) {
     ),
   );
 }
+
+void selectItem(context, String msg) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      backgroundColor: Colors.white,
+      content: Text(
+        msg,
+        style: const TextStyle(color: Colors.red),
+      ),
+      duration: Duration(days: 365),
+    ),
+  );
+}

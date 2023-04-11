@@ -19,7 +19,7 @@ class ScreenCallWaiter extends StatefulWidget {
 class _ScreenCallWaiterState extends State<ScreenCallWaiter> {
   var list;
   var listSale;
-  String? idSale;
+  int idSale = 0;
 
   void getIdSale() async {
     await SalesController().idSale().then((value){
@@ -35,13 +35,12 @@ class _ScreenCallWaiterState extends State<ScreenCallWaiter> {
     super.initState();
     list = ProductsCartController().list(idSale);
     listSale = SalesController().listSalesOnDemand();
+    getIdSale();
   }
   
   @override
   Widget build(BuildContext context) {
-    if (idSale == null) {
-      getIdSale();
-    }
+    
 
     return Scaffold(
       appBar: appBarWidget(

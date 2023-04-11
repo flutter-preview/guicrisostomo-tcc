@@ -23,7 +23,21 @@ class _BottomState extends State<Bottom> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        cartInfo(context),
+        FutureBuilder(
+          future: cartInfo(context),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return snapshot.data as Widget;
+            } else {
+              return const SizedBox(
+                height: 200,
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
+            }
+          },
+        ),
         
         Container(
           decoration: BoxDecoration(

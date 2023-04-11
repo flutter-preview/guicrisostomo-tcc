@@ -11,28 +11,4 @@ class SlideShow {
     required this.title,
     this.onTap,
   });
-
-  static Future<List<SlideShow>> list(business) async {
-    List<SlideShow> list = [];
-    
-    await connectMySQL().then((conn) async {
-      var querySelect = '''
-        SELECT DISTINCT category, url_image 
-        FROM variations
-        WHERE business = ? 
-      ''';
-      var results = await conn.query(querySelect, [business]);
-      await conn.close();
-      for (var row in results) {
-        list.add(
-          SlideShow(
-            title: row[0],
-            path: row[1],
-          )
-        );
-      }
-    });
-
-    return list;
-  }
 }

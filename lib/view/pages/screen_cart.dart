@@ -30,7 +30,7 @@ class _ScreenCartState extends State<ScreenCart> {
   }*/
 
   var list;
-  String? idSale;
+  int idSale = 0;
   
   double get largura => MediaQuery.of(context).size.width;
   void getIdSale() async {

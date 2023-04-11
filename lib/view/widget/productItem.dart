@@ -2,10 +2,13 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:tcc/controller/mysql/Lists/productsCart.dart';
+import 'package:tcc/controller/mysql/Lists/sales.dart';
 import 'package:tcc/globals.dart' as globals;
 import 'package:tcc/main.dart';
 import 'package:tcc/model/ProductItemList.dart';
 import 'package:tcc/view/pages/screen_add.dart';
+import 'package:tcc/view/widget/snackBars.dart';
 
 class ProductItem extends StatefulWidget {
   List<ProductItemList> product;
@@ -30,7 +33,7 @@ class _ProductItemState extends State<ProductItem> {
               shrinkWrap: true,
               itemBuilder: (context, index) {
                 ProductItemList dados = widget.product[index];
-                dynamic item = dados;
+                ProductItemList item = dados;
                 int idItem = dados.id;
                 String name = dados.name;
                 num price = dados.price;
@@ -97,14 +100,24 @@ class _ProductItemState extends State<ProductItem> {
                         height: 30,
                         child: ElevatedButton(
                             
-                          onPressed: () {
+                          onPressed: () async {
                             // Navigator.pushNamed(
                             //   context,
                             //   'products/add_product',
                             //   arguments: dados.docs[index],
                             // );
 
-                            Navigator.push(context, navigator('products/add_product', item));
+                            await SalesController().idSale().then((idOrder) async {
+                              await ProductsCartController().getVariationItem(idOrder).then((value) {
+                                if (item.id_variation != value && value != null) {
+                                  error(context, 'Não é possível adicionar produtos de variações diferentes no mesmo pedido');
+                                  return;
+                                } else {
+                                  Navigator.push(context, navigator('products/add_product', item));
+                                  return;
+                                }
+                              });
+                            });
                           },
                           
                           style: ElevatedButton.styleFrom(

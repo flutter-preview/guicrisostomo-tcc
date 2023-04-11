@@ -196,7 +196,7 @@ listViewOrder() {
   return Container(
     child: (
       StreamBuilder<QuerySnapshot>(
-        stream: SalesController().listSalesFinalize().snapshots(),
+        stream: SalesController().listSalesFinalize(),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.none:
