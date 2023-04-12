@@ -231,19 +231,19 @@ Future<void> main() async {
   FirebaseAuth auth = FirebaseAuth.instance;
   User? user = auth.currentUser;
   
-  // if (user != null) {
-  //   route = await LoginController().getTypeUser().then((value) {
-  //     if (value == 'Cliente') {
-  //       return 'home';
-  //     } else if (value == 'Gerente') {
-  //       return 'home_manager';
-  //     } else {
-  //       return 'home_employee';
-  //     }
-  //   });
-  // } else {
+  if (user != null) {
+    route = await LoginController().getTypeUser().then((value) {
+      if (value == 'Cliente') {
+        return 'home';
+      } else if (value == 'Gerente') {
+        return 'home_manager';
+      } else {
+        return 'home_employee';
+      }
+    });
+  } else {
     route = 'presentation';
-  // }
+  }
   
   runApp(
     MaterialApp(

@@ -8,7 +8,7 @@ import 'package:tcc/model/User.dart';
 import 'package:tcc/view/widget/snackBars.dart';
       
 class LoginController {
-  Future<String?> getTypeUser(context) async {
+  Future<String?> getTypeUser() async {
     
     return await connectSupadatabase().then((value1) async {
       
@@ -223,7 +223,7 @@ class LoginController {
       // var t = await getTypeUser() ?? 'Cliente';
       // success(context, t);
       // return;
-    await getTypeUser(context).then((String? typeUser) async {
+    await getTypeUser().then((String? typeUser) async {
       if (typeUser == null) {
         await connectSupadatabase().then((insert) {
           insert.from('tb_user').insert({
