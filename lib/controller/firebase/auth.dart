@@ -1,32 +1,31 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:mysql1/mysql1.dart';
-import 'package:supabase_flutter/supabase_flutter.dart' hide User;
 import 'package:tcc/controller/mysql/utils.dart';
 import 'package:tcc/main.dart';
+import 'package:tcc/model/TypeUser.dart';
+import 'package:tcc/model/User.dart';
 import 'package:tcc/view/widget/snackBars.dart';
       
 class LoginController {
-  Future<String?> getTypeUser() async {
-    User? user = FirebaseAuth.instance.currentUser;
-    return await connectSupadatabase().then((value) async {
-      PostgrestTransformBuilder<dynamic> results = await value.from(
+  Future<String?> getTypeUser(context) async {
+    
+    return await connectSupadatabase().then((value1) async {
+      
+      final User? user = FirebaseAuth.instance.currentUser;
+      return await value1.from(
         'type_user'
       ).select(
-        'name, tb_user!inner(*)'
+        'name, tb_user!inner(type, uid)'
       ).eq(
         'tb_user.uid', user?.uid
-      ).single();
+      ).single().limit(1, foreignTable: 'tb_user').then((value) {
+        TypeUser typeUser = TypeUser.fromJson(value);
+        return typeUser.name;
+      });
 
       // final results = await conn.query('select tu.name from user u INNER JOIN type_user tu ON u.type = tu.id where uid = ?', [user?.uid]);
       // conn.close();
-
-      
-
-      print(results['name']);
-
-      return results['name'];
     });
 
     
@@ -151,7 +150,8 @@ class LoginController {
       ).single().then((value) {
         return value;
       }).then((value) {
-
+        UserList user = UserList.fromJson(value);
+        return user;
       });
       // Results results = await conn.query('select * from user where uid = ?', [uid]);
       // conn.close();
@@ -212,18 +212,7 @@ class LoginController {
     await signInGoogle(context).then((value) async {
       success(context, 'Usuário autenticado com sucesso');
 
-      await connectSupadatabase().then((connect) {
-        connect.auth.signInWithOtp(
-          email: value.user?.email,
-        );
-      });
-
       redirectUser(context, value);
-      //value.additionalUserInfo?.profile!['email']
-
-      
-      
-
     }).catchError((onError) {
       error(context, "Ocorreu um erro ao entrar: $onError");
     });
@@ -234,9 +223,7 @@ class LoginController {
       // var t = await getTypeUser() ?? 'Cliente';
       // success(context, t);
       // return;
-    await getTypeUser().then((String? typeUser) async {
-      success(context, typeUser.toString());
-
+    await getTypeUser(context).then((String? typeUser) async {
       if (typeUser == null) {
         await connectSupadatabase().then((insert) {
           insert.from('tb_user').insert({
