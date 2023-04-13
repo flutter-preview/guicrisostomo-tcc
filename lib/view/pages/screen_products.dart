@@ -63,9 +63,7 @@ class _ScreenProductsState extends State<ScreenProducts> {
       getCategories();
     }
 
-    print(DateTime.now().toUtc());
-
-    Future<Widget> listProduct() async {
+    Future<Widget?> listProduct() async {
       List<Widget> listWidget = [];
       List<ProductItemList> list = [];
       list.clear();
@@ -113,17 +111,6 @@ class _ScreenProductsState extends State<ScreenProducts> {
         if (listWidget.isNotEmpty) {
           return Column(
             children: listWidget,
-          );
-        } else {
-          return const SizedBox(
-            height: 50,
-            child: Text(
-              'Produto não encontrado',
-              style: TextStyle(
-                fontSize: 20,
-                color: Colors.black45,
-              ),
-            ),
           );
         }
       } catch (e) {
@@ -207,6 +194,12 @@ class _ScreenProductsState extends State<ScreenProducts> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return snapshot.data as Widget;
+                } else if (snapshot.hasError) {
+                  return const Text('Erro ao carregar os produtos');
+                } else if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
                 } else {
                   return const SizedBox(
                     height: 200,

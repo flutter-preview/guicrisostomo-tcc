@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:tcc/controller/mysql/Lists/businessInfo.dart';
+import 'package:tcc/controller/mysql/Lists/products.dart';
 import 'package:tcc/controller/mysql/Lists/productsCart.dart';
 import 'package:tcc/controller/mysql/Lists/sales.dart';
 import 'package:tcc/main.dart';
 import 'package:tcc/model/ProductItemList.dart';
+import 'package:tcc/model/Variation.dart';
 import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/bottonNavigation.dart';
 import 'package:tcc/view/widget/button.dart';
@@ -46,45 +48,39 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
     num priceProduct = productSelect.price;
     String descriptionProduct = productSelect.description;
     String? urlImageProduct = productSelect.link_image;
-    String categoryProduct = productSelect.category;
-    String sizeProduct = productSelect.size;
-    int idVariation = productSelect.id_variation;
+    Variation variation = productSelect.variation!;
+    int idVariation = variation.id ?? 0;
     int idCurrentItem = 0;
 
     Future<void> calcSubtotal() async {
       await BusinessInformationController().getInfoCalcValue().then((result) async {
         await SalesController().idSale().then((idOrder) async {
           await ProductsCartController().listItemCurrent(idOrder, idVariation).then((res) {
-            res.isEmpty ? setState(() {
-              subTotal = priceProduct;
-            }) : null;
-
-            bool value = result ?? false;
-
-            for (var element in res) {
-              value ?
-                element.price! > subTotal ?
-                  setState(() {
-                    subTotal = element.price!;
-                  })
-                : null
-                
-              : setState(() {
-                subTotal += element.price!;
-              });
-            }
-
-            if (!value) {
+            if (res.isEmpty) {
               setState(() {
-                subTotal /= res.length;
+                subTotal = priceProduct;
               });
+            } else {
+              bool value = result ?? false;
+
+              if (value) {
+                setState(() {
+                  subTotal = priceProduct;
+                });
+              } else {
+                setState(() {
+                  subTotal /= res.length;
+                });
+              }
             }
           });
         });
       });
     }
 
-    calcSubtotal();
+    if (subTotal == 0) {
+      calcSubtotal();
+    }
 
     return Scaffold(
       appBar: PreferredSize(
@@ -287,11 +283,13 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                                 Navigator.pop(context);
                                 success(context, 'Produto adicionado com sucesso');
                               }).catchError((e){
-                                error(context, 'Ocorreu um erro ao adicionar o produto: ${e.code.toString()}');
+                                error(context, 'Ocorreu um erro ao adicionar o produto: $e');
+                                
                               });
       
                             }).catchError((e){
-                              error(context, 'Ocorreu um erro ao adicionar o produto: ${e.code.toString()}');
+                              error(context, 'Ocorreu um erro ao adicionar o produto: $e');
+                              print(e);
                             });
       
                           } else {

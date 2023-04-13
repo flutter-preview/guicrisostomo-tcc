@@ -9,13 +9,13 @@ class ProductsCartList {
   static num total = 0;
 
   ProductsCartList({
-    this.id,
-    this.idProduct,
-    this.name,
-    this.price,
-    this.qtd,
-    this.idVariation,
-    this.date,
+    this.id = 0,
+    this.idProduct = '',
+    this.name = '',
+    this.price = 0,
+    this.qtd = 0,
+    this.idVariation = 0,
+    this.date = null,
   });
 
   num getTotal() {
@@ -24,5 +24,15 @@ class ProductsCartList {
 
   void setTotal(num value) {
     total = value;
+  }
+
+  ProductsCartList.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    idProduct = json['id_product'];
+    name = json['name'];
+    price = json['price'];
+    qtd = json['qtd'];
+    idVariation = json['id_variation'];
+    date = json['date'];
   }
 }

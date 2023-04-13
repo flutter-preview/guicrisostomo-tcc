@@ -7,6 +7,7 @@ import 'package:tcc/controller/mysql/Lists/sales.dart';
 import 'package:tcc/globals.dart' as globals;
 import 'package:tcc/main.dart';
 import 'package:tcc/model/ProductItemList.dart';
+import 'package:tcc/model/Variation.dart';
 import 'package:tcc/view/pages/screen_add.dart';
 import 'package:tcc/view/widget/snackBars.dart';
 
@@ -38,8 +39,7 @@ class _ProductItemState extends State<ProductItem> {
                 String name = dados.name;
                 num price = dados.price;
                 String description = dados.description;
-                String category = dados.category;
-                String size = dados.size;
+                Variation variation = dados.variation!;
                 String? linkImage = dados.link_image;
 
                 return Card(
@@ -74,7 +74,7 @@ class _ProductItemState extends State<ProductItem> {
                       children: [
 
                         Text(
-                          '$category - $size',
+                          '${variation.category} - ${variation.size}',
                           style: TextStyle(
                             color: Colors.black,
                           ),
@@ -109,7 +109,7 @@ class _ProductItemState extends State<ProductItem> {
 
                             await SalesController().idSale().then((idOrder) async {
                               await ProductsCartController().getVariationItem(idOrder).then((value) {
-                                if (item.id_variation != value && value != null) {
+                                if (item.variation!.id != value && value != null) {
                                   error(context, 'Não é possível adicionar produtos de variações diferentes no mesmo pedido');
                                   return;
                                 } else {

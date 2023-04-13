@@ -1,5 +1,6 @@
 // ignore_for_file: file_names
 
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tcc/controller/mysql/utils.dart';
 import 'package:tcc/model/ProductsCart.dart';
 import 'package:tcc/globals.dart' as globals;
@@ -18,14 +19,10 @@ class ProductsCartController {
       // querySelect += ' ORDER BY p.name';
       
       var results = await conn.from('items').select('''
-        i.id, 
-        i.id_product, 
-        i.qtd,
-        products (
-          p.name, 
-          p.price,  
-          p.id_variation
-        )
+        id, 
+        id_product, 
+        qtd,
+        products!inner(name, price, id_variation)
       ''').eq('id_order', idSale);
       // var results = await conn.query(querySelect, [idSale]);
       // await conn.close();
@@ -54,30 +51,38 @@ class ProductsCartController {
     List<ProductsCartList> list = [];
     num total = 0;
     
-    await connectSupadatabase().then((conn) async {
+    return await connectSupadatabase().then((conn) async {
       // var querySelect = 'SELECT p.price, p.id_variation';
       // querySelect += ' FROM items i';
       // querySelect += ' INNER JOIN products p ON p.id = i.id_product';
       // querySelect += ' WHERE i.id_order = ? AND i.fg_current = ? AND p.id_variation = ?';
       // querySelect += ' ORDER BY i.id';
       
-      var results = await conn.from('items').select('''
-        p.price, 
-        p.id_variation
-      ''').eq('id_order', idSale).eq('fg_current', true).eq('id_variation', idVariation);
+      return await conn.from('items').select('''
+        products!inner(price), 
+        id_variation
+      ''').eq('id_order', idSale).eq('fg_current', true).eq('products.id_variation', idVariation).then((value) {
+        List list = value;
+        List<ProductsCartList> product = list.map((e) => ProductsCartList(
+          price: e[0],
+          idVariation: e[1],
+        )).toList();
+
+        return product;
+      });
       // var results = await conn.query(querySelect, [idSale, true, idVariation]);
       // await conn.close();
-      for (var row in results) {
-        list.add(
-          ProductsCartList(
-            price: row[0],
-            idVariation: row[1],
-          )
-        );
-      }
+      // for (var row in results) {
+      //   list.add(
+      //     ProductsCartList(
+      //       price: row[0],
+      //       idVariation: row[1],
+      //     )
+      //   );
+      // }
     });
 
-    return list;
+    // return list;
   }
 
   Future<int?> getVariationItem(int idSale) async {
@@ -90,7 +95,7 @@ class ProductsCartController {
       // querySelect += ' ORDER BY i.id';
       
       var results = await conn.from('items').select('''
-        p.id_variation
+        id_variation
       ''').eq('id_order', idSale).eq('fg_current', true);
       // var results = await conn.query(querySelect, [idSale, true]);
       // await conn.close();

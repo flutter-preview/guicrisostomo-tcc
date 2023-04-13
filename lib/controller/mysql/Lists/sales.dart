@@ -1,5 +1,4 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tcc/controller/mysql/utils.dart';
 import 'package:tcc/model/ProductsCart.dart';
@@ -10,9 +9,9 @@ class SalesController {
 
     await connectSupadatabase().then((conn) async {
       await conn.from('orders').insert({
-        'user': FirebaseAuth.instance.currentUser!.uid,
+        'uid': FirebaseAuth.instance.currentUser!.uid,
         'status': 'ANDAMENTO',
-        'datetime': DateTime.now().toUtc(),
+        'datetime': DateTime.now().toIso8601String(),
         'cnpj': globals.businessId,
       });
       // await conn.query('insert into orders (user, status, datetime, cnpj) values (?, ?, ?, ?)',
@@ -45,48 +44,77 @@ class SalesController {
   Future<int> idSale() async {
     int res;
     return await connectSupadatabase().then((conn) async {
-      return await conn.from('orders').select('id').eq('user', FirebaseAuth.instance.currentUser!.uid).eq('status', 'ANDAMENTO').then((value) async {
+      return await conn.from('orders').select('id').eq('uid', FirebaseAuth.instance.currentUser!.uid).eq('status', 'ANDAMENTO').then((value) async {
         // await conn.close();
+        List list = value;
+        ProductsCartList productsCartList = ProductsCartList.fromJson(list[0]);
 
-        if (value.isNotEmpty) {
-          return res = value.first[0];
+        if (productsCartList.id == null) {
+          res = 0;
         } else {
-          await add();
-          return idSale();
+          res = productsCartList.id!;
         }
+
+        return res;
       });
     });
   }
 
   Future<num> getTotal() async {
     num res = 0;
+    
     return await connectSupadatabase().then((conn) async {
       // String querySelect = 'SELECT p.price, i.qtd from items i';
       // querySelect += ' INNER JOIN products p ON p.id = i.id_product';
       // querySelect += ' INNER JOIN orders o ON o.id = i.id_order';
       // querySelect += ' where o.user = ? and o.status = ? and i.relation_id is null';
-      var result = await conn.from('items').select('''
-        products (
-          price
-        ),
+      return await conn.from('items').select('''
+        products!inner(price),
+        orders!inner(id, uid, status),
         qtd
-      ''').eq('user', FirebaseAuth.instance.currentUser!.uid).eq('status', 'ANDAMENTO').eq('relation_id', null);
+      ''').eq('orders.uid', FirebaseAuth.instance.currentUser!.uid)
+          .eq('orders.status', 'ANDAMENTO')
+          .is_('relation_id', null)
+          .eq('fg_current', false)
+          .then((value) {
+        // await conn.close();
+            List item = value;
+            List<ProductsCartList> productsCart = item.map((e) => ProductsCartList(
+              price: e['products']['price'],
+              qtd: e['qtd'],
+            )).toList();
+            print(item.first['price']);
+            
+            if (item.isEmpty) { 
+              res = 0;
+            } else {
+              num price = 0;
+              int qtd = 0;
+
+              res = productsCart.map((e) {
+                price = e.price!;
+                qtd = e.qtd!;
+                return price * qtd;
+              }).reduce((value, element) => value + element);
+              // productsCart.map((e) => {
+              //   print(e),
+              //   res += 
+              // }).toList();
+            }
+
+            return res;
+      }).catchError((e) {
+        print(e);
+      });
       // var result = await conn.query(querySelect,
       // [FirebaseAuth.instance.currentUser!.uid, 'ANDAMENTO']);
       // print(result);
-      for (var i in result) {
-        res += i[0] * i[1];
-      }
-
-      // await conn.close();
-      print('Total: $res');
-      return res;
     });
   }
 
   listSalesFinalize() async {
     return await connectSupadatabase().then((conn) async {
-      var results = await conn.from('orders').select('*').eq('user', FirebaseAuth.instance.currentUser!.uid).eq('status', 'FINALIZADO');
+      var results = await conn.from('orders').select().eq('uid', FirebaseAuth.instance.currentUser!.uid).eq('status', 'FINALIZADO');
       // var results = await conn.query('select * from orders where user = ? and status = ?',
       // [FirebaseAuth.instance.currentUser!.uid, 'FINALIZADO']);
       // await conn.close();
@@ -96,22 +124,21 @@ class SalesController {
 
   Future<ProductsCartList?> listSalesOnDemand() async {
     ProductsCartList? item;
-    await connectSupadatabase().then((conn) async {
-      var results = await conn.from('orders').select('id, datetime').eq('user', FirebaseAuth.instance.currentUser!.uid).eq('status', 'ANDAMENTO');
+    return await connectSupadatabase().then((conn) async {
+      return await conn.from('orders').select('id, datetime').eq('uid', FirebaseAuth.instance.currentUser!.uid).eq('status', 'ANDAMENTO').then((value) async {
+        // await conn.close();
+        List item = value;
+        List<ProductsCartList> productsCart = item.map((e) => ProductsCartList.fromJson(e)).toList();
+        return productsCart.first;
+      });
       // var results = await conn.query('select id, datetime from orders where user = ? and status = ?',
       // [FirebaseAuth.instance.currentUser!.uid, 'ANDAMENTO']);
       // await conn.close();
-      
-      if (results.isNotEmpty) {
-        item = ProductsCartList(
-          id: results.first[0],
-          date: results.first[1],
-        );
-      } else {
-        item = null;
-      }
+      // List item = results;
+      // List<ProductsCartList> productsCart = ProductsCartList.fromJson(item).productsCart ?? [];
+      // item = ProductsCartList.fromJson(results);
     });
 
-    return item;
+    // return item;
   }
 }

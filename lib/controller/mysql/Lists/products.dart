@@ -1,12 +1,13 @@
 import 'package:tcc/controller/mysql/utils.dart';
 import 'package:tcc/model/ProductItemList.dart';
 import 'package:tcc/globals.dart' as globals;
+import 'package:tcc/model/Variation.dart';
 
 class ProductsController {
   Future<int> getIdVariation(String category, String size) async {
     return await connectSupadatabase().then((conn) async {
-      ProductItemList results = await conn.from('variations').select('id').eq('category', category).eq('size', size).single();
-      return results.id_variation;
+      Variation results = await conn.from('variations').select('id').eq('category', category).eq('size', size).single();
+      return results.id!;
     });
   }
 
@@ -23,18 +24,32 @@ class ProductsController {
       // querySelect += ' WHERE v.business = ?';
       // querySelect += ' GROUP BY v.category';
       // querySelect += ' ORDER BY v.category';
-
-      List<ProductItemList> results = await conn.from('variations').select('category').eq('business', globals.businessId).eq('fg_ativo', 1);
       
-      if (results.isEmpty) {
-        return [];
-      }
-      
-      var list = results.map((e) => ProductItemList.fromJson(
-        e.toJson()
-      )).toList();
+// await conn.from('products').select('''
+//         id, 
+//         name, 
+//         description, 
+//         price,
+//         id_variation,
+//         variations!inner(category, size)
+//       ''').eq('variations.business', globals.businessId).eq('fg_ativo', true).then((value) {
+      return await conn.from('get_category').select('''
+        category
+      ''').eq('business', globals.businessId).eq('fg_ativo', true).then((value) {
+        List<dynamic> item = value;
+        List<Variation> results = item.map((e) => Variation.fromJson(e)).toList();
 
-      return list.map((e) => e.category).toList();
+        return results.map((e) => e.category!).toList();
+      });
+      // if (results.isEmpty) {
+      //   return [];
+      // }
+      
+      // List<ProductItemList> list = results.map((e) => ProductItemList.fromJson(
+      //   e.toJson()
+      // )).toList();
+
+      // return list.map((e) => e.category).toList();
 
     });
   }
@@ -49,51 +64,57 @@ class ProductsController {
       // querySelect += ' WHERE v.category = ?';
       // querySelect += ' ORDER BY v.size';
 
-      List<ProductItemList> results = await conn.from('variations').select('size').eq('category', category).eq('business', globals.businessId).eq('fg_ativo', 1);
+      return await conn.from('get_size').select('''
+        size
+      ''').eq('category', category).eq('business', globals.businessId).eq('fg_ativo', true).then((value) {
+        List<dynamic> item = value;
+        List<Variation> results = item.map((e) => Variation.fromJson(e)).toList();
 
-      if (results.isEmpty) {
-        return ['Único'];
-      }
-      
-      var list = results.map((e) => ProductItemList.fromJson(
-        e.toJson()
-      )).toList();
-
-      return list.map((e) => e.size).toList();
+        return results.map((e) => e.size!).toList();
+      });
     });
   }
 
   Future<List<ProductItemList>> list(String categorySelected, String sizeSelected, String searchProduct) async {
-    List<ProductItemList> list = [];
     searchProduct = '%$searchProduct%';
     
     return await connectSupadatabase().then((conn) async {
-      var querySelect = 'SELECT p.id, p.name, p.price, p.description, p.link_image, v.category, v.size, p.id_variation';
-      querySelect += ' FROM products p';
-      querySelect += ' INNER JOIN variations v ON v.id = p.id_variation';
-      querySelect += ' WHERE v.category = ? AND v.size = ? AND v.business = ? AND p.name LIKE ? AND p.fg_ativo = 1';
-      querySelect += ' ORDER BY p.name';
+      // var querySelect = 'SELECT p.id, p.name, p.price, p.description, p.link_image, v.category, v.size, p.id_variation';
+      // querySelect += ' FROM products p';
+      // querySelect += ' INNER JOIN variations v ON v.id = p.id_variation';
+      // querySelect += ' WHERE v.category = ? AND v.size = ? AND v.business = ? AND p.name LIKE ? AND p.fg_ativo = 1';
+      // querySelect += ' ORDER BY p.name';
       
-      List<ProductItemList> results = await conn.from('products').select('''
+      return await conn.from('products').select('''
         id, 
         name, 
         price, 
         description, 
         link_image, 
-        variations (
-          category, 
-          size
-        ),
+        variations!inner(category, size),
         id_variation
-      ''').eq('category', categorySelected).eq('size', sizeSelected).eq('business', globals.businessId).like('name', searchProduct).eq('fg_ativo', 1);
-      
-      if (results.isEmpty) {
-        return [];
-      }
+      ''').eq('variations.category', categorySelected).eq('variations.size', sizeSelected).eq('variations.business', globals.businessId).like('name', searchProduct).eq('fg_ativo', 1).then((value) {
+        List<dynamic> item = value;
+        List<ProductItemList> results = item.map((e) => ProductItemList.fromJson(e)).toList();
+        // if (item.isEmpty) {
+        //   return [];
+        // }
 
-      return results.map((e) => ProductItemList.fromJson(
-        e.toJson()
-      )).toList();
+        
+        results.forEach((element) async {
+          element.variation ??= Variation(
+            id: element.variation?.id = await getIdVariation(categorySelected, sizeSelected),
+            category: categorySelected,
+            size: sizeSelected
+          );
+        });
+
+        return results.map((e) {
+          return e;
+        }).toList();
+      }).catchError((e) {
+        print(e);
+      });
       
     });
   }
