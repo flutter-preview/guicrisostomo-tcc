@@ -221,7 +221,7 @@ class _ProductsCartState extends State<ProductsCart> {
                                 onPressed: () {
                                   ProductsCartController().remove(
                                     // dados.docs[index].id,
-                                    idItem!,
+                                    idItem!, context,
                                   );
                                                     
                                   success(

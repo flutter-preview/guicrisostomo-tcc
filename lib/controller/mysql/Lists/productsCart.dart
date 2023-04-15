@@ -2,6 +2,7 @@
 
 import 'package:tcc/controller/mysql/utils.dart';
 import 'package:tcc/model/ProductsCart.dart';
+import 'package:tcc/view/widget/snackBars.dart';
 
 class ProductsCartController {
 
@@ -76,7 +77,7 @@ class ProductsCartController {
       // querySelect += ' INNER JOIN products p ON p.id = i.id_product';
       // querySelect += ' WHERE i.id_order = ? AND i.fg_current = ? AND p.id_variation = ?';
       // querySelect += ' ORDER BY i.id';
-      return await conn.query('SELECT p.price, p.id_variation FROM items i INNER JOIN products p ON p.id = i.id_product WHERE i.id_order = @idOrder AND i.fg_current = @fgCurrent AND p.id_variation = @idVariation ORDER BY i.id', substitutionValues: {
+      return await conn.query('SELECT p.price, p.id_variation, p.name, p.id, i.qtd, i.id FROM items i INNER JOIN products p ON p.id = i.id_product WHERE i.id_order = @idOrder AND i.fg_current = @fgCurrent AND p.id_variation = @idVariation ORDER BY i.id', substitutionValues: {
         'idOrder': idSale,
         'fgCurrent': true,
         'idVariation': idVariation
@@ -88,6 +89,10 @@ class ProductsCartController {
             ProductsCartList(
               price: row[0],
               idVariation: row[1],
+              name: row[2],
+              idProduct: row[3],
+              qtd: row[4],
+              id: row[5],
             )
           );
         }
@@ -252,11 +257,15 @@ class ProductsCartController {
     });
   }
 
-  void remove(int id) {
-    connectSupadatabase().then((conn) async {
+  Future<void> remove(int id, context) async {
+    await connectSupadatabase().then((conn) async {
       
       await conn.query('delete from items where id = @id', substitutionValues: {
         'id': id,
+      }).then((value) {
+        success(context, 'Item removido com sucesso!');
+      }).catchError((e) {
+        error(context, 'Erro ao remover item!');
       });
       conn.close();
       // await conn.from('items').delete().eq('id', id);
