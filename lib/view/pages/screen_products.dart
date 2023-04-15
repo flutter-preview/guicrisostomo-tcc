@@ -83,7 +83,7 @@ class _ScreenProductsState extends State<ScreenProducts> {
                   child: SizedBox(
                     height: 200,
                     width: double.infinity,
-                    child: ProductItem(product: list,),
+                    child: ProductItem(product: value,),
                   ),
                 ),
               );
@@ -97,7 +97,7 @@ class _ScreenProductsState extends State<ScreenProducts> {
                     nameSection: sizes[i],
                     isShowPart: true,
                     child: SizedBox(
-                      height: 100,
+                      height: 200,
                       width: double.infinity,
                       child: ProductItem(product: value,),
                     ),
@@ -193,6 +193,19 @@ class _ScreenProductsState extends State<ScreenProducts> {
               future: listProduct(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
+                  if (snapshot.data == null) {
+                    return const SizedBox(
+                      height: 50,
+                      child: Text(
+                        'Produto não encontrado',
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.black45,
+                        ),
+                      ),
+                    );
+                  }
+                  
                   return snapshot.data as Widget;
                 } else if (snapshot.hasError) {
                   return const Text('Erro ao carregar os produtos');

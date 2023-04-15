@@ -21,5 +21,11 @@ class Config {
   static String get supabaseUrl => _get('SUPABASEURL');
   static String get supabaseKey => _get('SUPABASEKEY');
 
+  static String get supabaseHost => _get('SUPABASEHOST');
+  static int get supabasePort => int.parse(_get('SUPABASEPORT'));
+  static String get supabaseUser => _get('SUPABASEUSER');
+  static String get supabasePassword => _get('SUPABASEPASSWORD');
+  static String get supabaseDatabase => _get('SUPABASEDATABASE');
+
   static String _get(String name) => dotenv.env[name] ?? '';
 }

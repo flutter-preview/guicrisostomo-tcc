@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:tcc/main.dart';
+import 'package:tcc/model/ProductItemList.dart';
+import 'package:tcc/model/Variation.dart';
 import 'package:tcc/view/widget/cartInfo.dart';
 import '../../globals.dart' as globals;
 
@@ -13,6 +15,119 @@ class Bottom extends StatefulWidget {
 }
 
 class _BottomState extends State<Bottom> {
+  Widget cancelSelection() {
+    return ElevatedButton(
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all<Color>(globals.primary),
+        foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+      ),
+
+      onPressed: () {
+        showDialog(
+          context: context, 
+          builder: (context) => AlertDialog(
+            title: Text('Adicionar itens selecionados'),
+            content: Text('Deseja adicionar os itens selecionados?'),
+            actions: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text('Não'),
+                  ),
+
+                  TextButton(
+                    onPressed: () {
+                      globals.isSelectNewItem = false;
+                      Navigator.pop(context);
+                    },
+                    child: Text('Sim'),
+                  ),
+                ],
+              ),
+
+              TextButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(globals.primary),
+                  foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.push(context, navigator('products/add_product', ProductItemList(id: 0, name: '', description: '', link_image: null, price: 0, variation: Variation())));
+                }, 
+                child: Center(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: const [
+                      Icon(
+                        Icons.shopping_cart,
+                        size: 20,
+                      ),
+                
+                      SizedBox(width: 5),
+                      
+                      Text(
+                        'Visualizar carrinho',
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              
+            ],
+          )
+        );
+      },
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        
+        children: const [
+          Icon(
+            Icons.close,
+            size: 15,
+          ),
+
+          SizedBox(width: 5),
+
+          Text(
+            'Cancelar seleção',
+            style: TextStyle(
+              fontSize: 13,
+            ),
+          ),
+
+          // 
+        ],
+      ),
+    );
+  }
+
+  Widget selectNewItem() {
+    return Container(
+      color: Colors.white,
+      padding: const EdgeInsets.all(10),
+      
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Text(
+            'Selecione novo item',
+            style: TextStyle(
+              color: globals.primary,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+
+          cancelSelection(),
+        ],
+      )
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,11 +138,15 @@ class _BottomState extends State<Bottom> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
+        
+        globals.isSelectNewItem && globals.globalSelectedIndexBotton == 2 ? selectNewItem() : Container(),
         FutureBuilder(
           future: cartInfo(context),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return snapshot.data as Widget;
+            } else if (snapshot.hasError) {
+              return const Text('Erro ao carregar');
             } else {
               return const SizedBox(
                 height: 200,

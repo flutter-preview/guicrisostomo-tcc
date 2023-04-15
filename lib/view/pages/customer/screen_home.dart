@@ -49,28 +49,13 @@ class _ScreenHomeState extends State<ScreenHome> {
     });
   }
 
-  static Future<List<SlideShow>> getSlideShow() async {
-    List<SlideShow> list = [];
-    
-    await connectSupadatabase().then((conn) async {
-
-      var results = await conn.from('get_slideshow').select('''
-        category, 
-        url_image
-      ''').eq('business', globals.businessId);
-      // var results = await conn.query(querySelect, [business]);
-      // await conn.close();
-      for (var row in results) {
-        list.add(
-          SlideShow(
-            title: row[0],
-            path: row[1],
-          )
-        );
-      }
+  Future<void> getSlideShow() async {
+    await SlideShow.list(globals.businessId, context).then((List<SlideShow> value){
+      // print(value);
+      setState(() {
+        listSlideShow = value;
+      });
     });
-
-    return list;
   }
 
   @override
@@ -80,14 +65,14 @@ class _ScreenHomeState extends State<ScreenHome> {
     globals.userType = 'customer';
     globals.businessId = '1';
     // getSaleOnDemand();
-    // getSlideShow();
+    getSlideShow();
   }
 
   @override
   Widget build(BuildContext context) {
     
     if (listSlideShow.isEmpty) {
-      // getSlideShow();
+      getSlideShow();
     }
 
     Widget dataSales() {
@@ -237,24 +222,24 @@ class _ScreenHomeState extends State<ScreenHome> {
               padding: const EdgeInsets.all(20),
               child: Column(
                 children: [
-                  // SectionVisible(
-                  //   nameSection: 'Informações do seu pedido atual',
-                  //   isShowPart: true,
-                  //   child: dataSales(),
-                  // ),
+                  SectionVisible(
+                    nameSection: 'Informações do seu pedido atual',
+                    isShowPart: true,
+                    child: dataSales(),
+                  ),
                   
                   
-                  // SectionVisible(
-                  //   nameSection: 'Favoritos',
-                  //   isShowPart: false,
-                  //   child: ProductsCart(product: list),
-                  // ),
+                  SectionVisible(
+                    nameSection: 'Favoritos',
+                    isShowPart: false,
+                    child: ProductsCart(product: list),
+                  ),
 
-                  // SectionVisible(
-                  //   nameSection: 'Mais pedidos',
-                  //   isShowPart: false,
-                  //   child: ProductsCart(product: list),
-                  // ),
+                  SectionVisible(
+                    nameSection: 'Mais pedidos',
+                    isShowPart: false,
+                    child: ProductsCart(product: list),
+                  ),
 
                 ],
               ),

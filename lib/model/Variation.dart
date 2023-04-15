@@ -8,10 +8,4 @@ class Variation {
     this.category = '', 
     this.size = ''
   });
-
-  Variation.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    category = json['category'];
-    size = json['size'];
-  }
 }

@@ -107,10 +107,10 @@ class _ProductItemState extends State<ProductItem> {
                             //   arguments: dados.docs[index],
                             // );
 
-                            await SalesController().idSale().then((idOrder) async {
-                              await ProductsCartController().getVariationItem(idOrder).then((value) {
-                                if (item.variation!.id != value && value != null) {
-                                  error(context, 'Não é possível adicionar produtos de variações diferentes no mesmo pedido');
+                            return await SalesController().idSale().then((idOrder) async {
+                              return await ProductsCartController().getVariationItem(idOrder).then((value) {
+                                if (item.variation?.id != value && value != 0) {
+                                  error(context, 'Não é possível adicionar produtos de variações diferentes no mesmo item');
                                   return;
                                 } else {
                                   Navigator.push(context, navigator('products/add_product', item));

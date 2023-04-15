@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:tcc/controller/mysql/Lists/businessInfo.dart';
-import 'package:tcc/controller/mysql/Lists/products.dart';
 import 'package:tcc/controller/mysql/Lists/productsCart.dart';
 import 'package:tcc/controller/mysql/Lists/sales.dart';
 import 'package:tcc/main.dart';
 import 'package:tcc/model/ProductItemList.dart';
+import 'package:tcc/model/ProductsCart.dart';
 import 'package:tcc/model/Variation.dart';
 import 'package:tcc/utils.dart';
-import 'package:tcc/view/widget/bottonNavigation.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/snackBars.dart';
 import 'package:tcc/globals.dart' as globals;
@@ -52,35 +51,42 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
     int idVariation = variation.id ?? 0;
     int idCurrentItem = 0;
 
-    Future<void> calcSubtotal() async {
-      await BusinessInformationController().getInfoCalcValue().then((result) async {
-        await SalesController().idSale().then((idOrder) async {
-          await ProductsCartController().listItemCurrent(idOrder, idVariation).then((res) {
+    Future<num> calcSubtotal() async {
+      return await BusinessInformationController().getInfoCalcValue().then((isHighValue) async {
+        return await SalesController().idSale().then((idOrder) async {
+          return await ProductsCartController().listItemCurrent(idOrder, idProduct == 0 ? await ProductsCartController().getVariationItem(idOrder) : idVariation).then((List<ProductsCartList> res) {
+            print ('res: ${res.length}');
+            print('result: $isHighValue');
+            print('idVariation: $idVariation');
             if (res.isEmpty) {
-              setState(() {
-                subTotal = priceProduct;
-              });
+              subTotal = priceProduct;
             } else {
-              bool value = result ?? false;
+              bool value = isHighValue ?? false;
 
-              if (value) {
-                setState(() {
-                  subTotal = priceProduct;
-                });
-              } else {
-                setState(() {
-                  subTotal /= res.length;
-                });
+              for (final item in res) {
+                num price = item.price!;
+                if (isHighValue ?? true) {
+                  if (subTotal < price) {
+                    subTotal = price;
+                  }
+                } else {
+                  subTotal += price;
+                }
+              }
+
+              if (!value) {
+                subTotal /= res.length;
               }
             }
+
+            // setState(() {});
+            return subTotal;
           });
         });
       });
     }
 
-    if (subTotal == 0) {
-      calcSubtotal();
-    }
+    // print('object: $productSelect');
 
     return Scaffold(
       appBar: PreferredSize(
@@ -121,21 +127,23 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Text(
-                        nameProduct,
+                        idProduct == 0 ? 'Adicionar items ao carrinho' : nameProduct,
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 26,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
-                
-                      Text(
-                        'R\$ ${priceProduct.toStringAsFixed(2).replaceFirst('.', ',')}',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
+                      
+                      idProduct == 0 ? 
+                        Container() :
+                        Text(
+                          'R\$ ${priceProduct.toStringAsFixed(2).replaceFirst('.', ',')}',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                          ),
                         ),
-                      ),
                     ]
                   ),
                 ),
@@ -154,93 +162,99 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: [
-                    Icon(
-                      Icons.description,
-                      color: globals.primary,
-                      size: 30,
-                    ),
+                idProduct != 0 ?
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.description,
+                        color: globals.primary,
+                        size: 30,
+                      ),
 
-                    const SizedBox(width: 10),
+                      const SizedBox(width: 10),
 
-                    Container(
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        'Descição: $descriptionProduct',
-                        style: const TextStyle(
-                          fontSize: 20,
+                      Container(
+                        alignment: Alignment.topLeft,
+                        child: Text(
+                          'Descição: $descriptionProduct',
+                          style: const TextStyle(
+                            fontSize: 20,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ) : Container(),
 
                 const SizedBox(height: 20),
 
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(color: globals.primary, spreadRadius: 1),
-                    ],
-                  ),
+                idProduct != 0 ?
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(color: globals.primary, spreadRadius: 1),
+                      ],
+                    ),
 
-                  height: 85,
-                  width: MediaQuery.of(context).size.width - 20,
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
+                    height: 85,
+                    width: MediaQuery.of(context).size.width - 20,
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
 
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        Navigator.pop(context);
-                        Navigator.push(context, navigator('products'));
-                        selectItem(context, 'Selecione o outro item');
-                        await SalesController().idSale().then((res) async {
-                          await ProductsCartController().add(res, idProduct, nameProduct, int.parse(txtQtd.text), idVariation);
-                        });
-                      },
-
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.transparent,
-                        foregroundColor: Colors.black,
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                      ),
-
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.add,
-                            color: globals.primary,
-                            size: 30,
-                          ),
-                                      
-                          const SizedBox(width: 10),
-                                      
-                          Flexible(
-                            child: Padding(
-                              padding: const EdgeInsets.only(bottom: 10),
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          Navigator.pop(context);
+                          Navigator.push(context, navigator('products'));
                           
-                              child: Container(
-                                alignment: Alignment.center,
-                                child: const Text(
-                                  'Agregar outro item ao produto',
-                                  style: TextStyle(
-                                    fontSize: 20,
+                          setState(() {
+                            globals.isSelectNewItem = true;
+                          });
+
+                          await SalesController().idSale().then((res) async {
+                            await ProductsCartController().add(res, idProduct, nameProduct, int.parse(txtQtd.text), idVariation);
+                          });
+                        },
+
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent,
+                          foregroundColor: Colors.black,
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.add,
+                              color: globals.primary,
+                              size: 30,
+                            ),
+                                        
+                            const SizedBox(width: 10),
+                                        
+                            Flexible(
+                              child: Padding(
+                                padding: const EdgeInsets.only(bottom: 10),
+                            
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  child: const Text(
+                                    'Agregar outro item ao produto',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  )
-                ),
+                    )
+                  ) : Container(),
 
                 const SizedBox(height: 20),
           
@@ -267,38 +281,55 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                           },
                         ),
                       ),
-      
-                      Container(
-                        alignment: Alignment.bottomRight,
-                        height: 60,
-                        child: button('Adicionar R\$ ${subTotal.toStringAsFixed(2).replaceFirst('.', ',')}', 100, 50, Icons.add_shopping_cart, () async {
-                          if (formKey.currentState!.validate()) {
-                            int idSale;
-                            await SalesController().idSale().then((res) async {
-                              idSale = res;
-                              await ProductsCartController().add(idSale, idProduct, nameProduct, int.parse(txtQtd.text), idVariation, 0);
-      
-                              await SalesController().getTotal().then((res){
-                                // SalesController().updateTotal(idSale, res + subTotal);
-                                Navigator.pop(context);
-                                success(context, 'Produto adicionado com sucesso');
-                              }).catchError((e){
-                                error(context, 'Ocorreu um erro ao adicionar o produto: $e');
-                                
-                              });
-      
-                            }).catchError((e){
-                              error(context, 'Ocorreu um erro ao adicionar o produto: $e');
-                              print(e);
-                            });
-      
+
+                      FutureBuilder(
+                        future: calcSubtotal(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState == ConnectionState.done) {
+                            return Container(
+                              alignment: Alignment.bottomRight,
+                              height: 60,
+                              child: button('Adicionar R\$ ${subTotal.toStringAsFixed(2).replaceFirst('.', ',')}', 100, 50, Icons.add_shopping_cart, () async {
+                                if (formKey.currentState!.validate()) {
+                                  int idSale;
+                                  await SalesController().idSale().then((res) async {
+                                    idSale = res;
+                                    await ProductsCartController().add(idSale, idProduct, nameProduct, int.parse(txtQtd.text), idVariation, false);
+            
+                                    await SalesController().getTotal().then((res){
+                                      // SalesController().updateTotal(idSale, res + subTotal);
+                                      Navigator.pop(context);
+                                      success(context, 'Produto adicionado com sucesso');
+                                    }).catchError((e){
+                                      error(context, 'Ocorreu um erro ao adicionar o produto: $e');
+                                      
+                                    });
+            
+                                  }).catchError((e){
+                                    error(context, 'Ocorreu um erro ao adicionar o produto: $e');
+                                    print(e);
+                                  });
+            
+                                } else {
+                                  setState(() {
+                                    autoValidation = true;
+                                  });
+                                }
+                              }),
+                            );
+                          } else if (snapshot.connectionState == ConnectionState.waiting) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
                           } else {
-                            setState(() {
-                              autoValidation = true;
-                            });
+                            return const Center(
+                              child: Text('Ocorreu um erro ao carregar os dados'),
+                            );
                           }
-                        }),
-                      ),
+                        },
+                      )
+      
+                      
                     ]
                   ),
                 )
@@ -307,8 +338,6 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
           ),
         ),
       ),
-      
-      bottomNavigationBar: const Bottom(),
     );
   }
 }

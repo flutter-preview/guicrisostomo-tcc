@@ -1,7 +1,15 @@
-import 'package:mysql1/mysql1.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:postgres/postgres.dart';
 import 'package:tcc/shared/config.dart';
 
-Future<SupabaseClient> connectSupadatabase() async {
-  return Supabase.instance.client;
+Future<PostgreSQLConnection> connectSupadatabase() async {
+  PostgreSQLConnection conn = PostgreSQLConnection(
+    Config.supabaseHost,
+    Config.supabasePort,
+    Config.supabaseDatabase,
+    username: Config.supabaseUser,
+    password: Config.supabasePassword,
+    
+  );
+  await conn.open();
+  return conn;
 }

@@ -9,20 +9,28 @@ import 'package:tcc/view/widget/snackBars.dart';
       
 class LoginController {
   Future<String?> getTypeUser() async {
+    final User? user = FirebaseAuth.instance.currentUser;
     
-    return await connectSupadatabase().then((value1) async {
+    return await connectSupadatabase().then((conn) async {
       
-      final User? user = FirebaseAuth.instance.currentUser;
-      return await value1.from(
-        'type_user'
-      ).select(
-        'name, tb_user!inner(type, uid)'
-      ).eq(
-        'tb_user.uid', user?.uid
-      ).single().limit(1, foreignTable: 'tb_user').then((value) {
-        TypeUser typeUser = TypeUser.fromJson(value);
-        return typeUser.name;
+      
+      
+      return await conn.query('select tu.name from tb_user u INNER JOIN type_user tu ON u.type = tu.id where uid = @uid', substitutionValues: {
+        'uid': user!.uid
+      }).then((List value) {
+        conn.close();
+        return value[0][0];
       });
+      // value1.from(
+      //   'type_user'
+      // ).select(
+      //   'name, tb_user!inner(type, uid)'
+      // ).eq(
+      //   'tb_user.uid', user?.uid
+      // ).single().limit(1, foreignTable: 'tb_user').then((value) {
+      //   TypeUser typeUser = TypeUser.fromJson(value);
+      //   return typeUser.name;
+      // });
 
       // final results = await conn.query('select tu.name from user u INNER JOIN type_user tu ON u.type = tu.id where uid = ?', [user?.uid]);
       // conn.close();
@@ -52,13 +60,22 @@ class LoginController {
       .then((res) async {
         
         await connectSupadatabase().then((conn) async {
-          await conn.from('tb_user').insert({
+          
+          await conn.query('insert into tb_user (uid, name, email, phone, type) values (@uid, @name, @email, @phone, @type)', substitutionValues: {
             'uid': res.user?.uid,
             'name': name,
             'email': email,
             'phone': phone.replaceAll(RegExp(r'[-() ]'), ''),
             'type': 1,
           });
+          conn.close();
+          // await conn.from('tb_user').insert({
+          //   'uid': res.user?.uid,
+          //   'name': name,
+          //   'email': email,
+          //   'phone': phone.replaceAll(RegExp(r'[-() ]'), ''),
+          //   'type': 1,
+          // });
 
           success(context, 'Usuário criado com sucesso.');
           redirectUser(context);
@@ -143,15 +160,22 @@ class LoginController {
     var uid = FirebaseAuth.instance.currentUser!.uid;
 
     return connectSupadatabase().then((conn) async {
-      return await conn.from('tb_user').select(
-        '*'
-      ).eq(
-        'uid', uid
-      ).single().then((value) {
+      
+      // return await conn.from('tb_user').select(
+      //   '*'
+      // ).eq(
+      //   'uid', uid
+      // ).single().then((value) {
+      //   return value;
+      // }).then((value) {
+      //   UserList user = UserList.fromJson(value);
+      //   return user;
+      // });
+      return conn.query('select * from tb_user where uid = @uid', substitutionValues: {
+        'uid': uid,
+      }).then((List value) {
+        conn.close();
         return value;
-      }).then((value) {
-        UserList user = UserList.fromJson(value);
-        return user;
       });
       // Results results = await conn.query('select * from user where uid = ?', [uid]);
       // conn.close();
@@ -160,13 +184,24 @@ class LoginController {
 
   Future<void> updateUser(id, name, email, phone, context) async {
     await connectSupadatabase().then((conn) async {
-      await conn.from('tb_user').update({
+      
+      // await conn.from('tb_user').update({
+      //   'name': name,
+      //   'email': email,
+      //   'phone': phone.replaceAll(RegExp(r'[-() ]'), ''),
+      // }).eq(
+      //   'uid', id
+      // ).then((value) {
+      //   redirectUser(context);
+      //   success(context, 'Usuário atualizado com sucesso.');
+      // });
+      await conn.query('update tb_user set name=@name, email=@email, phone=@phone where uid=@uid', substitutionValues: {
         'name': name,
         'email': email,
         'phone': phone.replaceAll(RegExp(r'[-() ]'), ''),
-      }).eq(
-        'uid', id
-      ).then((value) {
+        'uid': id,
+      }).then((List value) {
+        conn.close();
         redirectUser(context);
         success(context, 'Usuário atualizado com sucesso.');
       });
@@ -223,10 +258,13 @@ class LoginController {
       // var t = await getTypeUser() ?? 'Cliente';
       // success(context, t);
       // return;
+      
     await getTypeUser().then((String? typeUser) async {
+      
       if (typeUser == null) {
         await connectSupadatabase().then((insert) {
-          insert.from('tb_user').insert({
+          insert.open();
+          insert.query('insert into tb_user (uid, name, email, phone, type, image) values (@uid, @name, @email, @phone, @type, @image)', substitutionValues: {
             'uid': value.user?.uid,
             'name': value.user?.displayName,
             'email': value.user?.email,
@@ -234,6 +272,15 @@ class LoginController {
             'type': 1,
             'image': value.user?.photoURL,
           });
+          insert.close();
+          // insert.from('tb_user').insert({
+          //   'uid': value.user?.uid,
+          //   'name': value.user?.displayName,
+          //   'email': value.user?.email,
+          //   'phone': null,
+          //   'type': 1,
+          //   'image': value.user?.photoURL,
+          // });
           // insert.query('insert into user (uid, name, email, phone, type, image) values (?, ?, ?, ?, ?, ?)',
           //   [value.user?.uid, value.user?.displayName, value.user?.email, null, 1, value.user?.photoURL]);
         },);

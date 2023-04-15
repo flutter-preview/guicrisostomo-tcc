@@ -40,7 +40,7 @@ class _ProductsCartState extends State<ProductsCart> {
                 ProductsCartList dados = widget.product[index];
                 dynamic item = dados;//snapshot.data![index];
                 String uid;
-                String? idItem = dados.idProduct;
+                int? idItem = dados.idProduct;
                 String? name = dados.name;
                 num? price = dados.price;
                 int? qtd = dados.qtd;

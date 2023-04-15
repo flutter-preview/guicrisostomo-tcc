@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tcc/view/pages/screen_presentation.dart';
 
 Function validatorString(String text) {
   return (String? value) {

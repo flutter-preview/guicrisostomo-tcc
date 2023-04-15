@@ -16,14 +16,4 @@ class Business {
     this.active,
     this.highValue,
   });
-
-  factory Business.fromJson(Map<String, dynamic> json) => Business(
-    cnpj: json["cnpj"],
-    name: json["name"],
-    description: json["description"],
-    linkImage: json["link_image"],
-    phone: json["phone"],
-    active: json["active"],
-    highValue: json["high_value"],
-  );
 }
