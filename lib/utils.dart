@@ -1,82 +1,80 @@
 import 'package:flutter/material.dart';
 
-Function validatorString(String text) {
-  return (String? value) {
-    if (value == null || value.isEmpty) {
+String? validatorString(String? text) {
+  if (text == null || text.isEmpty) {
+    return text;
+  }
+  return null;
+}
+
+String? validatorNumber(String? text) {
+  
+  text = text!.replaceFirst(',', '.');
+  if (int.tryParse(text) == null) {
+    return text;
+  } else {
+    if (text.isEmpty) {
       return text;
     }
     return null;
-  };
+  }
+  
 }
 
-Function validatorNumber(String text) {
-  return (String? value) {
-    value = value!.replaceFirst(',', '.');
-    if (int.tryParse(value) == null) {
-      return text;
-    } else {
-      if (value.isEmpty) {
-        return text;
-      }
-      return null;
-    }
-  };
-}
+String? validatorEmail(String? text) {
+  
+  if (text == null || text.isEmpty) {
+    return text;
+  }
 
-Function validatorEmail(String text) {
-  return (String? value) {
-    if (value == null || value.isEmpty) {
-      return text;
-    }
-
-    String pattern =
-        r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]"
-        r"{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]"
-        r"{0,253}[a-zA-Z0-9])?)*$";
-    RegExp regex = RegExp(pattern);
-    if (!regex.hasMatch(value)) {
-      return text;
-    } else {
-      return null;
-    }
-  };
-}
-
-Function validatorPassword(String text) {
-  return (String? value) {
-    if (value == null || value.isEmpty) {
-      return text;
-    }
+  String pattern =
+      r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]"
+      r"{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]"
+      r"{0,253}[a-zA-Z0-9])?)*$";
+  RegExp regex = RegExp(pattern);
+  if (!regex.hasMatch(text)) {
+    return text;
+  } else {
     return null;
-  };
+  }
+  
 }
 
-Function validatorConfirmPassword(String text, TextEditingController fieldPassword) {
-  return (String? value) {
-    if (value == null || value.isEmpty) {
-      return text;
-    }
-
-    if (value != fieldPassword.text) {
-      return 'As senhas devem ser iguais';
-    }
-    
-    return null;
-  };
+String? validatorPassword(String? text) {
+  
+  if (text == null || text.isEmpty) {
+    return text;
+  }
+  return null;
+  
 }
 
-Function validatorPhone(String text) {
-  return (String? value) {
-    value = value!.replaceAll(RegExp('[^0-9A-Za-z]'), '');
+String? validatorConfirmPassword(String? text, TextEditingController fieldPassword) {
+  
+  if (text == null || text.isEmpty) {
+    return text;
+  }
 
-    if (int.tryParse(value) == null) {
-      return text;
-    }
+  if (text != fieldPassword.text) {
+    return 'As senhas devem ser iguais';
+  }
+  
+  return null;
+  
+}
 
-    if (value.length < 14) {
-      return text;
-    }
+String? validatorPhone(String? text) {
+  
+  text = text!.replaceAll(RegExp('[^0-9A-Za-z]'), '');
 
-    return null;
-  };
+  if (int.tryParse(text) == null) {
+    return text;
+  }
+
+  if (text.length < 14) {
+    return text;
+  }
+
+  return null;
+  
 }
