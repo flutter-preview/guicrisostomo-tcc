@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tcc/model/StandardCheckBox.dart';
 import 'package:tcc/globals.dart' as globals;
+import 'package:tcc/view/widget/snackBars.dart';
 
 class CheckBoxWidget extends StatefulWidget {
   final List<CheckBoxList> list;
@@ -47,6 +48,8 @@ class _CheckBoxWidgetState extends State<CheckBoxWidget> {
                 setState(() {
                   widget.list[index].isChecked = value!;
                 });
+              } else {
+                error(context, 'Selecione no máximo ${widget.limitCheck} opções.');
               }
             },
             title: Text(widget.list[index].value),
