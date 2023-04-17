@@ -7,11 +7,13 @@ import 'package:tcc/controller/mysql/Lists/sales.dart';
 import 'package:tcc/main.dart';
 import 'package:tcc/model/ProductItemList.dart';
 import 'package:tcc/model/ProductsCart.dart';
+import 'package:tcc/model/StandardCheckBox.dart';
 import 'package:tcc/model/Variation.dart';
 import 'package:tcc/model/standardListDropDown.dart';
 import 'package:tcc/model/standardRadioButton.dart';
 import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/button.dart';
+import 'package:tcc/view/widget/checkBox.dart';
 import 'package:tcc/view/widget/dropDownButton.dart';
 import 'package:tcc/view/widget/radioButton.dart';
 import 'package:tcc/view/widget/sectionVisible.dart';
@@ -233,6 +235,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
     Future<Widget> addWidgetVariation(Variation element) async {
       List<DropDownList> itemsDropDownButton = [];
       List<RadioButtonList> itemsRadioListTile = [];
+      List<CheckBoxList> itemsCheckBoxListTile = [];
       
       if (element.isDropDown != null) {
         if (element.isDropDown == true) {
@@ -257,25 +260,40 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
             }
           });
         } else {
-          itemsRadioListTile.add(
-            RadioButtonList(
-              name: "Não quero ${element.category.toLowerCase()}",
-              icon: Icons.shopping_cart,
-            )
-          );
+          if (element.limitItems == 1) {
+            itemsRadioListTile.add(
+              RadioButtonList(
+                name: "Não quero ${element.category.toLowerCase()}",
+                icon: Icons.shopping_cart,
+              )
+            );
 
-          await ProductsController().list(element.category, element.size!, '').then((List<ProductItemList> res) {
-            if (res.isNotEmpty) {
-              for (final ProductItemList item in res) {
-                itemsRadioListTile.add(
-                  RadioButtonList(
-                    name: item.name,
-                    icon: Icons.shopping_cart,
-                  )
-                );
+            await ProductsController().list(element.category, element.size!, '').then((List<ProductItemList> res) {
+              if (res.isNotEmpty) {
+                for (final ProductItemList item in res) {
+                  itemsRadioListTile.add(
+                    RadioButtonList(
+                      name: item.name,
+                      icon: Icons.shopping_cart,
+                    )
+                  );
+                }
               }
-            }
-          });
+            });
+          } else {
+            await ProductsController().list(element.category, element.size!, '').then((List<ProductItemList> res) {
+              if (res.isNotEmpty) {
+                for (final ProductItemList item in res) {
+                  itemsCheckBoxListTile.add(
+                    CheckBoxList(
+                      value: item.name,
+                    )
+                  );
+                }
+              }
+            });
+          }
+          
         }
       }
 
@@ -321,9 +339,15 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
             },
           )
         :
-          RadioButon(
-            list: itemsRadioListTile,
-          )
+          (element.limitItems == 1) ?
+            RadioButon(
+              list: itemsRadioListTile,
+            )
+          :
+            CheckBoxWidget(
+              list: itemsCheckBoxListTile,
+              limitCheck: element.limitItems ?? 0,
+            )
       );
     }
 

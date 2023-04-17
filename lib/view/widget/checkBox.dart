@@ -1,0 +1,66 @@
+import 'package:flutter/material.dart';
+import 'package:tcc/model/StandardCheckBox.dart';
+import 'package:tcc/globals.dart' as globals;
+
+class CheckBoxWidget extends StatefulWidget {
+  final List<CheckBoxList> list;
+  final int limitCheck;
+  const CheckBoxWidget({
+    super.key,
+    required this.list,
+    required this.limitCheck,
+  });
+
+  @override
+  State<CheckBoxWidget> createState() => _CheckBoxWidgetState();
+}
+
+class _CheckBoxWidgetState extends State<CheckBoxWidget> {
+  int getCheckBoxSelected() {
+    int count = 0;
+    for (var item in widget.list) {
+      if (item.isChecked) count++;
+    }
+    return count;
+  }
+  
+  @override
+  Widget build(BuildContext context) {
+    return Theme(
+      data: ThemeData(
+        checkboxTheme: CheckboxThemeData(
+          fillColor: MaterialStateColor.resolveWith((states) => globals.primaryBlack),
+        ),
+      ),
+
+      child: ListView.builder(
+        itemCount: widget.list.length,
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemBuilder: (context, index) {
+          return CheckboxListTile(
+            value: widget.list[index].isChecked,
+            onChanged: (value) {
+              getCheckBoxSelected();
+
+              if (widget.limitCheck > getCheckBoxSelected() || widget.list[index].isChecked || widget.limitCheck == 0) {
+                setState(() {
+                  widget.list[index].isChecked = value!;
+                });
+              }
+            },
+            title: Text(widget.list[index].value),
+            subtitle: (widget.list[index].description != null) ? Text(
+              widget.list[index].description!,
+              style: const TextStyle(
+                fontSize: 12,
+              ),
+            ) : null,
+
+            controlAffinity: ListTileControlAffinity.leading,
+          );
+        },
+      ),
+    );
+  }
+}
