@@ -51,7 +51,8 @@ dependencies:
   flutter_native_splash: ^2.2.19
   mysql1: ^0.20.0
   flutter_dotenv: ^5.0.2
-  supabase_flutter: ^1.6.2
+  postgres: ^2.6.1
+  fluent_ui: ^4.5.0
 
 dev_dependencies:
   flutter_test:
