@@ -4,10 +4,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:supabase_flutter/supabase_flutter.dart' hide User;
 import 'package:tcc/controller/firebase/auth.dart';
 import 'package:tcc/firebase_options.dart';
-import 'package:tcc/shared/config.dart';
 import 'package:tcc/view/pages/customer/screen_call_waiter.dart';
 import 'package:tcc/view/pages/customer/screen_fo_get_adress.dart';
 import 'package:tcc/view/pages/customer/screen_fo_main.dart';
@@ -221,11 +219,6 @@ Future<void> main() async {
   
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
-  );
-
-  await Supabase.initialize(
-    url: Config.supabaseUrl,
-    anonKey: Config.supabaseKey,
   );
   
   FirebaseAuth auth = FirebaseAuth.instance;

@@ -7,13 +7,15 @@ class SwitchListTileWidget extends StatefulWidget {
   bool value = true;
   void Function(bool)? onChanged;
   Icon? icon;
+  bool privateValue;
 
   SwitchListTileWidget({
     super.key,
     required this.title,
-    required this.onChanged,
     required this.value,
+    this.onChanged,
     this.icon,
+    this.privateValue = false,
   });
 
   @override
@@ -27,7 +29,12 @@ class _SwitchListTileWidgetState extends State<SwitchListTileWidget> {
     return SwitchListTile(
       value: widget.value, 
       
-      onChanged: widget.onChanged,
+      onChanged: (widget.privateValue == false) ? widget.onChanged : (value) {
+        setState(() {
+          widget.value = value;
+        });
+        widget.onChanged!(value);
+      },
 
       activeColor: Colors.green,
       inactiveThumbColor: Colors.red,

@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors, unused_local_variable, prefer_typing_uninitialized_variables, file_names
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tcc/controller/mysql/Lists/productsCart.dart';
 import 'package:tcc/controller/mysql/Lists/sales.dart';
@@ -8,7 +7,6 @@ import 'package:tcc/globals.dart' as globals;
 import 'package:tcc/main.dart';
 import 'package:tcc/model/ProductItemList.dart';
 import 'package:tcc/model/Variation.dart';
-import 'package:tcc/view/pages/screen_add.dart';
 import 'package:tcc/view/widget/snackBars.dart';
 
 class ProductItem extends StatefulWidget {
@@ -40,7 +38,7 @@ class _ProductItemState extends State<ProductItem> {
               int idItem = dados.id;
               String name = dados.name;
               num price = dados.price;
-              String description = dados.description;
+              String description = dados.description!;
               Variation variation = dados.variation!;
               String? linkImage = dados.link_image;
         

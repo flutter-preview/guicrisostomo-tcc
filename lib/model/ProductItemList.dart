@@ -3,7 +3,7 @@ import 'package:tcc/model/Variation.dart';
 class ProductItemList {
   int id;
   String name;
-  String description;
+  String? description;
   String? link_image;
   num price;
   Variation? variation;
