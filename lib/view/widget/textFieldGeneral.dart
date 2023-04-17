@@ -130,6 +130,10 @@ class _TextFieldGeneralState extends State<TextFieldGeneral> {
             obscureText: widget.isPassword ? !widget.isPasswordVisible : false,
             autocorrect: !widget.isPassword,
             enableSuggestions: !widget.isPassword,
+            focusNode: FocusNode(
+              canRequestFocus: true,
+              descendantsAreFocusable: false,
+            ),
             
             style: const TextStyle(
               fontSize: 24,
@@ -245,7 +249,6 @@ class _TextFieldGeneralState extends State<TextFieldGeneral> {
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
