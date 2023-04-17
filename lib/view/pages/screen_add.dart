@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:tcc/controller/mysql/Lists/businessInfo.dart';
@@ -64,8 +66,10 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
     Variation variation = productSelect.variation!;
     int idVariation = variation.id ?? 0;
 
-    Widget constructorWidgetSepareItemsText(Variation variation, String separator) {
-      List<String> items = variation.textController.text.split(separator);
+    Widget constructorWidgetSepareItemsText(Variation variation, String separator, int idText) {
+      TextEditingController textController = variation.getTextController(idText);
+      String text = textController.text;
+      List<String> items = text.split(separator);
 
       return StatefulBuilder(
         builder: (context, setState) {
@@ -106,10 +110,10 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                           setState(() {
                             items.removeAt(index);
                           
-                            variation.textController.text = items.join(separator);
+                            text = items.join(separator);
                           
-                            variation.textController.selection = TextSelection.fromPosition(
-                              TextPosition(offset: variation.textController.text.length)
+                            textController.selection = TextSelection.fromPosition(
+                              TextPosition(offset: text.length)
                             );
                           });
                           
@@ -130,108 +134,6 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
       );
     }
 
-    Widget addTextBoxVariation(Variation element) {
-      return StatefulBuilder(
-        builder: (context, setState) {
-          return Column(
-            children: [
-              TextFieldGeneral(
-                variavel: element.textController,
-                keyboardType: TextInputType.text,
-                label: element.category,
-                validator: (value) {
-                  return validatorString(value!);
-                },
-                onChanged: (value) {
-                    
-                  setState(() {
-                    
-                  // //   // element.isTextEmpty = !element.isTextEmpty;
-                  // //   // element.setValues(element.category, value);
-                  // //   if (value == "" || value.isEmpty) {
-                  // //     element.isTextEmpty = true;
-                  // //   } else {
-                  // //     element.isTextEmpty = false;
-                  // //   }
-
-                    element.checkTextEmpty();
-                  });
-                },
-                // key: Key(element.category),
-                context: context,
-              ),
-
-              const SizedBox(height: 10),
-
-              if (element.pricePerItem = true)
-                Column(
-                  children: [
-                    Text(
-                      "Será cobrado R\$ ${element.price?.toStringAsFixed(2)} por ${element.category.toLowerCase()}! Por favor, separe os itens por vírgula",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: globals.primary
-                      ),
-                    ),
-
-                    const SizedBox(height: 10), 
-
-                    Text(
-                      "Exemplo: ${element.category.toLowerCase()} 1, ${element.category.toLowerCase()} 2, ${element.category.toLowerCase()} 3",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: globals.primary
-                      ),
-                    ),
-
-                    const SizedBox(height: 10),
-
-                    Text(
-                      "Caso não queira ${element.category.toLowerCase()}, deixe o campo em branco",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: globals.primary
-                      ),
-                    ),
-
-                    const SizedBox(height: 10),
-
-                    element.isTextEmpty == false ?
-                      constructorWidgetSepareItemsText(element, ',')
-                    :
-                      Container(),
-
-                    const SizedBox(height: 10),
-
-
-                  ],
-                ),
-      
-              SwitchListTileWidget(
-                title: Text(
-                  "Quero ${element.category.toLowerCase()}",
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                value: !element.isTextEmpty,
-                privateValue: true,
-                onChanged: (value) {
-                  setState(() {
-                    element.setValues(value ? element.value : "");
-                  });
-                },
-              )
-            ],
-          );
-        }
-      );
-    }
-
     Future<Widget> addWidgetVariation(Variation element) async {
       List<DropDownList> itemsDropDownButton = [];
       List<RadioButtonList> itemsRadioListTile = [];
@@ -246,7 +148,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
             )
           );
 
-          await ProductsController().list(element.category, element.size!, '').then((List<ProductItemList> res) {
+          await ProductsController().list(element.category, element.size, '').then((List<ProductItemList> res) {
             
             if (res.isNotEmpty) {
               for (final ProductItemList item in res) {
@@ -281,7 +183,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
               }
             });
           } else {
-            await ProductsController().list(element.category, element.size!, '').then((List<ProductItemList> res) {
+            await ProductsController().list(element.category, element.size, '').then((List<ProductItemList> res) {
               if (res.isNotEmpty) {
                 for (final ProductItemList item in res) {
                   itemsCheckBoxListTile.add(
@@ -301,31 +203,97 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
         nameSection: element.category, 
         isShowPart: true,
         child: (element.isDropDown == null) ?
-          Column(
-            children: [
-              addTextBoxVariation(element)
+          await ProductsController().list(element.category, element.size, '').then((List<ProductItemList> res) {
+            List<Widget> listWidgetTextEditing = [];
 
-              // SizedBox(height: 10),
+            if (res.isNotEmpty) {
+              for (final ProductItemList item in res) {
+                element.addValue(item.id);
 
-              // SwitchListTileWidget(
-              //   title: Text(
-              //     "Quero ${element.category.toLowerCase()}",
-              //     style: TextStyle(
-              //       fontSize: 16,
-              //       fontWeight: FontWeight.bold,
-              //     ),
-              //   ),
-              //   value: !element.isTextEmpty, 
-              //   onChanged: (value) {
-              //     setState(() {
-              //       element.setValues(element.category, "");
-              //       // element.isTextEmpty = value;
-              //     });
-              //   },
-              //   privateValue: true,
-              // )
-            ],
-          )
+                listWidgetTextEditing.add(
+                  StatefulBuilder(
+                    builder: (context, setState) {
+                      return Column(
+                        children: [
+                          TextFieldGeneral(
+                            variavel: element.getTextController(item.id),
+                            keyboardType: TextInputType.text,
+                            label: "Digite o nome do ${item.name.toLowerCase()}",
+                            validator: (value) {
+                              return validatorString(value!);
+                            },
+                            onChanged: (value) {
+                                
+                              setState(() {
+                                
+                              // //   // element.isTextEmpty = !element.isTextEmpty;
+                              // //   // element.setValues(element.category, value);
+                                if (value == "" || value.isEmpty) {
+                                  element.isTextEmpty[item.id] = true;
+                                } else {
+                                  element.isTextEmpty[item.id] = false;
+                                }
+
+                                // element.checkTextEmpty(item.id);
+                              });
+                            },
+                            // key: Key(element.category),
+                            context: context,
+                          ),
+
+                          const SizedBox(height: 10),
+
+                          if (element.pricePerItem == true)
+                            Column(
+                              children: [
+                                Text(
+                                  "Será cobrado R\$ ${item.price.toStringAsFixed(2)} por ${element.category.toLowerCase()}! Por favor, separe os itens por vírgula",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: globals.primary
+                                  ),
+                                ),
+
+                                const SizedBox(height: 10),
+
+                                element.isTextEmpty[item.id] == false ?
+                                  constructorWidgetSepareItemsText(element, ',', item.id)
+                                :
+                                  Container(),
+                              ],
+                            ),
+              
+                          SwitchListTileWidget(
+                            title: Text(
+                              "Quero ${element.category.toLowerCase()} ${item.name.toLowerCase()}",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            value: !element.isTextEmpty.values.toList()[element.isTextEmpty.keys.toList().indexOf(item.id)],
+                            privateValue: true,
+                            onChanged: (value) {
+                              setState(() {
+                                element.setValues(value ? element.getValues(item.id) : "", item.id);
+                              });
+                            },
+                          )
+                        ],
+                      );
+                    }
+                  )
+                );
+              }
+
+              return Column(
+                children: listWidgetTextEditing,
+              );
+            } else {
+              return const SizedBox();
+            }
+          })
           
         : element.isDropDown == true ?
           DropDown(

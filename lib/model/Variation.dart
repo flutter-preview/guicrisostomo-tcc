@@ -4,56 +4,67 @@ class Variation {
   int? id;
   String category;
   String size;
-  num? price = 0;
   bool? isDropDown = false;
   int? limitItems = 0;
   bool? pricePerItem = false;
-  bool isTextEmpty = true;
+  bool selectItemExist;
   String value = '';
-  TextEditingController textController = TextEditingController();
-  // Stream<bool> stream = Stream.value(true);
-  // static Map<dynamic, dynamic> values = {};
+  Map<int, TextEditingController> textController = {};
+  Map<int, bool> isTextEmpty = {};
 
   Variation({
     this.id = 0, 
     this.category = '', 
     this.size = '',
-    this.price = 0,
     this.isDropDown = false,
     this.limitItems = 0,
     this.pricePerItem = false,
+    this.selectItemExist = false,
   });
 
-  String getValues([bool isText = false]) {
-    if (!isText) {
-        return value;
-    } else {
-        return textController.text;
+  String getValues([int index = -1]) {
+    if (index == -1) {
+      return value;
     }
+    
+    return textController[index]!.text;
   }
 
-  void setValues(newValue) {
-
+  void setValues(newValue, [int index = -1]) {
+    if (index == -1) {
     value = newValue;
-    textController.text = newValue;
+    } else {
+      textController[index]!.text = newValue;
+    }
 
-
-    checkTextEmpty();
+    checkTextEmpty(index);
     
   }
 
-  void checkTextEmpty() {
+  void checkTextEmpty(int index) {
 
-    isTextEmpty = true;
-
+    isTextEmpty[index] = true;
     
-      if (value != '') {
-        isTextEmpty = false;
-      }
-    
-      if (textController.text != '') {
-        isTextEmpty = false;
-      }
+    if (value != '') {
+      isTextEmpty[index] = false;
+    }
+  
+    if (getValues(index) != '') {
+      isTextEmpty[index] = false;
+    }
 
+  }
+
+  void addValue(int id) {
+    textController[id] = TextEditingController();
+    isTextEmpty[id] = true;
+  }
+
+  TextEditingController getTextController(int index) {
+    if (textController[index] == null) {
+      addValue(index);
+    }
+
+    return textController[index]!;
   }
 }

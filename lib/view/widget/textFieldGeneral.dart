@@ -130,10 +130,6 @@ class _TextFieldGeneralState extends State<TextFieldGeneral> {
             obscureText: widget.isPassword ? !widget.isPasswordVisible : false,
             autocorrect: !widget.isPassword,
             enableSuggestions: !widget.isPassword,
-            focusNode: FocusNode(
-              canRequestFocus: true,
-              descendantsAreFocusable: false,
-            ),
             
             style: const TextStyle(
               fontSize: 24,

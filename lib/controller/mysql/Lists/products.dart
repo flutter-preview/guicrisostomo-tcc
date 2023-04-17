@@ -52,13 +52,10 @@ class ProductsController {
               isDropDown: row[2],
               limitItems: row[3],
               pricePerItem: row[4],
+              // selectItemExist: row[5],
             )
           );
-
-          print('looooooooooooooop');
         }
-
-        print('listVariations: ${list.isEmpty}');
         return list;
       });
       // ''';
