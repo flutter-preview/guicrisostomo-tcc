@@ -1,6 +1,5 @@
-import 'dart:math';
-
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:tcc/controller/mysql/Lists/businessInfo.dart';
 import 'package:tcc/controller/mysql/Lists/products.dart';
@@ -43,9 +42,14 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
   num subTotal = 0;
   List<ProductsCartList> items = [];
   List<Variation> variations = [];
-  List<Future<Widget>> listWidgetVariation = [];
+  List<Widget> listWidgetVariation = [];
+
+  List<DropDownList> itemsDropDownButton = [];
+  List<RadioButtonList> itemsRadioListTile = [];
+  List<CheckBoxList> itemsCheckBoxListTile = [];
 
   var txtQtd = TextEditingController();
+  var txtObservation = TextEditingController();
   
   @override
   void initState() {
@@ -134,11 +138,11 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
       );
     }
 
-    Future<Widget> addWidgetVariation(Variation element) async {
-      List<DropDownList> itemsDropDownButton = [];
-      List<RadioButtonList> itemsRadioListTile = [];
-      List<CheckBoxList> itemsCheckBoxListTile = [];
-      
+    Future<void> getInfoVariation(Variation element) async {
+      itemsDropDownButton = [];
+      itemsRadioListTile = [];
+      itemsCheckBoxListTile = [];
+
       if (element.isDropDown != null) {
         if (element.isDropDown == true) {
           itemsDropDownButton.add(
@@ -198,124 +202,260 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
           
         }
       }
+    }
 
-      return SectionVisible(
-        nameSection: element.category, 
-        isShowPart: true,
-        child: (element.isDropDown == null) ?
-          await ProductsController().list(element.category, element.size, '').then((List<ProductItemList> res) {
-            List<Widget> listWidgetTextEditing = [];
+    Future<Widget> putTextBoxVariation(element) async {
+      return await ProductsController().list(element.category, element.size, '').then((List<ProductItemList> res) {
+        List<Widget> listWidgetTextEditing = [];
 
-            if (res.isNotEmpty) {
-              for (final ProductItemList item in res) {
-                element.addValue(item.id);
+        if (res.isNotEmpty) {
+          for (final ProductItemList item in res) {
+            element.addValue(item.id);
 
-                listWidgetTextEditing.add(
-                  StatefulBuilder(
-                    builder: (context, setState) {
-                      return Column(
-                        children: [
-                          TextFieldGeneral(
-                            variavel: element.getTextController(item.id),
-                            keyboardType: TextInputType.text,
-                            label: "Digite o nome do ${item.name.toLowerCase()}",
-                            validator: (value) {
-                              return validatorString(value!);
-                            },
-                            onChanged: (value) {
-                                
-                              setState(() {
-                                
-                              // //   // element.isTextEmpty = !element.isTextEmpty;
-                              // //   // element.setValues(element.category, value);
-                                if (value == "" || value.isEmpty) {
-                                  element.isTextEmpty[item.id] = true;
-                                } else {
-                                  element.isTextEmpty[item.id] = false;
-                                }
+            listWidgetTextEditing.add(
+              StatefulBuilder(
+                builder: (context, setState) {
+                  return Column(
+                    children: [
+                      TextFieldGeneral(
+                        variavel: element.getTextController(item.id),
+                        keyboardType: TextInputType.text,
+                        label: "Digite o nome do ${item.name.toLowerCase()}",
+                        validator: (value) {
+                          return validatorString(value!);
+                        },
+                        onChanged: (value) {
+                            
+                          setState(() {
+                            
+                          // //   // element.isTextEmpty = !element.isTextEmpty;
+                          // //   // element.setValues(element.category, value);
+                            if (value == "" || value.isEmpty) {
+                              element.isTextEmpty[item.id] = true;
+                            } else {
+                              element.isTextEmpty[item.id] = false;
+                            }
 
-                                // element.checkTextEmpty(item.id);
-                              });
-                            },
-                            // key: Key(element.category),
-                            context: context,
-                          ),
+                            // element.checkTextEmpty(item.id);
+                          });
+                        },
+                        // key: Key(element.category),
+                        context: context,
+                      ),
 
-                          const SizedBox(height: 10),
+                      const SizedBox(height: 10),
 
-                          if (element.pricePerItem == true)
-                            Column(
-                              children: [
-                                Text(
-                                  "Será cobrado R\$ ${item.price.toStringAsFixed(2)} por ${element.category.toLowerCase()}! Por favor, separe os itens por vírgula",
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: globals.primary
-                                  ),
-                                ),
-
-                                const SizedBox(height: 10),
-
-                                element.isTextEmpty[item.id] == false ?
-                                  constructorWidgetSepareItemsText(element, ',', item.id)
-                                :
-                                  Container(),
-                              ],
-                            ),
-              
-                          SwitchListTileWidget(
-                            title: Text(
-                              "Quero ${element.category.toLowerCase()} ${item.name.toLowerCase()}",
+                      if (element.pricePerItem == true)
+                        Column(
+                          children: [
+                            Text(
+                              "Será cobrado R\$ ${item.price.toStringAsFixed(2)} por ${element.category.toLowerCase()}! Por favor, separe os itens por vírgula",
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
+                                color: globals.primary
                               ),
                             ),
-                            value: !element.isTextEmpty.values.toList()[element.isTextEmpty.keys.toList().indexOf(item.id)],
-                            privateValue: true,
-                            onChanged: (value) {
-                              setState(() {
-                                element.setValues(value ? element.getValues(item.id) : "", item.id);
-                              });
-                            },
-                          )
-                        ],
-                      );
-                    }
-                  )
-                );
-              }
 
-              return Column(
-                children: listWidgetTextEditing,
-              );
-            } else {
-              return const SizedBox();
-            }
-          })
+                            const SizedBox(height: 10),
+
+                            element.isTextEmpty[item.id] == false ?
+                              constructorWidgetSepareItemsText(element, ',', item.id)
+                            :
+                              Container(),
+                          ],
+                        ),
           
-        : element.isDropDown == true ?
-          DropDown(
+                      SwitchListTileWidget(
+                        title: Text(
+                          "Quero ${element.category.toLowerCase()} ${item.name.toLowerCase()}",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        value: !element.isTextEmpty.values.toList()[element.isTextEmpty.keys.toList().indexOf(item.id)],
+                        privateValue: true,
+                        onChanged: (value) {
+                          setState(() {
+                            element.setValues(value ? element.getValues(item.id) : "", item.id);
+                          });
+                        },
+                      )
+                    ],
+                  );
+                }
+              )
+            );
+          }
+
+          return Column(
+            children: listWidgetTextEditing,
+          );
+        } else {
+          return const SizedBox();
+        }
+      });
+    }
+
+    Widget putDropDownVariation(Variation element, [List<DropDownList> items = const []]) {
+      
+      return StatefulBuilder(
+        builder: (context, setState) {
+          return DropDown(
             text: element.category,
-            itemsDropDownButton: itemsDropDownButton,
-            variavel: null,
+            itemsDropDownButton: items.isEmpty ? itemsDropDownButton : items,
+            variavel: element.getValues() == '' ? null : element.getValues(),
             callback: (value) {
               setState(() {
                 element.setValues(value);
               });
             },
-          )
-        :
-          (element.limitItems == 1) ?
-            RadioButon(
-              list: itemsRadioListTile,
-            )
-          :
-            CheckBoxWidget(
-              list: itemsCheckBoxListTile,
-              limitCheck: element.limitItems ?? 0,
-            )
+          );
+        }
+      );
+    }
+
+    Widget putLimitElementVariation(Variation element, [List<RadioButtonList> itemsRadio = const []]) {
+      return (element.limitItems == 1 || itemsRadio.isNotEmpty) ?
+        RadioButon(
+          list: itemsRadio.isEmpty ? itemsRadioListTile : itemsRadio,
+        )
+      :
+        CheckBoxWidget(
+          list: itemsCheckBoxListTile,
+          limitCheck: element.limitItems ?? 0,
+        );
+    }
+
+    Future<Widget> addWidgetVariation(Variation element) async {
+      return Column(
+        children: [
+          await ProductsController().listVariations(element.id!).then((List<Variation> res) async {
+            List<Widget> subVariations = [];
+            List<DropDownList> subVariationDropDownButton = [];
+            List<RadioButtonList> subVariationRadioListTile = [];
+
+            if (res.isNotEmpty) {
+              subVariationDropDownButton = [];
+              subVariationRadioListTile = [];
+              
+
+              if (element.isDropDown == null) {
+                for (final Variation item in res) {
+                  subVariations.add(await addWidgetVariation(item));
+                }
+              } else {
+                for (final Variation item in res) {
+                  element.isDropDown == true ?
+                    subVariationDropDownButton.add(
+                      DropDownList(
+                        name: item.category,
+                        icon: Icons.category,
+                      )
+                    )
+                  :
+                    subVariationRadioListTile.add(
+                      RadioButtonList(
+                        name: item.category,
+                        icon: Icons.category,
+                      )
+                    );
+                }
+
+                subVariations.add(
+                  element.isDropDown == true ?
+                    putDropDownVariation(element, subVariationDropDownButton)
+                  :
+                    putLimitElementVariation(element, subVariationRadioListTile)
+                );
+
+                for (final Variation item in res) {
+                  print("item.category: ${item.category} - element.value: ${element.value}");
+                  
+                  getInfoVariation(item);
+
+
+                  subVariations.add(
+                    ConditionalBuilder(
+                      condition: element.value == item.category,
+                      builder: (context) {
+                        return Column(
+                          children: [
+                            const SizedBox(height: 10),
+
+                            if (item.isDropDown == null) 
+                              FutureBuilder(
+                                future: putTextBoxVariation(item),
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasData) {
+                                    return snapshot.data as Widget;
+                                  } else {
+                                    return const SizedBox();
+                                  }
+                                }
+                              )
+                            else item.isDropDown == true ?
+                              putDropDownVariation(item)
+                            :
+                              putLimitElementVariation(item)
+                          ],
+                        );
+                      },
+                      fallback: (context) {
+                        return const SizedBox();
+                      },
+                    )
+                  );
+                }
+              }
+
+              return Column(
+                children: subVariations,
+              );
+
+            } else {
+              
+              // ------ NÃO encontra sub variação --------
+
+              getInfoVariation(element);
+
+              return (element.isDropDown == null) ?
+                await putTextBoxVariation(element)
+              : element.isDropDown == true ?
+                putDropDownVariation(element)
+              :
+                putLimitElementVariation(element);
+            }
+          })
+        ],
+      );
+    }
+
+    Widget verifyAddSection(Variation element) {
+
+      return element.isDropDown != true ?
+        SectionVisible(
+        nameSection: element.category,
+        child: FutureBuilder(
+          future: addWidgetVariation(element),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return snapshot.data as Widget;
+            } else {
+              return const SizedBox();
+            }
+          },
+        ),
+      ) : FutureBuilder(
+        future: addWidgetVariation(element),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return snapshot.data as Widget;
+          } else {
+            return const SizedBox();
+          }
+        },
       );
     }
 
@@ -353,12 +493,13 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
 
     Future<void> listItemsVariations() async {
       listWidgetVariation.clear();
+      variations.clear();
+
       return await ProductsController().listVariations(idVariation).then((List<Variation> res) {
         if (res.isNotEmpty) {
           for (final Variation item in res) {
             variations.add(item);
-            listWidgetVariation.add(addWidgetVariation(item));
-            
+            listWidgetVariation.add(verifyAddSection(item));
           }
         }
       });
@@ -647,25 +788,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
 
                           listWidgetVariation.isNotEmpty ?
                             Column(
-                              children: List.generate(
-                                listWidgetVariation.length,
-                                (index) {
-                                  return FutureBuilder(
-                                    future: listWidgetVariation[index],
-                                    builder: (context, snapshot) {
-                                      if (snapshot.hasData) {
-                                        return snapshot.data!;
-                                      } else if (snapshot.hasError) {
-                                        return Text('${snapshot.error}');
-                                      } else {
-                                        return const Center(
-                                          child: CircularProgressIndicator(),
-                                        );
-                                      }
-                                    },
-                                  );
-                                }
-                              )
+                              children: listWidgetVariation
                             )
                           : Container(),
 
@@ -688,6 +811,17 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                                 subTotal *= int.parse(value);
                               },
                             ),
+                          ),
+
+                          const SizedBox(height: 10),
+
+                          TextFieldGeneral(
+                            label: 'Observações' ,
+                            variavel: txtObservation, 
+                            keyboardType: TextInputType.text,
+                            validator: (value) {
+                              return validatorString(value!);
+                            },
                           ),
 
                           const SizedBox(height: 20),

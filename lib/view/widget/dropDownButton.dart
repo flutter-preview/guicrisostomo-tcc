@@ -24,6 +24,7 @@ class DropDown extends StatefulWidget {
 class _DropDownState extends State<DropDown> {
 
   Widget dropDownGeneral() {
+    print(widget.variavel);
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.8,
       child: DropdownButtonFormField(
@@ -48,6 +49,7 @@ class _DropDownState extends State<DropDown> {
         isExpanded: true,
         value: widget.variavel,
         items: widget.itemsDropDownButton.map((map) {
+          print(map.name);
           return DropdownMenuItem<String> (
             value: map.name,
             child: DropdownButtonHideUnderline(
@@ -76,6 +78,12 @@ class _DropDownState extends State<DropDown> {
         onChanged: (dynamic value) {
           setState(() {
             widget.variavel = value;
+          });
+
+          widget.itemsDropDownButton.forEach((element) {
+            if (element.name == value) {
+              element.onSelected!();
+            }
           });
     
           widget.callback(widget.variavel!);

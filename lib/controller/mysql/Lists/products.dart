@@ -23,19 +23,16 @@ class ProductsController {
   Future<List<Variation>> listVariations(int idVariation) async {
     // Variation().clearValues();
 
-    print('idVariation aaaaaaaaa: $idVariation');
-
     return await connectSupadatabase().then((conn) async {
       // var querySelect = '''
       return await conn.query('''
-        SELECT DISTINCT ON (category) category, size, is_drop_down, limit_items, price_per_item FROM variations 
+        SELECT DISTINCT ON (category) category, size, is_drop_down, limit_items, price_per_item, id FROM variations 
         WHERE business = @business AND fg_ativo = true AND is_show_home = false AND sub_variation = @subvariation 
         ''', 
         substitutionValues: {
         'business': globals.businessId,
         'subvariation': idVariation
       }).then((List value) {
-        print('value: ${value.length}');
         conn.close();
         List<Variation> list = [];
 
@@ -52,19 +49,12 @@ class ProductsController {
               isDropDown: row[2],
               limitItems: row[3],
               pricePerItem: row[4],
-              // selectItemExist: row[5],
+              id: row[5]
             )
           );
         }
         return list;
       });
-      // ''';
-      // var querySelect = 'SELECT DISTINCT v.category';
-      // querySelect += ' FROM products p';
-      // querySelect += ' INNER JOIN variations v ON v.id = p.id_variation';
-      // querySelect += ' WHERE v.business = ?';
-      // querySelect += ' GROUP BY v.category';
-      // querySelect += ' ORDER BY v.category';
     });
   }
 
