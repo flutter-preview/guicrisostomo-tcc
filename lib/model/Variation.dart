@@ -7,7 +7,6 @@ class Variation {
   bool? isDropDown = false;
   int? limitItems = 0;
   bool? pricePerItem = false;
-  bool selectItemExist;
   String value = '';
   Map<int, TextEditingController> textController = {};
   Map<int, bool> isTextEmpty = {};
@@ -19,14 +18,13 @@ class Variation {
     this.isDropDown = false,
     this.limitItems = 0,
     this.pricePerItem = false,
-    this.selectItemExist = false,
   });
 
   String getValues([int index = -1]) {
     if (index == -1) {
       return value;
     }
-    
+
     return textController[index]!.text;
   }
 
