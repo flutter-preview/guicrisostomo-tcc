@@ -148,7 +148,7 @@ class _ScreenOrderState extends State<ScreenOrder> {
                                     itemsDropDownButton: listDropDown,
                                     callback: (value) {
                                       setState(() {
-                                        txtDropDown = value;
+                                        txtDropDown = value!;
                                       });
                                     },
                                   ),

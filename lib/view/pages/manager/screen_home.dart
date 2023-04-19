@@ -186,7 +186,7 @@ class _ScreenHomeManagerState extends State<ScreenHomeManager> {
                       variavel: selectedData,
                       callback: (value) {
                         setState(() {
-                          selectedData = value;
+                          selectedData = value!;
                         });
                       },
                     ),

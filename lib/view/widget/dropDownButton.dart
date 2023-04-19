@@ -7,7 +7,7 @@ import 'package:tcc/model/standardListDropDown.dart';
 class DropDown extends StatefulWidget {
   final String text;
   final List<DropDownList> itemsDropDownButton;
-  final Function(String) callback;
+  final void Function(String?)? callback;
   String? variavel;
   DropDown({
     super.key,
@@ -75,18 +75,11 @@ class _DropDownState extends State<DropDown> {
             ),
           );
         }).toList(),
-        onChanged: (dynamic value) {
+        onChanged: (String? value) {
           setState(() {
             widget.variavel = value;
+            widget.callback!(value);
           });
-
-          widget.itemsDropDownButton.forEach((element) {
-            if (element.name == value) {
-              element.onSelected!();
-            }
-          });
-    
-          widget.callback(widget.variavel!);
         },
       ),
     );

@@ -194,7 +194,7 @@ class _ScreenInfoEmployeeState extends State<ScreenInfoEmployee> {
                             variavel: dataSelected,
                             callback: (value) {
                               setState(() {
-                                dataSelected = value;
+                                dataSelected = value!;
                               });
                             },
                           ),

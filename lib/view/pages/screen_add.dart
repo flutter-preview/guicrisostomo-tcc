@@ -299,20 +299,31 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
     }
 
     Widget putDropDownVariation(Variation element, [List<DropDownList> items = const []]) {
+      print('passou aqui');
+      if (element.value == '') {
+        element.setValues("Não quero ${element.category.toLowerCase()}");
+      }
       
-      return StatefulBuilder(
-        builder: (context, setState) {
-          return DropDown(
-            text: element.category,
-            itemsDropDownButton: items.isEmpty ? itemsDropDownButton : items,
-            variavel: element.getValues() == '' ? null : element.getValues(),
-            callback: (value) {
-              setState(() {
-                element.setValues(value);
-              });
-            },
-          );
-        }
+      return DropDown(
+        text: element.category,
+        itemsDropDownButton: items.isEmpty ? itemsDropDownButton : items,
+        variavel: element.value,
+        callback: (value) {
+          int t = element.isSelectedSubvariation.keys.toList()[items.indexWhere((element) => element.name == value)];
+          print('passou aqui 2 $t');
+          setState(() {
+            element.setValues(value);
+            element.value = value ?? '';
+
+            if (items.isNotEmpty) {
+              if (value != "Não quero ${element.category.toLowerCase()}") {
+                print('passou aqui 3: ${t}');
+                print('passou aqui 4: ${items.length}');
+                element.setIsSelectedSubvariation(t);
+              }
+            }
+          });
+        },
       );
     }
 
@@ -333,12 +344,20 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
         children: [
           await ProductsController().listVariations(element.id!).then((List<Variation> res) async {
             List<Widget> subVariations = [];
-            List<DropDownList> subVariationDropDownButton = [];
-            List<RadioButtonList> subVariationRadioListTile = [];
+            List<DropDownList> subVariationDropDownButton = [
+              DropDownList(
+                name: "Não quero ${element.category.toLowerCase()}",
+                icon: Icons.category,
+              )
+            ];
+            List<RadioButtonList> subVariationRadioListTile = [
+              RadioButtonList(
+                name: "Não quero ${element.category.toLowerCase()}",
+                icon: Icons.category,
+              )
+            ];
 
             if (res.isNotEmpty) {
-              subVariationDropDownButton = [];
-              subVariationRadioListTile = [];
               
 
               if (element.isDropDown == null) {
@@ -363,6 +382,8 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                     );
                 }
 
+                print(subVariationDropDownButton.map((e) => e.name).toList());
+
                 subVariations.add(
                   element.isDropDown == true ?
                     putDropDownVariation(element, subVariationDropDownButton)
@@ -375,10 +396,15 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                   
                   getInfoVariation(item);
 
+                  element.addSubVariation(item.id!);
 
+                  // if (item.category == element.value) {
+                  //   print("item.category: ${item.category} - element.value: ${element.value}");
+                  //   subVariations.add(await addWidgetVariation(item));
+                  // }
                   subVariations.add(
                     ConditionalBuilder(
-                      condition: element.value == item.category,
+                      condition: element.isSelectedSubvariation[item.id] ?? false,
                       builder: (context) {
                         return Column(
                           children: [
@@ -403,7 +429,14 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                         );
                       },
                       fallback: (context) {
-                        return const SizedBox();
+                        return Text(
+                          "${item.category.toLowerCase()} - ${element.value}",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: globals.primary
+                          ),
+                        );
                       },
                     )
                   );
@@ -513,6 +546,8 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
       setState(() {});
     }
 
+    print(variations.map((e) => e.isSelectedSubvariation.values).toList());
+    print(variations.map((e) => e.isSelectedSubvariation).toList());
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(180),

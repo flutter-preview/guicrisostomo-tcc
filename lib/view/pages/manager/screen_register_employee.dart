@@ -83,7 +83,7 @@ class _ScreenRegisterEmployeeState extends State<ScreenRegisterEmployee> {
               variavel: txtDropDownEmployee, 
               callback: (value) {
                 setState(() {
-                  txtDropDownEmployee = value;
+                  txtDropDownEmployee = value!;
                 });
               },
             ),
