@@ -10,7 +10,6 @@ class Variation {
   String value = '';
   Map<int, TextEditingController> textController = {};
   Map<int, bool> isTextEmpty = {};
-  Map<int, bool> isSelectedSubvariation = {};
 
   Variation({
     this.id = 0, 
@@ -65,28 +64,5 @@ class Variation {
     }
 
     return textController[index]!;
-  }
-
-  bool getIsSelectedSubvariation(int index) {
-    if (isSelectedSubvariation[index] == null) {
-      isSelectedSubvariation[index] = false;
-    }
-
-    return isSelectedSubvariation[index]!;
-    // return false;
-  }
-
-  void setIsSelectedSubvariation(int index) {
-    isSelectedSubvariation.entries.forEach((element) {
-      if (element.key != index) {
-        isSelectedSubvariation[element.key] = false;
-      } else {
-        isSelectedSubvariation[element.key] = true;
-      }
-    });
-  }
-
-  void addSubVariation(int id) {
-    isSelectedSubvariation[id] = false;
   }
 }

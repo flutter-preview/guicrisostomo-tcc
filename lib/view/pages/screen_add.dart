@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:tcc/controller/mysql/Lists/businessInfo.dart';
 import 'package:tcc/controller/mysql/Lists/products.dart';
@@ -40,9 +39,11 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
   bool autoValidation = false;
 
   num subTotal = 0;
+  int t = 0;
   List<ProductsCartList> items = [];
   List<Variation> variations = [];
   List<Widget> listWidgetVariation = [];
+  List<Widget> subVariations = <Widget>[];
 
   List<DropDownList> itemsDropDownButton = [];
   List<RadioButtonList> itemsRadioListTile = [];
@@ -56,6 +57,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
     super.initState();
     autoValidation = false;
     txtQtd.text = "1";
+    t = 0;
   }
 
   @override
@@ -138,7 +140,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
       );
     }
 
-    Future<void> getInfoVariation(Variation element) async {
+    Future<bool> getInfoVariation(Variation element) async {
       itemsDropDownButton = [];
       itemsRadioListTile = [];
       itemsCheckBoxListTile = [];
@@ -174,7 +176,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
               )
             );
 
-            await ProductsController().list(element.category, element.size!, '').then((List<ProductItemList> res) {
+            await ProductsController().list(element.category, element.size, '').then((List<ProductItemList> res) {
               if (res.isNotEmpty) {
                 for (final ProductItemList item in res) {
                   itemsRadioListTile.add(
@@ -202,6 +204,8 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
           
         }
       }
+
+      return true;
     }
 
     Future<Widget> putTextBoxVariation(element) async {
@@ -298,30 +302,19 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
       });
     }
 
-    Widget putDropDownVariation(Variation element, [List<DropDownList> items = const []]) {
-      print('passou aqui');
+    Widget putDropDownVariation(Variation element) {
       if (element.value == '') {
         element.setValues("Não quero ${element.category.toLowerCase()}");
       }
       
       return DropDown(
         text: element.category,
-        itemsDropDownButton: items.isEmpty ? itemsDropDownButton : items,
+        itemsDropDownButton: itemsDropDownButton,
         variavel: element.value,
         callback: (value) {
-          int t = element.isSelectedSubvariation.keys.toList()[items.indexWhere((element) => element.name == value)];
-          print('passou aqui 2 $t');
           setState(() {
             element.setValues(value);
             element.value = value ?? '';
-
-            if (items.isNotEmpty) {
-              if (value != "Não quero ${element.category.toLowerCase()}") {
-                print('passou aqui 3: ${t}');
-                print('passou aqui 4: ${items.length}');
-                element.setIsSelectedSubvariation(t);
-              }
-            }
           });
         },
       );
@@ -343,7 +336,8 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
       return Column(
         children: [
           await ProductsController().listVariations(element.id!).then((List<Variation> res) async {
-            List<Widget> subVariations = [];
+            subVariations = [];
+            List<Variation> subVariationsAux = [];
             List<DropDownList> subVariationDropDownButton = [
               DropDownList(
                 name: "Não quero ${element.category.toLowerCase()}",
@@ -358,19 +352,19 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
             ];
 
             if (res.isNotEmpty) {
-              
 
-              if (element.isDropDown == null) {
-                for (final Variation item in res) {
-                  subVariations.add(await addWidgetVariation(item));
-                }
-              } else {
-                for (final Variation item in res) {
+              for (final Variation item in res) {
+                subVariationsAux.add(item);
                   element.isDropDown == true ?
                     subVariationDropDownButton.add(
                       DropDownList(
                         name: item.category,
                         icon: Icons.category,
+                        onSelected: () {
+                          setState(() {
+                            element.setValues(item.category);
+                          });
+                        },
                       )
                     )
                   :
@@ -382,69 +376,63 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                     );
                 }
 
-                print(subVariationDropDownButton.map((e) => e.name).toList());
+              return StatefulBuilder(
+                builder: (context, setState) {
+                  return Column(
+                    children: [
+                      
+                      DropDown(
+                        text: element.category,
+                        itemsDropDownButton: subVariationDropDownButton,
+                        variavel: element.value == '' ? 'Não quero ${element.category.toLowerCase()}' : element.value,
+                        callback: (value) {
+                          
+                          setState(() {
+                            element.setValues(value);
+                            element.value = value ?? '';
+                            t = subVariationDropDownButton.indexWhere((element) => element.name == value);
+                            t--;
+                          });
+                        },
+                      ),
 
-                subVariations.add(
-                  element.isDropDown == true ?
-                    putDropDownVariation(element, subVariationDropDownButton)
-                  :
-                    putLimitElementVariation(element, subVariationRadioListTile)
-                );
-
-                for (final Variation item in res) {
-                  print("item.category: ${item.category} - element.value: ${element.value}");
-                  
-                  getInfoVariation(item);
-
-                  element.addSubVariation(item.id!);
-
-                  // if (item.category == element.value) {
-                  //   print("item.category: ${item.category} - element.value: ${element.value}");
-                  //   subVariations.add(await addWidgetVariation(item));
-                  // }
-                  subVariations.add(
-                    ConditionalBuilder(
-                      condition: element.isSelectedSubvariation[item.id] ?? false,
-                      builder: (context) {
-                        return Column(
-                          children: [
-                            const SizedBox(height: 10),
-
-                            if (item.isDropDown == null) 
+                      
+                      for (final Variation item in subVariationsAux)
+                        Builder(
+                          builder: (context) {
+                            return (t >= 0 && element.value != '' && element.value != 'Não quero ${element.category}') ?
+                              (subVariationsAux[t] == item) ?
                               FutureBuilder(
-                                future: putTextBoxVariation(item),
+                                future: getInfoVariation(item),
                                 builder: (context, snapshot) {
                                   if (snapshot.hasData) {
-                                    return snapshot.data as Widget;
+                                    return (item.isDropDown == null) ?
+                                      FutureBuilder(
+                                        future: putTextBoxVariation(item),
+                                        builder: (context, snapshot) {
+                                          if (snapshot.hasData) {
+                                            return Column(
+                                              children: subVariations,
+                                            );
+                                          } else {
+                                            return const SizedBox();
+                                          }
+                                        },
+                                      )
+                                    : item.isDropDown == true ?
+                                      putDropDownVariation(item)
+                                    :
+                                      putLimitElementVariation(item);
                                   } else {
                                     return const SizedBox();
                                   }
-                                }
-                              )
-                            else item.isDropDown == true ?
-                              putDropDownVariation(item)
-                            :
-                              putLimitElementVariation(item)
-                          ],
-                        );
-                      },
-                      fallback: (context) {
-                        return Text(
-                          "${item.category.toLowerCase()} - ${element.value}",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: globals.primary
-                          ),
-                        );
-                      },
-                    )
+                                },
+                            ) : const SizedBox() : const SizedBox();
+                          }
+                        ),
+                    ],
                   );
                 }
-              }
-
-              return Column(
-                children: subVariations,
               );
 
             } else {
@@ -546,8 +534,6 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
       setState(() {});
     }
 
-    print(variations.map((e) => e.isSelectedSubvariation.values).toList());
-    print(variations.map((e) => e.isSelectedSubvariation).toList());
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(180),
@@ -823,7 +809,13 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
 
                           listWidgetVariation.isNotEmpty ?
                             Column(
-                              children: listWidgetVariation
+                              children: [
+                                ...listWidgetVariation,
+
+                                const SizedBox(height: 20),
+
+                                ...subVariations
+                              ]
                             )
                           : Container(),
 
