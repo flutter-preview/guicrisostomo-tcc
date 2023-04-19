@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tcc/model/ProductItemList.dart';
 
 class Variation {
   int? id;
@@ -10,6 +11,7 @@ class Variation {
   String value = '';
   Map<int, TextEditingController> textController = {};
   Map<int, bool> isTextEmpty = {};
+  Map<ProductItemList, bool> productItemSelected = {};
 
   Variation({
     this.id = 0, 
@@ -64,5 +66,27 @@ class Variation {
     }
 
     return textController[index]!;
+  }
+
+  void addProductItem(ProductItemList productItem) {
+    if (productItemSelected[productItem] == null) {
+      productItemSelected[productItem] = false;
+    }
+  }
+
+  void setProductItemSelected(String product, bool value) {
+    productItemSelected.entries.forEach((element) {
+      if (element.key.name == product) {
+        productItemSelected[element.key] = value;
+      }
+    });
+  }
+
+  bool getProductItemSelected(ProductItemList productItem) {
+    if (productItemSelected[productItem] == null) {
+      productItemSelected[productItem] = false;
+    }
+
+    return productItemSelected[productItem]!;
   }
 }

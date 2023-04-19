@@ -96,8 +96,8 @@ class _ProductItemState extends State<ProductItem> {
                     
                     
                     SizedBox(
-                      width: 30,
-                      height: 30,
+                      width: 40,
+                      height: MediaQuery.of(context).size.height * 0.05,
                       child: ElevatedButton(
                           
                         onPressed: () async {
@@ -135,8 +135,8 @@ class _ProductItemState extends State<ProductItem> {
                     
                     
                     SizedBox(
-                      width: 30,
-                      height: 30,
+                      width: 40,
+                      height: MediaQuery.of(context).size.height * 0.05,
                       
                       child: ElevatedButton(
                         

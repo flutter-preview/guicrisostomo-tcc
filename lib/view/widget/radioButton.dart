@@ -7,10 +7,12 @@ import 'package:tcc/view/widget/snackBars.dart';
 
 class RadioButon extends StatefulWidget {
   List<RadioButtonList> list;
+  void Function(String?)? callback;
 
   RadioButon({
     super.key,
     required this.list,
+    this.callback,
   });
 
   @override
@@ -39,6 +41,10 @@ class _RadioButonState extends State<RadioButon> {
               setState(() {
                 RadioButtonList.setGroup(value!);
               }),
+
+              if (e.callback != null) {
+                e.callback!(value!)
+              }
             },
             
             title: Row(

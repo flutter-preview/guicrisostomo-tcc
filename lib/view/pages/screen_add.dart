@@ -155,9 +155,9 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
           );
 
           await ProductsController().list(element.category, element.size, '').then((List<ProductItemList> res) {
-            
             if (res.isNotEmpty) {
               for (final ProductItemList item in res) {
+                element.addProductItem(item);
                 itemsDropDownButton.add(
                   DropDownList(
                     name: item.name,
@@ -179,6 +179,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
             await ProductsController().list(element.category, element.size, '').then((List<ProductItemList> res) {
               if (res.isNotEmpty) {
                 for (final ProductItemList item in res) {
+                  element.addProductItem(item);
                   itemsRadioListTile.add(
                     RadioButtonList(
                       name: item.name,
@@ -192,6 +193,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
             await ProductsController().list(element.category, element.size, '').then((List<ProductItemList> res) {
               if (res.isNotEmpty) {
                 for (final ProductItemList item in res) {
+                  element.addProductItem(item);
                   itemsCheckBoxListTile.add(
                     CheckBoxList(
                       value: item.name,
@@ -315,6 +317,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
           setState(() {
             element.setValues(value);
             element.value = value ?? '';
+            element.setProductItemSelected(value!, true);
           });
         },
       );
@@ -324,11 +327,21 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
       return (element.limitItems == 1 || itemsRadio.isNotEmpty) ?
         RadioButon(
           list: itemsRadio.isEmpty ? itemsRadioListTile : itemsRadio,
+          callback: (value) {
+            setState(() {
+              element.setValues(value);
+            });
+          },
         )
       :
         CheckBoxWidget(
           list: itemsCheckBoxListTile,
           limitCheck: element.limitItems ?? 0,
+          callback: (value) {
+            setState(() {
+              element.setValues(value);
+            });
+          },
         );
     }
 
@@ -480,6 +493,18 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
       );
     }
 
+    num calcVariations() {
+      num total = 0;
+
+      for (final Variation item in variations) {
+        if (item.value != '' && item.value != 'Não quero ${item.category.toLowerCase()}') {
+          total += item.!;
+        }
+      }
+
+      return total;
+    }
+
     Future<void> listItemsMain() async {
       await BusinessInformationController().getInfoCalcValue().then((isHighValue) async {
         await SalesController().idSale().then((idOrder) async {
@@ -507,6 +532,8 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                 subTotal /= res.length;
               }
             }
+
+            subTotal += calcVariations();
           });
         });
       });

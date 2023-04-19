@@ -6,10 +6,13 @@ import 'package:tcc/view/widget/snackBars.dart';
 class CheckBoxWidget extends StatefulWidget {
   final List<CheckBoxList> list;
   final int limitCheck;
+  final void Function(int)? onChanged;
+
   const CheckBoxWidget({
     super.key,
     required this.list,
     required this.limitCheck,
+    this.onChanged,
   });
 
   @override
@@ -50,6 +53,10 @@ class _CheckBoxWidgetState extends State<CheckBoxWidget> {
                 });
               } else {
                 error(context, 'Selecione no máximo ${widget.limitCheck} opções.');
+              }
+
+              if (widget.onChanged != null) {
+                widget.onChanged!(getCheckBoxSelected());
               }
             },
             title: Text(widget.list[index].value),
