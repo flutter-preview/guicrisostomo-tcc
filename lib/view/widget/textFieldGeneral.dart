@@ -251,11 +251,7 @@ class _TextFieldGeneralState extends State<TextFieldGeneral> {
           
               onFieldSubmitted: widget.onFieldSubmitted,
           
-              onChanged: (value) {
-                // setState(() {
-                  widget.onChanged!(value);
-                // });
-              },
+              onChanged: widget.onChanged,
           
               onTap: () async {
                 if (widget.keyboardType == TextInputType.datetime) {
