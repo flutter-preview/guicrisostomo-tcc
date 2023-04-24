@@ -78,7 +78,6 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
       if (mounted) {
         setState(() {
           subTotal = 0;
-          print('resetSubTotal');
         });
       }
     }
@@ -92,10 +91,10 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
       print(variation.price);
 
       WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (context.mounted) {
-              resetSubTotal();
-            }
-          });
+        if (context.mounted) {
+          resetSubTotal();
+        }
+      });
 
       return StatefulBuilder(
         builder: (context, setState) {
@@ -584,7 +583,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
     Future<void> listItemsMain() async {
       await BusinessInformationController().getInfoCalcValue().then((isHighValue) async {
         await SalesController().idSale().then((idOrder) async {
-          await ProductsCartController().listItemCurrent(idOrder, idProduct == 0 ? await ProductsCartController().getVariationItem(idOrder) : idVariation).then((List<ProductsCartList> res) {
+          await ProductsCartController().listItemCurrent(idOrder, idProduct == 0 ? idVariation = await ProductsCartController().getVariationItem(idOrder) : idVariation).then((List<ProductsCartList> res) {
             subTotal = productSelect.price;
             items.clear();
             
