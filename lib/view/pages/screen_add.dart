@@ -616,12 +616,13 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
     }
 
     Future<void> calcSubTotal() async {
-      print('aaaaaaaaaaa');
       subTotal = saveSubTotal;
 
       setState(() {
         subTotal += calcVariations();
       });
+
+      subTotal *= int.parse(txtQtd.text);
     }
 
     Future<void> listItemsVariations() async {
@@ -646,6 +647,116 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
       setState(() {});
 
       return true;
+    }
+
+    Widget bottom() {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.arrow_back_ios_rounded),
+            color: globals.primary,
+          ),
+
+          SizedBox(
+            height: 50,
+            width: 140,
+            child: TextFieldGeneral(
+              label: '', 
+              variavel: txtQtd,
+              context: context, 
+              keyboardType: TextInputType.number,
+              ico: null,
+              validator: (value) {
+                validatorNumber(value!);
+              },
+              onChanged: (value) {
+                setState(() {
+                  calcSubTotal();
+                });
+              },
+              hasSum: true,
+              size: const [50, 140],
+            ),
+          ),
+          
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  globals.primary,
+                  globals.primary.withOpacity(0.8)
+                ]
+              )
+            ),
+
+            child: ElevatedButton(
+              onPressed: () async {
+                if (formKey.currentState!.validate()) {
+                  int idSale;
+                  await SalesController().idSale().then((res) async {
+                    idSale = res;
+                    await ProductsCartController().add(idSale, idProduct, nameProduct, int.parse(txtQtd.text), idVariation, false);
+
+                    await SalesController().getTotal().then((res){
+                      // SalesController().updateTotal(idSale, res + subTotal);
+                      Navigator.pop(context);
+                      success(context, 'Produto adicionado com sucesso');
+                    }).catchError((e){
+                      error(context, 'Ocorreu um erro ao adicionar o produto: $e');
+                      
+                    });
+
+                  }).catchError((e){
+                    error(context, 'Ocorreu um erro ao adicionar o produto: $e');
+                    print(e);
+                  });
+
+                } else {
+                  setState(() {
+                    autoValidation = true;
+                  });
+                }
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.transparent,
+                padding: const EdgeInsets.all(10),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  
+
+                  const Icon(
+                    Icons.add_shopping_cart,
+                    color: Colors.white,
+                    size: 30,
+                  ),
+
+                  const SizedBox(width: 10),
+
+                  Text(
+                    'R\$ ${subTotal.toStringAsFixed(2)}',
+                    style: const TextStyle(
+                      fontSize: 20,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+            )
+          ),
+        ],
+      );
     }
 
     return Scaffold(
@@ -937,27 +1048,6 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                             )
                           : Container(),
 
-                          const SizedBox(height: 20),
-
-                          Container(
-                            alignment: Alignment.bottomLeft,
-                            height: 80,
-                            width: MediaQuery.of(context).size.width,
-                            child: TextFieldGeneral(
-                              label: 'Quantidade', 
-                              variavel: txtQtd,
-                              context: context, 
-                              keyboardType: TextInputType.number,
-                              ico: Icons.shopping_cart_outlined,
-                              validator: (value) {
-                                validatorNumber(value!);
-                              },
-                              onChanged: (value) {
-                                subTotal *= int.parse(value);
-                              },
-                            ),
-                          ),
-
                           const SizedBox(height: 10),
 
                           TextFieldGeneral(
@@ -967,53 +1057,6 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                           ),
 
                           const SizedBox(height: 20),
-
-                          FutureBuilder(
-                            future: subTotal != 0 ? Future.value(true) : calcSubTotal(),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState == ConnectionState.done) {
-                                return Container(
-                                  alignment: Alignment.bottomRight,
-                                  height: 60,
-                                  child: button('Adicionar R\$ ${subTotal.toStringAsFixed(2).replaceFirst('.', ',')}', 100, 50, Icons.add_shopping_cart, () async {
-                                    if (formKey.currentState!.validate()) {
-                                      int idSale;
-                                      await SalesController().idSale().then((res) async {
-                                        idSale = res;
-                                        await ProductsCartController().add(idSale, idProduct, nameProduct, int.parse(txtQtd.text), idVariation, false);
-                
-                                        await SalesController().getTotal().then((res){
-                                          // SalesController().updateTotal(idSale, res + subTotal);
-                                          Navigator.pop(context);
-                                          success(context, 'Produto adicionado com sucesso');
-                                        }).catchError((e){
-                                          error(context, 'Ocorreu um erro ao adicionar o produto: $e');
-                                          
-                                        });
-                
-                                      }).catchError((e){
-                                        error(context, 'Ocorreu um erro ao adicionar o produto: $e');
-                                        print(e);
-                                      });
-                
-                                    } else {
-                                      setState(() {
-                                        autoValidation = true;
-                                      });
-                                    }
-                                  }),
-                                );
-                              } else if (snapshot.connectionState == ConnectionState.waiting) {
-                                return const Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              } else {
-                                return const Center(
-                                  child: Text('Ocorreu um erro ao carregar os dados'),
-                                );
-                              }
-                            },
-                          )
       
                           
                         ]
@@ -1024,6 +1067,24 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
               ),
             );
           }
+        ),
+      ),
+
+      bottomSheet: Padding(
+        padding: const EdgeInsets.all(10),
+        child: FutureBuilder(
+          future: subTotal != 0 ? Future.value(true) : calcSubTotal(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return bottom();
+            } else if (snapshot.hasError) {
+              return const Center(
+                child: Text('Ocorreu um erro ao carregar os dados'),
+              );
+            } else {
+              return bottom();
+            }
+          },
         ),
       ),
     );

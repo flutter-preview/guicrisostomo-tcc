@@ -20,6 +20,8 @@ class TextFieldGeneral extends StatefulWidget {
   bool isPasswordVisible = false;
   bool multipleDate = false;
   bool isHour = false;
+  bool hasSum = false;
+  List<double> size;
   List<TextInputFormatter>? inputFormatter;
 
   TextFieldGeneral
@@ -41,6 +43,8 @@ class TextFieldGeneral extends StatefulWidget {
       this.inputFormatter,
       this.multipleDate = true,
       this.isHour = false,
+      this.hasSum = false,
+      this.size = const [70, 0],
     });
 
   @override
@@ -114,129 +118,163 @@ class _TextFieldGeneralState extends State<TextFieldGeneral> {
 
   Widget textField() {
     if (widget.keyboardType != TextInputType.none) {
-      return Container(
-        margin: const EdgeInsets.fromLTRB(0,0, 10, 15),
-        
-        constraints: const BoxConstraints( 
-          minWidth: 70,
-        ),
-
-        child: Center(
-          child: TextFormField(
-            controller: widget.variavel,
-            inputFormatters: widget.inputFormatter,
-            readOnly: widget.keyboardType == TextInputType.datetime ? true : false,
-            keyboardType: widget.isPasswordVisible ? TextInputType.visiblePassword : widget.keyboardType,
-            obscureText: widget.isPassword ? !widget.isPasswordVisible : false,
-            autocorrect: !widget.isPassword,
-            enableSuggestions: !widget.isPassword,
-            
-            style: const TextStyle(
-              fontSize: 24,
-              color: Colors.black,
-            ),
-
-            decoration: InputDecoration(
-              isDense: true,
-              labelText: widget.label,
-              labelStyle: const TextStyle(
-                fontSize: 24,
+      return Padding(
+        padding: widget.hasSum ? const EdgeInsets.symmetric(horizontal: 5) : const EdgeInsets.all(20),
+        child: Container(
+          margin: widget.hasSum ? const EdgeInsets.only(bottom: 5) : const EdgeInsets.fromLTRB(0,0, 10, 15),
+          constraints: BoxConstraints( 
+            minWidth: widget.size[1],
+            minHeight: widget.size[0],
+          ),
+          child: Center(
+            child: TextFormField(
+              controller: widget.variavel,
+              inputFormatters: widget.inputFormatter,
+              readOnly: widget.keyboardType == TextInputType.datetime ? true : false,
+              keyboardType: widget.isPasswordVisible ? TextInputType.visiblePassword : widget.keyboardType,
+              obscureText: widget.isPassword ? !widget.isPasswordVisible : false,
+              autocorrect: !widget.isPassword,
+              enableSuggestions: !widget.isPassword,
+              maxLength: widget.hasSum ? 2 : null,
+              
+              style: TextStyle(
+                fontSize: widget.hasSum ? 17: 24,
                 color: Colors.black,
               ),
-
-              enabledBorder: UnderlineInputBorder(
-                borderRadius: BorderRadius.circular(20.0),
-                borderSide:  const BorderSide(color: Colors.black ),
-              ),
-
-              iconColor: MaterialStateColor.resolveWith((states) =>
-                states.contains(MaterialState.focused)
-                    ? globals.primaryBlack
-                    : globals.primary),
-
-              icon: widget.ico != null ? Padding(
-                padding: const EdgeInsets.only(top: 15),
-                child: Icon(
-                  widget.ico,
-                  size: 30
+          
+              decoration: InputDecoration(
+                
+                counterText: '',
+                labelText: widget.label,
+                labelStyle: TextStyle(
+                  fontSize: widget.hasSum ? 17: 24,
+                  color: Colors.black,
                 ),
-              ) : null,
-
-              suffixIcon: widget.isPassword ? Padding(
-                padding: const EdgeInsets.only(top: 20),
-                child: IconButton(
-                  icon: Icon(
-                    widget.isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-                    color: MaterialStateColor.resolveWith((states) =>
-                      states.contains(MaterialState.focused)
-                          ? globals.primaryBlack
-                          : globals.primary),
-                    size: 30,
+          
+                enabledBorder: UnderlineInputBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                  borderSide:  const BorderSide(color: Colors.black ),
+                ),
+          
+                iconColor: MaterialStateColor.resolveWith((states) =>
+                  states.contains(MaterialState.focused)
+                      ? globals.primaryBlack
+                      : globals.primary),
+          
+                icon: widget.ico != null ? Padding(
+                  padding: const EdgeInsets.only(top: 15),
+                  child: Icon(
+                    widget.ico,
+                    size: 30
                   ),
-                  onPressed: () {
-                    setState(() {
-                      widget.isPasswordVisible = !widget.isPasswordVisible;
-                    });
-                  },
-                ),
-              ) : widget.icoSuffix != null ? Padding(
-                padding: const EdgeInsets.only(top: 20),
-                child: Transform.rotate(
-                  angle: widget.angleSufixIcon,
+                ) : null,
+          
+                prefixIcon: widget.hasSum ?
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        if (int.parse(widget.variavel.text) > 0)
+                          widget.variavel.text = (int.parse(widget.variavel.text) - 1).toString();
+                      });
+                    },
+                    icon: const Icon(Icons.remove, color: Colors.red, size: 20,),
+                  ) : null,
+          
+                suffixIcon: widget.hasSum ?
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        if (int.parse(widget.variavel.text) < 99)
+                          widget.variavel.text = (int.parse(widget.variavel.text) + 1).toString();
+                      });
+                    },
+                    icon: const Icon(Icons.add, color: Colors.green, size: 20,),
+                  ) : widget.icoSuffix != null ? 
+                    Transform.rotate(
+                      angle: widget.angleSufixIcon,
+                      child: IconButton(
+                        onPressed: widget.eventPressIconSuffix,
+                        icon: Icon(
+                          widget.icoSuffix,
+                          size: 30
+                        ),
+                      ),
+                    ) : widget.isPassword ? Padding(
+                  padding: const EdgeInsets.only(top: 20),
                   child: IconButton(
                     icon: Icon(
-                      widget.icoSuffix,
+                      widget.isPasswordVisible ? Icons.visibility : Icons.visibility_off,
                       color: MaterialStateColor.resolveWith((states) =>
                         states.contains(MaterialState.focused)
                             ? globals.primaryBlack
                             : globals.primary),
                       size: 30,
                     ),
-                    onPressed: widget.eventPressIconSuffix,
+                    onPressed: () {
+                      setState(() {
+                        widget.isPasswordVisible = !widget.isPasswordVisible;
+                      });
+                    },
                   ),
-                ),
-              ) : null
+                ) : widget.icoSuffix != null ? Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: Transform.rotate(
+                    angle: widget.angleSufixIcon,
+                    child: IconButton(
+                      icon: Icon(
+                        widget.icoSuffix,
+                        color: MaterialStateColor.resolveWith((states) =>
+                          states.contains(MaterialState.focused)
+                              ? globals.primaryBlack
+                              : globals.primary),
+                        size: 30,
+                      ),
+                      onPressed: widget.eventPressIconSuffix,
+                    ),
+                  ),
+                ) : null
+              ),
+          
+              validator: widget.validator,
+          
+              onFieldSubmitted: widget.onFieldSubmitted,
+          
+              onChanged: (value) {
+                // setState(() {
+                  widget.onChanged!(value);
+                // });
+              },
+          
+              onTap: () async {
+                if (widget.keyboardType == TextInputType.datetime) {
+                  await onTapDate();
+                }
+          
+                if (widget.isHour) {
+                  await onTapHour();
+                }
+              },
+          
+              onEditingComplete: () {
+                setState(() {
+                  globals.isUserTyping = false;
+                });
+              },
+          
+              onSaved: (value) {
+                setState(() {
+                  globals.isUserTyping = false;
+                });
+              },
+          
+              onTapOutside: (event) {
+                setState(() {
+                  globals.isUserTyping = false;
+                });
+              },
             ),
-
-            validator: widget.validator,
-
-            onFieldSubmitted: widget.onFieldSubmitted,
-
-            onChanged: (value) {
-              // setState(() {
-                widget.onChanged!(value);
-              // });
-            },
-
-            onTap: () async {
-              if (widget.keyboardType == TextInputType.datetime) {
-                await onTapDate();
-              }
-
-              if (widget.isHour) {
-                await onTapHour();
-              }
-            },
-
-            onEditingComplete: () {
-              setState(() {
-                globals.isUserTyping = false;
-              });
-            },
-
-            onSaved: (value) {
-              setState(() {
-                globals.isUserTyping = false;
-              });
-            },
-
-            onTapOutside: (event) {
-              setState(() {
-                globals.isUserTyping = false;
-              });
-            },
-          )
-        )
+          ),
+        ),
       );
     } else {
       return Container();
@@ -260,10 +298,7 @@ class _TextFieldGeneralState extends State<TextFieldGeneral> {
         ],
       ),
 
-      child: Padding(
-        padding: const EdgeInsets.only(left: 20),
-        child: textField(),
-      ),
+      child: textField(),
     );
   }
 }
