@@ -119,7 +119,7 @@ class _TextFieldGeneralState extends State<TextFieldGeneral> {
   Widget textField() {
     if (widget.keyboardType != TextInputType.none) {
       return Padding(
-        padding: widget.hasSum ? const EdgeInsets.symmetric(horizontal: 5) : const EdgeInsets.all(20),
+        padding: widget.hasSum ? const EdgeInsets.symmetric(horizontal: 5) : const EdgeInsets.only(left: 10),
         child: Container(
           margin: widget.hasSum ? const EdgeInsets.only(bottom: 5) : const EdgeInsets.fromLTRB(0,0, 10, 15),
           constraints: BoxConstraints( 
@@ -165,7 +165,11 @@ class _TextFieldGeneralState extends State<TextFieldGeneral> {
                   padding: const EdgeInsets.only(top: 15),
                   child: Icon(
                     widget.ico,
-                    size: 30
+                    size: 30,
+                    color: MaterialStateColor.resolveWith((states) =>
+                      states.contains(MaterialState.focused)
+                          ? globals.primaryBlack
+                          : globals.primary),
                   ),
                 ) : null,
           
@@ -196,7 +200,11 @@ class _TextFieldGeneralState extends State<TextFieldGeneral> {
                         onPressed: widget.eventPressIconSuffix,
                         icon: Icon(
                           widget.icoSuffix,
-                          size: 30
+                          size: 30,
+                          color: MaterialStateColor.resolveWith((states) =>
+                            states.contains(MaterialState.focused)
+                                ? globals.primaryBlack
+                                : globals.primary),
                         ),
                       ),
                     ) : widget.isPassword ? Padding(

@@ -1,6 +1,8 @@
 // ignore_for_file: file_names
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:tcc/controller/mysql/Lists/productsCart.dart';
+import 'package:tcc/controller/mysql/Lists/sales.dart';
 import 'package:tcc/main.dart';
 import 'package:tcc/model/ProductItemList.dart';
 import 'package:tcc/model/Variation.dart';
@@ -129,6 +131,28 @@ class _BottomState extends State<Bottom> {
     );
   }
 
+  Future<void> getListItemCurrent() async {
+    await SalesController().idSale().then((value) async {
+      if (value != 0) {
+        await ProductsCartController().listItemCurrent(value).then((products) {
+          if (products.isNotEmpty) {
+            setState(() {
+              globals.isSelectNewItem = true;
+            });
+          }
+        });
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (globals.isSelectNewItem && globals.globalSelectedIndexBotton == 2) {
+      getListItemCurrent();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -139,8 +163,9 @@ class _BottomState extends State<Bottom> {
       mainAxisSize: MainAxisSize.min,
       children: [
         
-        globals.isSelectNewItem && globals.globalSelectedIndexBotton == 2 ? selectNewItem() : Container(),
-        FutureBuilder(
+        globals.isSelectNewItem && globals.globalSelectedIndexBotton == 2 ? 
+          selectNewItem() 
+          : FutureBuilder(
           future: cartInfo(context),
           builder: (context, snapshot) {
             if (snapshot.hasData) {

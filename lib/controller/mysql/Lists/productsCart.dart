@@ -67,7 +67,7 @@ class ProductsCartController {
     return list;
   }
 
-  Future<List<ProductsCartList>> listItemCurrent(int idSale, int idVariation) async {
+  Future<List<ProductsCartList>> listItemCurrent(int idSale, [int idVariation = 0]) async {
     List<ProductsCartList> list = [];
     num total = 0;
     
@@ -77,50 +77,52 @@ class ProductsCartController {
       // querySelect += ' INNER JOIN products p ON p.id = i.id_product';
       // querySelect += ' WHERE i.id_order = ? AND i.fg_current = ? AND p.id_variation = ?';
       // querySelect += ' ORDER BY i.id';
-      return await conn.query('SELECT p.price, p.id_variation, p.name, p.id, i.qtd, i.id FROM items i INNER JOIN products p ON p.id = i.id_product WHERE i.id_order = @idOrder AND i.fg_current = @fgCurrent AND p.id_variation = @idVariation ORDER BY i.id', substitutionValues: {
-        'idOrder': idSale,
-        'fgCurrent': true,
-        'idVariation': idVariation
-      }).then((List<List<dynamic>> value) {
-        conn.close();
+      if (idVariation == 0) {
+        return await conn.query('SELECT p.price, p.id_variation, p.name, p.id, i.qtd, i.id FROM items i INNER JOIN products p ON p.id = i.id_product WHERE i.id_order = @idOrder AND i.fg_current = @fgCurrent ORDER BY i.id', substitutionValues: {
+          'idOrder': idSale,
+          'fgCurrent': true,
+        }).then((List<List<dynamic>> value) {
+          conn.close();
 
-        for(var row in value) {
-          list.add(
-            ProductsCartList(
-              price: row[0],
-              idVariation: row[1],
-              name: row[2],
-              idProduct: row[3],
-              qtd: row[4],
-              id: row[5],
-            )
-          );
-        }
+          for(var row in value) {
+            list.add(
+              ProductsCartList(
+                price: row[0],
+                idVariation: row[1],
+                name: row[2],
+                idProduct: row[3],
+                qtd: row[4],
+                id: row[5],
+              )
+            );
+          }
 
-        return list;
-      });
-      // return await conn.from('items').select('''
-      //   products!inner(price), 
-      //   id_variation
-      // ''').eq('id_order', idSale).eq('fg_current', true).eq('products.id_variation', idVariation).then((value) {
-      //   List list = value;
-      //   List<ProductsCartList> product = list.map((e) => ProductsCartList(
-      //     price: e[0],
-      //     idVariation: e[1],
-      //   )).toList();
+          return list;
+        });
+      } else {
+        return await conn.query('SELECT p.price, p.id_variation, p.name, p.id, i.qtd, i.id FROM items i INNER JOIN products p ON p.id = i.id_product WHERE i.id_order = @idOrder AND i.fg_current = @fgCurrent AND p.id_variation = @idVariation ORDER BY i.id', substitutionValues: {
+          'idOrder': idSale,
+          'fgCurrent': true,
+          'idVariation': idVariation
+        }).then((List<List<dynamic>> value) {
+          conn.close();
 
-      //   return product;
-      // });
-      // var results = await conn.query(querySelect, [idSale, true, idVariation]);
-      // await conn.close();
-      // for (var row in results) {
-      //   list.add(
-      //     ProductsCartList(
-      //       price: row[0],
-      //       idVariation: row[1],
-      //     )
-      //   );
-      // }
+          for(var row in value) {
+            list.add(
+              ProductsCartList(
+                price: row[0],
+                idVariation: row[1],
+                name: row[2],
+                idProduct: row[3],
+                qtd: row[4],
+                id: row[5],
+              )
+            );
+          }
+
+          return list;
+        });
+      }
     });
 
     // return list;
