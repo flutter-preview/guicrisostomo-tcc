@@ -7,12 +7,14 @@ class Variation {
   String size;
   bool? isDropDown = false;
   int? limitItems = 0;
+  num price = 0.0;
   bool? pricePerItem = false;
   String value = '';
   Map<int, TextEditingController> textController = {};
   Map<int, bool> isTextEmpty = {};
   Map<ProductItemList, bool> productItemSelected = {};
-
+  List<Variation> subVariation = [];
+  
   Variation({
     this.id = 0, 
     this.category = '', 
@@ -20,6 +22,7 @@ class Variation {
     this.isDropDown = false,
     this.limitItems = 0,
     this.pricePerItem = false,
+    this.price = 0.0,
   });
 
   String getValues([int index = -1]) {
@@ -69,17 +72,33 @@ class Variation {
   }
 
   void addProductItem(ProductItemList productItem) {
-    if (productItemSelected[productItem] == null) {
-      productItemSelected[productItem] = false;
-    }
+    productItemSelected[productItem] = false;
   }
 
-  void setProductItemSelected(String product, bool value) {
+  void setProductItemSelected([String product = '', bool? value]) {
+    print('setProductItemSelected: $product, $value');
+
     productItemSelected.entries.forEach((element) {
-      if (element.key.name == product) {
-        productItemSelected[element.key] = value;
+      if (product == 'Não quero ${category.toLowerCase()}' || product == '') {
+        productItemSelected[element.key] = false;
+      } else {
+        if (element.key.name == product) {
+          productItemSelected[element.key] = true;
+        } else {
+          if (limitItems == 1) {
+            productItemSelected[element.key] = false;
+          } else {
+            if (value != null) {
+              productItemSelected[element.key] = value;
+            } else {
+              productItemSelected[element.key] = !productItemSelected[element.key]!;
+            }
+          }
+        }
       }
     });
+
+    getPriceTotal();
   }
 
   bool getProductItemSelected(ProductItemList productItem) {
@@ -88,5 +107,17 @@ class Variation {
     }
 
     return productItemSelected[productItem]!;
+  }
+
+  num getPriceTotal() {
+    price = 0.0;
+
+    productItemSelected.entries.forEach((element) {
+      if (element.value) {
+        price += element.key.price;
+      }
+    });
+
+    return price;
   }
 }

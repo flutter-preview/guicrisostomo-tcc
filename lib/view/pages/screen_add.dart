@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:tcc/controller/mysql/Lists/businessInfo.dart';
 import 'package:tcc/controller/mysql/Lists/products.dart';
 import 'package:tcc/controller/mysql/Lists/productsCart.dart';
@@ -39,6 +40,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
   bool autoValidation = false;
 
   num subTotal = 0;
+  num saveSubTotal = 0;
   int t = 0;
   List<ProductsCartList> items = [];
   List<Variation> variations = [];
@@ -72,13 +74,33 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
     Variation variation = productSelect.variation!;
     int idVariation = variation.id ?? 0;
 
-    Widget constructorWidgetSepareItemsText(Variation variation, String separator, int idText) {
-      TextEditingController textController = variation.getTextController(idText);
+    void resetSubTotal() {
+      if (mounted) {
+        setState(() {
+          subTotal = 0;
+          print('resetSubTotal');
+        });
+      }
+    }
+
+    Widget constructorWidgetSepareItemsText(Variation variation, String separator, ProductItemList item) {
+      TextEditingController textController = variation.getTextController(item.id);
       String text = textController.text;
       List<String> items = text.split(separator);
+      variation.price = (items.length) * item.price;
+
+      print(variation.price);
+
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (context.mounted) {
+              resetSubTotal();
+            }
+          });
 
       return StatefulBuilder(
         builder: (context, setState) {
+          
+
           return SizedBox(
             height: 50,
             width: double.infinity,
@@ -121,6 +143,8 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                             textController.selection = TextSelection.fromPosition(
                               TextPosition(offset: text.length)
                             );
+
+                            resetSubTotal();
                           });
                           
                         },
@@ -144,6 +168,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
       itemsDropDownButton = [];
       itemsRadioListTile = [];
       itemsCheckBoxListTile = [];
+      element.productItemSelected = {};
 
       if (element.isDropDown != null) {
         if (element.isDropDown == true) {
@@ -207,10 +232,12 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
         }
       }
 
+      element.setProductItemSelected();
+
       return true;
     }
 
-    Future<Widget> putTextBoxVariation(element) async {
+    Future<Widget> putTextBoxVariation(Variation element) async {
       return await ProductsController().list(element.category, element.size, '').then((List<ProductItemList> res) {
         List<Widget> listWidgetTextEditing = [];
 
@@ -242,6 +269,9 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                               element.isTextEmpty[item.id] = false;
                             }
 
+                            element.price = (value.split(',').length - 1) * item.price;
+                            subTotal = 0;
+                            
                             // element.checkTextEmpty(item.id);
                           });
                         },
@@ -266,7 +296,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                             const SizedBox(height: 10),
 
                             element.isTextEmpty[item.id] == false ?
-                              constructorWidgetSepareItemsText(element, ',', item.id)
+                              constructorWidgetSepareItemsText(element, ',', item)
                             :
                               Container(),
                           ],
@@ -304,6 +334,51 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
       });
     }
 
+    num calcVariations() {
+      print('bbbbbbbbbbbbb');
+      
+      num total = 0;
+
+      print('variations aaaaaaaaaaa ${variations.length}');
+
+      for (final Variation item in variations) {
+        print('item: ${item.category} - ${item.value} - ${item.price} - ${item.productItemSelected.length} - ${item.productItemSelected}');
+        
+        total += item.price;
+        print(item.price);
+
+        item.productItemSelected.forEach((key, bool value) {
+          if (value) {
+            total += key.price;
+          }
+
+          print('key: ${key.name} - value: $value - price: ${key.price} - total: $total');
+        });
+
+        for (final Variation subItem in item.subVariation) {
+          print('subItem: ${subItem.category} - ${subItem.value} - ${subItem.price} - ${subItem.productItemSelected.length} - ${subItem.productItemSelected}');
+          print('item.value: ${item.value}');
+
+          if (item.value == subItem.category) {
+            subItem.productItemSelected.forEach((key, bool value) {
+              if (subItem.value == key.name) {
+                if (value) {
+                  total += key.price;
+                }
+              }
+
+              print('key: ${key.name} - value: $value - price: ${key.price} - total: $total');
+            });
+          }
+        }
+
+      }
+
+      print('total: $total');
+
+      return total;
+    }
+
     Widget putDropDownVariation(Variation element) {
       if (element.value == '') {
         element.setValues("Não quero ${element.category.toLowerCase()}");
@@ -315,21 +390,30 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
         variavel: element.value,
         callback: (value) {
           setState(() {
+            
+            print('price: ${element.price}');
             element.setValues(value);
-            element.value = value ?? '';
-            element.setProductItemSelected(value!, true);
+            element.setProductItemSelected();
+            element.setProductItemSelected(value!);
+            // subTotal = 0;
+            print(element.productItemSelected.map((key, value) => MapEntry(key.name, value)));
+            subTotal = 0;
           });
         },
       );
     }
 
-    Widget putLimitElementVariation(Variation element, [List<RadioButtonList> itemsRadio = const []]) {
-      return (element.limitItems == 1 || itemsRadio.isNotEmpty) ?
+    Widget putLimitElementVariation(Variation element) {
+      return (element.limitItems == 1) ?
         RadioButon(
-          list: itemsRadio.isEmpty ? itemsRadioListTile : itemsRadio,
+          list: itemsRadioListTile,
           callback: (value) {
             setState(() {
               element.setValues(value);
+              element.setProductItemSelected(value!);
+              // subTotal = 0;
+              print('price: ${element.price}');
+              subTotal = 0;
             });
           },
         )
@@ -337,20 +421,22 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
         CheckBoxWidget(
           list: itemsCheckBoxListTile,
           limitCheck: element.limitItems ?? 0,
-          callback: (value) {
+          onChanged: (value, bool check) {
             setState(() {
               element.setValues(value);
+              element.setProductItemSelected(value, check);
+              subTotal = 0;
             });
           },
         );
     }
 
     Future<Widget> addWidgetVariation(Variation element) async {
+      
       return Column(
         children: [
           await ProductsController().listVariations(element.id!).then((List<Variation> res) async {
             subVariations = [];
-            List<Variation> subVariationsAux = [];
             List<DropDownList> subVariationDropDownButton = [
               DropDownList(
                 name: "Não quero ${element.category.toLowerCase()}",
@@ -367,27 +453,28 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
             if (res.isNotEmpty) {
 
               for (final Variation item in res) {
-                subVariationsAux.add(item);
-                  element.isDropDown == true ?
-                    subVariationDropDownButton.add(
-                      DropDownList(
-                        name: item.category,
-                        icon: Icons.category,
-                        onSelected: () {
-                          setState(() {
-                            element.setValues(item.category);
-                          });
-                        },
-                      )
+                element.subVariation.add(item);
+                element.isDropDown == true ?
+                  subVariationDropDownButton.add(
+                    DropDownList(
+                      name: item.category,
+                      icon: Icons.category,
+                      onSelected: () {
+                        setState(() {
+                          element.setValues(item.category);
+                          resetSubTotal();
+                        });
+                      },
                     )
-                  :
-                    subVariationRadioListTile.add(
-                      RadioButtonList(
-                        name: item.category,
-                        icon: Icons.category,
-                      )
-                    );
-                }
+                  )
+                :
+                  subVariationRadioListTile.add(
+                    RadioButtonList(
+                      name: item.category,
+                      icon: Icons.category,
+                    )
+                  );
+              }
 
               return StatefulBuilder(
                 builder: (context, setState) {
@@ -405,16 +492,17 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                             element.value = value ?? '';
                             t = subVariationDropDownButton.indexWhere((element) => element.name == value);
                             t--;
+                            resetSubTotal();
                           });
                         },
                       ),
 
                       
-                      for (final Variation item in subVariationsAux)
+                      for (final Variation item in element.subVariation)
                         Builder(
                           builder: (context) {
                             return (t >= 0 && element.value != '' && element.value != 'Não quero ${element.category}') ?
-                              (subVariationsAux[t] == item) ?
+                              (element.subVariation[t] == item) ?
                               FutureBuilder(
                                 future: getInfoVariation(item),
                                 builder: (context, snapshot) {
@@ -493,18 +581,6 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
       );
     }
 
-    num calcVariations() {
-      num total = 0;
-
-      for (final Variation item in variations) {
-        if (item.value != '' && item.value != 'Não quero ${item.category.toLowerCase()}') {
-          total += item.!;
-        }
-      }
-
-      return total;
-    }
-
     Future<void> listItemsMain() async {
       await BusinessInformationController().getInfoCalcValue().then((isHighValue) async {
         await SalesController().idSale().then((idOrder) async {
@@ -533,9 +609,18 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
               }
             }
 
-            subTotal += calcVariations();
+            saveSubTotal = subTotal;
           });
         });
+      });
+    }
+
+    Future<void> calcSubTotal() async {
+      print('aaaaaaaaaaa');
+      subTotal = saveSubTotal;
+
+      setState(() {
+        subTotal += calcVariations();
       });
     }
 
@@ -553,12 +638,14 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
       });
     }
     
-    Future<void> getList() async {
+    Future<bool> getList() async {
       
       await listItemsMain();
       await listItemsVariations();
 
       setState(() {});
+
+      return true;
     }
 
     return Scaffold(
@@ -635,7 +722,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
 
       body: SingleChildScrollView(
         child: FutureBuilder(
-          future: subTotal == 0 ? getList() : null,
+          future: items.isEmpty ? getList() : null,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
@@ -750,7 +837,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                       nameSection: 'Itens do produto', 
                       isShowPart: true,
                       child: FutureBuilder(
-                        future: items.isEmpty ? getList() : null,
+                        future: items.isNotEmpty ? null : listItemsMain(),
                         builder: (context, snapshot) {
                           return Column(
                             children: [
@@ -804,6 +891,10 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                                                     onPressed: () async {
                                                       ProductsCartController().remove(items[index].id!, context);
                                                       getList();
+
+                                                      setState(() {
+                                                        items.removeAt(index);
+                                                      });
                                                     },
                                                     icon: const Icon(
                                                       Icons.delete,
@@ -873,15 +964,12 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                             label: 'Observações' ,
                             variavel: txtObservation, 
                             keyboardType: TextInputType.text,
-                            validator: (value) {
-                              return validatorString(value!);
-                            },
                           ),
 
                           const SizedBox(height: 20),
 
                           FutureBuilder(
-                            future: subTotal != 0 ? Future.value(true) : Future.value(false),
+                            future: subTotal != 0 ? Future.value(true) : calcSubTotal(),
                             builder: (context, snapshot) {
                               if (snapshot.connectionState == ConnectionState.done) {
                                 return Container(
@@ -916,12 +1004,8 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                                   }),
                                 );
                               } else if (snapshot.connectionState == ConnectionState.waiting) {
-                                return Container(
-                                  alignment: Alignment.bottomRight,
-                                  height: 60,
-                                  child: button('Adicionar R\$ ${subTotal.toStringAsFixed(2).replaceFirst('.', ',')}', 100, 50, Icons.add_shopping_cart, () async {
-                                    
-                                  }),
+                                return const Center(
+                                  child: CircularProgressIndicator(),
                                 );
                               } else {
                                 return const Center(

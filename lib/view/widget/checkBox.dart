@@ -6,7 +6,7 @@ import 'package:tcc/view/widget/snackBars.dart';
 class CheckBoxWidget extends StatefulWidget {
   final List<CheckBoxList> list;
   final int limitCheck;
-  final void Function(int)? onChanged;
+  final void Function(String, bool)? onChanged;
 
   const CheckBoxWidget({
     super.key,
@@ -56,7 +56,7 @@ class _CheckBoxWidgetState extends State<CheckBoxWidget> {
               }
 
               if (widget.onChanged != null) {
-                widget.onChanged!(getCheckBoxSelected());
+                widget.onChanged!(widget.list[index].value, widget.list[index].isChecked);
               }
             },
             title: Text(widget.list[index].value),

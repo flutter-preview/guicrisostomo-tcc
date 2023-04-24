@@ -34,17 +34,15 @@ class _RadioButonState extends State<RadioButon> {
         children: widget.list.map((e) {
         
           return RadioListTile(
-            value: e.name,
+            value: e.value ?? e.name,
             groupValue: RadioButtonList.getGroup(),
 
-            onChanged: (String? value) => {
+            onChanged: (String? value) {
               setState(() {
                 RadioButtonList.setGroup(value!);
-              }),
+              });
 
-              if (e.callback != null) {
-                e.callback!(value!)
-              }
+              widget.callback!(value);
             },
             
             title: Row(
