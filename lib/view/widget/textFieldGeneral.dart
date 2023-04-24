@@ -177,8 +177,10 @@ class _TextFieldGeneralState extends State<TextFieldGeneral> {
                   IconButton(
                     onPressed: () {
                       setState(() {
-                        if (int.parse(widget.variavel.text) > 0)
+                        if (int.parse(widget.variavel.text) > 0) {
                           widget.variavel.text = (int.parse(widget.variavel.text) - 1).toString();
+                          widget.onChanged!(widget.variavel.text);
+                        }
                       });
                     },
                     icon: const Icon(Icons.remove, color: Colors.red, size: 20,),
@@ -188,8 +190,10 @@ class _TextFieldGeneralState extends State<TextFieldGeneral> {
                   IconButton(
                     onPressed: () {
                       setState(() {
-                        if (int.parse(widget.variavel.text) < 99)
+                        if (int.parse(widget.variavel.text) < 99) {
                           widget.variavel.text = (int.parse(widget.variavel.text) + 1).toString();
+                          widget.onChanged!(widget.variavel.text);
+                        }
                       });
                     },
                     icon: const Icon(Icons.add, color: Colors.green, size: 20,),
