@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tcc/globals.dart';
 import 'package:tcc/model/ProductItemList.dart';
 
 class Variation {
@@ -75,30 +76,24 @@ class Variation {
     productItemSelected[productItem] = false;
   }
 
-  void setProductItemSelected([String product = '', bool? value]) {
-    print('setProductItemSelected: $product, $value');
-
+  void setProductItemSelected([String product = '', bool? value, bool isBusinessHighValue = false]) {
+    
     productItemSelected.entries.forEach((element) {
+
       if (product == 'Não quero ${category.toLowerCase()}' || product == '') {
         productItemSelected[element.key] = false;
       } else {
         if (element.key.name == product) {
-          productItemSelected[element.key] = true;
+          productItemSelected[element.key] = value!;
         } else {
           if (limitItems == 1) {
             productItemSelected[element.key] = false;
-          } else {
-            if (value != null) {
-              productItemSelected[element.key] = value;
-            } else {
-              productItemSelected[element.key] = !productItemSelected[element.key]!;
-            }
           }
         }
       }
     });
 
-    getPriceTotal();
+    getPriceTotal(isBusinessHighValue);
   }
 
   bool getProductItemSelected(ProductItemList productItem) {
@@ -109,15 +104,52 @@ class Variation {
     return productItemSelected[productItem]!;
   }
 
-  num getPriceTotal() {
+  num getPriceTotal(bool isBusinessHighValue) {
     price = 0.0;
 
-    productItemSelected.entries.forEach((element) {
-      if (element.value) {
-        price += element.key.price;
+    if (isBusinessHighValue) {
+      productItemSelected.entries.forEach((element) {
+        if (element.value) {
+          if (element.key.price > price) {
+            price = element.key.price;
+            print(price);
+          }
+        }
+      });
+    } else {
+      productItemSelected.entries.forEach((element) {
+        if (element.value) {
+          price += element.key.price;
+        }
+      });
+
+      price /= productItemSelected.length;
+    }
+
+    return price;
+  }
+
+  String returnAllText([bool isTextController = true]) {
+    String text = '';
+
+    if (!isTextController) {
+      return value;
+    }
+
+    if (textController.isEmpty) {
+      return text;
+    }
+
+    textController.entries.forEach((element) {
+      if (element.value.text != '') {
+        if (text != '') {
+          text += ',';
+        }
+
+        text += element.value.text;
       }
     });
 
-    return price;
+    return text;
   }
 }

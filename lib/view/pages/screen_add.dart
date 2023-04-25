@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:tcc/controller/mysql/Lists/businessInfo.dart';
 import 'package:tcc/controller/mysql/Lists/products.dart';
 import 'package:tcc/controller/mysql/Lists/productsCart.dart';
@@ -13,7 +12,6 @@ import 'package:tcc/model/Variation.dart';
 import 'package:tcc/model/standardListDropDown.dart';
 import 'package:tcc/model/standardRadioButton.dart';
 import 'package:tcc/utils.dart';
-import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/checkBox.dart';
 import 'package:tcc/view/widget/dropDownButton.dart';
 import 'package:tcc/view/widget/radioButton.dart';
@@ -38,6 +36,7 @@ class ScreenAddItem extends StatefulWidget {
 class _ScreenAddItemState extends State<ScreenAddItem> {
   var formKey = GlobalKey<FormState>();
   bool autoValidation = false;
+  bool isBusinessHighValue = false;
 
   num subTotal = 0;
   num saveSubTotal = 0;
@@ -88,8 +87,6 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
       List<String> items = text.split(separator);
       variation.price = (items.length) * item.price;
 
-      print(variation.price);
-
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (context.mounted) {
           resetSubTotal();
@@ -130,22 +127,21 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                         ),
                       ),
 
-                  const SizedBox(width: 5),
+                      const SizedBox(width: 5),
 
-                  InkWell(
-                    onTap: () {
-                      setState(() {
-                        items.removeAt(index);
-                        print('aaaaaaa');
-                        textController.text = items.join(separator);
-                      
-                        textController.selection = TextSelection.fromPosition(
-                          TextPosition(offset: textController.text.length)
-                        );
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            items.removeAt(index);
+                            textController.text = items.join(separator);
+                            variation.setValues(textController.text, item.id);
+                          
+                            textController.selection = TextSelection.fromPosition(
+                              TextPosition(offset: textController.text.length)
+                            );
 
                             resetSubTotal();
                           });
-                          
                         },
                         child: const Icon(
                           Icons.close,
@@ -334,46 +330,34 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
     }
 
     num calcVariations() {
-      print('bbbbbbbbbbbbb');
       
       num total = 0;
-
-      print('variations aaaaaaaaaaa ${variations.length}');
+      num saveTotal = 0;
 
       for (final Variation item in variations) {
-        print('item: ${item.category} - ${item.value} - ${item.price} - ${item.productItemSelected.length} - ${item.productItemSelected}');
-        
+
+        saveTotal = total;
+
         total += item.price;
-        print(item.price);
+
+        if (total.isNaN) {
+          total = saveTotal;
+        }
 
         item.productItemSelected.forEach((key, bool value) {
           if (value) {
             total += key.price;
           }
-
-          print('key: ${key.name} - value: $value - price: ${key.price} - total: $total');
         });
 
         for (final Variation subItem in item.subVariation) {
-          print('subItem: ${subItem.category} - ${subItem.value} - ${subItem.price} - ${subItem.productItemSelected.length} - ${subItem.productItemSelected}');
-          print('item.value: ${item.value}');
 
           if (item.value == subItem.category) {
-            subItem.productItemSelected.forEach((key, bool value) {
-              if (subItem.value == key.name) {
-                if (value) {
-                  total += key.price;
-                }
-              }
-
-              print('key: ${key.name} - value: $value - price: ${key.price} - total: $total');
-            });
+            total += subItem.getPriceTotal(isBusinessHighValue);
           }
         }
 
       }
-
-      print('total: $total');
 
       return total;
     }
@@ -390,12 +374,9 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
         callback: (value) {
           setState(() {
             
-            print('price: ${element.price}');
             element.setValues(value);
-            element.setProductItemSelected();
-            element.setProductItemSelected(value!);
+            element.setProductItemSelected(value!, null, isBusinessHighValue);
             // subTotal = 0;
-            print(element.productItemSelected.map((key, value) => MapEntry(key.name, value)));
             subTotal = 0;
           });
         },
@@ -409,9 +390,8 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
           callback: (value) {
             setState(() {
               element.setValues(value);
-              element.setProductItemSelected(value!);
+              element.setProductItemSelected(value!, null, isBusinessHighValue);
               // subTotal = 0;
-              print('price: ${element.price}');
               subTotal = 0;
             });
           },
@@ -423,7 +403,8 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
           onChanged: (value, bool check) {
             setState(() {
               element.setValues(value);
-              element.setProductItemSelected(value, check);
+              element.setProductItemSelected(value, check,
+              isBusinessHighValue);
               subTotal = 0;
             });
           },
@@ -584,6 +565,8 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
       await BusinessInformationController().getInfoCalcValue().then((isHighValue) async {
         await SalesController().idSale().then((idOrder) async {
           await ProductsCartController().listItemCurrent(idOrder, idProduct == 0 ? idVariation = await ProductsCartController().getVariationItem(idOrder) : idVariation).then((List<ProductsCartList> res) {
+            isBusinessHighValue = isHighValue ?? false;
+            
             subTotal = productSelect.price;
             items.clear();
             
@@ -757,6 +740,40 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
         ],
       );
     }
+
+    String textValue = '';
+    (variations.map((e) => {
+      if (e.price > 0) {
+        print(e.returnAllText())
+      },
+
+      textValue = '',
+
+      e.productItemSelected.forEach((key, bool value) {
+        if (value) {
+          textValue += '${key.name},';
+        }
+      }),
+
+      print(textValue),
+
+      textValue = '',
+
+      e.subVariation.map((sub) => {
+        if (e.value == sub.category) {
+          sub.productItemSelected.forEach((key, bool value) {
+            if (sub.value == key.name) {
+              if (value) {
+                textValue += '${key.name},';
+              }
+            }
+
+          }),
+        }
+      }).toList(),
+
+      print(textValue)
+    }).toList());
 
     return Scaffold(
       appBar: PreferredSize(
