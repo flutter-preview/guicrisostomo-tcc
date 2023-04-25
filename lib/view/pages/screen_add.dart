@@ -758,19 +758,6 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
       );
     }
 
-    (variations.map((e) => {
-      if (e.price > 0) {
-        print(e.value + 'item maior'),
-      },
-
-      e.subVariation.map((e) => {
-        if (e.price > 0) {
-          print(e.value + 'sub item maior'),
-        }
-      }).toList()
-      
-    }).toList());
-
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(180),

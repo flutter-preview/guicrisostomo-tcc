@@ -2,10 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:mysql1/mysql1.dart';
-import 'package:tcc/controller/mysql/Lists/productsCart.dart';
 import 'package:tcc/controller/mysql/Lists/sales.dart';
-import 'package:tcc/controller/mysql/utils.dart';
 import 'package:tcc/model/ProductsCart.dart';
 import 'package:tcc/model/standardSlideShow.dart';
 import 'package:tcc/view/widget/appBar.dart';
@@ -41,13 +38,13 @@ class _ScreenHomeState extends State<ScreenHome> {
   //   });
   // }
 
-  void getSaleOnDemand() async {
-    await SalesController().listSalesOnDemand().then((value){
-      setState(() {
-        listSale = value;
-      });
-    });
-  }
+  // Future<void> getSaleOnDemand() async {
+  //   await SalesController().listSalesOnDemand().then((value){
+  //     setState(() {
+  //       listSale = value;
+  //     });
+  //   });
+  // }
 
   Future<void> getSlideShow() async {
     await SlideShow.list(globals.businessId, context).then((List<SlideShow> value){
@@ -65,15 +62,10 @@ class _ScreenHomeState extends State<ScreenHome> {
     globals.userType = 'customer';
     globals.businessId = '1';
     // getSaleOnDemand();
-    getSlideShow();
   }
 
   @override
   Widget build(BuildContext context) {
-    
-    if (listSlideShow.isEmpty) {
-      getSlideShow();
-    }
 
     Widget dataSales() {
 
@@ -215,7 +207,12 @@ class _ScreenHomeState extends State<ScreenHome> {
         child: Column(
           children: [
             // imgCenter(imgHome),
-            SlideShowWidget(listSlideShow: listSlideShow,),
+            FutureBuilder(
+              future: getSlideShow(),
+              builder: (context, builder) {
+                return SlideShowWidget(listSlideShow: listSlideShow,);
+              }
+            ),
             
             const SizedBox(height: 10,),
             Padding(

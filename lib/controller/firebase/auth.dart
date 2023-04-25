@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:tcc/controller/mysql/utils.dart';
 import 'package:tcc/main.dart';
-import 'package:tcc/model/TypeUser.dart';
-import 'package:tcc/model/User.dart';
 import 'package:tcc/view/widget/snackBars.dart';
       
 class LoginController {
@@ -42,9 +40,11 @@ class LoginController {
   }
 
   Future<void> signInAnonymously(context) async {
+    Navigator.push(context, navigator('loading'));
+    
     (FirebaseAuth.instance.currentUser?.uid != null) ? {
       await userLogin(),
-      success(context, 'Usuário autenticado com sucesso.')
+      success(context, 'Usuário autenticado com sucesso.'),
     } : {
       await FirebaseAuth.instance.signInAnonymously().then((value) {
         userLogin();
@@ -52,10 +52,14 @@ class LoginController {
         error(context, 'Ocorreu um erro ao fazer login: ${e.code.toString()}');
       })
     };
+
+    Navigator.of(context).pop();
   }
 
-  void createAccount(context, String name, String email, String phone, String password) {
-    FirebaseAuth.instance
+  Future<void> createAccount(context, String name, String email, String phone, String password) async {
+    Navigator.push(context, navigator('loading'));
+    
+    await FirebaseAuth.instance
       .createUserWithEmailAndPassword(email: email, password: password)
       .then((res) async {
         
@@ -99,10 +103,14 @@ class LoginController {
           error(context, e.code.toString());
       }
     });
+
+    Navigator.of(context).pop();
   }
 
-  void login(context, String email, String senha) {
-    FirebaseAuth.instance
+  Future<void> login(context, String email, String senha) async {
+    Navigator.push(context, navigator('loading'));
+
+    await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: senha)
         .then((res) async {
       success(context, 'Usuário autenticado com sucesso.');
@@ -124,6 +132,8 @@ class LoginController {
           error(context, e.code.toString());
       }
     });
+
+    Navigator.of(context).pop();
   }
 
   Future<void> forgetPassword(String email, context) async {
@@ -141,6 +151,8 @@ class LoginController {
   }
 
   Future<void> logout(context) async {
+    Navigator.push(context, navigator('loading'));
+
     final GoogleSignIn googleSignIn = GoogleSignIn();
 
     if (googleSignIn.clientId != null) {
@@ -148,6 +160,7 @@ class LoginController {
     }
     
     await FirebaseAuth.instance.signOut();
+    Navigator.of(context).pop();
     Navigator.of(context).pop();
     Navigator.pushNamed(
       context,
@@ -220,7 +233,7 @@ class LoginController {
   // Sign in with Google
 
   Future<dynamic> signInGoogle(context) async {
-  
+    Navigator.push(context, navigator('loading'));
     // Trigger the authentication flow
     // await connectSupadatabase().then((value) async {
     //   await value.auth.signInWithOAuth(Provider.google);
@@ -251,6 +264,8 @@ class LoginController {
     }).catchError((onError) {
       error(context, "Ocorreu um erro ao entrar: $onError");
     });
+
+    Navigator.of(context).pop();
   }
 
   Future<void> redirectUser(context, [value]) async {

@@ -27,6 +27,7 @@ import 'package:tcc/view/pages/manager/screen_list_smartphone_employee.dart';
 import 'package:tcc/view/pages/manager/screen_more_option.dart';
 import 'package:tcc/view/pages/manager/screen_permissions.dart';
 import 'package:tcc/view/pages/manager/screen_register_employee.dart';
+import 'package:tcc/view/pages/screen_loading.dart';
 import 'package:tcc/view/pages/screen_tables.dart';
 import 'package:tcc/view/pages/manager/screen_category.dart';
 import 'package:tcc/view/pages/screen_rating_employee.dart';
@@ -136,7 +137,9 @@ Route navigator([String? name, Object? arguments]) {
     case 'employee/evaluation' :
       page = ScreenRatingEmployee(idEmployee: arguments.toString());
       break;
-
+    case 'loading' :
+      page = const ScreenLoading();
+      break;
     /* screens for manager */
     case 'business' :
       page = const ScreenBusiness();
@@ -284,6 +287,7 @@ Future<void> main() async {
         'finalize_order_customer/payment' :(context) => const ScreenFOPayment(),
         // 'notifications' :(context) => const ScreenNotifications(),
         'terms' :(context) => const ScreenTerms(),
+        'loading' :(context) => const ScreenLoading(),
         // manager routes
         'business' :(context) => const ScreenBusiness(),
         'categories' :(context) => const ScreenCategories(),
