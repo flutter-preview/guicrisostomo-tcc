@@ -148,7 +148,7 @@ class _BottomState extends State<Bottom> {
   @override
   void initState() {
     super.initState();
-    if (globals.isSelectNewItem && globals.globalSelectedIndexBotton == 2) {
+    if (globals.globalSelectedIndexBotton == 2) {
       getListItemCurrent();
     }
   }
