@@ -130,18 +130,18 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                         ),
                       ),
 
-                      const SizedBox(width: 5),
+                  const SizedBox(width: 5),
 
-                      InkWell(
-                        onTap: () {
-                          setState(() {
-                            items.removeAt(index);
-                          
-                            text = items.join(separator);
-                          
-                            textController.selection = TextSelection.fromPosition(
-                              TextPosition(offset: text.length)
-                            );
+                  InkWell(
+                    onTap: () {
+                      setState(() {
+                        items.removeAt(index);
+                        print('aaaaaaa');
+                        textController.text = items.join(separator);
+                      
+                        textController.selection = TextSelection.fromPosition(
+                          TextPosition(offset: textController.text.length)
+                        );
 
                             resetSubTotal();
                           });
