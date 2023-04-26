@@ -93,7 +93,7 @@ class Variation {
       }
     });
 
-    getPriceTotal(isBusinessHighValue);
+    price = getPriceTotal(isBusinessHighValue);
   }
 
   bool getProductItemSelected(ProductItemList productItem) {
@@ -112,7 +112,6 @@ class Variation {
         if (element.value) {
           if (element.key.price > price) {
             price = element.key.price;
-            print(price);
           }
         }
       });
@@ -149,6 +148,10 @@ class Variation {
         text += element.value.text;
       }
     });
+
+    if (text != '') {
+      text = text.substring(0, text.length - 1);
+    }
 
     return text;
   }

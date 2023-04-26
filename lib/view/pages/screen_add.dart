@@ -140,7 +140,13 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                               TextPosition(offset: textController.text.length)
                             );
 
-                            resetSubTotal();
+                            variation.price = (items.length) * item.price;
+
+                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                              if (context.mounted) {
+                                resetSubTotal();
+                              }
+                            });
                           });
                         },
                         child: const Icon(
@@ -265,7 +271,10 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                             }
 
                             element.price = (value.split(',').length - 1) * item.price;
-                            subTotal = 0;
+                            print(element.price);
+                            // if (value.endsWith(',')) {
+                            //   element.price += item.price;
+                            // }
                             
                             // element.checkTextEmpty(item.id);
                           });
@@ -310,6 +319,10 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                         onChanged: (value) {
                           setState(() {
                             element.setValues(value ? element.getValues(item.id) : "", item.id);
+
+                            if (!value) {
+                              element.price = 0;
+                            }
                           });
                         },
                       )
@@ -377,7 +390,6 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
             element.setValues(value);
             element.setProductItemSelected(value!, null, isBusinessHighValue);
             // subTotal = 0;
-            subTotal = 0;
           });
         },
       );
@@ -389,9 +401,9 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
           list: itemsRadioListTile,
           callback: (value) {
             setState(() {
+              print(value);
               element.setValues(value);
-              element.setProductItemSelected(value!, null, isBusinessHighValue);
-              // subTotal = 0;
+              element.setProductItemSelected(value!, true, isBusinessHighValue);
               subTotal = 0;
             });
           },
