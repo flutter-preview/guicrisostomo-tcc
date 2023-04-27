@@ -90,7 +90,7 @@ class SalesController {
       // querySelect += ' INNER JOIN orders o ON o.id = i.id_order';
       // querySelect += ' where o.user = ? and o.status = ? and i.relation_id is null';
       
-      return await conn.query('SELECT p.price, i.qtd from items i INNER JOIN products p ON p.id = i.id_product INNER JOIN orders o ON o.id = i.id_order where o.uid = @uid and o.status = @status and i.fg_current = false and i.relation_id is null', substitutionValues: {
+      return await conn.query('SELECT p.price, i.qtd from items i INNER JOIN products p ON p.id = i.id_product INNER JOIN orders o ON o.id = i.id_order where o.uid = @uid and o.status = @status and i.fg_current = false', substitutionValues: {
         'uid': FirebaseAuth.instance.currentUser!.uid,
         'status': 'ANDAMENTO',
       }).then((List value) {
