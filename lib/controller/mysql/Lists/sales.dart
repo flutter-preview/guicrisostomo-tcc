@@ -90,7 +90,15 @@ class SalesController {
       // querySelect += ' INNER JOIN orders o ON o.id = i.id_order';
       // querySelect += ' where o.user = ? and o.status = ? and i.relation_id is null';
       
-      return await conn.query('SELECT p.price, i.qtd from items i INNER JOIN products p ON p.id = i.id_product INNER JOIN orders o ON o.id = i.id_order where o.uid = @uid and o.status = @status and i.fg_current = false', substitutionValues: {
+      return await conn.query('''
+        SELECT SUM(MAX.MAX) FROM (
+          SELECT MAX(p.price * i.qtd) from items i 
+            INNER JOIN products p ON p.id = i.id_product 
+            INNER JOIN orders o ON o.id = i.id_order 
+            where o.uid = @uid and o.status = @status and i.fg_current = false
+            GROUP BY (i.relation_id, i.id_variation)
+          ) AS max
+        ''', substitutionValues: {
         'uid': FirebaseAuth.instance.currentUser!.uid,
         'status': 'ANDAMENTO',
       }).then((List value) {
@@ -98,26 +106,9 @@ class SalesController {
 
         if (value.isEmpty) {
           return 0;
+        } else {
+          return value.first[0];
         }
-
-        List<ProductsCartList> productsCart = value.map((e) => ProductsCartList(
-          price: e[0],
-          qtd: e[1],
-        )).toList();
-        print(value.first[0]);
-        
-        if (value.isNotEmpty) {
-          num price = 0;
-          int qtd = 0;
-
-          res = productsCart.map((e) {
-            price = e.price!;
-            qtd = e.qtd!;
-            return price * qtd;
-          }).reduce((value, element) => value + element);
-        }
-
-        return res;
       });
       // return await conn.from('items').select('''
       //   products!inner(price),
