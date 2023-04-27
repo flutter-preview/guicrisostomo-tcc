@@ -108,39 +108,50 @@ class _BottomState extends State<Bottom> {
   }
 
   Widget selectNewItem() {
-    return Container(
-      color: Colors.white,
-      padding: const EdgeInsets.all(10),
-      
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Text(
-            'Selecione novo item',
-            style: TextStyle(
-              color: globals.primary,
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+    return FutureBuilder(
+      future: getListItemCurrent(),
+      builder: (context, builder) {
+        if (builder.data == true) {
+          return Container(
+            color: Colors.white,
+            padding: const EdgeInsets.all(10),
+            
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Text(
+                  'Selecione novo item',
+                  style: TextStyle(
+                    color: globals.primary,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
 
-          cancelSelection(),
-        ],
-      )
+                cancelSelection(),
+              ],
+            )
+          );
+        } else {
+          return Container();
+        }
+      }
     );
   }
 
-  Future<void> getListItemCurrent() async {
-    await SalesController().idSale().then((value) async {
+  Future<bool> getListItemCurrent() async {
+    return await SalesController().idSale().then((value) async {
       if (value != 0) {
-        await ProductsCartController().listItemCurrent(value).then((products) {
+        return await ProductsCartController().listItemCurrent(value).then((products) {
           if (products.isNotEmpty) {
-            setState(() {
-              globals.isSelectNewItem = true;
-            });
+            return true;
+          } else {
+            return false;
           }
         });
+      } else {
+        return false;
       }
     });
   }
@@ -156,7 +167,6 @@ class _BottomState extends State<Bottom> {
   @override
   Widget build(BuildContext context) {
 
-    const String iconOrder = 'lib/images/iconOrder.svg';
     const String iconMenu = 'lib/images/iconMenu.svg';
 
     return Column(
