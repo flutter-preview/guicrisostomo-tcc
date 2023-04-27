@@ -8,6 +8,7 @@ import 'package:tcc/main.dart';
 Future<Widget> cartInfo(context) async {
   num total = 0;
   total = await SalesController().getTotal();
+  print(total);
   return !globals.isUserTyping && globals.userType != 'manager' && total != 0 ? Container(
     margin: const EdgeInsets.fromLTRB(0, 0, 10, 10),
     padding: const EdgeInsets.only(top: 10),
@@ -22,6 +23,7 @@ Future<Widget> cartInfo(context) async {
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.transparent,
             shadowColor: Colors.transparent,
+            padding: const EdgeInsets.all(0),
           ),
           child: Container(
             padding: const EdgeInsets.all(10),
@@ -102,6 +104,7 @@ Future<Widget> cartInfo(context) async {
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.transparent,
             shadowColor: Colors.transparent,
+            padding: const EdgeInsets.all(0),
           ),
           child: Container(
             padding: const EdgeInsets.all(10),
