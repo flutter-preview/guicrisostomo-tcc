@@ -181,7 +181,7 @@ class ProductsCartController {
 
   }
 
-  Future<int?> getIdRelation (int idOrder) async {
+  Future<int> getIdRelation (int idOrder) async {
     return await connectSupadatabase().then((conn) async {
       
       return await conn.query('SELECT relation_id, id FROM items WHERE id_order = @idOrder AND fg_current = @fgCurrent ORDER BY id', substitutionValues: {
@@ -191,48 +191,29 @@ class ProductsCartController {
         await conn.close();
         
         if (results.isEmpty) {
-          return null;
+          return 0;
         } else {
           List list = results;
-          ProductsCartList productsCartList = list.map((e) => ProductsCartList(
-            idRelative: e[0],
-          )).toList().first;
+          ProductsCartList productsCartList;
+          if (list.first[0] == null) {
+            productsCartList = ProductsCartList(
+              idRelative: list.first[1],
+            );
+          } else {
+            productsCartList = ProductsCartList(
+              idRelative: list.first[0],
+            );
+          }
 
-          return productsCartList.idRelative;
+          return productsCartList.idRelative!;
         }
       });
-      // return await conn.from('items').select('relation_id').eq('id_order', idOrder).eq('fg_current', true).then((results) async {
-      //   // await conn.close();
-      //   List list = results;
-      //   ProductsCartList productsCartList = list.map((e) => ProductsCartList(
-      //     idRelative: e[0],
-      //   )).toList().first;
-
-      //   if (productsCartList.idRelative == null) {
-      //     return null;
-      //   } else {
-      //     return productsCartList.idRelative;
-      //   }
-      // });
-      // conn.query('SELECT relation_id, id FROM items WHERE id_order = ? AND fg_current = ? ORDER BY id', [idOrder, true]).then((results) async {
-      //   await conn.close();
-        
-      //   if (results.isEmpty) {
-      //     return null;
-      //   } else {
-      //     if (results.first[0] == null) {
-      //       return results.first[1];
-      //     } else {
-      //       return results.first[0];
-      //     }
-      //   }
-      // });
-      
     });
   }
 
   Future<void> add(int idSale, int idItem, String name, int qtd, int idVariation, [bool fgCurrent = true]) async {
-    int? idRelation = await getIdRelation(idSale);
+    int idRelation = 0;
+    await getIdRelation(idSale).then((value) => idRelation = value);
 
     await connectSupadatabase().then((conn) async {
       
@@ -240,9 +221,57 @@ class ProductsCartController {
         'idOrder': idSale,
         'idProduct': idItem,
         'qtd': qtd,
+        'fgCurrent': true,
+        'relationId': idRelation == 0 ? null : idRelation,
+        'idVariation': idVariation,
+      }).then((List value) {
+        conn.close();
+
+        updateIdRelation(idSale);
+      });
+      
+      // await conn.from('items').insert({
+      //   'id_order': idSale,
+      //   'id_product': idItem,
+      //   'qtd': qtd,
+      //   'fg_current': fgCurrent,
+      //   'relation_id': idRelation,
+      //   'id_variation': idVariation,
+      // });
+      // await conn.query('insert into items (id_order, id_product, qtd, fg_current, relation_id) values (?, ?, ?, ?, ?)',
+      // [idSale, idItem, qtd, fgCurrent, fgCurrent == 0 ? null : await getIdRelation(idSale)]);
+      // await conn.close();
+    });
+  }
+
+  Future<void> updateIdRelation(int idSale) async {
+    int idRelation = 0;
+    await getIdRelation(idSale).then((value) => idRelation = value);
+
+    connectSupadatabase().then((conn) async {
+      await conn.query('UPDATE items SET relation_id = @id WHERE relation_id IS NULL AND id_order = @idOrder AND fg_current = @fgCurrent', substitutionValues: {
+        'id': idRelation,
+        'idOrder': idSale,
+        'fgCurrent': true
+      });
+      await conn.close();
+    });
+  }
+
+  Future<void> addVariation(int idSale, int idItem, int qtd, int idVariation, String textVariation, [bool fgCurrent = true]) async {
+    int? idRelation;
+    await getIdRelation(idSale).then((value) => idRelation = value);
+
+    await connectSupadatabase().then((conn) async {
+      
+      await conn.query('insert into items (id_order, id_product, qtd, fg_current, relation_id, id_variation, text_variation) values (@idOrder, @idProduct, @qtd, @fgCurrent, @relationId, @idVariation, @textVariation)', substitutionValues: {
+        'idOrder': idSale,
+        'idProduct': idItem,
+        'qtd': qtd,
         'fgCurrent': fgCurrent,
         'relationId': idRelation,
         'idVariation': idVariation,
+        'textVariation': textVariation,
       });
       conn.close();
       // await conn.from('items').insert({
@@ -288,6 +317,19 @@ class ProductsCartController {
       // await conn.query('update items set qtd = ? where id = ?',
       // [qtd, id]);
       // await conn.close();
+    });
+  }
+
+  Future<void> updateFgCurrent(int idSale) async {
+    int idRelation = 0;
+    await getIdRelation(idSale).then((value) => idRelation = value);
+
+    connectSupadatabase().then((conn) async {
+      
+      await conn.query('update items set fg_current = false where relation_id = @id', substitutionValues: {
+        'id': idRelation,
+      });
+      conn.close();
     });
   }
 }

@@ -81,6 +81,49 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
       }
     }
 
+    num calcVariations() {
+      
+      num total = 0;
+      num saveTotal = 0;
+
+      for (final Variation item in variations) {
+
+        saveTotal = total;
+
+        total += item.price;
+
+        if (total.isNaN) {
+          total = saveTotal;
+        }
+
+        item.productItemSelected.forEach((key, bool value) {
+          if (value) {
+            total += key.price;
+          }
+        });
+
+        for (final Variation subItem in item.subVariation) {
+
+          if (item.value == subItem.category) {
+            total += subItem.getPriceTotal(isBusinessHighValue);
+          }
+        }
+
+      }
+
+      return total;
+    }
+
+    Future<void> calcSubTotal() async {
+      subTotal = saveSubTotal;
+
+      setState(() {
+        subTotal += calcVariations();
+      });
+
+      subTotal *= int.parse(txtQtd.text);
+    }
+
     Widget constructorWidgetSepareItemsText(Variation variation, String separator, ProductItemList item) {
       TextEditingController textController = variation.getTextController(item.id);
       String text = textController.text;
@@ -255,9 +298,6 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                         variavel: element.getTextController(item.id),
                         keyboardType: TextInputType.text,
                         label: "Digite o nome do ${item.name.toLowerCase()}",
-                        validator: (value) {
-                          return validatorString(value!);
-                        },
                         onChanged: (value) {
                             
                           setState(() {
@@ -271,7 +311,6 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                             }
 
                             element.price = (value.split(',').length - 1) * item.price;
-                            print(element.price);
                             // if (value.endsWith(',')) {
                             //   element.price += item.price;
                             // }
@@ -342,39 +381,6 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
       });
     }
 
-    num calcVariations() {
-      
-      num total = 0;
-      num saveTotal = 0;
-
-      for (final Variation item in variations) {
-
-        saveTotal = total;
-
-        total += item.price;
-
-        if (total.isNaN) {
-          total = saveTotal;
-        }
-
-        item.productItemSelected.forEach((key, bool value) {
-          if (value) {
-            total += key.price;
-          }
-        });
-
-        for (final Variation subItem in item.subVariation) {
-
-          if (item.value == subItem.category) {
-            total += subItem.getPriceTotal(isBusinessHighValue);
-          }
-        }
-
-      }
-
-      return total;
-    }
-
     Widget putDropDownVariation(Variation element) {
       if (element.value == '') {
         element.setValues("Não quero ${element.category.toLowerCase()}");
@@ -389,7 +395,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
             
             element.setValues(value);
             element.setProductItemSelected(value!, null, isBusinessHighValue);
-            // subTotal = 0;
+            subTotal = 0;
           });
         },
       );
@@ -401,7 +407,6 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
           list: itemsRadioListTile,
           callback: (value) {
             setState(() {
-              print(value);
               element.setValues(value);
               element.setProductItemSelected(value!, true, isBusinessHighValue);
               subTotal = 0;
@@ -609,16 +614,6 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
       });
     }
 
-    Future<void> calcSubTotal() async {
-      subTotal = saveSubTotal;
-
-      setState(() {
-        subTotal += calcVariations();
-      });
-
-      subTotal *= int.parse(txtQtd.text);
-    }
-
     Future<void> listItemsVariations() async {
       listWidgetVariation.clear();
       variations.clear();
@@ -636,11 +631,23 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
     Future<bool> getList() async {
       
       await listItemsMain();
-      await listItemsVariations();
 
       setState(() {});
 
+      await listItemsVariations();
+
+      setState(() {});
+      print('aaaaaaaa');
+
       return true;
+    }
+
+    if (saveSubTotal == 0) {
+      getList();
+    } else {
+      if (subTotal == 0) {
+        calcSubTotal();
+      }
     }
 
     Widget bottom() {
@@ -692,15 +699,66 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
 
             child: ElevatedButton(
               onPressed: () async {
-                if (formKey.currentState!.validate()) {
+                if (formKey.currentState!.validate() && subTotal != 0) {
+                  Navigator.push(context, navigator('loading'));
+
                   int idSale;
                   await SalesController().idSale().then((res) async {
                     idSale = res;
-                    await ProductsCartController().add(idSale, idProduct, nameProduct, int.parse(txtQtd.text), idVariation, false);
+                    resetSubTotal();
+
+                    await calcSubTotal();
+
+                    if (idProduct != 0) {
+                      await ProductsCartController().add(idSale, idProduct, nameProduct, int.parse(txtQtd.text), idVariation, false);
+                    }
+
+                    (variations.map((e) async {
+                      if (e.textController.isNotEmpty) {
+                        e.textController.entries.forEach((element) async {
+                          if (element.value.text != '') {
+                            await ProductsCartController().addVariation(idSale, element.key, int.parse(txtQtd.text), e.id!, element.value.text, false);
+                          }
+                        });
+                      }
+
+                      e.productItemSelected.forEach((key, bool value) async {
+                        if (value && e.price > 0) {
+                          await ProductsCartController().add(idSale, key.id, '', int.parse(txtQtd.text), e.id!, false);
+                        }
+                      });
+
+                      e.subVariation.map((sub)  {
+                        if (e.value == sub.category && sub.productItemSelected.isNotEmpty) {
+                          sub.textController.entries.forEach((element) async {
+                            if (element.value.text != '') {
+                              await ProductsCartController().addVariation(idSale, element.key, int.parse(txtQtd.text), sub.id!, element.value.text, false);
+                            }
+                          });
+                          
+                          sub.productItemSelected.forEach((key, bool value) async {
+                            
+                            if (value && sub.price > 0) {
+                              await ProductsCartController().add(idSale, key.id, '', int.parse(txtQtd.text), sub.id!, false);
+                            }
+
+                          });
+                        }
+                      }).toList();
+                    }).toList());
+
+                    ProductsCartController().updateFgCurrent(idSale);
 
                     await SalesController().getTotal().then((res){
                       // SalesController().updateTotal(idSale, res + subTotal);
+                      setState(() {
+                        globals.isSelectNewItem = false;
+                      });
+                      
                       Navigator.pop(context);
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                      Navigator.push(context, navigator('products'));    
                       success(context, 'Produto adicionado com sucesso');
                     }).catchError((e){
                       error(context, 'Ocorreu um erro ao adicionar o produto: $e');
@@ -729,7 +787,6 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   
-
                   const Icon(
                     Icons.add_shopping_cart,
                     color: Colors.white,
@@ -752,40 +809,6 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
         ],
       );
     }
-
-    String textValue = '';
-    (variations.map((e) => {
-      if (e.price > 0) {
-        print(e.returnAllText())
-      },
-
-      textValue = '',
-
-      e.productItemSelected.forEach((key, bool value) {
-        if (value) {
-          textValue += '${key.name},';
-        }
-      }),
-
-      print(textValue),
-
-      textValue = '',
-
-      e.subVariation.map((sub) => {
-        if (e.value == sub.category) {
-          sub.productItemSelected.forEach((key, bool value) {
-            if (sub.value == key.name) {
-              if (value) {
-                textValue += '${key.name},';
-              }
-            }
-
-          }),
-        }
-      }).toList(),
-
-      print(textValue)
-    }).toList());
 
     return Scaffold(
       appBar: PreferredSize(
@@ -860,242 +883,225 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
       ),
 
       body: SingleChildScrollView(
-        child: FutureBuilder(
-          future: items.isEmpty ? getList() : null,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            return Padding(
-              padding: const EdgeInsets.all(20),
-              child: Form(
-                key: formKey,
-                autovalidateMode: autoValidation ? AutovalidateMode.always : AutovalidateMode.disabled,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    idProduct != 0 ?
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.description,
-                            color: globals.primary,
-                            size: 30,
-                          ),
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Form(
+            key: formKey,
+            autovalidateMode: autoValidation ? AutovalidateMode.always : AutovalidateMode.disabled,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                idProduct != 0 ?
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.description,
+                        color: globals.primary,
+                        size: 30,
+                      ),
 
-                          const SizedBox(width: 10),
+                      const SizedBox(width: 10),
 
-                          Container(
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              'Descição: $descriptionProduct',
-                              style: const TextStyle(
-                                fontSize: 20,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ) : Container(),
-
-                    const SizedBox(height: 20),
-
-                    idProduct != 0 ?
                       Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(color: globals.primary, spreadRadius: 1),
-                          ],
+                        alignment: Alignment.topLeft,
+                        child: Text(
+                          'Descição: $descriptionProduct',
+                          style: const TextStyle(
+                            fontSize: 20,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ) : Container(),
+
+                const SizedBox(height: 20),
+
+                idProduct != 0 ?
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(color: globals.primary, spreadRadius: 1),
+                      ],
+                    ),
+
+                    height: 85,
+                    width: MediaQuery.of(context).size.width - 20,
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          Navigator.pop(context);
+                          Navigator.push(context, navigator('products'));
+                          
+                          setState(() {
+                            globals.isSelectNewItem = true;
+                          });
+
+                          await SalesController().idSale().then((res) async {
+                            await ProductsCartController().add(res, idProduct, nameProduct, int.parse(txtQtd.text), idVariation);
+                          });
+                        },
+
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent,
+                          foregroundColor: Colors.black,
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
                         ),
 
-                        height: 85,
-                        width: MediaQuery.of(context).size.width - 20,
-                        child: Padding(
-                          padding: const EdgeInsets.all(10),
-
-                          child: ElevatedButton(
-                            onPressed: () async {
-                              Navigator.pop(context);
-                              Navigator.push(context, navigator('products'));
-                              
-                              setState(() {
-                                globals.isSelectNewItem = true;
-                              });
-
-                              await SalesController().idSale().then((res) async {
-                                await ProductsCartController().add(res, idProduct, nameProduct, int.parse(txtQtd.text), idVariation);
-                              });
-                            },
-
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.transparent,
-                              foregroundColor: Colors.black,
-                              elevation: 0,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.add,
+                              color: globals.primary,
+                              size: 30,
                             ),
-
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.add,
-                                  color: globals.primary,
-                                  size: 30,
-                                ),
-                                            
-                                const SizedBox(width: 10),
-                                            
-                                Flexible(
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(bottom: 10),
-                                
-                                    child: Container(
-                                      alignment: Alignment.center,
-                                      child: const Text(
-                                        'Agregar outro item ao produto',
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                        ),
-                                      ),
+                                        
+                            const SizedBox(width: 10),
+                                        
+                            Flexible(
+                              child: Padding(
+                                padding: const EdgeInsets.only(bottom: 10),
+                            
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  child: const Text(
+                                    'Agregar outro item ao produto',
+                                    style: TextStyle(
+                                      fontSize: 20,
                                     ),
                                   ),
                                 ),
-                              ],
+                              ),
                             ),
-                          ),
-                        )
-                      ) : Container(),
+                          ],
+                        ),
+                      ),
+                    )
+                  ) : Container(),
 
-                    const SizedBox(height: 10),
+                const SizedBox(height: 10),
 
-                    SectionVisible(
-                      nameSection: 'Itens do produto', 
-                      isShowPart: true,
-                      child: FutureBuilder(
-                        future: items.isNotEmpty ? null : listItemsMain(),
-                        builder: (context, snapshot) {
-                          return Column(
-                            children: [
-                              ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: items.length,
-                                padding: const EdgeInsets.symmetric(horizontal: 20),
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemBuilder: (context, index) {
-                                  return StatefulBuilder(
-                                    builder: (context, setState) {
-                                      return Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(20),
-                                          color: globals.primary,
-                                        ),
+                SectionVisible(
+                  nameSection: 'Itens do produto', 
+                  isShowPart: true,
+                  child: FutureBuilder(
+                    future: items.isNotEmpty ? null : listItemsMain(),
+                    builder: (context, snapshot) {
+                      return Column(
+                        children: [
+                          ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: items.length,
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              return StatefulBuilder(
+                                builder: (context, setState) {
+                                  return Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: globals.primary,
+                                    ),
 
-                                        margin: const EdgeInsets.only(bottom: 10),
+                                    margin: const EdgeInsets.only(bottom: 10),
 
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(10),
-                              
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            mainAxisSize: MainAxisSize.min,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(10),
+                          
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        mainAxisSize: MainAxisSize.min,
 
+                                        children: [
+                                          Flexible(
+                                            child: Text(
+                                              items[index].name!,
+                                              style: const TextStyle(
+                                                fontSize: 20,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+
+                                          Row(
                                             children: [
-                                              Flexible(
-                                                child: Text(
-                                                  items[index].name!,
-                                                  style: const TextStyle(
-                                                    fontSize: 20,
-                                                    color: Colors.white,
-                                                  ),
+                                              Text(
+                                                'R\$ ${items[index].price?.toStringAsFixed(2).replaceFirst('.', ',')}',
+                                                style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 20,
                                                 ),
                                               ),
+                          
+                                              const SizedBox(width: 10),
+                          
+                                              IconButton(
+                                                onPressed: () async {
+                                                  await ProductsCartController().remove(items[index].id!, context);
+                                                  getList();
 
-                                              Row(
-                                                children: [
-                                                  Text(
-                                                    'R\$ ${items[index].price?.toStringAsFixed(2).replaceFirst('.', ',')}',
-                                                    style: const TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 20,
-                                                    ),
-                                                  ),
-                              
-                                                  const SizedBox(width: 10),
-                              
-                                                  IconButton(
-                                                    onPressed: () async {
-                                                      ProductsCartController().remove(items[index].id!, context);
-                                                      getList();
-
-                                                      setState(() {
-                                                        items.removeAt(index);
-                                                      });
-                                                    },
-                                                    icon: const Icon(
-                                                      Icons.delete,
-                                                      color: Colors.white,
-                                                      size: 30,
-                                                    ),
-                                                  ),
-                                                ],
+                                                  setState(() {
+                                                    items.removeAt(index);
+                                                  });
+                                                },
+                                                icon: const Icon(
+                                                  Icons.delete,
+                                                  color: Colors.white,
+                                                  size: 30,
+                                                ),
                                               ),
                                             ],
                                           ),
-                                        ),
-                                      );
-                                    }
+                                        ],
+                                      ),
+                                    ),
                                   );
-                                },
-                              )
-                            ],
-                          );
-                        }
-                      ),
-                    ),
-
-                    const SizedBox(height: 20),
-              
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 80),
-                      child: Column(
-                        children: [
-
-                          listWidgetVariation.isNotEmpty ?
-                            Column(
-                              children: [
-                                ...listWidgetVariation,
-
-                                const SizedBox(height: 20),
-
-                                ...subVariations
-                              ]
-                            )
-                          : Container(),
-
-                          const SizedBox(height: 10),
-
-                          TextFieldGeneral(
-                            label: 'Observações' ,
-                            variavel: txtObservation, 
-                            keyboardType: TextInputType.text,
-                          ),
-
-                          const SizedBox(height: 20),
-      
-                          
-                        ]
-                      ),
-                    )
-                  ]
+                                }
+                              );
+                            },
+                          )
+                        ],
+                      );
+                    }
+                  ),
                 ),
-              ),
-            );
-          }
-        ),
+
+                const SizedBox(height: 20),
+          
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 80),
+                  child: Column(
+                    children: [
+
+                      if (listWidgetVariation.isNotEmpty) 
+                        ...listWidgetVariation 
+                      else 
+                        Container(),
+
+                      const SizedBox(height: 10),
+
+                      TextFieldGeneral(
+                        label: 'Observações' ,
+                        variavel: txtObservation, 
+                        keyboardType: TextInputType.text,
+                      ),
+
+                      const SizedBox(height: 20),
+
+                      
+                    ]
+                  ),
+                )
+              ]
+            ),
+          ),
+        )
       ),
 
       bottomSheet: Padding(
@@ -1103,7 +1109,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
         child: FutureBuilder(
           future: subTotal != 0 ? Future.value(true) : calcSubTotal(),
           builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
               return bottom();
             } else if (snapshot.hasError) {
               return const Center(
