@@ -127,32 +127,4 @@ class Variation {
 
     return price;
   }
-
-  String returnAllText([bool isTextController = true]) {
-    String text = '';
-
-    if (!isTextController) {
-      return value;
-    }
-
-    if (textController.isEmpty) {
-      return text;
-    }
-
-    textController.entries.forEach((element) {
-      if (element.value.text != '') {
-        if (text != '') {
-          text += ',';
-        }
-
-        text += element.value.text;
-      }
-    });
-
-    if (text != '') {
-      text = text.substring(0, text.length - 1);
-    }
-
-    return text;
-  }
 }
