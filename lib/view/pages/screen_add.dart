@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:tcc/controller/mysql/Lists/businessInfo.dart';
 import 'package:tcc/controller/mysql/Lists/products.dart';
 import 'package:tcc/controller/mysql/Lists/productsCart.dart';
@@ -632,11 +633,13 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
       
       await listItemsMain();
 
-      setState(() {});
-
       await listItemsVariations();
 
-      setState(() {});
+      if (mounted)
+        setState(() {
+          
+        });
+
       print('aaaaaaaa');
 
       return true;
@@ -747,7 +750,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                       }).toList();
                     }).toList());
 
-                    ProductsCartController().updateFgCurrent(idSale);
+                    ProductsCartController().updateInfoSale(idSale, txtObservation.text, int.parse(txtQtd.text));
 
                     await SalesController().getTotal().then((res){
                       // SalesController().updateTotal(idSale, res + subTotal);
