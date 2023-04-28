@@ -79,7 +79,23 @@ class _BottomState extends State<Bottom> {
             )
           );
         } else {
-          return Container();
+          return FutureBuilder(
+            future: cartInfo(context),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return snapshot.data as Widget;
+              } else if (snapshot.hasError) {
+                return const Text('Erro ao carregar');
+              } else {
+                return const SizedBox(
+                  height: 200,
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+              }
+            },
+          );
         }
       }
     );
