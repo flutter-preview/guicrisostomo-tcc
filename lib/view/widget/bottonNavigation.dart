@@ -25,63 +25,8 @@ class _BottomState extends State<Bottom> {
       ),
 
       onPressed: () {
-        showDialog(
-          context: context, 
-          builder: (context) => AlertDialog(
-            title: Text('Adicionar itens selecionados'),
-            content: Text('Deseja adicionar os itens selecionados?'),
-            actions: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text('Não'),
-                  ),
-
-                  TextButton(
-                    onPressed: () {
-                      globals.isSelectNewItem = false;
-                      Navigator.pop(context);
-                    },
-                    child: Text('Sim'),
-                  ),
-                ],
-              ),
-
-              TextButton(
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(globals.primary),
-                  foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                ),
-                onPressed: () {
-                  Navigator.pop(context);
-                  Navigator.push(context, navigator('products/add_product', ProductItemList(id: 0, name: '', description: '', link_image: null, price: 0, variation: Variation())));
-                }, 
-                child: Center(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: const [
-                      Icon(
-                        Icons.shopping_cart,
-                        size: 20,
-                      ),
-                
-                      SizedBox(width: 5),
-                      
-                      Text(
-                        'Visualizar carrinho',
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              
-            ],
-          )
-        );
+        Navigator.pop(context);
+        Navigator.push(context, navigator('products/add_product', ProductItemList(id: 0, name: '', description: '', link_image: null, price: 0, variation: Variation())));
       },
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -111,7 +56,7 @@ class _BottomState extends State<Bottom> {
     return FutureBuilder(
       future: getListItemCurrent(),
       builder: (context, builder) {
-        if (builder.data == true) {
+        if (builder.data == true || globals.isSelectNewItem) {
           return Container(
             color: Colors.white,
             padding: const EdgeInsets.all(10),
@@ -173,7 +118,7 @@ class _BottomState extends State<Bottom> {
       mainAxisSize: MainAxisSize.min,
       children: [
         
-        globals.isSelectNewItem && globals.globalSelectedIndexBotton == 2 ? 
+        globals.globalSelectedIndexBotton == 2 ? 
           selectNewItem() 
           : FutureBuilder(
           future: cartInfo(context),
