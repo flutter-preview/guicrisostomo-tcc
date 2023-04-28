@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:tcc/controller/mysql/Lists/businessInfo.dart';
 import 'package:tcc/controller/mysql/utils.dart';
 import 'package:tcc/model/ProductsCart.dart';
 import 'package:tcc/globals.dart' as globals;
@@ -85,31 +86,58 @@ class SalesController {
     num res = 0;
     
     return await connectSupadatabase().then((conn) async {
+
+      return await BusinessInformationController().getInfoCalcValue().then((value) async {
+        if (value == true || value == null) {
+          return await conn.query('''
+            SELECT SUM(MAX.MAX) FROM (
+              SELECT MAX(p.price * i.qtd) from items i 
+                INNER JOIN products p ON p.id = i.id_product 
+                INNER JOIN orders o ON o.id = i.id_order 
+                where o.uid = @uid and o.status = @status and i.fg_current = false
+                GROUP BY (i.relation_id, i.id_variation)
+              ) AS max
+            ''', substitutionValues: {
+            'uid': FirebaseAuth.instance.currentUser!.uid,
+            'status': 'ANDAMENTO',
+          }).then((List value) {
+            conn.close();
+
+            if (value.isEmpty) {
+              return 0;
+            } else {
+              return value.first[0];
+            }
+          });
+        } else {
+          return await conn.query('''
+            SELECT SUM(avg.AVG) FROM (
+              SELECT AVG(p.price * i.qtd) from items i 
+                INNER JOIN products p ON p.id = i.id_product 
+                INNER JOIN orders o ON o.id = i.id_order 
+                where o.uid = @uid and o.status = @status and i.fg_current = false
+                GROUP BY (i.relation_id, i.id_variation)
+              ) AS avg
+            ''', substitutionValues: {
+            'uid': FirebaseAuth.instance.currentUser!.uid,
+            'status': 'ANDAMENTO',
+          }).then((List value) {
+            conn.close();
+
+            if (value.isEmpty) {
+              return 0;
+            } else {
+              return value.first[0];
+            }
+          });
+        }
+      });
       // String querySelect = 'SELECT p.price, i.qtd from items i';
       // querySelect += ' INNER JOIN products p ON p.id = i.id_product';
       // querySelect += ' INNER JOIN orders o ON o.id = i.id_order';
       // querySelect += ' where o.user = ? and o.status = ? and i.relation_id is null';
       
-      return await conn.query('''
-        SELECT SUM(MAX.MAX) FROM (
-          SELECT MAX(p.price * i.qtd) from items i 
-            INNER JOIN products p ON p.id = i.id_product 
-            INNER JOIN orders o ON o.id = i.id_order 
-            where o.uid = @uid and o.status = @status and i.fg_current = false
-            GROUP BY (i.relation_id, i.id_variation)
-          ) AS max
-        ''', substitutionValues: {
-        'uid': FirebaseAuth.instance.currentUser!.uid,
-        'status': 'ANDAMENTO',
-      }).then((List value) {
-        conn.close();
-
-        if (value.isEmpty) {
-          return 0;
-        } else {
-          return value.first[0];
-        }
-      });
+      
       // return await conn.from('items').select('''
       //   products!inner(price),
       //   orders!inner(id, uid, status),
