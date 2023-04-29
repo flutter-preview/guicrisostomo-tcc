@@ -370,16 +370,19 @@ class ProductsController {
     });
   }
 
-  Future<List<CommentsProduct>> getCommentsProductUser(int idProduct) async {
+  Future<List<CommentsProduct>> getCommentsProductUser(String nameProduct, String categoryProduct) async {
     return await connectSupadatabase().then((conn) async {
       return await conn.query('''
         SELECT c.id, c.comment, c.uid, c.id_product, c.created_at, u.name, u.image
-        FROM comments c
-        INNER JOIN tb_user u ON u.uid = c.uid
-        WHERE c.id_product = @id_product
+          FROM comments c
+          INNER JOIN tb_user u ON u.uid = c.uid
+          INNER JOIN products p ON p.id = c.id_product
+          INNER JOIN variations v ON v.id = p.id_variation
+          WHERE p.name = @name_product AND v.category = @category_product
         ORDER BY c.created_at DESC
       ''', substitutionValues: {
-        'id_product': idProduct
+        'name_product': nameProduct,
+        'category_product': categoryProduct
       }).then((List value) {
         conn.close();
 

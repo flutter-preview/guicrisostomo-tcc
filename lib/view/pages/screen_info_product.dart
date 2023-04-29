@@ -55,8 +55,16 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
       return listSize(productsVariation);
     }
 
-    Future<void> getCommentsProductUser() async {
-      commentsProduct = await ProductsController().getCommentsProductUser(productSelect.id);
+    Future<List<CommentsProduct>> getCommentsProductUser() async {
+        return await ProductsController().getCommentsProductUser(productSelect.name, productSelect.variation!.category);
+    }
+
+    Future<Widget> getListComments() async {
+      if (commentsProduct.isEmpty) {
+        commentsProduct = await getCommentsProductUser();
+      }
+
+      return comments(this.context, commentsProduct);
     }
 
     if (productsVariation.isEmpty) {
@@ -77,7 +85,7 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: NetworkImage(
-                  urlImageProduct ?? imgPizza,
+                  urlImageProduct ?? 'https://www.thermaxglobal.com/wp-content/uploads/2020/05/image-not-found.jpg',
                 ),
                 fit: BoxFit.cover,
                 colorFilter: ColorFilter.mode(
@@ -217,7 +225,18 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
         
               const SizedBox(height: 10,),
         
-              comments(context, commentsProduct),
+              FutureBuilder(
+                future: getListComments(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return snapshot.data as Widget;
+                  } else {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                },
+              ),
         
               const SizedBox(height: 10,),
         
