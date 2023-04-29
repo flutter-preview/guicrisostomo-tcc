@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_constructors, unused_local_variable, prefer_typing_uninitialized_variables, file_names
 
 import 'package:flutter/material.dart';
-import 'package:tcc/controller/mysql/Lists/productsCart.dart';
-import 'package:tcc/controller/mysql/Lists/sales.dart';
+import 'package:tcc/controller/postgres/Lists/productsCart.dart';
+import 'package:tcc/controller/postgres/Lists/sales.dart';
 import 'package:tcc/globals.dart' as globals;
 import 'package:tcc/main.dart';
 import 'package:tcc/model/ProductItemList.dart';

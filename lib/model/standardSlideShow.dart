@@ -1,4 +1,4 @@
-import 'package:tcc/controller/mysql/utils.dart';
+import 'package:tcc/controller/postgres/utils.dart';
 import 'package:tcc/view/widget/snackBars.dart';
 
 class SlideShow {

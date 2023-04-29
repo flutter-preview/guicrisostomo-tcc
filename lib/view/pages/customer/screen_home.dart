@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:tcc/controller/mysql/Lists/sales.dart';
+import 'package:tcc/controller/postgres/Lists/sales.dart';
 import 'package:tcc/model/ProductsCart.dart';
 import 'package:tcc/model/standardSlideShow.dart';
 import 'package:tcc/view/widget/appBar.dart';

@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
-import 'package:tcc/controller/mysql/Lists/products.dart';
+import 'package:tcc/controller/postgres/Lists/products.dart';
 import 'package:tcc/model/Comments.dart';
 import 'package:tcc/model/ProductItemList.dart';
 import 'package:tcc/model/Variation.dart';

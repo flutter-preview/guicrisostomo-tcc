@@ -1,8 +1,8 @@
 // ignore_for_file: file_names
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:tcc/controller/mysql/Lists/productsCart.dart';
-import 'package:tcc/controller/mysql/Lists/sales.dart';
+import 'package:tcc/controller/postgres/Lists/productsCart.dart';
+import 'package:tcc/controller/postgres/Lists/sales.dart';
 import 'package:tcc/main.dart';
 import 'package:tcc/model/ProductItemList.dart';
 import 'package:tcc/model/Variation.dart';

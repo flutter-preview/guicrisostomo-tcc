@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:tcc/controller/mysql/utils.dart';
+import 'package:tcc/controller/postgres/utils.dart';
 import 'package:tcc/main.dart';
 import 'package:tcc/view/widget/snackBars.dart';
       

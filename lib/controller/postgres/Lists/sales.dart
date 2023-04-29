@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:tcc/controller/mysql/Lists/businessInfo.dart';
-import 'package:tcc/controller/mysql/utils.dart';
+import 'package:tcc/controller/postgres/Lists/businessInfo.dart';
+import 'package:tcc/controller/postgres/utils.dart';
 import 'package:tcc/model/ProductsCart.dart';
 import 'package:tcc/globals.dart' as globals;
 

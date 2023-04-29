@@ -1,9 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:tcc/controller/mysql/Lists/businessInfo.dart';
-import 'package:tcc/controller/mysql/Lists/products.dart';
-import 'package:tcc/controller/mysql/Lists/productsCart.dart';
-import 'package:tcc/controller/mysql/Lists/sales.dart';
+import 'package:tcc/controller/postgres/Lists/businessInfo.dart';
+import 'package:tcc/controller/postgres/Lists/products.dart';
+import 'package:tcc/controller/postgres/Lists/productsCart.dart';
+import 'package:tcc/controller/postgres/Lists/sales.dart';
 import 'package:tcc/main.dart';
 import 'package:tcc/model/ProductItemList.dart';
 import 'package:tcc/model/ProductsCart.dart';
