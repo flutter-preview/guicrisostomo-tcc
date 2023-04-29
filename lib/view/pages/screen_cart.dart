@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:tcc/controller/mysql/Lists/productsCart.dart';
 import 'package:tcc/controller/mysql/Lists/sales.dart';
 import 'package:tcc/main.dart';
-import 'package:tcc/view/widget/bottonNavigation.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/listCart.dart';
 import 'package:tcc/globals.dart' as globals;
@@ -33,30 +32,21 @@ class _ScreenCartState extends State<ScreenCart> {
   int idSale = 0;
   
   double get largura => MediaQuery.of(context).size.width;
-  void getIdSale() async {
-    await SalesController().idSale().then((value){
-      setState(() {
-        idSale = value;
-        list = ProductsCartController().list(idSale);
+  Future<void> getList() async {
+    await SalesController().idSale().then((value) async {
+      idSale = value;
+      await ProductsCartController().list(idSale).then((value) {
+        list = value;
       });
     });
-  }
-  
-
-  @override
-  void initState() {
-    super.initState();
-    
-    list = ProductsCartController().list(idSale);
+    print('a');
   }
 
 
   @override
   Widget build(BuildContext context) {
-    if (idSale == null) {
-      getIdSale();
-    }
 
+    print('a');
     return Scaffold(
       appBar: AppBar(
         title: const Text('Carrinho'),
@@ -67,7 +57,16 @@ class _ScreenCartState extends State<ScreenCart> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            ProductsCart(product: list),
+            FutureBuilder(
+              future: getList(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return ProductsCart(product: list);
+                } else {
+                  return const Center(child: CircularProgressIndicator());
+                }
+              }
+            ),
 
             Container(
               alignment: Alignment.bottomCenter,
@@ -84,8 +83,6 @@ class _ScreenCartState extends State<ScreenCart> {
           ],
         ),
       ),
-
-      bottomNavigationBar: const Bottom(),
     );
   }
 }

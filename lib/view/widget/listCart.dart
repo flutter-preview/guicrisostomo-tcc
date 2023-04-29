@@ -23,11 +23,18 @@ class ProductsCart extends StatefulWidget {
 }
 
 class _ProductsCartState extends State<ProductsCart> {
+  ProductsCartList? dados;
+  dynamic item;
+  int? idItem;
+  String? name;
+  num? price;
+  int? qtd;
+  num? subTotal;
+  
+  var txtQtd = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    var txtQtd = TextEditingController();
-
-    
     return Padding(
       padding: EdgeInsets.all(20),
       child: Column(
@@ -36,16 +43,15 @@ class _ProductsCartState extends State<ProductsCart> {
             ListView.builder(
               itemCount: widget.product.length,
               shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
+              physics: const ScrollPhysics(),
               itemBuilder: (context, index) {
-                ProductsCartList dados = widget.product[index];
-                dynamic item = dados;//snapshot.data![index];
-                String uid;
-                int? idItem = dados.idProduct;
-                String? name = dados.name;
-                num? price = dados.price;
-                int? qtd = dados.qtd;
-                num? subTotal = price! * qtd!;
+                dados = widget.product[index];
+                item = dados;//snapshot.data![index];
+                idItem = dados!.idProduct;
+                name = dados!.name;
+                price = dados!.price;
+                qtd = dados!.qtd;
+                subTotal = price! * qtd!;
             
                 return Card(
                   color: Colors.white,
@@ -70,7 +76,7 @@ class _ProductsCartState extends State<ProductsCart> {
                           ),
                           
                           Text(
-                            'Preço: R\$ ${price.toStringAsFixed(2).replaceFirst('.', ',')}',
+                            'Preço: R\$ ${price!.toStringAsFixed(2).replaceFirst('.', ',')}',
                             style: TextStyle(
                               color: Colors.black,
                             ),
@@ -84,7 +90,7 @@ class _ProductsCartState extends State<ProductsCart> {
                           ),
                   
                           Text(
-                            'Sub-total: R\$ ${subTotal.toStringAsFixed(2).replaceFirst('.', ',')}',
+                            'Sub-total: R\$ ${subTotal!.toStringAsFixed(2).replaceFirst('.', ',')}',
                             style: TextStyle(
                               color: Colors.black,
                             ),
