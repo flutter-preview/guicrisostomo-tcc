@@ -6,20 +6,30 @@ import 'package:tcc/view/widget/snackBars.dart';
 
 class ProductsCartController {
 
-  List<ProductsCartList> list(int idSale) {
+  Future<List<ProductsCartList>> list(int idSale) async {
     List<ProductsCartList> list = [];
     num total = 0;
     
-    connectSupadatabase().then((conn) async {
+    return await connectSupadatabase().then((conn) async {
       // var querySelect = 'SELECT i.id, i.id_product, p.name, p.price, i.qtd, p.id_variation';
       // querySelect += ' FROM items i';
       // querySelect += ' INNER JOIN products p ON p.id = i.id_product';
       // querySelect += ' WHERE id_order = ?';
       // querySelect += ' ORDER BY p.name';
-      await conn.query('SELECT i.id, i.id_product, p.name, p.price, i.qtd, p.id_variation FROM items i INNER JOIN products p ON p.id = i.id_product WHERE id_order = @idOrder ORDER BY p.name', substitutionValues: {
+      return await conn.query('''
+        SELECT i.id, i.id_product, p.name, p.price, i.qtd, p.id_variation 
+          FROM items i 
+          INNER JOIN products p ON p.id = i.id_product 
+          WHERE id_order = @idOrder AND i.fg_current = false AND i.relation_id = i.id
+          ORDER BY p.name
+      ''', substitutionValues: {
         'idOrder': idSale
       }).then((List value) {
         conn.close();
+
+        if (value.isEmpty) {
+          return [];
+        }
 
         for (var row in value) {
           list.add(
@@ -37,6 +47,8 @@ class ProductsCartController {
         }
 
         ProductsCartList().setTotal(total);
+      
+        return list;
       });
       // var results = await conn.from('items').select('''
       //   id, 
@@ -63,8 +75,6 @@ class ProductsCartController {
 
       // ProductsCartList().setTotal(total);
     });
-
-    return list;
   }
 
   Future<List<ProductsCartList>> listItemCurrent(int idSale, [int idVariation = 0]) async {
