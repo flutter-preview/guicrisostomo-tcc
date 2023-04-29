@@ -80,11 +80,7 @@ class _ScreenProductsState extends State<ScreenProducts> {
                 SectionVisible(
                   nameSection: 'Produtos',
                   isShowPart: true,
-                  child: SizedBox(
-                    height: 200,
-                    width: double.infinity,
-                    child: ProductItem(product: value,),
-                  ),
+                  child: ProductItem(product: value,),
                 ),
               );
             });
@@ -96,11 +92,7 @@ class _ScreenProductsState extends State<ScreenProducts> {
                   SectionVisible(
                     nameSection: sizes[i],
                     isShowPart: true,
-                    child: SizedBox(
-                      height: 200,
-                      width: double.infinity,
-                      child: ProductItem(product: value,),
-                    ),
+                    child: ProductItem(product: value,),
                   ),
                 );
               });
@@ -114,14 +106,11 @@ class _ScreenProductsState extends State<ScreenProducts> {
           );
         }
       } catch (e) {
-        return const SizedBox(
-          height: 50,
-          child: Text(
-            'Produto não encontrado',
-            style: TextStyle(
-              fontSize: 20,
-              color: Colors.black45,
-            ),
+        return const Text(
+          'Produto não encontrado',
+          style: TextStyle(
+            fontSize: 20,
+            color: Colors.black45,
           ),
         );
       }
