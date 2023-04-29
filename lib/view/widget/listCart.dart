@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tcc/controller/postgres/Lists/productsCart.dart';
 import 'package:tcc/controller/postgres/Lists/sales.dart';
+import 'package:tcc/main.dart';
 import 'package:tcc/model/ProductsCart.dart';
 import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/snackBars.dart';
@@ -249,6 +250,16 @@ class _ProductsCartState extends State<ProductsCart> {
                           )
                         ]
                       ),
+                    
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          navigator(
+                            'cart/info_item',
+                            idItem,
+                          )
+                        );
+                      },
                     ),
                   )
                 );

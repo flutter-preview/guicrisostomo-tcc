@@ -27,6 +27,7 @@ import 'package:tcc/view/pages/manager/screen_list_smartphone_employee.dart';
 import 'package:tcc/view/pages/manager/screen_more_option.dart';
 import 'package:tcc/view/pages/manager/screen_permissions.dart';
 import 'package:tcc/view/pages/manager/screen_register_employee.dart';
+import 'package:tcc/view/pages/screen_info_item.dart';
 import 'package:tcc/view/pages/screen_loading.dart';
 import 'package:tcc/view/pages/screen_tables.dart';
 import 'package:tcc/view/pages/manager/screen_category.dart';
@@ -93,6 +94,9 @@ Route navigator([String? name, Object? arguments]) {
       break;
     case 'cart' :
       page = const ScreenCart();
+      break;
+    case 'cart/info_item' :
+      page = ScreenInfoItem(arguments: arguments);
       break;
     case 'products' :
       page = ScreenProducts(arguments: arguments);
@@ -272,6 +276,7 @@ Future<void> main() async {
         'table/info' :(context) => const ScreenInfoTable(),
         'waiter' :(context) => const ScreenCallWaiter(),
         'cart' :(context) => const ScreenCart(),
+        'cart/info_item' :(context) => const ScreenInfoItem(arguments: {},),
         'products' :(context) => const ScreenProducts(),
         'products/info_product' :(context) => const ScreenInfoProduct(arguments: {},),
         'products/add_product' :(context) => ScreenAddItem(),
