@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tcc/controller/mysql/Lists/products.dart';
+import 'package:tcc/model/Comments.dart';
 import 'package:tcc/model/ProductItemList.dart';
 import 'package:tcc/model/Variation.dart';
 import 'package:tcc/utils.dart';
@@ -29,6 +31,7 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
   var txtComment = TextEditingController();
 
   List<ProductItemList> productsVariation = [];
+  List<CommentsProduct> commentsProduct = [];
 
   @override
   Widget build(BuildContext context) {
@@ -52,8 +55,13 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
       return listSize(productsVariation);
     }
 
+    Future<void> getCommentsProductUser() async {
+      commentsProduct = await ProductsController().getCommentsProductUser(productSelect.id);
+    }
+
     if (productsVariation.isEmpty) {
       getAllVariations();
+      getCommentsProductUser();
     }
 
     print('b');
@@ -209,7 +217,7 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
         
               const SizedBox(height: 10,),
         
-              comments(context),
+              comments(context, commentsProduct),
         
               const SizedBox(height: 10,),
         
@@ -224,8 +232,11 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
                   validatorString(value!);
                 },
 
-                eventPressIconSuffix: () {
-                  
+                eventPressIconSuffix: () async {
+                  await ProductsController().addCommentProductUser(productSelect.id, FirebaseAuth.instance.currentUser!.uid, txtComment.text);
+                  setState(() {
+                    getCommentsProductUser();
+                  });
                 },
         
               ),

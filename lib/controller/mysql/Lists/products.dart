@@ -1,4 +1,5 @@
 import 'package:tcc/controller/mysql/utils.dart';
+import 'package:tcc/model/Comments.dart';
 import 'package:tcc/model/ProductItemList.dart';
 import 'package:tcc/globals.dart' as globals;
 import 'package:tcc/model/Variation.dart';
@@ -366,6 +367,57 @@ class ProductsController {
         // [name.toUpperCase(), price, description, results.first[0], urlImage, id]);
         // await conn.close();
       });
+    });
+  }
+
+  Future<List<CommentsProduct>> getCommentsProductUser(int idProduct) async {
+    return await connectSupadatabase().then((conn) async {
+      return await conn.query('''
+        SELECT c.id, c.comment, c.uid, c.id_product, c.created_at, u.name, u.image
+        FROM comments c
+        INNER JOIN tb_user u ON u.uid = c.uid
+        WHERE c.id_product = @id_product
+        ORDER BY c.created_at DESC
+      ''', substitutionValues: {
+        'id_product': idProduct
+      }).then((List value) {
+        conn.close();
+
+        List<CommentsProduct> results = [];
+
+        if (value.isEmpty) {
+          return [];
+        }
+
+        for(final row in value) {
+          results.add(CommentsProduct(
+            id: row[0],
+            comment: row[1],
+            idUser: row[2],
+            idProduct: row[3],
+            date: row[4],
+            nameUser: row[5],
+            urlImageUser: row[6]
+          ));
+        }
+
+        return results;
+      });
+    });
+  }
+
+  Future<void> addCommentProductUser(int idProduct, String idUser, String comment) async {
+    await connectSupadatabase().then((conn) async {
+      await conn.query('''
+        INSERT INTO comments (comment, uid, id_product, created_at)
+        VALUES (@comment, @id_user, @id_product, @date)
+      ''', substitutionValues: {
+        'comment': comment,
+        'id_user': idUser,
+        'id_product': idProduct,
+        'date': DateTime.now().toUtc()
+      });
+      conn.close();
     });
   }
 }
