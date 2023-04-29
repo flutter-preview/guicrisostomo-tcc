@@ -320,14 +320,16 @@ class ProductsCartController {
     });
   }
 
-  Future<void> updateFgCurrent(int idSale) async {
+  Future<void> updateInfoSale(int idSale, String obs, int qtd) async {
     int idRelation = 0;
     await getIdRelation(idSale).then((value) => idRelation = value);
 
-    connectSupadatabase().then((conn) async {
+    await connectSupadatabase().then((conn) async {
       
-      await conn.query('update items set fg_current = false where relation_id = @id', substitutionValues: {
+      await conn.query('update items set fg_current = false, observation = @obs, qtd = @qtd where relation_id = @id', substitutionValues: {
         'id': idRelation,
+        'obs': obs,
+        'qtd': qtd,
       });
       conn.close();
     });

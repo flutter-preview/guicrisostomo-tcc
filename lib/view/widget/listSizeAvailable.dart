@@ -2,56 +2,66 @@
 import 'package:flutter/material.dart';
 import 'package:tcc/globals.dart' as globals;
 import 'package:tcc/main.dart';
+import 'package:tcc/model/ProductItemList.dart';
 
-Widget listSize(nameSize, price) {
+Widget listSize(List<ProductItemList> list) {
   return SizedBox(
-    height: 100,
+    height: 200,
     child: (
       ListView.builder(
-        itemCount: 1,
-        shrinkWrap:true,
+        itemCount: list.length,
+        shrinkWrap: true,
         scrollDirection: Axis.vertical,
-        physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) {
-        return Card(
-          color: Colors.white,
-          child: ListTile(
-            contentPadding: const EdgeInsets.fromLTRB(10, 10, 20, 10),
-            leading: Icon(Icons.local_pizza, size: 50, color: globals.primary),
-            
-            title: Text(
-              nameSize,
-              style: const TextStyle(
-                fontSize: 24,
-                color: Colors.black,
-              ),
-            ),
-  
-            trailing: SizedBox(
-              width: 25,
-              height: 25,
+          return Card(
+            color: Colors.white,
+            child: ListTile(
+              contentPadding: const EdgeInsets.fromLTRB(10, 10, 20, 10),
+              leading: Icon(Icons.local_pizza, size: 50, color: globals.primary),
               
-              child: ElevatedButton(
+              title: Text(
+                list[index].variation!.size,
+                style: const TextStyle(
+                  fontSize: 24,
+                  color: Colors.black,
+                ),
+              ),
+    
+              trailing: ElevatedButton(
                   
                 onPressed: () {
                   Navigator.push(
                     context,
-                    navigator('products/add_product'),
+                    navigator(
+                      'products/add_product',
+                      list[index],
+                    ),
                   );
                 },
                 
                 style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.all(2),
+                  padding: const EdgeInsets.all(10),
                   backgroundColor: globals.primary,
-                  shape: const CircleBorder(),
                 ),
-                child: const Icon(Icons.add, size: 15, color: Colors.white,),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(Icons.add, size: 15, color: Colors.white,),
+                    Text(
+                      'R\$ ${list[index].price.toStringAsFixed(2)}',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
               )
-            )
-            
-          ),
-        );
-      })
+              
+            ),
+          );
+        }
+      )
     ),
   );
 }

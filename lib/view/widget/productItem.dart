@@ -144,7 +144,10 @@ class _ProductItemState extends State<ProductItem> {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            navigator('products/info_product'),
+                            navigator(
+                              'products/info_product',
+                              item,
+                            ),
                           );
                         },
                         
@@ -165,7 +168,7 @@ class _ProductItemState extends State<ProductItem> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      navigator('products/info_product'),
+                      navigator('products/info_product', item),
                     );
                   },
                 )

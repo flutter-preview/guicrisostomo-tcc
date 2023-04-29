@@ -58,6 +58,49 @@ class ProductsController {
     });
   }
 
+  Future<List<ProductItemList>> getAllProductsVariations(String product, String category) async {
+    return await connectSupadatabase().then((conn) async {
+      return await conn.query(
+        '''
+        SELECT p.id, p.name, p.price, p.description, p.link_image, v.category, v.size, p.id_variation
+          FROM products p
+          INNER JOIN variations v ON v.id = p.id_variation
+          WHERE v.business = @business AND p.fg_ativo = true AND v.category = @category AND p.name = @product
+          ORDER BY p.name
+        ''', 
+        substitutionValues: {
+          'business': globals.businessId,
+          'product': product,
+          'category': category
+        }
+      ).then((List value) {
+        conn.close();
+        List<ProductItemList> list = [];
+
+        if (value.isEmpty) {
+          return list;
+        }
+
+        for(final row in value) {
+          list.add(ProductItemList(
+            id: row[0],
+            name: row[1],
+            price: row[2],
+            description: row[3],
+            link_image: row[4],
+            variation: Variation(
+              category: row[5],
+              size: row[6],
+              id: row[7]
+            ),
+          ));
+        }
+
+        return list;
+      });
+    });
+  }
+
   Future<List<String>> listCategories() async {
     List<String> listCategories = [];
 

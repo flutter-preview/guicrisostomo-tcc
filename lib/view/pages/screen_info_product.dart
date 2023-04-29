@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:tcc/controller/mysql/Lists/products.dart';
+import 'package:tcc/model/ProductItemList.dart';
+import 'package:tcc/model/Variation.dart';
 import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/bottonNavigation.dart';
 import 'package:tcc/view/widget/comments.dart';
@@ -7,9 +10,12 @@ import 'package:tcc/view/widget/listSizeAvailable.dart';
 import 'package:tcc/view/widget/textFieldGeneral.dart';
 
 class ScreenInfoProduct extends StatefulWidget {
+  final Object? arguments;
 
-
-  const ScreenInfoProduct({super.key});
+  const ScreenInfoProduct({
+    super.key,
+    required this.arguments,
+  });
 
   @override
   State<ScreenInfoProduct> createState() => _ScreenInfoProductState();
@@ -22,8 +28,35 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
 
   var txtComment = TextEditingController();
 
+  List<ProductItemList> productsVariation = [];
+
   @override
   Widget build(BuildContext context) {
+    ProductItemList productSelect = widget.arguments as ProductItemList;
+
+    String nameProduct = productSelect.name;
+    String descriptionProduct = productSelect.description!;
+    String? urlImageProduct = productSelect.link_image;
+    String categoryProduct = productSelect.variation!.category;
+
+    Future<void> getAllVariations() async {
+      productsVariation = await ProductsController().getAllProductsVariations(nameProduct, categoryProduct);
+    }
+
+    Future<Widget> getListVariations() async {
+      
+      if (productsVariation.isEmpty) {
+        await getAllVariations();
+      }
+
+      return listSize(productsVariation);
+    }
+
+    if (productsVariation.isEmpty) {
+      getAllVariations();
+    }
+
+    print('b');
 
     return Scaffold(
       
@@ -35,10 +68,14 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
           flexibleSpace: Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage(
-                  imgPizza,
+                image: NetworkImage(
+                  urlImageProduct ?? imgPizza,
                 ),
                 fit: BoxFit.cover,
+                colorFilter: ColorFilter.mode(
+                  Colors.black.withOpacity(0.5),
+                  BlendMode.darken,
+                ),
               ),
             ),
           
@@ -71,9 +108,9 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: const [
+                    children: [
                       Text(
-                        'TENTAÇÃO',
+                        nameProduct,
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 26,
@@ -82,7 +119,7 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
                       ),
                 
                       Text(
-                        'Chocolate preto, chocolate branco e creme de morango',
+                        descriptionProduct,
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 20,
@@ -116,10 +153,19 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
         
               const SizedBox(height: 10,),
         
-              listSize('PEQUENA (4 fatias)', 'R\$ 20,00'),
-              listSize('GRANDE (8 fatias)', 'R\$ 30,00'),
-              listSize('GIGANTE (12 fatias)', 'R\$ 40,00'),
-        
+              FutureBuilder(
+                future: getListVariations(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return snapshot.data as Widget;
+                  } else {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                },
+              ),
+
               const SizedBox(height: 10,),
         
               const Center(

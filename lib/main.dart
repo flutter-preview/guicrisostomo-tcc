@@ -51,7 +51,6 @@ import 'package:tcc/view/pages/screen_profile.dart';
 import 'package:tcc/view/pages/screen_register.dart';
 import 'package:tcc/view/pages/screen_terms.dart';
 import 'package:tcc/view/pages/screen_verification_table.dart';
-import 'package:tcc/view/widget/snackBars.dart';
 
 Route navigator([String? name, Object? arguments]) {
   Widget page;
@@ -99,7 +98,7 @@ Route navigator([String? name, Object? arguments]) {
       page = ScreenProducts(arguments: arguments);
       break;
     case 'products/info_product' :
-      page = const ScreenInfoProduct();
+      page = ScreenInfoProduct(arguments: arguments);
       break;
     case 'products/add_product' :
       page = ScreenAddItem(arguments: arguments);
@@ -274,7 +273,7 @@ Future<void> main() async {
         'waiter' :(context) => const ScreenCallWaiter(),
         'cart' :(context) => const ScreenCart(),
         'products' :(context) => const ScreenProducts(),
-        'products/info_product' :(context) => const ScreenInfoProduct(),
+        'products/info_product' :(context) => const ScreenInfoProduct(arguments: {},),
         'products/add_product' :(context) => ScreenAddItem(),
         'list_products' :(context) => const ScreenListProducts(),
         'profile' :(context) => const ScreenProfile(),
