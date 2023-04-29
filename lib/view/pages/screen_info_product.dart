@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 import 'package:tcc/controller/mysql/Lists/products.dart';
 import 'package:tcc/model/Comments.dart';
 import 'package:tcc/model/ProductItemList.dart';
@@ -33,6 +34,8 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
   List<ProductItemList> productsVariation = [];
   List<CommentsProduct> commentsProduct = [];
 
+  String textDateTime = '';
+
   @override
   Widget build(BuildContext context) {
     ProductItemList productSelect = widget.arguments as ProductItemList;
@@ -56,7 +59,7 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
     }
 
     Future<List<CommentsProduct>> getCommentsProductUser() async {
-        return await ProductsController().getCommentsProductUser(productSelect.name, productSelect.variation!.category);
+      return await ProductsController().getCommentsProductUser(productSelect.name, productSelect.variation!.category);
     }
 
     Future<Widget> getListComments() async {
@@ -67,9 +70,29 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
       return comments(this.context, commentsProduct);
     }
 
+    Future<void> getProductLastSale() async {
+      NumberFormat formatter = NumberFormat("00");
+      DateTime? lastSale;
+
+      await ProductsController().getProductLastSale(productSelect.name, productSelect.variation!.category).then((value) {
+        setState(() {
+          if (value == null) {
+            textDateTime = 'nunca';
+            return;
+          }
+
+          lastSale = value.toLocal();
+
+          textDateTime = '${formatter.format(lastSale!.day)}/${formatter.format(lastSale!.month)}/${lastSale!.year} às ${formatter.format(lastSale!.hour)}:${formatter.format(lastSale!.minute)}';
+        });
+      });
+
+    }
+
     if (productsVariation.isEmpty) {
       getAllVariations();
       getCommentsProductUser();
+      getProductLastSale();
     }
 
     print('b');
@@ -206,8 +229,8 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
                       height: 20,
                     ),
               
-                    const Text(
-                      'Último pedido: 19:52 do dia 27/05/2022'
+                    Text(
+                      'Último pedido: $textDateTime',
                     )
                   ],
                 ),

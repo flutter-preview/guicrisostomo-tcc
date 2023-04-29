@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tcc/controller/mysql/utils.dart';
 import 'package:tcc/model/Comments.dart';
 import 'package:tcc/model/ProductItemList.dart';
@@ -421,6 +422,32 @@ class ProductsController {
         'date': DateTime.now().toUtc()
       });
       conn.close();
+    });
+  }
+
+  Future<DateTime?> getProductLastSale(String nameProduct, String categoryProduct) async {
+    return await connectSupadatabase().then((conn) async {
+      return await conn.query('''
+        SELECT MAX(i.created_at)
+          FROM items i
+          INNER JOIN products p ON p.id = i.id_product
+          INNER JOIN variations v ON v.id = p.id_variation
+          INNER JOIN orders o ON o.id = i.id_order
+          INNER JOIN tb_user u ON u.uid = o.uid
+          WHERE p.name = @name_product AND v.category = @category_product AND u.uid = @uid
+      ''', substitutionValues: {
+        'name_product': nameProduct,
+        'category_product': categoryProduct,
+        'uid': FirebaseAuth.instance.currentUser!.uid
+      }).then((List value) {
+        conn.close();
+
+        if (value.isEmpty) {
+          return null;
+        }
+
+        return value.first[0];
+      });
     });
   }
 }
