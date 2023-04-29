@@ -23,6 +23,7 @@ class TextFieldGeneral extends StatefulWidget {
   bool hasSum = false;
   List<double> size;
   List<TextInputFormatter>? inputFormatter;
+  TextCapitalization textCapitalization = TextCapitalization.none;
 
   TextFieldGeneral
     ({
@@ -45,6 +46,7 @@ class TextFieldGeneral extends StatefulWidget {
       this.isHour = false,
       this.hasSum = false,
       this.size = const [70, 0],
+      this.textCapitalization = TextCapitalization.none,
     });
 
   @override
@@ -136,6 +138,7 @@ class _TextFieldGeneralState extends State<TextFieldGeneral> {
               autocorrect: !widget.isPassword,
               enableSuggestions: !widget.isPassword,
               maxLength: widget.hasSum ? 2 : null,
+              textCapitalization: widget.textCapitalization,
               
               style: TextStyle(
                 fontSize: widget.hasSum ? 17: 24,

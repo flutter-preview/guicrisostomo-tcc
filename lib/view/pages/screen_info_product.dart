@@ -247,6 +247,7 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
                 context: context,
                 ico: Icons.person_outline,
                 icoSuffix: Icons.send_outlined,
+                textCapitalization: TextCapitalization.sentences,
                 validator: (value) {
                   validatorString(value!);
                 },
