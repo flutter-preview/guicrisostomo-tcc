@@ -45,27 +45,27 @@ class _ScreenCartState extends State<ScreenCart> {
         withoutIcons: true,
       ),
 
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            FutureBuilder(
+      body: CustomScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        slivers: [
+          SliverFillRemaining(
+            fillOverscroll: true,
+            child: FutureBuilder(
               future: getList(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   if (list.isNotEmpty) {
-                    return Expanded(
-                      child: ProductsCart(product: list)
-                    );
+                    return ProductsCart(product: list);
                   } else {
-                    return const Center(child: Text('Carrinho vazio'));
+                    return const Text('Carrinho vazio');
                   }
                 } else {
-                  return const Center(child: CircularProgressIndicator());
+                  return Expanded(child: const Center(child: CircularProgressIndicator()));
                 }
               }
             ),
-          ],
-        ),
+          ),
+        ],
       ),
 
       bottomSheet: Padding(
