@@ -62,13 +62,13 @@ class SalesController {
     });
   }
 
-  Future<num> getTotal() async {
+  Future<List<num>> getTotal() async {
     return await connectSupadatabase().then((conn) async {
 
       return await BusinessInformationController().getInfoCalcValue().then((value) async {
         if (value == true || value == null) {
           return await conn.query('''
-            SELECT SUM(MAX.MAX) FROM (
+            SELECT SUM(MAX.MAX), COUNT(*) FROM (
               SELECT MAX(p.price * i.qtd) from items i 
                 INNER JOIN products p ON p.id = i.id_product 
                 INNER JOIN orders o ON o.id = i.id_order 
@@ -82,18 +82,18 @@ class SalesController {
             conn.close();
 
             if (value.isEmpty) {
-              return 0;
+              return [0, 0];
             } else {
               if (value.first[0] == null) {
-                return 0;
+                return [0, 0];
               } else {
-                return value.first[0];
+                return [value.first[0], value.first[1]];
               }
             }
           });
         } else {
           return await conn.query('''
-            SELECT SUM(avg.AVG) FROM (
+            SELECT SUM(avg.AVG), COUNT(*) FROM (
               SELECT AVG(p.price * i.qtd) from items i 
                 INNER JOIN products p ON p.id = i.id_product 
                 INNER JOIN orders o ON o.id = i.id_order 
@@ -107,12 +107,12 @@ class SalesController {
             conn.close();
 
             if (value.isEmpty) {
-              return 0;
+              return [0, 0];
             } else {
               if (value.first[0] == null) {
-                return 0;
+                return [0, 0];
               } else {
-                return value.first[0];
+                return [value.first[0], value.first[1]];
               }
             }
           });
