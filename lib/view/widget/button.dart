@@ -48,6 +48,7 @@ Widget button(
             spacing: 10,
             alignment: WrapAlignment.center,
             runAlignment: WrapAlignment.center,
+            crossAxisAlignment: WrapCrossAlignment.center,
             
             children: [
       
