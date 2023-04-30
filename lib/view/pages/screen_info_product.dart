@@ -5,7 +5,6 @@ import 'package:intl/intl.dart';
 import 'package:tcc/controller/postgres/Lists/products.dart';
 import 'package:tcc/model/Comments.dart';
 import 'package:tcc/model/ProductItemList.dart';
-import 'package:tcc/model/Variation.dart';
 import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/bottonNavigation.dart';
 import 'package:tcc/view/widget/comments.dart';
@@ -39,7 +38,7 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
   ProductItemList? productSelect;
   String nameProduct = '';
   String descriptionProduct = '';
-  String urlImageProduct = '';
+  String? urlImageProduct;
   String categoryProduct = '';
 
   @override
@@ -60,15 +59,10 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
       }
     }
 
-    Future<void> getAllVariations() async {
-      productsVariation = await ProductsController().getAllProductsVariations(nameProduct, categoryProduct);
-    }
-
     Future<Widget> getListVariations() async {
-      
-      if (productsVariation.isEmpty) {
-        await getAllVariations();
-      }
+      await ProductsController().getAllProductsVariations(nameProduct, categoryProduct).then((value) {
+        productsVariation = value;
+      });
 
       return listSize(productsVariation);
     }
@@ -116,14 +110,12 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
 
     }
 
-    print('b');
-
     void setPropertiesProduct(ProductItemList product) {
       // setState(() {
         productSelect = product;
         nameProduct = product.name;
         descriptionProduct = product.description!;
-        urlImageProduct = product.link_image!;
+        urlImageProduct = product.link_image;
         categoryProduct = product.variation!.category;
       // });
     }
@@ -135,7 +127,7 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
           setPropertiesProduct(builder.data as ProductItemList);
 
           if (textDateTime == '') {
-            getAllVariations();
+            getListVariations();
             getCommentsProductUser();
             getProductLastSale();
           }
@@ -150,7 +142,7 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       image: NetworkImage(
-                        urlImageProduct == '' ? 'https://www.thermaxglobal.com/wp-content/uploads/2020/05/image-not-found.jpg' : urlImageProduct,
+                        urlImageProduct ?? 'https://www.thermaxglobal.com/wp-content/uploads/2020/05/image-not-found.jpg',
                       ),
                       fit: BoxFit.cover,
                       colorFilter: ColorFilter.mode(
