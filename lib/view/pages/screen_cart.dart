@@ -5,6 +5,7 @@ import 'package:tcc/controller/postgres/Lists/productsCart.dart';
 import 'package:tcc/controller/postgres/Lists/sales.dart';
 import 'package:tcc/main.dart';
 import 'package:tcc/model/ProductsCart.dart';
+import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/listCart.dart';
 import 'package:tcc/globals.dart' as globals;
@@ -38,10 +39,10 @@ class _ScreenCartState extends State<ScreenCart> {
 
     print('a');
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Carrinho'),
-        centerTitle: true,
-        backgroundColor: globals.primary,
+      appBar: appBarWidget(
+        pageName: 'Carrinho',
+        context: context,
+        withoutIcons: true,
       ),
 
       body: SingleChildScrollView(
@@ -52,7 +53,9 @@ class _ScreenCartState extends State<ScreenCart> {
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   if (list.isNotEmpty) {
-                    return ProductsCart(product: list);
+                    return Expanded(
+                      child: ProductsCart(product: list)
+                    );
                   } else {
                     return const Center(child: Text('Carrinho vazio'));
                   }
@@ -61,20 +64,70 @@ class _ScreenCartState extends State<ScreenCart> {
                 }
               }
             ),
+          ],
+        ),
+      ),
 
-            Container(
-              alignment: Alignment.bottomCenter,
-              child: button(
-                'Finalizar',
-                300,
-                50,
-                Icons.check,
-                () => {
-                  Navigator.push(context, navigator('finalize_order_customer'))
-                }
-              ),
+      bottomSheet: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            button(
+              'Voltar',
+              170,
+              0,
+              Icons.arrow_back_ios,
+              () => {
+                Navigator.pop(context)
+              },
+            ),
+      
+            button(
+              'Finalizar',
+              170,
+              0,
+              Icons.arrow_forward_ios,
+              () => {
+                Navigator.push(context, navigator('finalize_order_customer'))
+              },
+              false,
             )
           ],
+        ),
+      ),
+
+      floatingActionButton: Container(
+        margin: const EdgeInsets.only(bottom: 70),
+        child: FloatingActionButton(
+          onPressed: () async => {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: const Text('Deseja limpar o carrinho?'),
+                  actions: [
+                    TextButton(
+                      onPressed: () => {
+                        Navigator.pop(context)
+                      },
+                      child: const Text('Não'),
+                    ),
+                    TextButton(
+                      onPressed: () async => {
+                        await ProductsCartController().clearCart(idSale),
+                        Navigator.pop(context),
+                        setState(() {}),
+                      },
+                      child: const Text('Sim'),
+                    ),
+                  ],
+                );
+              }
+            )
+          },
+          backgroundColor: globals.primary,
+          child: const Icon(Icons.remove_shopping_cart),
         ),
       ),
     );
