@@ -456,4 +456,17 @@ class ProductsCartController {
       });
     });
   }
+
+  Future<void> clearCart(int idOrder) async {
+    await connectSupadatabase().then((conn) async {
+      
+      await conn.query('delete from items where id_order = @idOrder', substitutionValues: {
+        'idOrder': idOrder,
+      });
+      conn.close();
+      // await conn.from('items').delete().eq('id_order', idOrder);
+      // await conn.query('delete from items where id_order = ?', [idOrder]);
+      // await conn.close();
+    });
+  }
 }
