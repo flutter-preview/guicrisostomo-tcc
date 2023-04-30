@@ -79,23 +79,7 @@ class _BottomState extends State<Bottom> {
             )
           );
         } else {
-          return FutureBuilder(
-            future: cartInfo(context),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return snapshot.data as Widget;
-              } else if (snapshot.hasError) {
-                return const Text('Erro ao carregar');
-              } else {
-                return const SizedBox(
-                  height: 200,
-                  child: Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                );
-              }
-            },
-          );
+          return CartInfo();
         }
       }
     );
@@ -136,23 +120,7 @@ class _BottomState extends State<Bottom> {
         
         globals.globalSelectedIndexBotton == 2 ? 
           selectNewItem() 
-          : FutureBuilder(
-          future: cartInfo(context),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return snapshot.data as Widget;
-            } else if (snapshot.hasError) {
-              return const Text('Erro ao carregar');
-            } else {
-              return const SizedBox(
-                height: 200,
-                child: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              );
-            }
-          },
-        ),
+          : CartInfo(),
         
         Container(
           decoration: BoxDecoration(
