@@ -7,7 +7,8 @@ class ProductsCartList {
   int? qtd;
   int? idVariation;
   DateTime? date;
-  bool isSelect = false;
+  String? textVariation;
+  int agregateItems = 0;
   static num total = 0;
 
   ProductsCartList({
@@ -18,8 +19,9 @@ class ProductsCartList {
     this.price = 0,
     this.qtd = 0,
     this.idVariation = 0,
-    this.date = null,
-    this.isSelect = false,
+    this.date,
+    this.textVariation = '',
+    this.agregateItems = 0,
   });
 
   num getTotal() {

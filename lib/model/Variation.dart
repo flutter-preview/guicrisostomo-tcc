@@ -10,6 +10,7 @@ class Variation {
   int? limitItems = 0;
   num price = 0.0;
   bool? pricePerItem = false;
+  int idSubVariation = 0;
   String value = '';
   Map<int, TextEditingController> textController = {};
   Map<int, bool> isTextEmpty = {};
@@ -24,6 +25,7 @@ class Variation {
     this.limitItems = 0,
     this.pricePerItem = false,
     this.price = 0.0,
+    this.idSubVariation = 0,
   });
 
   String getValues([int index = -1]) {

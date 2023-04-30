@@ -24,13 +24,6 @@ class ProductsCart extends StatefulWidget {
 }
 
 class _ProductsCartState extends State<ProductsCart> {
-  ProductsCartList? dados;
-  dynamic item;
-  int? idItem;
-  String? name;
-  num? price;
-  int? qtd;
-  num? subTotal;
   
   var txtQtd = TextEditingController();
 
@@ -46,13 +39,12 @@ class _ProductsCartState extends State<ProductsCart> {
               shrinkWrap: true,
               physics: const ScrollPhysics(),
               itemBuilder: (context, index) {
-                dados = widget.product[index];
-                item = dados;//snapshot.data![index];
-                idItem = dados!.idProduct;
-                name = dados!.name;
-                price = dados!.price;
-                qtd = dados!.qtd;
-                subTotal = price! * qtd!;
+                ProductsCartList dados = widget.product[index];
+                int? idItem = dados.idProduct;
+                String? name = dados.name;
+                num? price = dados.price;
+                int? qtd = dados.qtd;
+                num? subTotal = price! * qtd!;
             
                 return Card(
                   color: Colors.white,
@@ -77,7 +69,7 @@ class _ProductsCartState extends State<ProductsCart> {
                           ),
                           
                           Text(
-                            'Preço: R\$ ${price!.toStringAsFixed(2).replaceFirst('.', ',')}',
+                            'Preço: R\$ ${price.toStringAsFixed(2).replaceFirst('.', ',')}',
                             style: TextStyle(
                               color: Colors.black,
                             ),
@@ -90,12 +82,14 @@ class _ProductsCartState extends State<ProductsCart> {
                             ),
                           ),
                   
-                          Text(
-                            'Sub-total: R\$ ${subTotal!.toStringAsFixed(2).replaceFirst('.', ',')}',
-                            style: TextStyle(
-                              color: Colors.black,
-                            ),
-                          ),
+                          (dados.agregateItems > 0) ?
+                            Text(
+                              "Itens agregados: +${dados.agregateItems}",
+                              style: TextStyle(
+                                color: globals.primary,
+                              ),
+                            )
+                          : Container(),
                         ]
                       ),
                   
@@ -108,96 +102,96 @@ class _ProductsCartState extends State<ProductsCart> {
                               child: ElevatedButton(
                                   
                                 onPressed: () {
-                                  txtQtd.text = item['qtd'].toString();
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) => AlertDialog(
-                                      title: Text(
-                                        'Informe a quantidade',
-                                        style: GoogleFonts.roboto(
-                                          fontSize: 36,
-                                          color: Colors.blueGrey.shade700,
-                                        ),
-                                      ),
-                                      titlePadding: EdgeInsets.all(20),
-                                      content: SizedBox(
-                                        width: 350,
-                                        height: 90,
-                                        child: Column(
-                                          children: [
-                                            TextFieldGeneral(
-                                              label: 'Quantidade', 
-                                              variavel: txtQtd,
-                                              context: context, 
-                                              keyboardType: TextInputType.number,
-                                              ico: Icons.shopping_cart,
-                                              validator: (value) {
-                                                validatorNumber(value!);
-                                              },
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      backgroundColor: Colors.blueGrey.shade50,
-                                      actionsPadding: EdgeInsets.fromLTRB(0, 0, 20, 20),
-                                      actions: [
-                                        TextButton(
-                                          style: TextButton.styleFrom(
-                                            minimumSize: Size(120, 50),
-                                          ),
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text(
-                                            'Cancelar',
-                                            style: GoogleFonts.roboto(
-                                              fontSize: 20,
-                                              color: Colors.blueAccent.shade700,
-                                            ),
-                                          ),
-                                        ),
-                                        TextButton(
-                                          style: TextButton.styleFrom(
-                                            backgroundColor: Colors.blueAccent.shade700,
-                                            minimumSize: Size(120, 50),
-                                          ),
-                                          onPressed: () async {
-                                            if (txtQtd.text.isNotEmpty) {
-                                              int idSale = 0;
+                                //   txtQtd.text = item['qtd'].toString();
+                                //   showDialog(
+                                //     context: context,
+                                //     builder: (context) => AlertDialog(
+                                //       title: Text(
+                                //         'Informe a quantidade',
+                                //         style: GoogleFonts.roboto(
+                                //           fontSize: 36,
+                                //           color: Colors.blueGrey.shade700,
+                                //         ),
+                                //       ),
+                                //       titlePadding: EdgeInsets.all(20),
+                                //       content: SizedBox(
+                                //         width: 350,
+                                //         height: 90,
+                                //         child: Column(
+                                //           children: [
+                                //             TextFieldGeneral(
+                                //               label: 'Quantidade', 
+                                //               variavel: txtQtd,
+                                //               context: context, 
+                                //               keyboardType: TextInputType.number,
+                                //               ico: Icons.shopping_cart,
+                                //               validator: (value) {
+                                //                 validatorNumber(value!);
+                                //               },
+                                //             ),
+                                //           ],
+                                //         ),
+                                //       ),
+                                //       backgroundColor: Colors.blueGrey.shade50,
+                                //       actionsPadding: EdgeInsets.fromLTRB(0, 0, 20, 20),
+                                //       actions: [
+                                //         TextButton(
+                                //           style: TextButton.styleFrom(
+                                //             minimumSize: Size(120, 50),
+                                //           ),
+                                //           onPressed: () {
+                                //             Navigator.pop(context);
+                                //           },
+                                //           child: Text(
+                                //             'Cancelar',
+                                //             style: GoogleFonts.roboto(
+                                //               fontSize: 20,
+                                //               color: Colors.blueAccent.shade700,
+                                //             ),
+                                //           ),
+                                //         ),
+                                //         TextButton(
+                                //           style: TextButton.styleFrom(
+                                //             backgroundColor: Colors.blueAccent.shade700,
+                                //             minimumSize: Size(120, 50),
+                                //           ),
+                                //           onPressed: () async {
+                                //             if (txtQtd.text.isNotEmpty) {
+                                //               int idSale = 0;
             
-                                              await SalesController().idSale().then((res) async {
-                                                idSale = res;
+                                //               await SalesController().idSale().then((res) async {
+                                //                 idSale = res;
             
-                                                await SalesController().getTotal().then((res){
-                                                  // SalesController().updateTotal(idSale, (res - subTotal) + (num.parse(price.toString()) * int.parse(txtQtd.text)));
-                                                  ProductsCartController().update(idItem!, int.parse(txtQtd.text),);
+                                //                 await SalesController().getTotal().then((res){
+                                //                   // SalesController().updateTotal(idSale, (res - subTotal) + (num.parse(price.toString()) * int.parse(txtQtd.text)));
+                                //                   ProductsCartController().update(idItem!, int.parse(txtQtd.text),);
             
-                                                  Navigator.pop(context);
+                                //                   Navigator.pop(context);
                                                   
-                                                  success(context, 'Quantidade atualizada com sucesso.');
-                                                }).catchError((e){
-                                                  error(context, 'Ocorreu um erro ao atualizar a quantidade: ${e.code.toString()}');
-                                                });
+                                //                   success(context, 'Quantidade atualizada com sucesso.');
+                                //                 }).catchError((e){
+                                //                   error(context, 'Ocorreu um erro ao atualizar a quantidade: ${e.code.toString()}');
+                                //                 });
                                                 
-                                              }).catchError((e){
-                                                error(context, 'Ocorreu um erro ao atualizar a quantidade: ${e.code.toString()}');
-                                              });
+                                //               }).catchError((e){
+                                //                 error(context, 'Ocorreu um erro ao atualizar a quantidade: ${e.code.toString()}');
+                                //               });
                                               
-                                            } else {
-                                              error(context, 'Informe a quantidade.');
-                                            }
-                                          },
-                                          child: Text(
-                                            'Atualizar',
-                                            style: GoogleFonts.roboto(
-                                              fontSize: 20,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  );
+                                //             } else {
+                                //               error(context, 'Informe a quantidade.');
+                                //             }
+                                //           },
+                                //           child: Text(
+                                //             'Atualizar',
+                                //             style: GoogleFonts.roboto(
+                                //               fontSize: 20,
+                                //               color: Colors.white,
+                                //             ),
+                                //           ),
+                                //         ),
+                                //       ],
+                                //     ),
+                                //   );
                                 },
                                 
                                 style: ElevatedButton.styleFrom(
@@ -256,7 +250,7 @@ class _ProductsCartState extends State<ProductsCart> {
                           context,
                           navigator(
                             'cart/info_item',
-                            idItem,
+                            dados,
                           )
                         );
                       },

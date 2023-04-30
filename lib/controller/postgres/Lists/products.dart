@@ -450,4 +450,62 @@ class ProductsController {
       });
     });
   }
+
+  Future<ProductItemList> getProduct(int id) async {
+    return await connectSupadatabase().then((conn) async {
+      return await conn.query('''
+        SELECT p.id, p.name, p.price, p.description, p.link_image, v.category, v.size, v.id
+          FROM products p
+          INNER JOIN variations v ON v.id = p.id_variation
+          WHERE p.id = @id
+      ''', substitutionValues: {
+        'id': id
+      }).then((List value) {
+        conn.close();
+
+        ProductItemList product = ProductItemList(
+          id: 0,
+          name: '',
+          price: 0,
+          description: '',
+          link_image: '',
+          variation: Variation(
+            category: '',
+            size: '',
+            id: 0
+          )
+        );
+        
+        if (value.isNotEmpty) {
+          product = ProductItemList(
+            id: value.first[0],
+            name: value.first[1],
+            price: value.first[2],
+            description: value.first[3],
+            link_image: value.first[4],
+            variation: Variation(
+              category: value.first[5],
+              size: value.first[6],
+              id: value.first[7]
+            )
+          );
+        }
+
+        return product;
+      });
+
+      return ProductItemList(
+        id: 0,
+        name: '',
+        price: 0,
+        description: '',
+        link_image: '',
+        variation: Variation(
+          category: '',
+          size: '',
+          id: 0
+        )
+      );
+    });
+  }
 }

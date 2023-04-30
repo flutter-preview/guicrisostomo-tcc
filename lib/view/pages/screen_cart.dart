@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:tcc/controller/postgres/Lists/productsCart.dart';
 import 'package:tcc/controller/postgres/Lists/sales.dart';
 import 'package:tcc/main.dart';
+import 'package:tcc/model/ProductsCart.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/listCart.dart';
 import 'package:tcc/globals.dart' as globals;
@@ -16,19 +17,8 @@ class ScreenCart extends StatefulWidget {
 }
 
 class _ScreenCartState extends State<ScreenCart> {
-  /*final productsCartsRef = FirebaseFirestore.instance.collection('ProductsCarts').withConverter<ProductsCart>(
-    fromFirestore: (snapshot, _) => ProductsCart.fromJson(snapshot.data()!),
-    toFirestore: (productsCart, _) => productsCart.toJson(),
-  );
 
-  Future<void> main() async {
-    List<QueryDocumentSnapshot<ProductsCart>> productsCarts = await productsCartsRef
-      .where('genre', isEqualTo: 'Sci-fi')
-      .get()
-      .then((snapshot) => snapshot.docs);
-  }*/
-
-  var list;
+  List<ProductsCartList> list = [];
   int idSale = 0;
   
   double get largura => MediaQuery.of(context).size.width;
@@ -61,7 +51,11 @@ class _ScreenCartState extends State<ScreenCart> {
               future: getList(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
-                  return ProductsCart(product: list);
+                  if (list.isNotEmpty) {
+                    return ProductsCart(product: list);
+                  } else {
+                    return const Center(child: Text('Carrinho vazio'));
+                  }
                 } else {
                   return const Center(child: CircularProgressIndicator());
                 }
