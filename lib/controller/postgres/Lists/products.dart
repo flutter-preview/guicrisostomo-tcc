@@ -541,9 +541,10 @@ class ProductsController {
             where o.uid = @uid and o.status = @status and i.fg_current = false
             ) t
           ORDER BY t.sum DESC
+          LIMIT 10
         ''', substitutionValues: {
         'uid': FirebaseAuth.instance.currentUser!.uid,
-        'status': 'ANDAMENTO',
+        'status': 'FINALIZADO',
       }).then((List value) {
         conn.close();
         List<ProductItemList> productsCart = [];
@@ -563,7 +564,7 @@ class ProductsController {
                 category: element[4],
                 size: element[5],
               ),
-              description: '${element[9]} quantidades\n${element[6]}',
+              description: '${element[9]} quantidades${element[6] == null ? '' : '\n${element[6]}'}',
               link_image: element[7],
               isFavorite: element[8] != 0
             )
