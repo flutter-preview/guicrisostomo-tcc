@@ -74,7 +74,9 @@ class ProductsCartController {
               idProduct: row[1],
               name: row[2],
               qtd: row[3],
-              idVariation: row[4],
+              variation: Variation(
+                id: row[4],
+              ),
               idRelative: row[5],
               textVariation: row[6],
               price: row[7],
@@ -137,7 +139,9 @@ class ProductsCartController {
             list.add(
               ProductsCartList(
                 price: row[0],
-                idVariation: row[1],
+                variation: Variation(
+                  id: row[1],
+                ),
                 name: row[2],
                 idProduct: row[3],
                 qtd: row[4],
@@ -160,7 +164,9 @@ class ProductsCartController {
             list.add(
               ProductsCartList(
                 price: row[0],
-                idVariation: row[1],
+                variation: Variation(
+                  id: row[1],
+                ),
                 name: row[2],
                 idProduct: row[3],
                 qtd: row[4],
@@ -197,10 +203,12 @@ class ProductsCartController {
         }
 
         ProductsCartList product = value.map((e) => ProductsCartList(
-          idVariation: e[0],
+          variation: Variation(
+            id: e[0],
+          ),
         )).toList().first;
 
-        return product.idVariation!;
+        return product.variation!.id!;
       });
       // return await conn.from('items').select('''
       //   id_variation
@@ -445,7 +453,9 @@ class ProductsCartController {
               id: row[1],
               name: row[2],
               price: row[3],
-              idVariation: row[4],
+              variation: Variation(
+                id: row[4],
+              ),
               textVariation: row[5],
               idProduct: row[6],
             ));

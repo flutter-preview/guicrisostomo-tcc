@@ -1,3 +1,5 @@
+import 'package:tcc/model/Variation.dart';
+
 class ProductsCartList {
   int? id;
   int? idRelative;
@@ -5,7 +7,7 @@ class ProductsCartList {
   String? name;
   num? price;
   int? qtd;
-  int? idVariation;
+  Variation? variation;
   DateTime? date;
   String? textVariation;
   int agregateItems = 0;
@@ -18,7 +20,7 @@ class ProductsCartList {
     this.name = '',
     this.price = 0,
     this.qtd = 0,
-    this.idVariation = 0,
+    this.variation,
     this.date,
     this.textVariation = '',
     this.agregateItems = 0,
