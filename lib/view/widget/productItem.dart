@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, unused_local_variable, prefer_typing_uninitialized_variables, file_names
 
 import 'package:flutter/material.dart';
+import 'package:tcc/controller/postgres/Lists/products.dart';
 import 'package:tcc/controller/postgres/Lists/productsCart.dart';
 import 'package:tcc/controller/postgres/Lists/sales.dart';
 import 'package:tcc/globals.dart' as globals;
@@ -51,6 +52,7 @@ class _ProductItemState extends State<ProductItem> {
                 String description = dados.description ?? '';
                 Variation variation = dados.variation!;
                 String? linkImage = dados.link_image;
+                bool isFavorite = dados.isFavorite;    
             
                 return Card(
                   color: Colors.white,
@@ -102,54 +104,72 @@ class _ProductItemState extends State<ProductItem> {
                       ],
                     ),
             
-                    trailing: ElevatedButton(
-                        
-                      onPressed: () async {
-                        // Navigator.pushNamed(
-                        //   context,
-                        //   'products/add_product',
-                        //   arguments: dados.docs[index],
-                        // );
-                        Navigator.push(context, navigator('products/add_product', item));
-                        return await SalesController().idSale().then((idOrder) async {
-                          return await ProductsCartController().getVariationItem(idOrder).then((value) {
-                            if (item.variation?.id != value && value != 0) {
-                              error(context, 'Não é possível adicionar produtos de variações diferentes no mesmo item');
-                              Navigator.pop(context);
-                              return;
-                            }
-                          });
-                        });
-                      },
-                      
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.all(0),
-                        backgroundColor: globals.primary,
-                        foregroundColor: Colors.white,
-                      ),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        ElevatedButton(
+                            
+                          onPressed: () async {
+                            // Navigator.pushNamed(
+                            //   context,
+                            //   'products/add_product',
+                            //   arguments: dados.docs[index],
+                            // );
+                            Navigator.push(context, navigator('products/add_product', item));
+                            return await SalesController().idSale().then((idOrder) async {
+                              return await ProductsCartController().getVariationItem(idOrder).then((value) {
+                                if (item.variation?.id != value && value != 0) {
+                                  error(context, 'Não é possível adicionar produtos de variações diferentes no mesmo item');
+                                  Navigator.pop(context);
+                                  return;
+                                }
+                              });
+                            });
+                          },
+                          
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.all(0),
+                            backgroundColor: globals.primary,
+                            foregroundColor: Colors.white,
+                          ),
             
-                      child: Padding(
-                        padding: const EdgeInsets.all(5),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              Icons.add, size: 20,
-                              color: Colors.white,
-                            ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(5),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  Icons.add, size: 20,
+                                  color: Colors.white,
+                                ),
         
-                            const SizedBox(width: 5,),
+                                const SizedBox(width: 5,),
         
-                            Text(
-                              'R\$ ${price.toStringAsFixed(2).replaceFirst('.', ',')}',
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
+                                Text(
+                                  'R\$ ${price.toStringAsFixed(2).replaceFirst('.', ',')}',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
+                          ),
+                          
                         ),
-                      ),
-                      
+
+                        IconButton(
+                          onPressed: () async {
+                            await ProductsController().setProductFavorite(idItem, isFavorite).then((value) {
+                              setState(() {
+                                item.isFavorite = !item.isFavorite;
+                              });
+                            });
+                          }, 
+                          icon: item.isFavorite ? 
+                            Icon(Icons.favorite, color: Colors.red,) 
+                            : Icon(Icons.favorite_border, color: Colors.red,)
+                        )
+                      ],
                     ),
                     
                     onTap: () {

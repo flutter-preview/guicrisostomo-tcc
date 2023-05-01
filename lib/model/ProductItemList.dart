@@ -7,6 +7,7 @@ class ProductItemList {
   String? link_image;
   num price;
   Variation? variation;
+  bool isFavorite = false;
 
   ProductItemList({
     required this.id,
@@ -15,5 +16,6 @@ class ProductItemList {
     required this.link_image,
     required this.price,
     required this.variation,
+    required this.isFavorite,
   });
 }

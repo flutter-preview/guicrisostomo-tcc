@@ -26,7 +26,7 @@ class _BottomState extends State<Bottom> {
 
       onPressed: () {
         Navigator.pop(context);
-        Navigator.push(context, navigator('products/add_product', ProductItemList(id: 0, name: '', description: '', link_image: null, price: 0, variation: Variation())));
+        Navigator.push(context, navigator('products/add_product', ProductItemList(id: 0, name: '', description: '', link_image: null, price: 0, variation: Variation(), isFavorite: false,)));
       },
       child: Row(
         mainAxisSize: MainAxisSize.min,

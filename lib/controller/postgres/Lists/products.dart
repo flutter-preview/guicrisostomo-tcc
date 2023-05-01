@@ -42,7 +42,6 @@ class ProductsController {
           return list;
         }
 
-        
         for (final row in value) {
           list.add(
             Variation(
@@ -64,7 +63,11 @@ class ProductsController {
     return await connectSupadatabase().then((conn) async {
       return await conn.query(
         '''
-        SELECT p.id, p.name, p.price, p.description, p.link_image, v.category, v.size, p.id_variation
+        SELECT p.id, p.name, p.price, p.description, p.link_image, v.category, v.size, p.id_variation, COALESCE(
+          (SELECT f.id
+            FROM favorites f 
+            WHERE f.id_product = p.id AND f.uid = @uid
+          ), 0)
           FROM products p
           INNER JOIN variations v ON v.id = p.id_variation
           WHERE v.business = @business AND p.fg_ativo = true AND v.category = @category AND p.name = @product
@@ -73,7 +76,8 @@ class ProductsController {
         substitutionValues: {
           'business': globals.businessId,
           'product': product,
-          'category': category
+          'category': category,
+          'uid': FirebaseAuth.instance.currentUser!.uid
         }
       ).then((List value) {
         conn.close();
@@ -95,6 +99,7 @@ class ProductsController {
               size: row[6],
               id: row[7]
             ),
+            isFavorite: row[8] != 0
           ));
         }
 
@@ -236,7 +241,11 @@ class ProductsController {
       //   )).toList();
       
       return await conn.query('''
-          SELECT p.id, p.name, p.price, p.description, p.link_image, v.category, v.size, p.id_variation
+          SELECT p.id, p.name, p.price, p.description, p.link_image, v.category, v.size, p.id_variation, COALESCE(
+          (SELECT f.id
+            FROM favorites f 
+            WHERE f.id_product = p.id AND f.uid = @uid
+          ), 0)
           FROM products p
           INNER JOIN variations v ON v.id = p.id_variation
           WHERE v.category = @category AND v.size = @size AND v.business = @business AND p.name LIKE @search AND p.fg_ativo = true
@@ -245,7 +254,8 @@ class ProductsController {
           'category': categorySelected,
           'size': sizeSelected,
           'business': globals.businessId,
-          'search': searchProduct
+          'search': searchProduct,
+          'uid': FirebaseAuth.instance.currentUser!.uid
         }).then((List value) {
         // List<dynamic> item = value;
         // List<ProductItemList> results = item.map((e) => ProductItemList(
@@ -273,6 +283,7 @@ class ProductsController {
               size: row[6],
               id: row[7]
             ),
+            isFavorite: row[8] != 0
           ));
         }
         // List<ProductItemList> results = value.map((e) => ProductItemList(
@@ -454,12 +465,17 @@ class ProductsController {
   Future<ProductItemList> getProduct(int id) async {
     return await connectSupadatabase().then((conn) async {
       return await conn.query('''
-        SELECT p.id, p.name, p.price, p.description, p.link_image, v.category, v.size, v.id
+        SELECT p.id, p.name, p.price, p.description, p.link_image, v.category, v.size, v.id, COALESCE(
+          (SELECT f.id
+            FROM favorites f 
+            WHERE f.id_product = p.id AND f.uid = @uid
+          ), 0)
           FROM products p
           INNER JOIN variations v ON v.id = p.id_variation
           WHERE p.id = @id
       ''', substitutionValues: {
-        'id': id
+        'id': id,
+        'uid': FirebaseAuth.instance.currentUser!.uid
       }).then((List value) {
         conn.close();
 
@@ -473,7 +489,8 @@ class ProductsController {
             category: '',
             size: '',
             id: 0
-          )
+          ),
+          isFavorite: false
         );
         
         if (value.isNotEmpty) {
@@ -487,7 +504,8 @@ class ProductsController {
               category: value.first[5],
               size: value.first[6],
               id: value.first[7]
-            )
+            ),
+            isFavorite: value.first[8] != 0
           );
         }
 
@@ -503,18 +521,23 @@ class ProductsController {
         '''
           SELECT t.* FROM 
           (
-            SELECT distinct on (p.id) p.id, p.name, p.price, p.id_variation, v.category, v.size, p.description, p.link_image, 
-            (
-              SELECT SUM(ia.qtd) from items ia
-              INNER JOIN orders oa ON oa.id = ia.id_order
-              WHERE oa.uid = @uid and oa.status = @status and ia.fg_current = false AND ia.id_product = i.id_product
-              GROUP BY (ia.id_product)
-            )
+            SELECT distinct on (p.id) p.id, p.name, p.price, p.id_variation, v.category, v.size, p.description, p.link_image, COALESCE(
+              (SELECT f.id
+                FROM favorites f 
+                WHERE f.id_product = p.id AND f.uid = @uid
+              ), 0),
+
+              (
+                SELECT SUM(ia.qtd) from items ia
+                INNER JOIN orders oa ON oa.id = ia.id_order
+                WHERE oa.uid = @uid and oa.status = @status and ia.fg_current = false AND ia.id_product = i.id_product
+                GROUP BY (ia.id_product)
+              )
 
             FROM items i 
             INNER JOIN products p ON p.id = i.id_product 
             INNER JOIN variations v ON v.id = i.id_variation 
-            INNER JOIN orders o ON o.id = i.id_order 
+            INNER JOIN orders o ON o.id = i.id_order
             where o.uid = @uid and o.status = @status and i.fg_current = false
             ) t
           ORDER BY t.sum DESC
@@ -540,8 +563,82 @@ class ProductsController {
                 category: element[4],
                 size: element[5],
               ),
-              description: 'Quantidade vendida: ${element[8]}\n${element[6]}',
+              description: '${element[9]} quantidades\n${element[6]}',
               link_image: element[7],
+              isFavorite: element[8] != 0
+            )
+          );
+        }
+
+        return productsCart;
+      });
+    });
+  }
+
+  Future<void> setProductFavorite(int idProduct, bool isFavorite) async {
+    await connectSupadatabase().then((conn) async {
+
+      if (!isFavorite) {
+        await conn.query('''
+          INSERT INTO favorites (id_product, uid)
+          VALUES (@id_product, @uid)
+        ''', substitutionValues: {
+          'id_product': idProduct,
+          'uid': FirebaseAuth.instance.currentUser!.uid
+        });
+      } else {
+        await conn.query('''
+          DELETE FROM favorites
+          WHERE id_product = @id_product AND uid = @uid
+        ''', substitutionValues: {
+          'id_product': idProduct,
+          'uid': FirebaseAuth.instance.currentUser!.uid
+        });
+      }
+
+      conn.close();
+    });
+  }
+
+  Future<List<ProductItemList>> getProductsFavorites() async {
+    return await connectSupadatabase().then((conn) async {
+      return await conn.query('''
+        SELECT p.id, p.name, p.price, p.id_variation, v.category, v.size, p.description, p.link_image, COALESCE(
+          (SELECT f.id
+            FROM favorites f 
+            WHERE f.id_product = p.id AND f.uid = @uid
+          ), 0)
+        FROM products p
+        INNER JOIN variations v ON v.id = p.id_variation
+        WHERE p.id IN (
+          SELECT f.id_product
+          FROM favorites f
+          WHERE f.uid = @uid
+        )
+      ''', substitutionValues: {
+        'uid': FirebaseAuth.instance.currentUser!.uid
+      }).then((List value) {
+        conn.close();
+        List<ProductItemList> productsCart = [];
+
+        if (value.isEmpty) {
+          return productsCart;
+        }
+
+        for (var element in value) {
+          productsCart.add(
+            ProductItemList(
+              id: element[0],
+              name: element[1],
+              price: element[2],
+              variation: Variation(
+                id: element[3],
+                category: element[4],
+                size: element[5],
+              ),
+              description: element[6],
+              link_image: element[7],
+              isFavorite: element[8] != 0
             )
           );
         }

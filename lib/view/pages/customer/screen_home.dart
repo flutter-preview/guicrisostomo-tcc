@@ -25,7 +25,6 @@ class _ScreenHomeState extends State<ScreenHome> {
   final String iconOrder = 'lib/images/iconOrder.svg';
   final String iconMenu = 'lib/images/iconMenu.svg';
   
-  List<ProductItemList> listFavorities = [];
   List<SlideShow> listSlideShow = [];
   ProductsCartList? listSale;
   String? idSale;
@@ -198,10 +197,14 @@ class _ScreenHomeState extends State<ScreenHome> {
 
   }
 
+  Future<List<ProductItemList>> getFavorities() async {
+    return await ProductsController().getProductsFavorites().then((value){
+      return value;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-
-    print('b');
 
     return Scaffold(
       appBar: appBarWidget(
@@ -233,9 +236,25 @@ class _ScreenHomeState extends State<ScreenHome> {
                   ),
                   
                   
-                  SectionVisible(
-                    nameSection: 'Favoritos',
-                    child: ProductItem(product: listFavorities),
+                  FutureBuilder(
+                    future: getFavorities(),
+                    builder: (context, builder) {
+                      if (builder.connectionState == ConnectionState.done) {
+                        return SectionVisible(
+                          nameSection: 'Favoritos',
+                          isShowPart: true,
+                          child: ProductItem(product: builder.data as List<ProductItemList>),
+                        );
+                      } else if (builder.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else {
+                        return const Center(
+                          child: Text('Erro ao carregar os produtos'),
+                        );
+                      }
+                    }
                   ),
 
                   FutureBuilder(
