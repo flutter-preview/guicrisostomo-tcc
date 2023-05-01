@@ -3,11 +3,14 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tcc/controller/postgres/Lists/products.dart';
+import 'package:tcc/controller/postgres/Lists/sales.dart';
 import 'package:tcc/model/ProductItemList.dart';
 import 'package:tcc/model/ProductsCart.dart';
+import 'package:tcc/model/Sales.dart';
 import 'package:tcc/model/standardSlideShow.dart';
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigation.dart';
+import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/productItem.dart';
 import 'package:tcc/view/widget/sectionVisible.dart';
 import 'package:tcc/globals.dart' as globals;
@@ -26,8 +29,7 @@ class _ScreenHomeState extends State<ScreenHome> {
   final String iconMenu = 'lib/images/iconMenu.svg';
   
   List<SlideShow> listSlideShow = [];
-  ProductsCartList? listSale;
-  String? idSale;
+  int idSale = 0;
 
   Future<List<ProductItemList>> getBestSellers() async {
     return await ProductsController().productsBestSellesUser().then((value){
@@ -35,22 +37,18 @@ class _ScreenHomeState extends State<ScreenHome> {
     });
   }
 
-  // void getIdSale() async {
-  //   await SalesController().idSale().then((value){
-  //     setState(() {
-  //       idSale = value;
-  //       list = ProductsCartController().list(idSale);
-  //     });
-  //   });
-  // }
-
-  // Future<void> getSaleOnDemand() async {
-  //   await SalesController().listSalesOnDemand().then((value){
-  //     setState(() {
-  //       listSale = value;
-  //     });
-  //   });
-  // }
+  Future<Sales?> getSaleOnDemand() async {
+    return await SalesController().listSalesOnDemand().then((value){
+      
+      if (value != null) {
+        idSale = value.id;
+      } else {
+        idSale = 0;
+      }
+      
+      return value;
+    });
+  }
 
   Future<void> getSlideShow() async {
     await SlideShow.list(globals.businessId, context).then((List<SlideShow> value){
@@ -62,137 +60,127 @@ class _ScreenHomeState extends State<ScreenHome> {
   @override
   void initState() {
     super.initState();
-    // getIdSale();
     globals.userType = 'customer';
     globals.businessId = '1';
-    // getSaleOnDemand();
+    getSaleOnDemand();
   }
 
   Widget dataSales() {
+    return FutureBuilder(
+      future: getSaleOnDemand(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (!snapshot.hasData) {
 
-    if (listSale == null) {
-
-      return const Center(
-        child: Padding(
-          padding: EdgeInsets.all(20),
-          child: Text(
-            'Nenhuma venda em andamento',
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.black54
-            ),
-          ),
-        ),
-      );
-    }
-
-    DateTime date = listSale!.date!;
-    String dateText = DateFormat("d 'de' MMMM 'de' y 'às' HH':'mm':'ss", "pt_BR").format(date);
-    num total = listSale!.getTotal();
-
-    return Column(
-      children: [
-        Row(
-          children: [
-            Icon(Icons.timer_outlined, size: 20, color: globals.primary),
-
-            const SizedBox(width: 5,),
-
-            Text(
-              // ignore: unnecessary_string_escapes
-              'Criado \às $dateText'
-            )
-          ],
-        ),
-        
-        const SizedBox(height: 10,),
-
-        Row(
-          children: [
-            Icon(Icons.room_service_outlined, size: 20, color: globals.primary),
-
-            const SizedBox(width: 5,),
-
-            const Text(
-              'Mesa criada pelo garçom José'
-            )
-          ],
-        ),
-
-        const SizedBox(height: 10,),
-
-        Row(
-          children: [
-            Icon(Icons.attach_money, size: 20, color: globals.primary),
-
-            const SizedBox(width: 5,),
-
-            Text(
-              'TOTAL: R\$ ${total.toStringAsFixed(2).replaceAll('.', ',')}',
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20
+            return const Center(
+              child: Padding(
+                padding: EdgeInsets.all(20),
+                child: Text(
+                  'Nenhuma venda em andamento',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.black54
+                  ),
+                ),
               ),
-            )
-          ],
-        ),
+            );
+          }
 
-        const SizedBox(height: 10,),
+          if (!mounted) {
+            setState(() {
+            
+            });
+          }
 
-        Row(
-          children: [
-            Icon(Icons.payment_outlined, size: 20, color: globals.primary),
+          DateTime date = snapshot.data!.date;
+          String dateText = DateFormat("d 'de' MMMM 'de' y 'às' HH':'mm':'ss", "pt_BR").format(date);
+          num total = snapshot.data!.getTotal();
 
-            const SizedBox(width: 5,),
+          return Column(
+            children: [
+              const SizedBox(height: 10,),
 
-            const Text(
-              'Pagamento: Cartão de crédito'
-            )
-          ],
-        ),
+              Row(
+                children: [
+                  Icon(Icons.timer_outlined, size: 20, color: globals.primary),
 
-        const SizedBox(height: 10,),
+                  const SizedBox(width: 5,),
 
-        Row(
-          children: [
-            Icon(Icons.star_border_outlined, size: 20, color: globals.primary),
+                  Text(
+                    'Criado às $dateText',
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.black54
+                    ),
+                  )
+                ],
+              ),
 
-            const SizedBox(width: 5,),
+              if (snapshot.data!.table != null)
+                Column(
+                  children: [
+                    const SizedBox(height: 10,),
 
-            const Text(
-              'Avaliação: 5 estrelas'
-            )
-          ],
-        ),
+                    Row(
+                      children: [
+                        Icon(Icons.room_service_outlined, size: 20, color: globals.primary),
 
-        const SizedBox(height: 10,),
+                        const SizedBox(width: 5,),
 
-        Row(
-          children: [
-            Icon(Icons.comment_outlined, size: 20, color: globals.primary),
+                        // ignore: prefer_const_constructors
+                        Text(
+                          'Mesa criada pelo garçom José',
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Colors.black54
+                          ),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
 
-            const SizedBox(width: 5,),
+              const SizedBox(height: 10,),
 
-            const Text(
-              'Comentário: Ótimo atendimento'
-            )
-          ],
-        ),
+              Row(
+                children: [
+                  Icon(Icons.attach_money, size: 20, color: globals.primary),
 
-        const SizedBox(height: 10,),
+                  const SizedBox(width: 5,),
 
-        Row(
-          children: [
-            Icon(Icons.check_circle_outline, size: 20, color: globals.primary),
+                  Text(
+                    'TOTAL: R\$ ${total.toStringAsFixed(2).replaceAll('.', ',')}',
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.black54
+                    ),
+                  )
+                ],
+              ),
 
-            const SizedBox(width: 5,),
+              const SizedBox(height: 20,),
 
-            const Text(
-              'Status: Finalizado'
-            )
-          ],
-        ),
-      ],
+              Center(
+                child: button(
+                  'Ver carrinho',
+                  MediaQuery.of(context).size.width - 80,
+                  0,
+                  Icons.shopping_cart_outlined,
+                  () {
+                    Navigator.pushNamed(context, 'cart');
+                  },
+                  true,
+                  18
+                ),
+              )
+            ],
+          );
+        } else {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
     );
 
   }
@@ -205,7 +193,6 @@ class _ScreenHomeState extends State<ScreenHome> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: appBarWidget(
         pageName: 'Inicio',

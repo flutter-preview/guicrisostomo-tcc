@@ -17,7 +17,9 @@ class CartInfo extends StatelessWidget {
       await SalesController().getTotal().then((value) {
         total = value[0];
         items = value[1];
+        globals.totalSale = total;
       });
+
       return !globals.isUserTyping && globals.userType != 'manager' && total != 0 ? Container(
         margin: const EdgeInsets.fromLTRB(0, 0, 10, 10),
         padding: const EdgeInsets.only(top: 10),
@@ -163,8 +165,6 @@ class CartInfo extends StatelessWidget {
         ),
       ) : const SizedBox();
     }
-
-    print(total);
 
     return FutureBuilder(
       future: cartInfo(context),

@@ -4,6 +4,7 @@ import 'package:tcc/controller/postgres/Lists/businessInfo.dart';
 import 'package:tcc/controller/postgres/utils.dart';
 import 'package:tcc/model/ProductsCart.dart';
 import 'package:tcc/globals.dart' as globals;
+import 'package:tcc/model/Sales.dart';
 
 class SalesController {
   Future<void> add() async {
@@ -139,16 +140,38 @@ class SalesController {
     });
   }
 
-  Future<ProductsCartList?> listSalesOnDemand() async {
-    ProductsCartList? item;
+  Future<Sales?> listSalesOnDemand() async {
     return await connectSupadatabase().then((conn) async {
       
-      return await conn.query('SELECT * FROM orders WHERE uid = @uid and status = @status', substitutionValues: {
+      return await conn.query(
+        '''
+        SELECT id, cnpj, datetime, uid, table_number
+          FROM orders 
+          WHERE uid = @uid and status = @status
+        ''', substitutionValues: {
         'uid': FirebaseAuth.instance.currentUser!.uid,
         'status': 'ANDAMENTO',
       }).then((List value) {
         conn.close();
-        return value.first;
+        
+        if (value.isEmpty) {
+          return null;
+        } else {
+          Sales sale = Sales(
+            id: value.first[0],
+            cnpj: value.first[1],
+            date: value.first[2],
+            uid: value.first[3],
+            status: 'ANDAMENTO',
+            table: value.first[4],
+          );
+
+          sale.setTotal(globals.totalSale);
+          
+          return sale;
+        }
+      }).catchError((e) {
+        print(e);
       });
     });
   }
