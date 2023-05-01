@@ -248,11 +248,15 @@ class _ScreenHomeState extends State<ScreenHome> {
                     future: getBestSellers(),
                     builder: (context, builder) {
                       if (builder.connectionState == ConnectionState.done) {
-                        return SectionVisible(
-                          nameSection: 'Mais pedidos',
-                          isShowPart: true,
-                          child: ProductItem(product: builder.data as List<ProductItemList>),
-                        );
+                        if (builder.data == null || (builder.data as List<ProductItemList>).isEmpty) {
+                          return Container();
+                        } else {
+                          return SectionVisible(
+                            nameSection: 'Produtos mais pedidos',
+                            isShowPart: true,
+                            child: ProductItem(product: builder.data as List<ProductItemList>),
+                          );
+                        }
                       } else if (builder.connectionState == ConnectionState.waiting) {
                         return const Center(
                           child: CircularProgressIndicator(),
