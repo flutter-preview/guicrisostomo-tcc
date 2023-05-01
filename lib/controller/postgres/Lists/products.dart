@@ -493,19 +493,61 @@ class ProductsController {
 
         return product;
       });
+    });
+  }
 
-      return ProductItemList(
-        id: 0,
-        name: '',
-        price: 0,
-        description: '',
-        link_image: '',
-        variation: Variation(
-          category: '',
-          size: '',
-          id: 0
-        )
-      );
+  Future<List<ProductItemList>> productsBestSellesUser() async {
+    return await connectSupadatabase().then((conn) async {
+      
+      return await conn.query(
+        '''
+          SELECT t.* FROM 
+          (
+            SELECT distinct on (p.id) p.id, p.name, p.price, p.id_variation, v.category, v.size, p.description, p.link_image, 
+            (
+              SELECT SUM(ia.qtd) from items ia
+              INNER JOIN orders oa ON oa.id = ia.id_order
+              WHERE oa.uid = @uid and oa.status = @status and ia.fg_current = false AND ia.id_product = i.id_product
+              GROUP BY (ia.id_product)
+            )
+
+            FROM items i 
+            INNER JOIN products p ON p.id = i.id_product 
+            INNER JOIN variations v ON v.id = i.id_variation 
+            INNER JOIN orders o ON o.id = i.id_order 
+            where o.uid = @uid and o.status = @status and i.fg_current = false
+            ) t
+          ORDER BY t.sum DESC
+        ''', substitutionValues: {
+        'uid': FirebaseAuth.instance.currentUser!.uid,
+        'status': 'ANDAMENTO',
+      }).then((List value) {
+        conn.close();
+        List<ProductItemList> productsCart = [];
+
+        if (value.isEmpty) {
+          return productsCart;
+        }
+
+        for (var element in value) {
+          productsCart.add(
+            ProductItemList(
+              id: element[0],
+              name: element[1],
+              price: element[2],
+              variation: Variation(
+                id: element[3],
+                category: element[4],
+                size: element[5],
+              ),
+              description: 'Quantidade vendida: ${element[8]}\n${element[6]}',
+              link_image: element[7],
+            )
+          );
+        }
+
+        return productsCart;
+      });
     });
   }
 }
