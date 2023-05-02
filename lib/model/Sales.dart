@@ -9,7 +9,7 @@ class Sales {
   String? observation;
   String status;
   DateTime date;
-  static num total = 0.0;
+  num total = 0.0;
   
   Sales({
     required this.id,
@@ -22,6 +22,7 @@ class Sales {
     this.observation,
     required this.status,
     required this.date,
+    this.total = 0.0,
   });
 
   num getTotal() {

@@ -80,6 +80,8 @@ class _TextFieldGeneralState extends State<TextFieldGeneral> {
             } : {
               widget.variavel.text = '${DateFormat('dd/MM/yyyy').format(pickedDate.start)} - ${DateFormat('dd/MM/yyyy').format(pickedDate.end)}',
             };
+
+            widget.onChanged!(widget.variavel.text);
           })
         }
       }: {
@@ -99,6 +101,7 @@ class _TextFieldGeneralState extends State<TextFieldGeneral> {
         if (pickedDateSingle != null) {
           setState(() {
             widget.variavel.text = DateFormat('dd/MM/yyyy').format(pickedDateSingle!);
+            widget.onChanged!(widget.variavel.text);
           })
         }
       };
@@ -114,6 +117,7 @@ class _TextFieldGeneralState extends State<TextFieldGeneral> {
     if(pickedTime != null ){
       setState(() {
         widget.variavel.text = pickedTime.format(context).toString().trim();
+        widget.onChanged!(widget.variavel.text);
       });
     }
   }

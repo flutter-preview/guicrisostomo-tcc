@@ -3,12 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tcc/controller/postgres/Lists/sales.dart';
 import 'package:tcc/main.dart';
+import 'package:tcc/model/Sales.dart';
 import 'package:tcc/model/standardListDropDown.dart';
+import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigation.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/dropDownButton.dart';
 import 'package:tcc/globals.dart' as globals;
+import 'package:tcc/view/widget/listViewOrder.dart';
 import 'package:tcc/view/widget/sectionVisible.dart';
 import 'package:tcc/view/widget/textFieldGeneral.dart';
 
@@ -21,8 +24,16 @@ class ScreenOrder extends StatefulWidget {
 
 class _ScreenOrderState extends State<ScreenOrder> {
   String txtDropDown = 'Hoje';
-  String buttonStatusSelected = 'Todos';
+  String buttonStatusSelected = '';
+
+  var formKeyDate = GlobalKey<FormState>();
+
   List<DropDownList> listDropDown = [
+    DropDownList(
+      name: 'Todos',
+      icon: Icons.calendar_today,
+    ),
+    
     DropDownList(
       name: 'Hoje',
       icon: Icons.calendar_month,
@@ -65,7 +76,32 @@ class _ScreenOrderState extends State<ScreenOrder> {
     
   ];
   var txtDateFilter = TextEditingController();
-  var txtCode = TextEditingController();
+  var txtCode = TextEditingController(
+    text: globals.businessId
+  );
+
+  List<Sales> listSales = [];
+
+  Future<List<Sales>> getSales(String cnpj, String dateStart, String dateEnd, String buttonStatusSelected) async {
+    setState(() {
+      
+    });
+    
+    if (formKeyDate.currentState != null) {
+      if (!formKeyDate.currentState!.validate()) {
+        return [];
+      }
+      
+    } else {
+      return [];
+    }
+    
+    return await SalesController().getSales(cnpj, dateStart, dateEnd, buttonStatusSelected).then((value) {
+      listSales = value;
+      return value;
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -79,107 +115,152 @@ class _ScreenOrderState extends State<ScreenOrder> {
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-
-            SectionVisible(
-              nameSection: 'Pedidos',
-              isShowPart: true,
-              child: Column(
-                children: [
-
-                  SectionVisible(
-                    nameSection: 'Filtrar', 
-                    child: Column(
+        
+            Form(
+              key: formKeyDate,
+              child: SectionVisible(
+                nameSection: 'Filtrar',
+                isShowPart: true,
+                child: Column(
+                  children: [
+                    Column(
                       children: [
-                        Column(
-                          children: [
-                            StatefulBuilder(
-                              builder: (context, setState) {
-                                return Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: [
-                                    button('Todos', 0, 0, null, () => {
-                                      setState(() {
-                                        buttonStatusSelected = 'Todos';
-                                      })
-                                    }, true, 16, buttonStatusSelected == 'Todos' ? globals.primaryBlack : globals.primary.withOpacity(0.8)),
-                                    button('Em andamento', 0, 0, null, () => {
-                                      setState(() {
-                                        buttonStatusSelected = 'Em andamento';
-                                      })
-                                    }, true, 16, buttonStatusSelected == 'Em andamento' ? globals.primaryBlack : globals.primary.withOpacity(0.8)),
-                                    button('Finalizados', 0, 0, null, () => {
-                                      setState(() {
-                                        buttonStatusSelected = 'Finalizados';
-                                      })
-                                    }, true, 16, buttonStatusSelected == 'Finalizados' ? globals.primaryBlack : globals.primary.withOpacity(0.8)),
-                              
-                                  ],
-                                );
-                              },
-                            ),
-                          ],
-                        ),
-
-                        const SizedBox(height: 20),
-
-                        if (globals.userType != 'customer')
-                          Column(
-                            children: [
-                              TextFieldGeneral(
-                                label: 'Código do pedido',
-                                variavel: txtCode,
-                                context: context,
-                                keyboardType: TextInputType.number,
-                                ico: Icons.numbers,
-                              ),
-
-                              const SizedBox(height: 20),
-                            ],
-                          ),
-
-                        if (globals.userType != 'employee')
-                          StatefulBuilder(
-                            builder: (context, setState) {
-                              return Column(
+                        StatefulBuilder(
+                          builder: (context, setState) {
+                            return SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              child: Wrap(
+                                spacing: 10,
+                    
                                 children: [
-                                  DropDown(
-                                    text: 'Data',
-                                    variavel: txtDropDown,
-                                    itemsDropDownButton: listDropDown,
-                                    callback: (value) {
-                                      setState(() {
-                                        txtDropDown = value!;
-                                      });
-                                    },
+                                  button('Todos', 0, 0, null, () => {
+                                    setState(() {
+                                      buttonStatusSelected = '';
+                                      getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected);
+                                    })
+                                  }, true, 16, buttonStatusSelected == '' ? globals.primaryBlack : globals.primary.withOpacity(0.8)),
+                                  button('Em andamento', 0, 0, null, () => {
+                                    setState(() {
+                                      buttonStatusSelected = 'ANDAMENTO';
+                                      getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected);
+                                    })
+                                  }, true, 16, buttonStatusSelected == 'ANDAMENTO' ? globals.primaryBlack : globals.primary.withOpacity(0.8)),
+                                  button('Finalizados', 0, 0, null, () => {
+                                    setState(() {
+                                      buttonStatusSelected = 'FINALIZADO';
+                                      getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected);
+                                    })
+                                  }, true, 16, buttonStatusSelected == 'FINALIZADO' ? globals.primaryBlack : globals.primary.withOpacity(0.8)),
+                                  button('Cancelados', 0, 0, null, () => {
+                                    setState(() {
+                                      buttonStatusSelected = 'CANCELADO';
+                                      getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected);
+                                    })
+                                  }, true, 16, buttonStatusSelected == 'CANCELADO' ? globals.primaryBlack : globals.primary.withOpacity(0.8)
                                   ),
-
-                                  const SizedBox(height: 20),
-
-                                  if (txtDropDown == 'Personalizado')
-                                    Column(
-                                      children: [
-                                        TextFieldGeneral(
-                                          label: 'Data',
-                                          variavel: txtDateFilter,
-                                          context: context,
-                                          keyboardType: TextInputType.datetime,
-                                          ico: Icons.date_range,
-                                        ),
-
-                                        const SizedBox(height: 20),
-                                      ],
-                                    ),
                                 ],
-                              );
-                            },
-                          ),
+                              ),
+                            );
+                          },
+                        ),
                       ],
                     ),
-                  ),
-
-                  listViewOrder(),
-                ],
-              )
+                    
+                    const SizedBox(height: 20),
+                    
+                    if (globals.userType != 'customer')
+                      Column(
+                        children: [
+                          TextFieldGeneral(
+                            label: 'Código do pedido',
+                            variavel: txtCode,
+                            context: context,
+                            keyboardType: TextInputType.number,
+                            ico: Icons.numbers,
+                            onChanged: (p0) {
+                              getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected);
+                            },
+                          ),
+                    
+                          const SizedBox(height: 20),
+                        ],
+                      ),
+                    
+                    if (globals.userType != 'employee')
+                      StatefulBuilder(
+                        builder: (context, setState) {
+                          return Column(
+                            children: [
+                              DropDown(
+                                text: 'Data',
+                                variavel: txtDropDown,
+                                itemsDropDownButton: listDropDown,
+                                callback: (value) {
+                                  setState(() {
+                                    txtDropDown = value!;
+            
+                                    if (txtDropDown != 'Personalizado') {
+                                      getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected);
+                                    }
+            
+                                  });
+                                  
+                                },
+                              ),
+                          
+                              const SizedBox(height: 20),
+                          
+                              if (txtDropDown == 'Personalizado')
+                                Column(
+                                  children: [
+                                    TextFieldGeneral(
+                                      label: 'Data',
+                                      variavel: txtDateFilter,
+                                      keyboardType: TextInputType.datetime,
+                                      ico: Icons.date_range,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          getSales(txtCode.text, txtDropDown, value, buttonStatusSelected);
+                                        });
+                                      },
+                                      validator: (value) {
+                                        return validatorString(value);
+                                      },
+                                    ),
+                                
+                                    const SizedBox(height: 20),
+                                  ],
+                                ),
+                            ],
+                          );
+                        }
+                      ),
+                  ],
+                ),
+              ),
+            ),
+        
+            FutureBuilder(
+              future: getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected),
+              initialData: listSales,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done && snapshot.hasData && snapshot.data!.isNotEmpty) {
+                  return listViewOrder(listSales);
+                } else if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (snapshot.hasError) {
+                  return Center(
+                    child: Text('Erro ao carregar os dados: ${snapshot.error}'),
+                  );
+                } else {
+                  return const Center(
+                    child: Text('Nenhum pedido encontrado'),
+                  );
+                }
+              },
             )
           ],
         ),
@@ -189,96 +270,4 @@ class _ScreenOrderState extends State<ScreenOrder> {
       
     );
   }
-}
-
-listViewOrder() {
-
-  return Container(
-    child: (
-      StreamBuilder<QuerySnapshot>(
-        stream: SalesController().listSalesFinalize(),
-        builder: (context, snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.none:
-              return const Center(
-                child: Text('Não foi possível conectar.'),
-              );
-            case ConnectionState.waiting:
-              return const Center(child: CircularProgressIndicator());
-            default:
-              final dados = snapshot.requireData;
-              if (dados.size > 0) {
-                return ListView.builder(
-                  itemCount: dados.size,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    dynamic item = dados.docs[index].data();
-                    Map<String, dynamic> map = item!;
-                    DateTime date = (map['date'] as Timestamp).toDate();
-                    String dateText = DateFormat("d 'de' MMMM 'de' y 'às' HH':'mm':'ss", "pt_BR").format(date);
-                    num total = item['total'];
-  
-                    return Card(
-                      color: Colors.white,
-                      child: ListTile(
-                        contentPadding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-                        
-                        title: Text(
-                          'Data: $dateText',
-                          style: const TextStyle(
-                            fontSize: 20,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(
-                              height: 5,
-                            ),
-
-                            Text(
-                              'Total: R\$ ${total.toStringAsFixed(2).replaceAll('.', ',')}',
-                              style: const TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                              ),
-                            ),
-
-                            /*Text(
-                              'Tipo: entrega',
-                              style: TextStyle(
-                                color: Colors.black,
-                              ),
-                            ),*/
-                          ]
-                        ),
-
-                        //EVENTO DE CLIQUE
-                        onTap: ()  {
-                          // print('Clicou no item ${dados.docs[index]}');
-                          Navigator.push(
-                            context,
-                            // 'order/info',
-                            navigator('order/info', dados.docs[index])
-
-                          //   //Passagem de parâmetro
-                            // arguments: dados.docs[index],
-
-                          );
-                        },
-                      )
-                    );
-                  },
-                );
-              } else {
-                return const Text('Nenhum item foi encontrado');
-              }
-          }
-        },
-      )
-    ),
-  );
 }
