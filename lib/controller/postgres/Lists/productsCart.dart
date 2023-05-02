@@ -1,7 +1,10 @@
 // ignore_for_file: file_names
 
+import 'package:flutter/material.dart';
 import 'package:tcc/controller/postgres/Lists/businessInfo.dart';
+import 'package:tcc/controller/postgres/Lists/sales.dart';
 import 'package:tcc/controller/postgres/utils.dart';
+import 'package:tcc/model/ProductItemList.dart';
 import 'package:tcc/model/ProductsCart.dart';
 import 'package:tcc/model/Variation.dart';
 import 'package:tcc/view/widget/snackBars.dart';
@@ -345,23 +348,6 @@ class ProductsCartController {
     });
   }
 
-  Future<void> remove(int id, context) async {
-    await connectSupadatabase().then((conn) async {
-      
-      await conn.query('delete from items where id = @id', substitutionValues: {
-        'id': id,
-      }).then((value) {
-        success(context, 'Item removido com sucesso!');
-      }).catchError((e) {
-        error(context, 'Erro ao remover item!');
-      });
-      conn.close();
-      // await conn.from('items').delete().eq('id', id);
-      // await conn.query('delete from items where id = ?', [id]);
-      // await conn.close();
-    });
-  }
-
   void update(int id, int qtd) {
     connectSupadatabase().then((conn) async {
       
@@ -478,5 +464,84 @@ class ProductsCartController {
       // await conn.query('delete from items where id_order = ?', [idOrder]);
       // await conn.close();
     });
+  }
+
+  Future<bool> isMainIdItem(int id) async {
+    return await connectSupadatabase().then((conn) async {
+      
+      return await conn.query('select id from items where relation_id = id and id = @id', substitutionValues: {
+        'id': id,
+      }).then((List results) async {
+        await conn.close();
+        
+        if (results.isEmpty) {
+          return false;
+        } else {
+          return true;
+        }
+      });
+    });
+  }
+
+  Future<int?> getNextIdItem(int id) async {
+    return await connectSupadatabase().then((conn) async {
+      
+      return await conn.query('select id from items where relation_id = @id and id != @id order by id', substitutionValues: {
+        'id': id,
+      }).then((List results) async {
+        await conn.close();
+        
+        if (results.isEmpty) {
+          return null;
+        } else {
+          return results[0][0];
+        }
+      });
+    });
+  }
+
+  Future<void> deleteItem(int id, context, [bool isDeleteRelationId = false]) async {
+    await connectSupadatabase().then((conn) async {
+      await isMainIdItem(id).then((value) async {
+        if (value) {
+          await getNextIdItem(id).then((value) async {
+            if (value != null) {
+              await conn.query('update items set relation_id = @id where id = @id', substitutionValues: {
+                'id': value,
+              });
+            }
+          });
+        }
+      });
+
+      if (isDeleteRelationId) {
+        await conn.query('delete from items where relation_id = @id', substitutionValues: {
+          'id': id,
+        });
+      } else {
+        await conn.query('delete from items where id = @id', substitutionValues: {
+          'id': id,
+        });
+      }
+
+      await conn.close();
+    });
+  }
+
+  Future<void> getVariationItemPreSelected(BuildContext context, int itemVariationSelected) async {
+    await SalesController().idSale().then((idOrder) async {
+      await ProductsCartController().getVariationItem(idOrder).then((value) {
+        if (itemVariationSelected != value && value != 0) {
+          Navigator.pop(context);
+          error(context, 'Não é possível adicionar produtos de variações diferentes no mesmo item');
+        }
+      });
+    });
+  }
+
+  Future<void> verifyItemSelected(BuildContext context, ProductItemList item) async {
+    int idItemVariationSelected = item.id;
+    await getVariationItemPreSelected(context, idItemVariationSelected);
+
   }
 }

@@ -64,6 +64,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
   @override
   Widget build(BuildContext context) {
     ProductItemList productSelect = widget.arguments as ProductItemList;
+    ProductsCartController().verifyItemSelected(context, productSelect);
     
     int idProduct = productSelect.id;
     String nameProduct = productSelect.name;
@@ -891,100 +892,129 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
             key: formKey,
             autovalidateMode: autoValidation ? AutovalidateMode.always : AutovalidateMode.disabled,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+
                 idProduct != 0 ?
-                  Row(
+                  Column(
                     children: [
-                      Icon(
-                        Icons.description,
-                        color: globals.primary,
-                        size: 30,
-                      ),
-
-                      const SizedBox(width: 10),
-
                       Container(
-                        alignment: Alignment.topLeft,
-                        child: Text(
-                          'Descição: $descriptionProduct',
-                          style: const TextStyle(
-                            fontSize: 20,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ) : Container(),
-
-                const SizedBox(height: 20),
-
-                idProduct != 0 ?
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(color: globals.primary, spreadRadius: 1),
-                      ],
-                    ),
-
-                    height: 85,
-                    width: MediaQuery.of(context).size.width - 20,
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          Navigator.pop(context);
-                          Navigator.push(context, navigator('products'));
-                          
-                          setState(() {
-                            globals.isSelectNewItem = true;
-                          });
-
-                          await SalesController().idSale().then((res) async {
-                            await ProductsCartController().add(res, idProduct, nameProduct, int.parse(txtQtd.text), idVariation);
-                          });
-                        },
-
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.transparent,
-                          foregroundColor: Colors.black,
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(color: globals.primary, spreadRadius: 1),
+                          ],
                         ),
 
-                        child: Row(
+                        padding: const EdgeInsets.all(10),
+
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Icon(
-                              Icons.add,
-                              color: globals.primary,
-                              size: 30,
-                            ),
-                                        
-                            const SizedBox(width: 10),
-                                        
-                            Flexible(
-                              child: Padding(
-                                padding: const EdgeInsets.only(bottom: 10),
-                            
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  child: const Text(
-                                    'Agregar outro item ao produto',
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                    ),
+
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.info,
+                                  color: globals.primary,
+                                  size: 30,
+                                ),
+
+                                const SizedBox(width: 10),
+
+                                const Text(
+                                  'Descrição',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w700,
                                   ),
                                 ),
+                              ],
+                            ),
+
+                            const SizedBox(height: 10),
+
+                            Text(
+                              descriptionProduct,
+                              style: const TextStyle(
+                                fontSize: 20,
+                                color: Colors.black87,
                               ),
                             ),
                           ],
                         ),
                       ),
-                    )
+
+                      const SizedBox(height: 20),
+                    
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(color: globals.primary, spreadRadius: 1),
+                          ],
+                        ),
+
+                        height: 85,
+                        width: MediaQuery.of(context).size.width - 20,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10),
+
+                          child: ElevatedButton(
+                            onPressed: () async {
+                              Navigator.pop(context);
+                              Navigator.push(context, navigator('products'));
+                              
+                              setState(() {
+                                globals.isSelectNewItem = true;
+                              });
+
+                              await SalesController().idSale().then((res) async {
+                                await ProductsCartController().add(res, idProduct, nameProduct, int.parse(txtQtd.text), idVariation);
+                              });
+                            },
+
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.transparent,
+                              foregroundColor: Colors.black,
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                            ),
+
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.add,
+                                  color: globals.primary,
+                                  size: 30,
+                                ),
+                                            
+                                const SizedBox(width: 10),
+                                            
+                                Flexible(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(bottom: 10),
+                                
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      child: const Text(
+                                        'Agregar outro item ao produto',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      ),
+                    ],
                   ) : Container(),
 
                 const SizedBox(height: 10),
@@ -1045,7 +1075,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                           
                                               IconButton(
                                                 onPressed: () async {
-                                                  await ProductsCartController().remove(items[index].id!, context);
+                                                  await ProductsCartController().deleteItem(items[index].id!, context);
                                                   getList();
 
                                                   setState(() {

@@ -6,6 +6,7 @@ import 'package:tcc/model/ProductsCart.dart';
 import 'package:tcc/model/Variation.dart';
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/sectionVisible.dart';
+import 'package:tcc/view/widget/snackBars.dart';
 
 class ScreenInfoItem extends StatefulWidget {
   final Object? arguments;
@@ -64,9 +65,21 @@ class _ScreenInfoItemState extends State<ScreenInfoItem> {
               leading: IconButton(
                 icon: const Icon(Icons.delete),
                 color: Colors.red,
-                onPressed: () {
-                  setState(() {
+                onPressed: () async {
+                  
                     // ProductsCartController().deleteProduct(item.id!);
+                  await ProductsCartController().deleteItem(item.id!, context);
+                  setState(() {
+                    value.removeAt(value.indexOf(item));
+
+                    if (value.isEmpty) {
+                      Navigator.pop(context);
+                      success(context, 'Não há mais itens!');
+                    }
+
+                    Navigator.pop(context);
+                    Navigator.push(context, navigator('cart'));
+
                   });
                 },
               ),

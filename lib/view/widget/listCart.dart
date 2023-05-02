@@ -34,7 +34,7 @@ class _ProductsCartState extends State<ProductsCart> {
           physics: const ScrollPhysics(),
           itemBuilder: (context, index) {
             ProductsCartList dados = widget.product[index];
-            int? idItem = dados.idProduct;
+            int? idItem = dados.id;
             String? name = dados.name;
             num? price = dados.price;
             int? qtd = dados.qtd;
@@ -215,15 +215,14 @@ class _ProductsCartState extends State<ProductsCart> {
                             
                             
                             onPressed: () {
-                              ProductsCartController().remove(
+                              ProductsCartController().deleteItem(
                                 // dados.docs[index].id,
-                                idItem!, context,
+                                idItem!, context, true
                               );
-                                                
-                              success(
-                                context,
-                                'Produto removido com sucesso.',
-                              );
+
+                              setState(() {
+                                widget.product.removeAt(index);
+                              });
                             },
                         
                             style: ElevatedButton.styleFrom(

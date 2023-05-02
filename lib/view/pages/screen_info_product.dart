@@ -38,7 +38,7 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
   ProductItemList? productSelect;
   int idProduct = 0;
   String nameProduct = '';
-  String descriptionProduct = '';
+  String? descriptionProduct = '';
   String? urlImageProduct;
   String categoryProduct = '';
   bool isFavorite = false;
@@ -95,16 +95,14 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
       }
 
       await ProductsController().getProductLastSale(productSelect!.name, productSelect!.variation!.category).then((value) {
-        setState(() {
-          if (value == null) {
-            textDateTime = 'nunca';
-            return;
-          }
+        if (value == null) {
+          textDateTime = 'nunca';
+          return;
+        }
 
-          lastSale = value.toLocal();
+        lastSale = value.toLocal();
 
-          textDateTime = '${formatter.format(lastSale!.day)}/${formatter.format(lastSale!.month)}/${lastSale!.year} às ${formatter.format(lastSale!.hour)}:${formatter.format(lastSale!.minute)}';
-        });
+        textDateTime = '${formatter.format(lastSale!.day)}/${formatter.format(lastSale!.month)}/${lastSale!.year} às ${formatter.format(lastSale!.hour)}:${formatter.format(lastSale!.minute)}';
       });
 
     }
@@ -114,7 +112,7 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
         idProduct = value.id;
         productSelect = value;
         nameProduct = value.name;
-        descriptionProduct = value.description!;
+        descriptionProduct = value.description;
         urlImageProduct = value.link_image;
         categoryProduct = value.variation!.category;
         isFavorite = value.isFavorite;
@@ -130,6 +128,8 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
         }
       });
     }
+
+    print('object');
 
     return Scaffold(
       appBar: PreferredSize(
@@ -210,14 +210,15 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
                           ),
                         ],
                       ),
-                
-                      Text(
-                        descriptionProduct,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
+
+                      descriptionProduct == null ? const SizedBox() :
+                        Text(
+                          descriptionProduct!,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                          ),
                         ),
-                      ),
                     ]
                   ),
                 ),
