@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 String? validatorString(String? text) {
-  if (text == null || text.isEmpty) {
-    return text;
+  if (text == null || text.isEmpty || text == '') {
+    return 'Campo obrigatório';
   }
   return null;
 }
@@ -11,10 +11,10 @@ String? validatorNumber(String? text) {
   
   text = text!.replaceFirst(',', '.');
   if (int.tryParse(text) == null) {
-    return text;
+    return 'Informe apenas números';
   } else {
     if (text.isEmpty) {
-      return text;
+      return 'Campo obrigatório';
     }
     return null;
   }
@@ -24,7 +24,7 @@ String? validatorNumber(String? text) {
 String? validatorEmail(String? text) {
   
   if (text == null || text.isEmpty) {
-    return text;
+    return 'Campo obrigatório';
   }
 
   String pattern =
@@ -33,7 +33,7 @@ String? validatorEmail(String? text) {
       r"{0,253}[a-zA-Z0-9])?)*$";
   RegExp regex = RegExp(pattern);
   if (!regex.hasMatch(text)) {
-    return text;
+    return 'E-mail inválido';
   } else {
     return null;
   }
@@ -43,7 +43,7 @@ String? validatorEmail(String? text) {
 String? validatorPassword(String? text) {
   
   if (text == null || text.isEmpty) {
-    return text;
+    return 'Campo obrigatório';
   }
   return null;
   
@@ -52,7 +52,7 @@ String? validatorPassword(String? text) {
 String? validatorConfirmPassword(String? text, TextEditingController fieldPassword) {
   
   if (text == null || text.isEmpty) {
-    return text;
+    return 'Campo obrigatório';
   }
 
   if (text != fieldPassword.text) {
@@ -67,12 +67,16 @@ String? validatorPhone(String? text) {
   
   text = text!.replaceAll(RegExp('[^0-9A-Za-z]'), '');
 
+  if (text.isEmpty) {
+    return 'Campo obrigatório';
+  }
+
   if (int.tryParse(text) == null) {
-    return text;
+    return 'Informe apenas números';
   }
 
   if (text.length < 14) {
-    return text;
+    return 'Telefone inválido';
   }
 
   return null;
