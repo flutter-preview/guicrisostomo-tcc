@@ -28,7 +28,7 @@ class _SlideShowWidgetState extends State<SlideShowWidget> {
     });
   }
 
-  Widget CircleIndicator() {
+  Widget circleIndicator() {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
       child: Row(
@@ -93,7 +93,7 @@ class _SlideShowWidgetState extends State<SlideShowWidget> {
     );
   }
 
-  Widget SlideShow() {
+  Widget slideShow() {
     return PageView.builder(
       controller: indicator,
       itemCount: widget.listSlideShow.length,
@@ -135,28 +135,75 @@ class _SlideShowWidgetState extends State<SlideShowWidget> {
               ),
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(30, 30, 30, 60),
-                child: Row(
+                child: Column(
                   children: [
-                    Align(
-                      alignment: Alignment.bottomLeft,
-                      child: Text(
-                        widget.listSlideShow[index].title,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
-                        ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 50),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          (page >= 1) ?
+                            IconButton(
+                              icon: const Icon(
+                                Icons.arrow_left,
+                                size: 30,
+                              ),
+                              color: Colors.white,
+                              onPressed: () {
+                                indicator.animateToPage(
+                                  indicator.page!.round() - 1,
+                                  duration: const Duration(milliseconds: 300),
+                                  curve: Curves.easeIn,
+                                );
+                              },
+                            ) : const SizedBox(),
+
+                          if (page < widget.listSlideShow.length - 1)
+                            IconButton(
+                              icon: const Icon(
+                                Icons.arrow_right,
+                                size: 30,
+                              ),
+                              color: Colors.white,
+                              onPressed: () {
+                                indicator.animateToPage(
+                                  indicator.page!.round() + 1,
+                                  duration: const Duration(milliseconds: 300),
+                                  curve: Curves.easeIn,
+                                );
+                              },
+                            ),
+                        ],
                       ),
                     ),
-    
+
                     const Spacer(),
+
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Align(
+                          alignment: Alignment.bottomLeft,
+                          child: Text(
+                            widget.listSlideShow[index].title,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
     
-                    const Align(
-                      alignment: Alignment.bottomRight,
-                      child: Icon(
-                        Icons.arrow_forward_ios,
-                        color: Colors.white,
-                      ),
+                        const Align(
+                          alignment: Alignment.bottomRight,
+                          child: Icon(
+                            Icons.arrow_forward_ios,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -174,8 +221,8 @@ class _SlideShowWidgetState extends State<SlideShowWidget> {
       child: Stack(
         fit: StackFit.expand,
         children: [
-          SlideShow(),
-          CircleIndicator(),
+          slideShow(),
+          circleIndicator(),
         ],
       ),
     );
