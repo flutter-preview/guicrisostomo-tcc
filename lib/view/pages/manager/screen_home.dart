@@ -39,7 +39,7 @@ class _ScreenHomeManagerState extends State<ScreenHomeManager> {
 
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(180),
+        preferredSize: const Size.fromHeight(200),
 
         child: Column(
           mainAxisSize: MainAxisSize.max,
