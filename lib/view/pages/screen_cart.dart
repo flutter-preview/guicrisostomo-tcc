@@ -57,10 +57,10 @@ class _ScreenCartState extends State<ScreenCart> {
                   if (list.isNotEmpty) {
                     return ProductsCart(product: list);
                   } else {
-                    return const Text('Carrinho vazio');
+                    return Center(child: const Text('Carrinho vazio'));
                   }
                 } else {
-                  return Expanded(child: const Center(child: CircularProgressIndicator()));
+                  return const Center(child: CircularProgressIndicator());
                 }
               }
             ),
@@ -73,31 +73,34 @@ class _ScreenCartState extends State<ScreenCart> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
+            
             button(
               'Voltar',
-              170,
+              list.isNotEmpty ? 170 : MediaQuery.of(context).size.width - 40,
               0,
               Icons.arrow_back_ios,
               () => {
                 Navigator.pop(context)
               },
             ),
-      
-            button(
-              'Finalizar',
-              170,
-              0,
-              Icons.arrow_forward_ios,
-              () => {
-                Navigator.push(context, navigator('finalize_order_customer'))
-              },
-              false,
-            )
+
+            
+            if (list.isNotEmpty)
+              button(
+                'Finalizar',
+                170,
+                0,
+                Icons.arrow_forward_ios,
+                () => {
+                  Navigator.push(context, navigator('finalize_order_customer'))
+                },
+                false,
+              )
           ],
         ),
       ),
 
-      floatingActionButton: Container(
+      floatingActionButton: (list.isNotEmpty) ? Container(
         margin: const EdgeInsets.only(bottom: 70),
         child: FloatingActionButton(
           onPressed: () async => {
@@ -129,7 +132,7 @@ class _ScreenCartState extends State<ScreenCart> {
           backgroundColor: globals.primary,
           child: const Icon(Icons.remove_shopping_cart),
         ),
-      ),
+      ) : null,
     );
   }
 }

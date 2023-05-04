@@ -252,15 +252,10 @@ class _ProductsCartState extends State<ProductsCart> {
             );
           },
         )
-      : Center(
-          child: Padding(
-            padding: EdgeInsets.all(20),
-            child: Center(
-              child: Text('Nenhum item encontrado!')
-            )
-          ),
-        ),
+      : Padding(
+        padding: EdgeInsets.all(20),
+        child: Text('Nenhum item encontrado!')
+      ),
     );
   }
 }
-  
