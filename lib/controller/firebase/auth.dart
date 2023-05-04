@@ -46,14 +46,39 @@ class LoginController {
       await userLogin(),
       success(context, 'Usuário autenticado com sucesso.'),
     } : {
-      await FirebaseAuth.instance.signInAnonymously().then((value) {
-        userLogin();
+      await FirebaseAuth.instance.signInAnonymously().then((value) async {
+        await saveDatasUser(FirebaseAuth.instance.currentUser?.uid, 'Visitante', 'visitante@hungry.com', null, 1, context);
+        await userLogin();
       }).catchError((e) {
         error(context, 'Ocorreu um erro ao fazer login: ${e.code.toString()}');
       })
     };
 
     Navigator.of(context).pop();
+  }
+
+  Future<void> saveDatasUser(String? uid, String name, String email, String? phone, int type, BuildContext context) async {
+    await connectSupadatabase().then((conn) async {
+          
+      await conn.query('insert into tb_user (uid, name, email, phone, type) values (@uid, @name, @email, @phone, @type)', substitutionValues: {
+        'uid': uid,
+        'name': name,
+        'email': email,
+        'phone': phone,
+        'type': type,
+      });
+      conn.close();
+      // await conn.from('tb_user').insert({
+      //   'uid': res.user?.uid,
+      //   'name': name,
+      //   'email': email,
+      //   'phone': phone.replaceAll(RegExp(r'[-() ]'), ''),
+      //   'type': 1,
+      // });
+
+      success(context, 'Usuário criado com sucesso.');
+      redirectUser(context);
+    });
   }
 
   Future<void> createAccount(context, String name, String email, String phone, String password) async {
@@ -63,27 +88,7 @@ class LoginController {
       .createUserWithEmailAndPassword(email: email, password: password)
       .then((res) async {
         
-        await connectSupadatabase().then((conn) async {
-          
-          await conn.query('insert into tb_user (uid, name, email, phone, type) values (@uid, @name, @email, @phone, @type)', substitutionValues: {
-            'uid': res.user?.uid,
-            'name': name,
-            'email': email,
-            'phone': phone.replaceAll(RegExp(r'[-() ]'), ''),
-            'type': 1,
-          });
-          conn.close();
-          // await conn.from('tb_user').insert({
-          //   'uid': res.user?.uid,
-          //   'name': name,
-          //   'email': email,
-          //   'phone': phone.replaceAll(RegExp(r'[-() ]'), ''),
-          //   'type': 1,
-          // });
-
-          success(context, 'Usuário criado com sucesso.');
-          redirectUser(context);
-        });
+        saveDatasUser(res.user?.uid, name, email, phone.replaceAll(RegExp(r'[-() ]'), ''), 1, context);
         // final MySqlConnection conn = await connectMySQL();
         // await conn.query('insert into user (uid, name, email, phone, type) values (?, ?, ?, ?, ?)',
         // [res.user?.uid, name, email, phone.replaceAll(RegExp(r'[-() ]'), ''), 1]);
