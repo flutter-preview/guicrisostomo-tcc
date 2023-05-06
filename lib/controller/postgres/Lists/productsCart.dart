@@ -195,7 +195,7 @@ class ProductsCartController {
       // querySelect += ' WHERE i.id_order = ? AND i.fg_current = ?';
       // querySelect += ' ORDER BY i.id';
       
-      return await conn.query('SELECT p.id_variation FROM items i INNER JOIN products p ON p.id = i.id_product WHERE i.id_order = @idOrder AND i.fg_current = @fgCurrent ORDER BY i.id', substitutionValues: {
+      return await conn.query('SELECT i.id_variation FROM items i INNER JOIN products p ON p.id = i.id_product WHERE i.id_order = @idOrder AND i.fg_current = @fgCurrent ORDER BY i.id', substitutionValues: {
         'idOrder': idSale,
         'fgCurrent': true
       }).then((List value) {
@@ -540,7 +540,7 @@ class ProductsCartController {
   }
 
   Future<void> verifyItemSelected(BuildContext context, ProductItemList item) async {
-    int idItemVariationSelected = item.id;
+    int idItemVariationSelected = item.variation!.id!;
     await getVariationItemPreSelected(context, idItemVariationSelected);
 
   }
