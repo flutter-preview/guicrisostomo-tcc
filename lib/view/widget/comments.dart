@@ -8,6 +8,7 @@ Widget comments(context, List<CommentsProduct> list) {
     itemCount: list.length,
     shrinkWrap:true,
     scrollDirection: Axis.vertical,
+    physics: const NeverScrollableScrollPhysics(),
     itemBuilder: (context, index) {
       NumberFormat formatter = NumberFormat("00");
       
