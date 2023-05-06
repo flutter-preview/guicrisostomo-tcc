@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:tcc/controller/postgres/Lists/productsCart.dart';
 import 'package:tcc/main.dart';
 import 'package:tcc/model/ProductsCart.dart';
-import 'package:tcc/view/widget/snackBars.dart';
 import 'package:tcc/globals.dart' as globals;
 
 class ProductsCart extends StatefulWidget {
@@ -45,6 +44,96 @@ class _ProductsCartState extends State<ProductsCart> {
               child: Padding(
                 padding: EdgeInsets.all(10),
                 child: ListTile(
+                  leading: IconButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: Text(
+                            'Deseja remover o item do carrinho?',
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          titlePadding: EdgeInsets.all(20),
+                          content: SizedBox(
+                            width: 350,
+                            height: 90,
+                            child: Column(
+                              children: [
+                                Text(
+                                  name!,
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                const SizedBox(height: 10,),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text(
+                                        'Não',
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      style: ElevatedButton.styleFrom(
+                                        primary: Colors.white,
+                                        elevation: 0,
+                                        side: BorderSide(
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 10,),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        ProductsCartController().deleteItem(
+                                          idItem!, context, true
+                                        );
+
+                                        setState(() {
+                                          widget.product.removeAt(index);
+                                        });
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text(
+                                        'Sim',
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      style: ElevatedButton.styleFrom(
+                                        primary: Colors.white,
+                                        elevation: 0,
+                                        side: BorderSide(
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                    icon: Icon(
+                      Icons.delete,
+                      color: Colors.red,
+                    ),
+                  ),
+                  
                   title: Text(
                     name!,
                     style: TextStyle(
@@ -87,155 +176,168 @@ class _ProductsCartState extends State<ProductsCart> {
                     ]
                   ),
               
-                  trailing: Column(
-                    children: [
-                      Expanded(
-                        child: SizedBox(
-                          width: 25,
-                          height: 25,
-                          child: ElevatedButton(
+                  // trailing: Column(
+                  //   children: [
+                  //     Expanded(
+                  //       child: SizedBox(
+                  //         width: 25,
+                  //         height: 25,
+                  //         child: ElevatedButton(
                               
-                            onPressed: () {
-                            //   txtQtd.text = item['qtd'].toString();
-                            //   showDialog(
-                            //     context: context,
-                            //     builder: (context) => AlertDialog(
-                            //       title: Text(
-                            //         'Informe a quantidade',
-                            //         style: GoogleFonts.roboto(
-                            //           fontSize: 36,
-                            //           color: Colors.blueGrey.shade700,
-                            //         ),
-                            //       ),
-                            //       titlePadding: EdgeInsets.all(20),
-                            //       content: SizedBox(
-                            //         width: 350,
-                            //         height: 90,
-                            //         child: Column(
-                            //           children: [
-                            //             TextFieldGeneral(
-                            //               label: 'Quantidade', 
-                            //               variavel: txtQtd,
-                            //               context: context, 
-                            //               keyboardType: TextInputType.number,
-                            //               ico: Icons.shopping_cart,
-                            //               validator: (value) {
-                            //                 validatorNumber(value!);
-                            //               },
-                            //             ),
-                            //           ],
-                            //         ),
-                            //       ),
-                            //       backgroundColor: Colors.blueGrey.shade50,
-                            //       actionsPadding: EdgeInsets.fromLTRB(0, 0, 20, 20),
-                            //       actions: [
-                            //         TextButton(
-                            //           style: TextButton.styleFrom(
-                            //             minimumSize: Size(120, 50),
-                            //           ),
-                            //           onPressed: () {
-                            //             Navigator.pop(context);
-                            //           },
-                            //           child: Text(
-                            //             'Cancelar',
-                            //             style: GoogleFonts.roboto(
-                            //               fontSize: 20,
-                            //               color: Colors.blueAccent.shade700,
-                            //             ),
-                            //           ),
-                            //         ),
-                            //         TextButton(
-                            //           style: TextButton.styleFrom(
-                            //             backgroundColor: Colors.blueAccent.shade700,
-                            //             minimumSize: Size(120, 50),
-                            //           ),
-                            //           onPressed: () async {
-                            //             if (txtQtd.text.isNotEmpty) {
-                            //               int idSale = 0;
+                  //           onPressed: () {
+                  //           //   txtQtd.text = item['qtd'].toString();
+                  //           //   showDialog(
+                  //           //     context: context,
+                  //           //     builder: (context) => AlertDialog(
+                  //           //       title: Text(
+                  //           //         'Informe a quantidade',
+                  //           //         style: GoogleFonts.roboto(
+                  //           //           fontSize: 36,
+                  //           //           color: Colors.blueGrey.shade700,
+                  //           //         ),
+                  //           //       ),
+                  //           //       titlePadding: EdgeInsets.all(20),
+                  //           //       content: SizedBox(
+                  //           //         width: 350,
+                  //           //         height: 90,
+                  //           //         child: Column(
+                  //           //           children: [
+                  //           //             TextFieldGeneral(
+                  //           //               label: 'Quantidade', 
+                  //           //               variavel: txtQtd,
+                  //           //               context: context, 
+                  //           //               keyboardType: TextInputType.number,
+                  //           //               ico: Icons.shopping_cart,
+                  //           //               validator: (value) {
+                  //           //                 validatorNumber(value!);
+                  //           //               },
+                  //           //             ),
+                  //           //           ],
+                  //           //         ),
+                  //           //       ),
+                  //           //       backgroundColor: Colors.blueGrey.shade50,
+                  //           //       actionsPadding: EdgeInsets.fromLTRB(0, 0, 20, 20),
+                  //           //       actions: [
+                  //           //         TextButton(
+                  //           //           style: TextButton.styleFrom(
+                  //           //             minimumSize: Size(120, 50),
+                  //           //           ),
+                  //           //           onPressed: () {
+                  //           //             Navigator.pop(context);
+                  //           //           },
+                  //           //           child: Text(
+                  //           //             'Cancelar',
+                  //           //             style: GoogleFonts.roboto(
+                  //           //               fontSize: 20,
+                  //           //               color: Colors.blueAccent.shade700,
+                  //           //             ),
+                  //           //           ),
+                  //           //         ),
+                  //           //         TextButton(
+                  //           //           style: TextButton.styleFrom(
+                  //           //             backgroundColor: Colors.blueAccent.shade700,
+                  //           //             minimumSize: Size(120, 50),
+                  //           //           ),
+                  //           //           onPressed: () async {
+                  //           //             if (txtQtd.text.isNotEmpty) {
+                  //           //               int idSale = 0;
         
-                            //               await SalesController().idSale().then((res) async {
-                            //                 idSale = res;
+                  //           //               await SalesController().idSale().then((res) async {
+                  //           //                 idSale = res;
         
-                            //                 await SalesController().getTotal().then((res){
-                            //                   // SalesController().updateTotal(idSale, (res - subTotal) + (num.parse(price.toString()) * int.parse(txtQtd.text)));
-                            //                   ProductsCartController().update(idItem!, int.parse(txtQtd.text),);
+                  //           //                 await SalesController().getTotal().then((res){
+                  //           //                   // SalesController().updateTotal(idSale, (res - subTotal) + (num.parse(price.toString()) * int.parse(txtQtd.text)));
+                  //           //                   ProductsCartController().update(idItem!, int.parse(txtQtd.text),);
         
-                            //                   Navigator.pop(context);
+                  //           //                   Navigator.pop(context);
                                               
-                            //                   success(context, 'Quantidade atualizada com sucesso.');
-                            //                 }).catchError((e){
-                            //                   error(context, 'Ocorreu um erro ao atualizar a quantidade: ${e.code.toString()}');
-                            //                 });
+                  //           //                   success(context, 'Quantidade atualizada com sucesso.');
+                  //           //                 }).catchError((e){
+                  //           //                   error(context, 'Ocorreu um erro ao atualizar a quantidade: ${e.code.toString()}');
+                  //           //                 });
                                             
-                            //               }).catchError((e){
-                            //                 error(context, 'Ocorreu um erro ao atualizar a quantidade: ${e.code.toString()}');
-                            //               });
+                  //           //               }).catchError((e){
+                  //           //                 error(context, 'Ocorreu um erro ao atualizar a quantidade: ${e.code.toString()}');
+                  //           //               });
                                           
-                            //             } else {
-                            //               error(context, 'Informe a quantidade.');
-                            //             }
-                            //           },
-                            //           child: Text(
-                            //             'Atualizar',
-                            //             style: GoogleFonts.roboto(
-                            //               fontSize: 20,
-                            //               color: Colors.white,
-                            //             ),
-                            //           ),
-                            //         ),
-                            //       ],
-                            //     ),
-                            //   );
-                            },
+                  //           //             } else {
+                  //           //               error(context, 'Informe a quantidade.');
+                  //           //             }
+                  //           //           },
+                  //           //           child: Text(
+                  //           //             'Atualizar',
+                  //           //             style: GoogleFonts.roboto(
+                  //           //               fontSize: 20,
+                  //           //               color: Colors.white,
+                  //           //             ),
+                  //           //           ),
+                  //           //         ),
+                  //           //       ],
+                  //           //     ),
+                  //           //   );
+                  //           },
                             
-                            style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.all(2),
-                              backgroundColor: globals.primary,
-                              shape: const CircleBorder(),
-                            ),
+                  //           style: ElevatedButton.styleFrom(
+                  //             padding: const EdgeInsets.all(2),
+                  //             backgroundColor: globals.primary,
+                  //             shape: const CircleBorder(),
+                  //           ),
                   
-                            child: Icon(
-                              Icons.edit, size: 15,
-                              color: Colors.white,
-                            ),
+                  //           child: Icon(
+                  //             Icons.edit, size: 15,
+                  //             color: Colors.white,
+                  //           ),
                             
-                          ),
-                        ),
-                      ),
+                  //         ),
+                  //       ),
+                  //     ),
                       
-                      const SizedBox(height: 10,),
+                  //     const SizedBox(height: 10,),
                       
                       
-                      Expanded(
-                        child: SizedBox(
-                          width: 35,
-                          height: 35,
+                  //     Expanded(
+                  //       child: SizedBox(
+                  //         width: 35,
+                  //         height: 35,
                           
-                          child: ElevatedButton(
+                  //         child: ElevatedButton(
                             
                             
-                            onPressed: () {
-                              ProductsCartController().deleteItem(
-                                // dados.docs[index].id,
-                                idItem!, context, true
-                              );
+                  //           onPressed: () {
+                  //             ProductsCartController().deleteItem(
+                  //               // dados.docs[index].id,
+                  //               idItem!, context, true
+                  //             );
 
-                              setState(() {
-                                widget.product.removeAt(index);
-                              });
-                            },
+                  //             setState(() {
+                  //               widget.product.removeAt(index);
+                  //             });
+                  //           },
                         
-                            style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.all(2),
-                              backgroundColor: globals.primary,
-                              shape: const CircleBorder(),
-                            ),
-                            child: Icon(Icons.delete, size: 15, color: Colors.white,),
+                  //           style: ElevatedButton.styleFrom(
+                  //             padding: const EdgeInsets.all(2),
+                  //             backgroundColor: globals.primary,
+                  //             shape: const CircleBorder(),
+                  //           ),
+                  //           child: Icon(Icons.delete, size: 15, color: Colors.white,),
               
-                          ),
+                  //         ),
+                  //       )
+                  //     )
+                  //   ]
+                  // ),
+
+                  trailing: IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        navigator(
+                          'cart/info_item',
+                          dados,
                         )
-                      )
-                    ]
+                      );
+                    },
+                    icon: Icon(Icons.info, color: Colors.red,),
                   ),
                 
                   onTap: () {
