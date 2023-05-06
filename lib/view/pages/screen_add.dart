@@ -1,5 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:tcc/controller/postgres/Lists/businessInfo.dart';
 import 'package:tcc/controller/postgres/Lists/products.dart';
 import 'package:tcc/controller/postgres/Lists/productsCart.dart';
@@ -12,6 +14,7 @@ import 'package:tcc/model/Variation.dart';
 import 'package:tcc/model/standardListDropDown.dart';
 import 'package:tcc/model/standardRadioButton.dart';
 import 'package:tcc/utils.dart';
+import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/checkBox.dart';
 import 'package:tcc/view/widget/dropDownButton.dart';
 import 'package:tcc/view/widget/radioButton.dart';
@@ -22,9 +25,9 @@ import 'package:tcc/view/widget/switchListTile.dart';
 import 'package:tcc/view/widget/textFieldGeneral.dart';
 
 class ScreenAddItem extends StatefulWidget {
-  Object? arguments;
+  final Object? arguments;
 
-  ScreenAddItem({
+  const ScreenAddItem({
     super.key,
     this.arguments,
   });
@@ -50,175 +53,229 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
   List<RadioButtonList> itemsRadioListTile = [];
   List<CheckBoxList> itemsCheckBoxListTile = [];
 
+  ProductItemList productSelect = ProductItemList(
+    id: 0,
+    name: '',
+    price: 0,
+    description: '',
+    link_image: '',
+    variation: Variation(
+      id: 0,
+      category: '',
+      size: '',
+      isDropDown: false,
+      limitItems: 0,
+      pricePerItem: false,
+      price: 0.0,
+      idSubVariation: 0,
+    ),
+    isFavorite: false,
+  );
+
   var txtQtd = TextEditingController();
   var txtObservation = TextEditingController();
   
+  int idProduct = 0;
+  String nameProduct = '';
+  num priceProduct = 0;
+  String? descriptionProduct;
+  String? urlImageProduct;
+  Variation variation = Variation(
+    id: 0,
+    category: '',
+    size: '',
+    isDropDown: false,
+    limitItems: 0,
+    pricePerItem: false,
+    price: 0.0,
+    idSubVariation: 0,
+  );
+  int idVariation = 0;
+
   @override
   void initState() {
-    super.initState();
+    ProductsCartController().verifyItemSelected(context, productSelect);
     autoValidation = false;
     txtQtd.text = "1";
     t = 0;
+    productSelect = widget.arguments as ProductItemList;
+    
+    idProduct = productSelect.id;
+    nameProduct = productSelect.name;
+    priceProduct = productSelect.price;
+    descriptionProduct = productSelect.description;
+    urlImageProduct = productSelect.link_image;
+    variation = productSelect.variation!;
+    idVariation = variation.id ?? 0;
+    
+    super.initState();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    ProductItemList productSelect = widget.arguments as ProductItemList;
-    ProductsCartController().verifyItemSelected(context, productSelect);
+  void resetSubTotal() {
+    setState(() {
+      subTotal = 0;
+    });
+  }
+
+  num calcVariations() {
     
-    int idProduct = productSelect.id;
-    String nameProduct = productSelect.name;
-    num priceProduct = productSelect.price;
-    String descriptionProduct = productSelect.description!;
-    String? urlImageProduct = productSelect.link_image;
-    Variation variation = productSelect.variation!;
-    int idVariation = variation.id ?? 0;
+    num total = 0;
+    num saveTotal = 0;
 
-    void resetSubTotal() {
-      if (mounted) {
-        setState(() {
-          subTotal = 0;
-        });
-      }
-    }
+    for (final Variation item in variations) {
 
-    num calcVariations() {
-      
-      num total = 0;
-      num saveTotal = 0;
+      saveTotal = total;
 
-      for (final Variation item in variations) {
+      total += item.price;
 
-        saveTotal = total;
-
-        total += item.price;
-
-        if (total.isNaN) {
-          total = saveTotal;
-        }
-
-        item.productItemSelected.forEach((key, bool value) {
-          if (value) {
-            total += key.price;
-          }
-        });
-
-        for (final Variation subItem in item.subVariation) {
-
-          if (item.value == subItem.category) {
-            total += subItem.getPriceTotal(isBusinessHighValue);
-          }
-        }
-
+      if (total.isNaN) {
+        total = saveTotal;
       }
 
-      return total;
-    }
-
-    Future<void> calcSubTotal() async {
-      subTotal = saveSubTotal;
-
-      setState(() {
-        subTotal += calcVariations();
+      item.productItemSelected.forEach((key, bool value) {
+        if (value) {
+          total += key.price;
+        }
       });
 
+      for (final Variation subItem in item.subVariation) {
+        if (item.value == subItem.category) {
+          total += subItem.getPriceTotal(isBusinessHighValue);
+        }
+      }
+
+    }
+
+    return total;
+  }
+
+  void calcSubTotal() {
+    subTotal = saveSubTotal;
+
+    setState(() {
+      subTotal += calcVariations();
+    
       subTotal *= int.parse(txtQtd.text);
-    }
+    });
+  }
 
-    Widget constructorWidgetSepareItemsText(Variation variation, String separator, ProductItemList item) {
-      TextEditingController textController = variation.getTextController(item.id);
-      String text = textController.text;
-      List<String> items = text.split(separator);
-      variation.price = (items.length) * item.price;
+  Widget constructorWidgetSepareItemsText(Variation variation, String separator, ProductItemList item) {
+    TextEditingController textController = variation.getTextController(item.id);
+    String text = textController.text;
+    List<String> items = text.split(separator);
+    variation.price = (items.length) * item.price;
 
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (context.mounted) {
-          resetSubTotal();
-        }
-      });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!context.mounted) {
+        resetSubTotal();
+      }
+    });
 
-      return StatefulBuilder(
-        builder: (context, setState) {
+    return StatefulBuilder(
+      builder: (context, setState) {
+        
+
+        return SizedBox(
+          height: 50,
+          width: double.infinity,
+          child: ListView.builder(
+            itemCount: items.length,
+            shrinkWrap: true,
+            scrollDirection: Axis.horizontal,
+            physics: const NeverScrollableScrollPhysics(),
+            itemBuilder: (context, index) {
+              return Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  gradient: LinearGradient(colors: [
+                    globals.primary,
+                    globals.primaryBlack,
+                  ])
+                ),
           
-
-          return SizedBox(
-            height: 50,
-            width: double.infinity,
-            child: ListView.builder(
-              itemCount: items.length,
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                return Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    gradient: LinearGradient(colors: [
-                      globals.primary,
-                      globals.primaryBlack,
-                    ])
-                  ),
+                padding: const EdgeInsets.all(10),
+                margin: const EdgeInsets.all(5),
           
-                  padding: const EdgeInsets.all(10),
-                  margin: const EdgeInsets.all(5),
-          
-                  child: Row(
-                    children: [
-                      Text(
-                        items[index],
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                        ),
+                child: Row(
+                  children: [
+                    Text(
+                      items[index],
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
                       ),
-
-                      const SizedBox(width: 5),
-
-                      InkWell(
-                        onTap: () {
-                          setState(() {
-                            items.removeAt(index);
-                            textController.text = items.join(separator);
-                            variation.setValues(textController.text, item.id);
-                          
-                            textController.selection = TextSelection.fromPosition(
-                              TextPosition(offset: textController.text.length)
-                            );
-
-                            variation.price = (items.length) * item.price;
-
-                            WidgetsBinding.instance.addPostFrameCallback((_) {
-                              if (context.mounted) {
-                                resetSubTotal();
-                              }
-                            });
+                    ),
+        
+                    const SizedBox(width: 5),
+        
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                          items.removeAt(index);
+                          textController.text = items.join(separator);
+                          variation.setValues(textController.text, item.id);
+                        
+                          textController.selection = TextSelection.fromPosition(
+                            TextPosition(offset: textController.text.length)
+                          );
+        
+                          variation.price = (items.length) * item.price;
+        
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            if (!context.mounted) {
+                              resetSubTotal();
+                            }
                           });
-                        },
-                        child: const Icon(
-                          Icons.close,
-                          color: Colors.white,
-                          size: 20,
-                        ),
+                        });
+                      },
+                      child: const Icon(
+                        Icons.close,
+                        color: Colors.white,
+                        size: 20,
                       ),
-                    ],
-                  ),
-                );
-              }
-            ),
-          );
-        }
-      );
-    }
+                    ),
+                  ],
+                ),
+              );
+            }
+          ),
+        );
+      }
+    );
+  }
 
-    Future<bool> getInfoVariation(Variation element) async {
-      itemsDropDownButton = [];
-      itemsRadioListTile = [];
-      itemsCheckBoxListTile = [];
-      element.productItemSelected = {};
+  Future<bool> getInfoVariation(Variation element) async {
+    itemsDropDownButton = [];
+    itemsRadioListTile = [];
+    itemsCheckBoxListTile = [];
+    element.productItemSelected = {};
 
-      if (element.isDropDown != null) {
-        if (element.isDropDown == true) {
-          itemsDropDownButton.add(
-            DropDownList(
+    if (element.isDropDown != null) {
+      if (element.isDropDown == true) {
+        itemsDropDownButton.add(
+          DropDownList(
+            name: "Não quero ${element.category.toLowerCase()}",
+            icon: Icons.shopping_cart,
+          )
+        );
+
+        await ProductsController().list(element.category, element.size, '').then((List<ProductItemList> res) {
+          if (res.isNotEmpty) {
+            for (final ProductItemList item in res) {
+              element.addProductItem(item);
+              itemsDropDownButton.add(
+                DropDownList(
+                  name: item.name,
+                  icon: Icons.shopping_cart,
+                )
+              );
+            }
+          }
+        });
+      } else {
+        if (element.limitItems == 1) {
+          itemsRadioListTile.add(
+            RadioButtonList(
               name: "Não quero ${element.category.toLowerCase()}",
               icon: Icons.shopping_cart,
             )
@@ -228,8 +285,8 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
             if (res.isNotEmpty) {
               for (final ProductItemList item in res) {
                 element.addProductItem(item);
-                itemsDropDownButton.add(
-                  DropDownList(
+                itemsRadioListTile.add(
+                  RadioButtonList(
                     name: item.name,
                     icon: Icons.shopping_cart,
                   )
@@ -238,336 +295,307 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
             }
           });
         } else {
-          if (element.limitItems == 1) {
-            itemsRadioListTile.add(
-              RadioButtonList(
-                name: "Não quero ${element.category.toLowerCase()}",
-                icon: Icons.shopping_cart,
-              )
-            );
-
-            await ProductsController().list(element.category, element.size, '').then((List<ProductItemList> res) {
-              if (res.isNotEmpty) {
-                for (final ProductItemList item in res) {
-                  element.addProductItem(item);
-                  itemsRadioListTile.add(
-                    RadioButtonList(
-                      name: item.name,
-                      icon: Icons.shopping_cart,
-                    )
-                  );
-                }
+          await ProductsController().list(element.category, element.size, '').then((List<ProductItemList> res) {
+            if (res.isNotEmpty) {
+              for (final ProductItemList item in res) {
+                element.addProductItem(item);
+                itemsCheckBoxListTile.add(
+                  CheckBoxList(
+                    value: item.name,
+                  )
+                );
               }
-            });
-          } else {
-            await ProductsController().list(element.category, element.size, '').then((List<ProductItemList> res) {
-              if (res.isNotEmpty) {
-                for (final ProductItemList item in res) {
-                  element.addProductItem(item);
-                  itemsCheckBoxListTile.add(
-                    CheckBoxList(
-                      value: item.name,
-                    )
-                  );
-                }
-              }
-            });
-          }
-          
-        }
-      }
-
-      element.setProductItemSelected();
-
-      return true;
-    }
-
-    Future<Widget> putTextBoxVariation(Variation element) async {
-      return await ProductsController().list(element.category, element.size, '').then((List<ProductItemList> res) {
-        List<Widget> listWidgetTextEditing = [];
-
-        if (res.isNotEmpty) {
-          for (final ProductItemList item in res) {
-            element.addValue(item.id);
-
-            listWidgetTextEditing.add(
-              StatefulBuilder(
-                builder: (context, setState) {
-                  return Column(
-                    children: [
-                      TextFieldGeneral(
-                        variavel: element.getTextController(item.id),
-                        keyboardType: TextInputType.text,
-                        label: "Digite o nome do ${item.name.toLowerCase()}",
-                        onChanged: (value) {
-                            
-                          setState(() {
-                            
-                          // //   // element.isTextEmpty = !element.isTextEmpty;
-                          // //   // element.setValues(element.category, value);
-                            if (value == "" || value.isEmpty) {
-                              element.isTextEmpty[item.id] = true;
-                            } else {
-                              element.isTextEmpty[item.id] = false;
-                            }
-
-                            element.price = (value.split(',').length - 1) * item.price;
-                            // if (value.endsWith(',')) {
-                            //   element.price += item.price;
-                            // }
-                            
-                            // element.checkTextEmpty(item.id);
-                          });
-                        },
-                        // key: Key(element.category),
-                        context: context,
-                      ),
-
-                      const SizedBox(height: 10),
-
-                      if (element.pricePerItem == true)
-                        Column(
-                          children: [
-                            Text(
-                              "Será cobrado R\$ ${item.price.toStringAsFixed(2)} por ${element.category.toLowerCase()}! Por favor, separe os itens por vírgula",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: globals.primary
-                              ),
-                            ),
-
-                            const SizedBox(height: 10),
-
-                            element.isTextEmpty[item.id] == false ?
-                              constructorWidgetSepareItemsText(element, ',', item)
-                            :
-                              Container(),
-                          ],
-                        ),
-          
-                      SwitchListTileWidget(
-                        title: Text(
-                          "Quero ${element.category.toLowerCase()} ${item.name.toLowerCase()}",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        value: !element.isTextEmpty.values.toList()[element.isTextEmpty.keys.toList().indexOf(item.id)],
-                        privateValue: true,
-                        onChanged: (value) {
-                          setState(() {
-                            element.setValues(value ? element.getValues(item.id) : "", item.id);
-
-                            if (!value) {
-                              element.price = 0;
-                            }
-                          });
-                        },
-                      )
-                    ],
-                  );
-                }
-              )
-            );
-          }
-
-          return Column(
-            children: listWidgetTextEditing,
-          );
-        } else {
-          return const SizedBox();
-        }
-      });
-    }
-
-    Widget putDropDownVariation(Variation element) {
-      if (element.value == '') {
-        element.setValues("Não quero ${element.category.toLowerCase()}");
-      }
-      
-      return DropDown(
-        text: element.category,
-        itemsDropDownButton: itemsDropDownButton,
-        variavel: element.value,
-        callback: (value) {
-          setState(() {
-            
-            element.setValues(value);
-            element.setProductItemSelected(value!, null, isBusinessHighValue);
-            subTotal = 0;
+            }
           });
-        },
-      );
+        }
+        
+      }
     }
 
-    Widget putLimitElementVariation(Variation element) {
-      return (element.limitItems == 1) ?
-        RadioButon(
-          list: itemsRadioListTile,
+    element.setProductItemSelected();
+
+    return true;
+  }
+
+  Future<Widget> putTextBoxVariation(Variation element) async {
+    return await ProductsController().list(element.category, element.size, '').then((List<ProductItemList> res) {
+      List<Widget> listWidgetTextEditing = [];
+
+      if (res.isNotEmpty) {
+        for (final ProductItemList item in res) {
+          element.addValue(item.id);
+
+          listWidgetTextEditing.add(
+            StatefulBuilder(
+              builder: (context, setState) {
+                return Column(
+                  children: [
+                    TextFieldGeneral(
+                      variavel: element.getTextController(item.id),
+                      keyboardType: TextInputType.text,
+                      label: "Digite o nome do ${item.name.toLowerCase()}",
+                      onChanged: (value) {
+                          
+                        setState(() {
+                          
+                        // //   // element.isTextEmpty = !element.isTextEmpty;
+                        // //   // element.setValues(element.category, value);
+                          if (value == "" || value.isEmpty) {
+                            element.isTextEmpty[item.id] = true;
+                          } else {
+                            element.isTextEmpty[item.id] = false;
+                          }
+
+                          element.price = (value.split(',').length - 1) * item.price;
+                          // if (value.endsWith(',')) {
+                          //   element.price += item.price;
+                          // }
+                          
+                          // element.checkTextEmpty(item.id);
+                        });
+                      },
+                      // key: Key(element.category),
+                      context: context,
+                    ),
+
+                    const SizedBox(height: 10),
+
+                    if (element.pricePerItem == true)
+                      Column(
+                        children: [
+                          Text(
+                            "Será cobrado R\$ ${item.price.toStringAsFixed(2)} por ${element.category.toLowerCase()}! Por favor, separe os itens por vírgula",
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: globals.primary
+                            ),
+                          ),
+
+                          const SizedBox(height: 10),
+
+                          element.isTextEmpty[item.id] == false ?
+                            constructorWidgetSepareItemsText(element, ',', item)
+                          :
+                            Container(),
+                        ],
+                      ),
+        
+                    SwitchListTileWidget(
+                      title: Text(
+                        "Quero ${element.category.toLowerCase()} ${item.name.toLowerCase()}",
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      value: !element.isTextEmpty.values.toList()[element.isTextEmpty.keys.toList().indexOf(item.id)],
+                      privateValue: true,
+                      onChanged: (value) {
+                        setState(() {
+                          element.setValues(value ? element.getValues(item.id) : "", item.id);
+
+                          if (!value) {
+                            element.price = 0;
+                          }
+                        });
+                      },
+                    )
+                  ],
+                );
+              }
+            )
+          );
+        }
+
+        return Column(
+          children: listWidgetTextEditing,
+        );
+      } else {
+        return const SizedBox();
+      }
+    });
+  }
+
+  Widget putDropDownVariation(Variation element) {
+    if (element.value == '') {
+      element.setValues("Não quero ${element.category.toLowerCase()}");
+    }
+    
+    return StatefulBuilder(
+      builder: (context, setState) {
+        return DropDown(
+          text: element.category,
+          itemsDropDownButton: itemsDropDownButton,
+          variavel: element.value,
           callback: (value) {
             setState(() {
               element.setValues(value);
-              element.setProductItemSelected(value!, true, isBusinessHighValue);
-              subTotal = 0;
-            });
-          },
-        )
-      :
-        CheckBoxWidget(
-          list: itemsCheckBoxListTile,
-          limitCheck: element.limitItems ?? 0,
-          onChanged: (value, bool check) {
-            setState(() {
-              element.setValues(value);
-              element.setProductItemSelected(value, check,
-              isBusinessHighValue);
+              element.setProductItemSelected(value!, null, isBusinessHighValue);
               subTotal = 0;
             });
           },
         );
-    }
+      }
+    );
+  }
 
-    Future<Widget> addWidgetVariation(Variation element) async {
-      
-      return Column(
-        children: [
-          await ProductsController().listVariations(element.id!).then((List<Variation> res) async {
-            subVariations = [];
-            List<DropDownList> subVariationDropDownButton = [
-              DropDownList(
-                name: "Não quero ${element.category.toLowerCase()}",
-                icon: Icons.category,
-              )
-            ];
-            List<RadioButtonList> subVariationRadioListTile = [
-              RadioButtonList(
-                name: "Não quero ${element.category.toLowerCase()}",
-                icon: Icons.category,
-              )
-            ];
+  Widget putLimitElementVariation(Variation element) {
+    return (element.limitItems == 1) ?
+      RadioButon(
+        list: itemsRadioListTile,
+        callback: (value) {
+          setState(() {
+            element.setValues(value);
+            element.setProductItemSelected(value!, true, isBusinessHighValue);
+            subTotal = 0;
+          });
+        },
+      )
+    :
+      CheckBoxWidget(
+        list: itemsCheckBoxListTile,
+        limitCheck: element.limitItems ?? 0,
+        onChanged: (value, bool check) {
+          setState(() {
+            element.setValues(value);
+            element.setProductItemSelected(value, check,
+            isBusinessHighValue);
+            subTotal = 0;
+          });
+        },
+      );
+  }
 
-            if (res.isNotEmpty) {
+  Future<Widget> addWidgetVariation(Variation element) async {
+    
+    return Column(
+      children: [
+        await ProductsController().listVariations(element.id!).then((List<Variation> res) async {
+          subVariations = [];
+          List<DropDownList> subVariationDropDownButton = [
+            DropDownList(
+              name: "Não quero ${element.category.toLowerCase()}",
+              icon: Icons.category,
+            )
+          ];
+          List<RadioButtonList> subVariationRadioListTile = [
+            RadioButtonList(
+              name: "Não quero ${element.category.toLowerCase()}",
+              icon: Icons.category,
+            )
+          ];
 
-              for (final Variation item in res) {
-                element.subVariation.add(item);
-                element.isDropDown == true ?
-                  subVariationDropDownButton.add(
-                    DropDownList(
-                      name: item.category,
-                      icon: Icons.category,
-                      onSelected: () {
+          if (res.isNotEmpty) {
+
+            for (final Variation item in res) {
+              element.subVariation.add(item);
+              element.isDropDown == true ?
+                subVariationDropDownButton.add(
+                  DropDownList(
+                    name: item.category,
+                    icon: Icons.category,
+                    onSelected: () {
+                      setState(() {
+                        element.setValues(item.category);
+                        subTotal = 0;
+                      });
+                    },
+                  )
+                )
+              :
+                subVariationRadioListTile.add(
+                  RadioButtonList(
+                    name: item.category,
+                    icon: Icons.category,
+                  )
+                );
+            }
+
+            return StatefulBuilder(
+              builder: (context, setState) {
+                return Column(
+                  children: [
+                    
+                    DropDown(
+                      text: element.category,
+                      itemsDropDownButton: subVariationDropDownButton,
+                      variavel: element.value == '' ? 'Não quero ${element.category.toLowerCase()}' : element.value,
+                      callback: (value) {
+                        
                         setState(() {
-                          element.setValues(item.category);
-                          resetSubTotal();
+                          element.setValues(value);
+                          element.value = value ?? '';
+                          t = subVariationDropDownButton.indexWhere((element) => element.name == value);
+                          t--;
+                          subTotal = 0;
                         });
                       },
-                    )
-                  )
-                :
-                  subVariationRadioListTile.add(
-                    RadioButtonList(
-                      name: item.category,
-                      icon: Icons.category,
-                    )
-                  );
-              }
+                    ),
 
-              return StatefulBuilder(
-                builder: (context, setState) {
-                  return Column(
-                    children: [
-                      
-                      DropDown(
-                        text: element.category,
-                        itemsDropDownButton: subVariationDropDownButton,
-                        variavel: element.value == '' ? 'Não quero ${element.category.toLowerCase()}' : element.value,
-                        callback: (value) {
-                          
-                          setState(() {
-                            element.setValues(value);
-                            element.value = value ?? '';
-                            t = subVariationDropDownButton.indexWhere((element) => element.name == value);
-                            t--;
-                            resetSubTotal();
-                          });
-                        },
+                    
+                    for (final Variation item in element.subVariation)
+                      Builder(
+                        builder: (context) {
+                          return (t >= 0 && element.value != '' && element.value != 'Não quero ${element.category}') ?
+                            (element.subVariation[t] == item) ?
+                            FutureBuilder(
+                              future: getInfoVariation(item),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  return (item.isDropDown == null) ?
+                                    FutureBuilder(
+                                      future: putTextBoxVariation(item),
+                                      builder: (context, snapshot) {
+                                        if (snapshot.hasData) {
+                                          return Column(
+                                            children: subVariations,
+                                          );
+                                        } else {
+                                          return const SizedBox();
+                                        }
+                                      },
+                                    )
+                                  : item.isDropDown == true ?
+                                    putDropDownVariation(item)
+                                  :
+                                    putLimitElementVariation(item);
+                                } else {
+                                  return const SizedBox();
+                                }
+                              },
+                          ) : const SizedBox() : const SizedBox();
+                        }
                       ),
+                  ],
+                );
+              }
+            );
 
-                      
-                      for (final Variation item in element.subVariation)
-                        Builder(
-                          builder: (context) {
-                            return (t >= 0 && element.value != '' && element.value != 'Não quero ${element.category}') ?
-                              (element.subVariation[t] == item) ?
-                              FutureBuilder(
-                                future: getInfoVariation(item),
-                                builder: (context, snapshot) {
-                                  if (snapshot.hasData) {
-                                    return (item.isDropDown == null) ?
-                                      FutureBuilder(
-                                        future: putTextBoxVariation(item),
-                                        builder: (context, snapshot) {
-                                          if (snapshot.hasData) {
-                                            return Column(
-                                              children: subVariations,
-                                            );
-                                          } else {
-                                            return const SizedBox();
-                                          }
-                                        },
-                                      )
-                                    : item.isDropDown == true ?
-                                      putDropDownVariation(item)
-                                    :
-                                      putLimitElementVariation(item);
-                                  } else {
-                                    return const SizedBox();
-                                  }
-                                },
-                            ) : const SizedBox() : const SizedBox();
-                          }
-                        ),
-                    ],
-                  );
-                }
-              );
+          } else {
+            
+            // ------ NÃO encontra sub variação --------
 
-            } else {
-              
-              // ------ NÃO encontra sub variação --------
+            getInfoVariation(element);
 
-              getInfoVariation(element);
+            return (element.isDropDown == null) ?
+              await putTextBoxVariation(element)
+            : element.isDropDown == true ?
+              putDropDownVariation(element)
+            :
+              putLimitElementVariation(element);
+          }
+        })
+      ],
+    );
+  }
 
-              return (element.isDropDown == null) ?
-                await putTextBoxVariation(element)
-              : element.isDropDown == true ?
-                putDropDownVariation(element)
-              :
-                putLimitElementVariation(element);
-            }
-          })
-        ],
-      );
-    }
+  Widget verifyAddSection(Variation element) {
 
-    Widget verifyAddSection(Variation element) {
-
-      return element.isDropDown != true ?
-        SectionVisible(
-        nameSection: element.category,
-        child: FutureBuilder(
-          future: addWidgetVariation(element),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return snapshot.data as Widget;
-            } else {
-              return const SizedBox();
-            }
-          },
-        ),
-      ) : FutureBuilder(
+    return element.isDropDown != true ?
+      SectionVisible(
+      nameSection: element.category,
+      child: FutureBuilder(
         future: addWidgetVariation(element),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
@@ -576,84 +604,80 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
             return const SizedBox();
           }
         },
-      );
-    }
+      ),
+    ) : FutureBuilder(
+      future: addWidgetVariation(element),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return snapshot.data as Widget;
+        } else {
+          return const SizedBox();
+        }
+      },
+    );
+  }
 
-    Future<void> listItemsMain() async {
-      await BusinessInformationController().getInfoCalcValue().then((isHighValue) async {
-        await SalesController().idSale().then((idOrder) async {
-          await ProductsCartController().listItemCurrent(idOrder, idProduct == 0 ? idVariation = await ProductsCartController().getVariationItem(idOrder) : idVariation).then((List<ProductsCartList> res) {
-            isBusinessHighValue = isHighValue ?? false;
-            
-            subTotal = productSelect.price;
-            items.clear();
-            
-            if (res.isNotEmpty) {
-              bool value = isHighValue ?? false;
+  Future<void> listItemsMain() async {
+    await BusinessInformationController().getInfoCalcValue().then((isHighValue) async {
+      await SalesController().idSale().then((idOrder) async {
+        await ProductsCartController().listItemCurrent(idOrder, idProduct == 0 ? idVariation = await ProductsCartController().getVariationItem(idOrder) : idVariation).then((List<ProductsCartList> res) {
+          isBusinessHighValue = isHighValue ?? false;
+          
+          subTotal = productSelect.price;
+          items.clear();
+          
+          if (res.isNotEmpty) {
+            bool value = isHighValue ?? false;
 
-              for (final ProductsCartList item in res) {
-                num price = item.price!;
-                if (isHighValue ?? true) {
-                  if (subTotal < price) {
-                    subTotal = price;
-                  }
-                } else {
-                  subTotal += price;
+            for (final ProductsCartList item in res) {
+              num price = item.price!;
+              if (isHighValue ?? true) {
+                if (subTotal < price) {
+                  subTotal = price;
                 }
-
-                items.add(item);
+              } else {
+                subTotal += price;
               }
 
-              if (!value) {
-                subTotal /= res.length;
-              }
+              items.add(item);
             }
 
-            saveSubTotal = subTotal;
-          });
-        });
-      });
-    }
-
-    Future<void> listItemsVariations() async {
-      listWidgetVariation.clear();
-      variations.clear();
-
-      return await ProductsController().listVariations(idVariation).then((List<Variation> res) {
-        if (res.isNotEmpty) {
-          for (final Variation item in res) {
-            variations.add(item);
-            listWidgetVariation.add(verifyAddSection(item));
+            if (!value) {
+              subTotal /= res.length;
+            }
           }
-        }
-      });
-    }
-    
-    Future<bool> getList() async {
-      
-      await listItemsMain();
 
-      await listItemsVariations();
-
-      if (mounted)
-        setState(() {
-          
+          saveSubTotal = subTotal;
         });
+      });
+    });
+  }
 
-      print('aaaaaaaa');
+  Future<void> listItemsVariations() async {
+    listWidgetVariation.clear();
+    variations.clear();
 
-      return true;
-    }
-
-    if (saveSubTotal == 0) {
-      getList();
-    } else {
-      if (subTotal == 0) {
-        calcSubTotal();
+    return await ProductsController().listVariations(idVariation).then((List<Variation> res) {
+      print(res.length);
+      if (res.isNotEmpty) {
+        for (final Variation item in res) {
+          variations.add(item);
+          listWidgetVariation.add(verifyAddSection(item));
+        }
       }
-    }
+    });
+  }
+  
+  Future<void> getList() async {
+    
+    await listItemsMain();
 
-    Widget bottom() {
+    await listItemsVariations();
+
+  }
+
+
+  Widget bottom() {
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -706,11 +730,13 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                   Navigator.push(context, navigator('loading'));
 
                   int idSale;
+
+                  resetSubTotal();
+
+                  calcSubTotal();
+
                   await SalesController().idSale().then((res) async {
                     idSale = res;
-                    resetSubTotal();
-
-                    await calcSubTotal();
 
                     if (idProduct != 0) {
                       await ProductsCartController().add(idSale, idProduct, nameProduct, int.parse(txtQtd.text), idVariation, false);
@@ -750,13 +776,11 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                       }).toList();
                     }).toList());
 
-                    ProductsCartController().updateInfoSale(idSale, txtObservation.text, int.parse(txtQtd.text));
+                    await ProductsCartController().updateInfoSale(idSale, txtObservation.text, int.parse(txtQtd.text));
 
                     await SalesController().getTotal().then((res){
                       // SalesController().updateTotal(idSale, res + subTotal);
-                      setState(() {
-                        globals.isSelectNewItem = false;
-                      });
+                      globals.isSelectNewItem = false;
                       
                       Navigator.pop(context);
                       Navigator.pop(context);
@@ -813,26 +837,40 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
       );
     }
 
+  @override
+  Widget build(BuildContext context) {
+    if (saveSubTotal == 0) {
+      getList().then((value) {
+        setState(() {
+          saveSubTotal = subTotal;
+        });
+      });
+    }
+
+    if (subTotal == 0) {
+      calcSubTotal();
+    }
+
+    print('object');
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(180),
         
         child: AppBar(
           titleSpacing: 0,
-          title: const Flexible(
-            child: Text(
-              'Adicionar ao carrinho',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 24,
-              ),
+          title: const Text(
+            'Adicionar ao carrinho',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 24,
             ),
           ),
 
           flexibleSpace: CachedNetworkImage(
             imageUrl: urlImageProduct ?? 'https://lh5.googleusercontent.com/p/AF1QipOBoD7baOHV4zR4Do0NrU7Vsi75ZTRM4eq9UgmL=s443-k-no',
-            placeholder: (context, url) => CircularProgressIndicator(),
-            errorWidget: (context, url, error) => Icon(Icons.error),
+            placeholder: (context, url) => const CircularProgressIndicator(),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
             imageBuilder: (context, image) {
               return Container(
                 alignment: Alignment.centerLeft,
@@ -935,7 +973,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                             const SizedBox(height: 10),
 
                             Text(
-                              descriptionProduct,
+                              descriptionProduct ?? 'Sem descrição',
                               style: const TextStyle(
                                 fontSize: 20,
                                 color: Colors.black87,
@@ -947,73 +985,23 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
 
                       const SizedBox(height: 20),
                     
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(color: globals.primary, spreadRadius: 1),
-                          ],
-                        ),
+                      button(
+                        'Agregar outro item', 
+                        0, 
+                        0, 
+                        Icons.add, 
+                        () async {
+                          Navigator.pop(context);
+                          Navigator.push(context, navigator('products'));
+                          
+                          setState(() {
+                            globals.isSelectNewItem = true;
+                          });
 
-                        height: 85,
-                        width: MediaQuery.of(context).size.width - 20,
-                        child: Padding(
-                          padding: const EdgeInsets.all(10),
-
-                          child: ElevatedButton(
-                            onPressed: () async {
-                              Navigator.pop(context);
-                              Navigator.push(context, navigator('products'));
-                              
-                              setState(() {
-                                globals.isSelectNewItem = true;
-                              });
-
-                              await SalesController().idSale().then((res) async {
-                                await ProductsCartController().add(res, idProduct, nameProduct, int.parse(txtQtd.text), idVariation);
-                              });
-                            },
-
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.transparent,
-                              foregroundColor: Colors.black,
-                              elevation: 0,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                            ),
-
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.add,
-                                  color: globals.primary,
-                                  size: 30,
-                                ),
-                                            
-                                const SizedBox(width: 10),
-                                            
-                                Flexible(
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(bottom: 10),
-                                
-                                    child: Container(
-                                      alignment: Alignment.center,
-                                      child: const Text(
-                                        'Agregar outro item ao produto',
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        )
-                      ),
+                          await SalesController().idSale().then((res) async {
+                            await ProductsCartController().add(res, idProduct, nameProduct, int.parse(txtQtd.text), idVariation);
+                          });
+                        })
                     ],
                   ) : Container(),
 
@@ -1022,113 +1010,118 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                 SectionVisible(
                   nameSection: 'Itens do produto', 
                   isShowPart: true,
-                  child: FutureBuilder(
-                    future: items.isNotEmpty ? null : listItemsMain(),
-                    builder: (context, snapshot) {
-                      return Column(
-                        children: [
-                          ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: items.length,
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemBuilder: (context, index) {
-                              return StatefulBuilder(
-                                builder: (context, setState) {
-                                  return Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      color: globals.primary,
-                                    ),
+                  child: Column(
+                    children: [
+                      ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: items.length,
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          return StatefulBuilder(
+                            builder: (context, setState) {
+                              return Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: globals.primary,
+                                ),
 
-                                    margin: const EdgeInsets.only(bottom: 10),
+                                margin: const EdgeInsets.only(bottom: 10),
 
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(10),
-                          
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        mainAxisSize: MainAxisSize.min,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10),
+                      
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisSize: MainAxisSize.min,
 
+                                    children: [
+                                      Flexible(
+                                        child: Text(
+                                          items[index].name!,
+                                          style: const TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+
+                                      Row(
                                         children: [
-                                          Flexible(
-                                            child: Text(
-                                              items[index].name!,
-                                              style: const TextStyle(
-                                                fontSize: 20,
-                                                color: Colors.white,
-                                              ),
+                                          Text(
+                                            'R\$ ${items[index].price?.toStringAsFixed(2).replaceFirst('.', ',')}',
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20,
                                             ),
                                           ),
+                      
+                                          const SizedBox(width: 10),
+                      
+                                          IconButton(
+                                            onPressed: () async {
+                                              setState(() {
+                                                items.removeAt(index);
+                                              });
 
-                                          Row(
-                                            children: [
-                                              Text(
-                                                'R\$ ${items[index].price?.toStringAsFixed(2).replaceFirst('.', ',')}',
-                                                style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 20,
-                                                ),
-                                              ),
-                          
-                                              const SizedBox(width: 10),
-                          
-                                              IconButton(
-                                                onPressed: () async {
-                                                  await ProductsCartController().deleteItem(items[index].id!, context);
-                                                  getList();
-
-                                                  setState(() {
-                                                    items.removeAt(index);
-                                                  });
-                                                },
-                                                icon: const Icon(
-                                                  Icons.delete,
-                                                  color: Colors.white,
-                                                  size: 30,
-                                                ),
-                                              ),
-                                            ],
+                                              await ProductsCartController().deleteItem(items[index].id!, context);
+                                              await getList();
+                                            },
+                                            icon: const Icon(
+                                              Icons.delete,
+                                              color: Colors.white,
+                                              size: 30,
+                                            ),
                                           ),
                                         ],
                                       ),
-                                    ),
-                                  );
-                                }
+                                    ],
+                                  ),
+                                ),
                               );
-                            },
-                          )
-                        ],
-                      );
-                    }
+                            }
+                          );
+                        },
+                      )
+                    ],
                   ),
                 ),
 
                 const SizedBox(height: 20),
           
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 80),
-                  child: Column(
-                    children: [
+                ConditionalBuilder(
+                  condition: saveSubTotal != 0,
+                  builder: (context) {
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 80),
+                      child: Column(
+                        children: [
 
-                      if (listWidgetVariation.isNotEmpty) 
-                        ...listWidgetVariation 
-                      else 
-                        Container(),
+                          if (listWidgetVariation.isNotEmpty) 
+                            Column(
+                              children: listWidgetVariation
+                            ) 
+                          else 
+                            Container(),
 
-                      const SizedBox(height: 10),
+                          const SizedBox(height: 10),
 
-                      TextFieldGeneral(
-                        label: 'Observações' ,
-                        variavel: txtObservation, 
-                        keyboardType: TextInputType.text,
+                          TextFieldGeneral(
+                            label: 'Observações' ,
+                            variavel: txtObservation, 
+                            keyboardType: TextInputType.text,
+                          ),
+
+                          const SizedBox(height: 20),
+
+                          
+                        ]
                       ),
-
-                      const SizedBox(height: 20),
-
-                      
-                    ]
-                  ),
+                    );
+                  },
+                  fallback: (context) {
+                    return const CircularProgressIndicator();
+                  },
                 )
               ]
             ),
@@ -1139,7 +1132,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
       bottomSheet: Padding(
         padding: const EdgeInsets.all(10),
         child: FutureBuilder(
-          future: subTotal != 0 ? Future.value(true) : calcSubTotal(),
+          future: subTotal != 0 ? Future.value(true) : Future.value(false),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
               return bottom();
