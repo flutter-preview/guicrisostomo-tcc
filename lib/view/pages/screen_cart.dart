@@ -30,14 +30,20 @@ class _ScreenCartState extends State<ScreenCart> {
         list = value;
       });
     });
-    print('a');
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getList().then((value) {
+      setState(() {});
+    });
   }
 
 
   @override
   Widget build(BuildContext context) {
-
-    print('a');
     return Scaffold(
       appBar: appBarWidget(
         pageName: 'Carrinho',
@@ -50,20 +56,11 @@ class _ScreenCartState extends State<ScreenCart> {
         slivers: [
           SliverFillRemaining(
             fillOverscroll: true,
-            child: FutureBuilder(
-              future: getList(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  if (list.isNotEmpty) {
-                    return ProductsCart(product: list);
-                  } else {
-                    return Center(child: const Text('Carrinho vazio'));
-                  }
-                } else {
-                  return const Center(child: CircularProgressIndicator());
-                }
-              }
-            ),
+            child: (idSale != 0) ? (list.isNotEmpty) ?
+              ProductsCart(product: list) :
+              Center(child: const Text('Carrinho vazio'))
+            : const Center(child: CircularProgressIndicator()),
+              
           ),
         ],
       ),
