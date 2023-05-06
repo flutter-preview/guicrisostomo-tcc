@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:tcc/controller/postgres/Lists/businessInfo.dart';
 import 'package:tcc/controller/postgres/Lists/products.dart';
 import 'package:tcc/controller/postgres/Lists/productsCart.dart';
@@ -94,11 +93,12 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
 
   @override
   void initState() {
+    super.initState();
+    productSelect = widget.arguments as ProductItemList;
     ProductsCartController().verifyItemSelected(context, productSelect);
     autoValidation = false;
     txtQtd.text = "1";
     t = 0;
-    productSelect = widget.arguments as ProductItemList;
     
     idProduct = productSelect.id;
     nameProduct = productSelect.name;
@@ -107,8 +107,6 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
     urlImageProduct = productSelect.link_image;
     variation = productSelect.variation!;
     idVariation = variation.id ?? 0;
-    
-    super.initState();
   }
 
   void resetSubTotal() {
