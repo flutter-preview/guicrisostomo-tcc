@@ -211,34 +211,6 @@ class ProductsController {
     searchProduct = '%$searchProduct%';
     
     return await connectSupadatabase().then((conn) async {
-      // var querySelect = 'SELECT p.id, p.name, p.price, p.description, p.link_image, v.category, v.size, p.id_variation';
-      // querySelect += ' FROM products p';
-      // querySelect += ' INNER JOIN variations v ON v.id = p.id_variation';
-      // querySelect += ' WHERE v.category = ? AND v.size = ? AND v.business = ? AND p.name LIKE ? AND p.fg_ativo = 1';
-      // querySelect += ' ORDER BY p.name';
-      
-      // return await conn.from('products').select('''
-      //   id, 
-      //   name, 
-      //   price, 
-      //   description, 
-      //   link_image, 
-      //   variations!inner(category, size),
-      //   id_variation
-      // ''').eq('variations.category', categorySelected).eq('variations.size', sizeSelected).eq('variations.business', globals.businessId).like('name', searchProduct).eq('fg_ativo', 1).then((value) {
-      //   List<dynamic> item = value;
-      //   List<ProductItemList> results = item.map((e) => ProductItemList(
-      //     id: e['id'],
-      //     name: e['name'],
-      //     price: e['price'],
-      //     description: e['description'],
-      //     link_image: e['link_image'],
-      //     variation: Variation(
-      //       category: e['variations']['category'],
-      //       size: e['variations']['size'],
-      //       id: e['id_variation']
-      //     ),
-      //   )).toList();
       
       return await conn.query('''
           SELECT p.id, p.name, p.price, p.description, p.link_image, v.category, v.size, p.id_variation, COALESCE(
@@ -257,35 +229,23 @@ class ProductsController {
           'search': searchProduct,
           'uid': FirebaseAuth.instance.currentUser!.uid
         }).then((List value) {
-        // List<dynamic> item = value;
-        // List<ProductItemList> results = item.map((e) => ProductItemList(
-        //   id: e['id'],
-        //   name: e['name'],
-        //   price: e['price'],
-        //   description: e['description'],
-        //   link_image: e['link_image'],
-        //   variation: Variation(
-        //     category: e['category'],
-        //     size: e['size'],
-        //     id: e['id_variation']
-        //   ),
-        // )).toList();
-        List<ProductItemList> results = [];
-        for(final row in value) {
-          results.add(ProductItemList(
-            id: row[0],
-            name: row[1],
-            price: row[2],
-            description: row[3],
-            link_image: row[4],
-            variation: Variation(
-              category: row[5],
-              size: row[6],
-              id: row[7]
-            ),
-            isFavorite: row[8] != 0
-          ));
-        }
+
+          List<ProductItemList> results = [];
+          for(final row in value) {
+            results.add(ProductItemList(
+              id: row[0],
+              name: row[1],
+              price: row[2],
+              description: row[3],
+              link_image: row[4],
+              variation: Variation(
+                category: row[5],
+                size: row[6],
+                id: row[7]
+              ),
+              isFavorite: row[8] != 0
+            ));
+          }
         // List<ProductItemList> results = value.map((e) => ProductItemList(
         //   id: e[0],
         //   name: e[1],

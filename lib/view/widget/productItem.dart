@@ -2,18 +2,15 @@
 
 import 'package:flutter/material.dart';
 import 'package:tcc/controller/postgres/Lists/products.dart';
-import 'package:tcc/controller/postgres/Lists/productsCart.dart';
-import 'package:tcc/controller/postgres/Lists/sales.dart';
 import 'package:tcc/globals.dart' as globals;
 import 'package:tcc/main.dart';
 import 'package:tcc/model/ProductItemList.dart';
 import 'package:tcc/model/Variation.dart';
-import 'package:tcc/view/widget/snackBars.dart';
 
 class ProductItem extends StatefulWidget {
-  List<ProductItemList> product;
+  final List<ProductItemList> product;
 
-  ProductItem({
+  const ProductItem({
     Key? key,
     required this.product,
   }) : super(key: key);

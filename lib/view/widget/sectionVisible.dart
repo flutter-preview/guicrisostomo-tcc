@@ -21,7 +21,6 @@ class _SectionVisibleState extends State<SectionVisible> {
   
   @override
   Widget build(BuildContext context) {
-    Icon iconPart = widget.isShowPart ? const Icon(Icons.arrow_right_rounded, size: 30,) : const Icon(Icons.arrow_drop_down_rounded, size: 30,);
     return Column(
       children: [
         sectionVisible(),
