@@ -37,6 +37,7 @@ Widget button(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
             ),
+            elevation: 5
           ),
           
           onPressed: () {
