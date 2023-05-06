@@ -515,7 +515,7 @@ class ProductsCartController {
       });
 
       if (isDeleteRelationId) {
-        await conn.query('delete from items where relation_id = @id', substitutionValues: {
+        await conn.query('delete from items where relation_id = @id OR id = @id', substitutionValues: {
           'id': id,
         });
       } else {
@@ -531,6 +531,7 @@ class ProductsCartController {
   Future<void> getVariationItemPreSelected(BuildContext context, int itemVariationSelected) async {
     await SalesController().idSale().then((idOrder) async {
       await ProductsCartController().getVariationItem(idOrder).then((value) {
+        print('itemVariationSelected: $itemVariationSelected - value: $value');
         if (itemVariationSelected != value && value != 0) {
           Navigator.pop(context);
           error(context, 'Não é possível adicionar produtos de variações diferentes no mesmo item');
