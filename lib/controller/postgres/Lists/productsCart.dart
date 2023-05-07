@@ -528,21 +528,47 @@ class ProductsCartController {
     });
   }
 
-  Future<void> getVariationItemPreSelected(BuildContext context, int itemVariationSelected) async {
+  Future<bool> getVariationItemPreSelected(BuildContext context, int itemVariationSelected) async {
     await SalesController().idSale().then((idOrder) async {
       await ProductsCartController().getVariationItem(idOrder).then((value) {
         print('itemVariationSelected: $itemVariationSelected - value: $value');
         if (itemVariationSelected != value && value != 0) {
           Navigator.pop(context);
           error(context, 'Não é possível adicionar produtos de variações diferentes no mesmo item');
+          return false;
         }
       });
     });
+
+    return true;
+  }
+
+  Future<bool> verifyItemEqual(BuildContext context, ProductItemList item) async {
+    await SalesController().idSale().then((idOrder) async {
+      await ProductsCartController().list(idOrder).then((value) {
+        if (value.isNotEmpty) {
+          for (var itemCart in value) {
+            if (itemCart.idProduct == item.id) {
+              Navigator.pop(context);
+              error(context, 'Este produto já foi adicionado');
+              return false;
+            }
+          }
+        }
+      });
+    });
+
+    return true;
   }
 
   Future<void> verifyItemSelected(BuildContext context, ProductItemList item) async {
     int idItemVariationSelected = item.variation!.id!;
-    await getVariationItemPreSelected(context, idItemVariationSelected);
+    if (await getVariationItemPreSelected(context, idItemVariationSelected) == false) {
+      return;
+    }
 
+    if (await verifyItemEqual(context, item) == false) {
+      return;
+    }
   }
 }
