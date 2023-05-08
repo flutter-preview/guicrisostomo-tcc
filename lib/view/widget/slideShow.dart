@@ -196,12 +196,25 @@ class _SlideShowWidgetState extends State<SlideShowWidget> {
                           ),
                         ),
     
-                        const Align(
-                          alignment: Alignment.bottomRight,
-                          child: Icon(
-                            Icons.arrow_forward_ios,
-                            color: Colors.white,
-                          ),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: const [
+                            Text(
+                              'Acessar item',
+                              style: TextStyle(
+                                color: Colors.white70,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+
+                            SizedBox(width: 5,),
+
+                            Icon(
+                              Icons.arrow_forward,
+                              color: Colors.white70,
+                            ),
+                          ],
                         ),
                       ],
                     ),
