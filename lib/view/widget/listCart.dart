@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, unused_local_variable, prefer_typing_uninitialized_variables, file_names
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:tcc/controller/postgres/Lists/productsCart.dart';
 import 'package:tcc/main.dart';
 import 'package:tcc/model/ProductsCart.dart';
@@ -38,6 +39,9 @@ class _ProductsCartState extends State<ProductsCart> {
             num? price = dados.price;
             int? qtd = dados.qtd;
             num? subTotal = price! * qtd!;
+            DateTime? dateData = dados.date;
+            NumberFormat formatter = NumberFormat("00");
+            String date = '${formatter.format(dateData!.day)}/${formatter.format(dateData.month)}/${dateData.year} às ${formatter.format(dateData.hour)}:${formatter.format(dateData.minute)}';
         
             return Card(
               color: Colors.white,
@@ -152,16 +156,23 @@ class _ProductsCartState extends State<ProductsCart> {
                       ),
                       
                       Text(
-                        'Preço: R\$ ${price.toStringAsFixed(2).replaceFirst('.', ',')}',
+                        'Sub-total: R\$ ${price.toStringAsFixed(2).replaceFirst('.', ',')}',
                         style: TextStyle(
-                          color: Colors.black,
+                          color: Colors.black54,
                         ),
                       ),
               
                       Text(
                         "Quantidade: $qtd",
                         style: TextStyle(
-                          color: Colors.black,
+                          color: Colors.black54,
+                        ),
+                      ),
+
+                      Text(
+                        "Data: $date",
+                        style: TextStyle(
+                          color: Colors.black54,
                         ),
                       ),
               

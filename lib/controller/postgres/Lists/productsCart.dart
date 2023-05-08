@@ -26,7 +26,7 @@ class ProductsCartController {
       await BusinessInformationController().getInfoCalcValue().then((value) {
         value == false ?
           querySelect = '''
-            SELECT i.id, i.id_product, p.name, i.qtd, p.id_variation, i.relation_id, i.text_variation, (
+            SELECT i.id, i.id_product, p.name, i.qtd, p.id_variation, i.relation_id, i.text_variation, i.created_at, (
               SELECT SUM(maxa.max) FROM (
                   SELECT AVG(pa.price * ia.qtd) FROM products pa
                   INNER JOIN items ia ON ia.id_product = pa.id
@@ -40,10 +40,11 @@ class ProductsCartController {
               )
             FROM items i
             INNER JOIN products p ON p.id = i.id_product
-            WHERE i.id_order = @idOrder AND i.fg_current = false AND i.relation_id = i.id;
+            WHERE i.id_order = @idOrder AND i.fg_current = false AND i.relation_id = i.id
+            ORDER BY i.id DESC;
           '''
         : querySelect = '''
-            SELECT i.id, i.id_product, p.name, i.qtd, i.id_variation, i.relation_id, i.text_variation, (
+            SELECT i.id, i.id_product, p.name, i.qtd, i.id_variation, i.relation_id, i.text_variation, i.created_at, (
               SELECT SUM(maxa.max) FROM (
                   SELECT MAX(pa.price * ia.qtd) FROM products pa
                   INNER JOIN items ia ON ia.id_product = pa.id
@@ -57,7 +58,8 @@ class ProductsCartController {
               )
             FROM items i
             INNER JOIN products p ON p.id = i.id_product
-            WHERE i.id_order = @idOrder AND i.fg_current = false AND i.relation_id = i.id;
+            WHERE i.id_order = @idOrder AND i.fg_current = false AND i.relation_id = i.id
+            ORDER BY i.id DESC;
           ''';
       });
 
@@ -82,8 +84,9 @@ class ProductsCartController {
               ),
               idRelative: row[5],
               textVariation: row[6],
-              price: row[7],
-              agregateItems: row[8],
+              date: row[7],
+              price: row[8],
+              agregateItems: row[9],
             )
           );
 
