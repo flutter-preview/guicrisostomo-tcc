@@ -104,9 +104,13 @@ class _BottomState extends State<Bottom> {
   @override
   void initState() {
     super.initState();
-    if (globals.globalSelectedIndexBotton == 2) {
-      getListItemCurrent();
-    }
+      getListItemCurrent().then((value) {
+        if (value) {
+          setState(() {
+            globals.isSelectNewItem = true;
+          });
+        }
+      });
   }
 
   @override

@@ -189,6 +189,14 @@ class ProductsCartController {
     // return list;
   }
 
+  Future<void> clearItemsOnDemand() async {
+    return await connectSupadatabase().then((conn) async {
+      var queryDelete = 'DELETE FROM items WHERE fg_current = true';
+      await conn.query(queryDelete);
+      await conn.close();
+    });
+  }
+
   Future<int> getVariationItem(int idSale) async {
     
     return await connectSupadatabase().then((conn) async {

@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:tcc/controller/postgres/Lists/productsCart.dart';
 import 'package:tcc/globals.dart' as globals;
 import 'package:tcc/main.dart';
 import 'package:tcc/model/standardRadioButton.dart';
 import 'package:tcc/utils.dart';
-import 'package:tcc/view/widget/bottonNavigation.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/customer/partFinalizeOrder.dart';
-import 'package:tcc/view/widget/cartInfo.dart';
-import 'package:tcc/view/widget/dropDownButton.dart';
 import 'package:tcc/view/widget/radioButton.dart';
 import 'package:tcc/view/widget/textFieldGeneral.dart';
 
@@ -100,7 +98,7 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
         ),
       ),
 
-      body: SingleChildScrollView(
+      body: !globals.isSelectNewItem ? SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
@@ -174,7 +172,57 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
             
           ],
         ),
-      ),
+      ) : 
+      Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              'Você possui itens ainda não adicionados no carrinho de compras. Deseja descartar esses itens?',
+              style: TextStyle(
+                fontSize: 18,
+              ),
+            ),
+          
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text(
+                    'Não',
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+
+                TextButton(
+                  onPressed: () async {
+                    setState(() {
+                      globals.isSelectNewItem = false;
+                    });
+                    await ProductsCartController().clearItemsOnDemand();
+                  },
+                  child: const Text(
+                    'Sim',
+                    style: TextStyle(
+                      color: Colors.green,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+        
+            
+          ],
+        ),
+      ),     
     );
   }
 }
