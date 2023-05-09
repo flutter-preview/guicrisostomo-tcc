@@ -9,10 +9,12 @@ import 'package:tcc/globals.dart' as globals;
 
 class ProductsCart extends StatefulWidget {
   final List<ProductsCartList> product;
+  final bool isShowButtonDelete;
 
   const ProductsCart({
     super.key, 
-    required this.product
+    required this.product,
+    this.isShowButtonDelete = true,
   });
 
   @override
@@ -48,7 +50,7 @@ class _ProductsCartState extends State<ProductsCart> {
               child: Padding(
                 padding: EdgeInsets.all(10),
                 child: ListTile(
-                  leading: IconButton(
+                  leading: (widget.isShowButtonDelete) ? IconButton(
                     onPressed: () {
                       showDialog(
                         context: context,
@@ -136,7 +138,7 @@ class _ProductsCartState extends State<ProductsCart> {
                       Icons.delete,
                       color: Colors.red,
                     ),
-                  ),
+                  ) : null,
                   
                   title: Text(
                     name!,

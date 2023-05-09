@@ -28,6 +28,7 @@ Widget listSize(List<ProductItemList> list) {
             trailing: ElevatedButton(
                 
               onPressed: () {
+                Navigator.pop(context);
                 Navigator.push(
                   context,
                   navigator(
