@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:tcc/controller/postgres/Lists/productsCart.dart';
+import 'package:tcc/controller/postgres/Lists/sales.dart';
 import 'package:tcc/globals.dart' as globals;
 import 'package:tcc/main.dart';
 import 'package:tcc/model/standardRadioButton.dart';
@@ -8,6 +9,7 @@ import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/customer/partFinalizeOrder.dart';
 import 'package:tcc/view/widget/radioButton.dart';
+import 'package:tcc/view/widget/switchListTile.dart';
 import 'package:tcc/view/widget/textFieldGeneral.dart';
 
 class ScreenFOMain extends StatefulWidget {
@@ -26,6 +28,26 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
     type: MaskAutoCompletionType.eager,
   );
 
+  Future<String?> getTypeSale() async {
+    return await SalesController().listSalesOnDemand().then((value) {
+      return value!.type;
+    });
+  }
+
+  String? type = '';
+
+  bool hasCloseTable = false;
+
+  @override
+  void initState() {
+    super.initState();
+    getTypeSale().then((value) {
+      setState(() {
+        type = value;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -41,9 +63,9 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
       ),
     ];
     
-    return Scaffold(
+    return type != '' ? Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(220),
+        preferredSize: type != 'Mesa' ? const Size.fromHeight(220) : const Size.fromHeight(250),
         child: AppBar(
           title: const Text(
             'Finalizar pedido',
@@ -72,25 +94,55 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: const [
-                  Text(
-                    'Dados pessoais - Etapa 1/3',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                    
-                  SizedBox(height: 5),
-                      
-                  Text(
-                    'Informe seus dados pessoais para finalizar o pedido. Esses dados serão usados para identificar seu pedido e para que você possa acompanhar o status do mesmo.',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                    ),
-                  ),
+                children: [
+                  (type != 'Mesa') ?
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Dados pessoais - Etapa 1/3',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                          
+                        SizedBox(height: 5),
+                            
+                        Text(
+                          'Informe seus dados pessoais para finalizar o pedido. Esses dados serão usados para identificar seu pedido e para que você possa acompanhar o status do mesmo.',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
+                    )
+                  :
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: const [
+                        Text(
+                          'Finalizar pedido - Etapa 1/1',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                          
+                        SizedBox(height: 5),
+                            
+                        Text(
+                          'Quando um pedido é finalizado via mesa ainda será possível efetuar novos pedidos (ele apenas será impresso para nossos atendentes). Para fechar a conta, clique no botão "Fechar mesa" logo abaixo e, em seguida, clique no botão "Finalizar".',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
+                    )
                 ],
               ),
             )
@@ -102,71 +154,70 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-            const PartFinalizeOrder(partUser: 1),
 
-            TextFieldGeneral(
-              label: 'Nome',
-              variavel: txtName,
-              context: context,
-              keyboardType: TextInputType.name,
-              ico: Icons.person,
-              validator: (value) {
-                validatorString(value!);
-              },
-            ),
-
-            const SizedBox(height: 20,),
-
-            TextFieldGeneral(
-              label: 'Telefone',
-              variavel: txtPhone,
-              context: context,
-              keyboardType: TextInputType.phone,
-              ico: Icons.phone,
-              validator: (value) {
-                validatorPhone(value!);
-              },
-              inputFormatter: [maskFormatter],
-              
-              onChanged: (value) => {
-                if (value.length <= 14) {
-                  txtPhone.value = maskFormatter.updateMask(mask: "(##) ####-#####")
-                } else {
-                  txtPhone.value = maskFormatter.updateMask(mask: "(##) #####-####")
-                }
-              },
-            ),
-
-            const SizedBox(height: 20,),
-
-            RadioButon(
-              list: listRadioButton,
-            ),
-
-            const SizedBox(height: 50),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              mainAxisSize: MainAxisSize.max,
+            type != 'Mesa' ?
+            Column(
               children: [
-                button(
-                  'Voltar',
-                  180,
-                  50,
-                  Icons.arrow_back,
-                  () => Navigator.pop(context)
+                const PartFinalizeOrder(partUser: 1),
+
+                TextFieldGeneral(
+                  label: 'Nome',
+                  variavel: txtName,
+                  context: context,
+                  keyboardType: TextInputType.name,
+                  ico: Icons.person,
+                  validator: (value) {
+                    validatorString(value!);
+                  },
                 ),
 
-                button(
-                  'Avançar',
-                  180,
-                  50,
-                  Icons.arrow_forward,
-                  () => {
-                    Navigator.push(context, navigator('finalize_order_customer/address')),
+                const SizedBox(height: 20,),
+
+                TextFieldGeneral(
+                  label: 'Telefone',
+                  variavel: txtPhone,
+                  context: context,
+                  keyboardType: TextInputType.phone,
+                  ico: Icons.phone,
+                  validator: (value) {
+                    validatorPhone(value!);
                   },
-                  false
+                  inputFormatter: [maskFormatter],
+                  
+                  onChanged: (value) => {
+                    if (value.length <= 14) {
+                      txtPhone.value = maskFormatter.updateMask(mask: "(##) ####-#####")
+                    } else {
+                      txtPhone.value = maskFormatter.updateMask(mask: "(##) #####-####")
+                    }
+                  },
                 ),
+
+                const SizedBox(height: 20,),
+
+                RadioButon(
+                  list: listRadioButton,
+                ),
+              ],
+            ) : 
+            Column(
+              children: [
+                SwitchListTileWidget(
+                  title: const Text(
+                    'Fechar mesa',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                    ),
+                  ),
+                  subtitle: 'Ao fechar a mesa, não será possível adicionar novos pedidos.',
+                  value: hasCloseTable,
+                  onChanged: (value) {
+                    setState(() {
+                      hasCloseTable = value;
+                    });
+                  },
+                )
               ],
             ),
             
@@ -222,7 +273,46 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
             
           ],
         ),
-      ),     
+      ),
+
+      bottomSheet: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            button(
+              'Voltar',
+              180,
+              50,
+              Icons.arrow_back,
+              () => Navigator.pop(context)
+            ),
+      
+            button(
+              type != 'Mesa' ? 'Próximo' : 'Finalizar',
+              180,
+              50,
+              type != 'Mesa' ? Icons.arrow_forward : Icons.check,
+              () {
+                type != 'Mesa' ?
+                  Navigator.push(context, navigator('finalize_order_customer/address'))
+                :
+                  SalesController().finalizeSale(hasCloseTable);
+                  Navigator.pop(context);
+              },
+              false
+            ),
+          ],
+        ),
+      ),
+    ) : Container(
+      color: Colors.white,
+      child: Center(
+        child: CircularProgressIndicator(
+          color: globals.primary,
+        ),
+      ),
     );
   }
 }
