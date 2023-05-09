@@ -28,6 +28,8 @@ class _ScreenCartState extends State<ScreenCart> {
       idSale = value;
       await ProductsCartController().list(idSale).then((value) {
         list = value;
+      }).catchError((onError) {
+        print(onError);
       });
     });
   }
@@ -88,8 +90,9 @@ class _ScreenCartState extends State<ScreenCart> {
                 170,
                 0,
                 Icons.arrow_forward_ios,
-                () => {
-                  Navigator.push(context, navigator('finalize_order_customer'))
+                () {
+                  Navigator.pop(context);
+                  Navigator.push(context, navigator('finalize_order_customer'));
                 },
                 false,
               )
