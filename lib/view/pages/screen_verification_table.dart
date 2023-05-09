@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:tcc/controller/postgres/Lists/productsCart.dart';
+import 'package:tcc/controller/postgres/Lists/sales.dart';
 import 'package:tcc/main.dart';
 import 'package:tcc/utils.dart';
+import 'package:tcc/controller/postgres/Lists/table.dart';
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigation.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/imageMainScreens.dart';
+import 'package:tcc/view/widget/snackBars.dart';
 import 'package:tcc/view/widget/textFieldGeneral.dart';
 import 'package:tcc/globals.dart' as globals;
 import 'package:barcode_scan2/barcode_scan2.dart';
@@ -49,7 +53,7 @@ class _ScreenVerificationTableState extends State<ScreenVerificationTable> {
 
   Future<void> _scan() async {
     try {
-      final result = await BarcodeScanner.scan(
+      await BarcodeScanner.scan(
         options: ScanOptions(
           strings: {
             'cancel': _cancelController.text,
@@ -64,23 +68,81 @@ class _ScreenVerificationTableState extends State<ScreenVerificationTable> {
             useAutoFocus: _useAutoFocus,
           ),
         ),
-      );
-      setState(() => {
-        txtCodeTable.text = result.rawContent,
+      ).then((value) {
+        setState(() {
+          txtCodeTable.text = value.rawContent;
+        });
       });
+      
     } on PlatformException catch (e) {
       setState(() {
         scanResult = ScanResult(
           type: ResultType.Error,
           format: BarcodeFormat.unknown,
           rawContent: e.code == BarcodeScanner.cameraAccessDenied
-              ? 'The user did not grant the camera permission!'
-              : 'Unknown error: $e',
+              ? 'O usuário não concedeu acesso a câmera!'
+              : 'Erro: $e',
         );
 
         txtCodeTable.text = scanResult!.rawContent;
       });
     }
+  }
+
+  Future<void> verifyCodeTable(String code) async {
+    await TablesController().verifyCode(code).then((tableNumber) async {
+      if (tableNumber != 0) {
+
+        Navigator.pop(context);
+        Navigator.push(context, navigator('waiter'));
+
+        await SalesController().idSale().then((idOrder) async {
+          await ProductsCartController().listItemCurrent(idOrder).then((value) async {
+            if (value.isNotEmpty) {
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: const Text('Mesa encontrada!'),
+                  content: const Text('Deseja vincular os itens do carrinho a mesa ?'),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text('Não'),
+                    ),
+                    TextButton(
+                      onPressed: () async {
+                        Navigator.pop(context);
+                        int newIdOrder = 0;
+
+                        globals.numberTable = tableNumber;
+
+                        await SalesController().idSale().then((value) {
+                          setState(() {
+                            newIdOrder = value;
+                          });
+                        });
+
+                        await ProductsCartController().updateAllItemsIdOrder(idOrder, newIdOrder);
+                        
+                      },
+                      child: const Text('Sim'),
+                    ),
+                  ],
+                ),
+              );
+            }
+          }).then((value) async {
+            globals.numberTable = tableNumber;
+            await SalesController().idSale();
+          });
+        });
+
+      } else {
+        error(context, 'Mesa não encontrada!');
+      }
+    });
   }
 
   @override
@@ -112,11 +174,15 @@ class _ScreenVerificationTableState extends State<ScreenVerificationTable> {
 
             const SizedBox(height: 10),
 
-            button('Ler QR code', 250, 50, Icons.qr_code_scanner, () => {
-              _scan(),
-              globals.isSaleInTable = !globals.isSaleInTable,
-              Navigator.pop(context),
-              Navigator.push(context, navigator('home'))
+            button('Ler QR code', 250, 50, Icons.qr_code_scanner, () async {
+              await _scan().then((value) async {
+
+                (txtCodeTable.text != 'O usuário não concedeu acesso a câmera!' && txtCodeTable.text.isNotEmpty && !txtCodeTable.text.startsWith('Erro')) ?
+                await verifyCodeTable(txtCodeTable.text)
+                : error(context, txtCodeTable.text);
+              });
+
+              
             }),
 
             const SizedBox(height: 20),
@@ -139,13 +205,15 @@ class _ScreenVerificationTableState extends State<ScreenVerificationTable> {
               keyboardType: TextInputType.text,
               ico: Icons.qr_code_2,
               validator: (value) {
-                validatorString(value!);
+                return validatorString(value!);
               },
             ),
 
             const SizedBox(height: 20),
 
-            button('Vincular', MediaQuery.of(context).size.width - 100, 50, Icons.check, () => globals.isSaleInTable = !globals.isSaleInTable),
+            button('Vincular', MediaQuery.of(context).size.width - 100, 50, Icons.check, () async {
+              await verifyCodeTable(txtCodeTable.text);
+            }),
           ],
         ),
       ),

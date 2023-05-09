@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:tcc/controller/postgres/Lists/productsCart.dart';
 import 'package:tcc/controller/postgres/Lists/sales.dart';
+import 'package:tcc/controller/postgres/Lists/table.dart';
+import 'package:tcc/main.dart';
+import 'package:tcc/model/ProductsCart.dart';
+import 'package:tcc/model/Sales.dart';
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigation.dart';
 import 'package:tcc/view/widget/button.dart';
@@ -8,6 +12,7 @@ import 'package:tcc/view/widget/imageMainScreens.dart';
 import 'package:tcc/view/widget/listCart.dart';
 import 'package:tcc/globals.dart' as globals;
 import 'package:tcc/view/widget/sectionVisible.dart';
+import 'package:tcc/view/widget/snackBars.dart';
 
 class ScreenCallWaiter extends StatefulWidget {
   const ScreenCallWaiter({super.key});
@@ -17,31 +22,59 @@ class ScreenCallWaiter extends StatefulWidget {
 }
 
 class _ScreenCallWaiterState extends State<ScreenCallWaiter> {
-  var list;
-  var listSale;
+  List<ProductsCartList> list = [];
+  Sales? listSale = Sales(
+    id: 0,
+    date: DateTime.now(),
+    total: 0,
+    uid: '0',
+    status: '0',
+    cnpj: globals.businessId,
+  );
   int idSale = 0;
 
-  void getIdSale() async {
-    await SalesController().idSale().then((value){
-      setState(() {
-        idSale = value;
-        list = ProductsCartController().list(idSale);
+  Future<void> getInfoTable() async {
+    await SalesController().listSalesOnDemand().then((value) {
+      if (value == null) {
+        SalesController().add().then((value) => getInfoTable());
+      } else {
+        setState(() {
+          idSale = value.id;
+          listSale = value;
+        });
+      }
+    }).then((value) {
+      ProductsCartController().listTable(idSale).then((value) {
+        setState(() {
+          list = value;
+        });
       });
+    });
+  }
+
+  Future<num> getTotalTable() async {
+    return await SalesController().getTotalTable().then((value) {
+      return value[0];
     });
   }
 
   @override
   void initState() {
     super.initState();
-    list = ProductsCartController().list(idSale);
-    listSale = SalesController().listSalesOnDemand();
-    getIdSale();
+    getInfoTable().then((value) async {
+      await getTotalTable().then((value) {
+        setState(() {
+          listSale!.total = value;
+        });
+      });
+    }).whenComplete(() {
+      setState(() {});
+    });
+    
   }
   
   @override
   Widget build(BuildContext context) {
-    
-
     return Scaffold(
       appBar: appBarWidget(
         pageName: 'Mesa',
@@ -49,7 +82,7 @@ class _ScreenCallWaiterState extends State<ScreenCallWaiter> {
         icon: Icons.room_service,
       ),
 
-      body: SingleChildScrollView(
+      body: idSale != 0 ? SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
@@ -57,11 +90,35 @@ class _ScreenCallWaiterState extends State<ScreenCallWaiter> {
 
             const SizedBox(height: 30),
 
-            button('Chamar garçom', 300, 50, Icons.person, () => null),
+            button('Chamar garçom', 300, 50, Icons.person, () {
+              TablesController().callWaiter(context);
+            }),
+
+            const SizedBox(height: 30),
+
+            button('Desvincular da mesa', 300, 50, Icons.close, () async {
+              await SalesController().removeRelationUserOrder(idSale).then((value) async {
+                setState(() {
+                  globals.numberTable = null;
+                });
+                await SalesController().idSale().then((value) {
+                  setState(() {
+                    idSale = value;
+                  });
+                });
+
+                Navigator.pop(context);
+                success(context, 'Desvinculado com sucesso');
+                Navigator.push(context, navigator('table'));
+              });
+            }),
 
             const SizedBox(height: 20),
 
-            button('Fazer novo pedido', 300, 50, Icons.add_shopping_cart_rounded, () => null),
+            button('Fazer novo pedido', 300, 50, Icons.add_shopping_cart_rounded, () {
+              Navigator.pop(context);
+              Navigator.push(context, navigator('products'));
+            }),
 
             const SizedBox(height: 30),
 
@@ -78,9 +135,9 @@ class _ScreenCallWaiterState extends State<ScreenCallWaiter> {
 
                       const SizedBox(width: 10),
 
-                      const Text(
-                        'Mesa: 1',
-                        style: TextStyle(
+                      Text(
+                        'Mesa: ${globals.numberTable}',
+                        style: const TextStyle(
                           fontFamily: 'Roboto',
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
@@ -97,9 +154,9 @@ class _ScreenCallWaiterState extends State<ScreenCallWaiter> {
 
                       const SizedBox(width: 10),
 
-                      const Text(
-                        'Total: R\$ 0,00',
-                        style: TextStyle(
+                      Text(
+                        'Total: R\$ ${listSale!.total.toStringAsFixed(2)}',
+                        style: const TextStyle(
                           fontFamily: 'Roboto',
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
@@ -115,17 +172,34 @@ class _ScreenCallWaiterState extends State<ScreenCallWaiter> {
 
             SectionVisible(
               nameSection: 'Itens pedidos',
-              child: ProductsCart(product: list,),
+              isShowPart: list.isNotEmpty,
+              child: ProductsCart(
+                product: list,
+                isShowButtonDelete: false,
+              ),
             ),
 
-            const SizedBox(height: 20),
-
-            button('Fechar mesa', 300, 50, Icons.check, () => globals.isSaleInTable = false),
+            const SizedBox(height: 50),
           ],
         ),
-      ),
+      ) : const Center(child: CircularProgressIndicator()),
 
       bottomNavigationBar: const Bottom(),
+
+      bottomSheet: Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: 
+          [Padding(
+            padding: const EdgeInsets.all(20),
+            child: button('Fechar mesa', 300, 50, Icons.check, () {
+              SalesController().finalizeSale();
+              Navigator.pop(context);
+              Navigator.push(context, navigator('home'));
+            }),
+          ),
+        ],
+      ),
     );
   }
 }

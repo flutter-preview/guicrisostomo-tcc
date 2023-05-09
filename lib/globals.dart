@@ -3,7 +3,7 @@ library globals;
 import 'package:flutter/material.dart';
 
 int globalSelectedIndexBotton = 0;
-bool isSaleInTable = false;
+int? numberTable;
 bool isUserTyping = false;
 bool isSelectNewItem = false;
 Color primary = const Color.fromRGBO(186, 49, 39, 1);
