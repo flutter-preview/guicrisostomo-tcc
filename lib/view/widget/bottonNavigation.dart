@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:tcc/controller/postgres/Lists/productsCart.dart';
 import 'package:tcc/controller/postgres/Lists/sales.dart';
+import 'package:tcc/controller/postgres/Lists/table.dart';
 import 'package:tcc/main.dart';
 import 'package:tcc/model/ProductItemList.dart';
 import 'package:tcc/model/Variation.dart';
@@ -101,16 +102,30 @@ class _BottomState extends State<Bottom> {
     });
   }
 
+  Future<void> verifyVinculateTableUser() async {
+    await TablesController().userVinculatedToTable().then((value) {
+      if (value != 0) {
+        setState(() {
+          globals.numberTable = value;
+        });
+      }
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-      getListItemCurrent().then((value) {
-        if (value) {
-          setState(() {
-            globals.isSelectNewItem = true;
-          });
-        }
-      });
+    getListItemCurrent().then((value) {
+      if (value) {
+        setState(() {
+          globals.isSelectNewItem = true;
+        });
+      }
+    });
+
+    if (globals.numberTable == null) {
+      verifyVinculateTableUser();
+    }
   }
 
   @override
@@ -166,7 +181,7 @@ class _BottomState extends State<Bottom> {
                   label: 'Produtos',
                 ),
 
-              globals.isSaleInTable && globals.userType == 'customer' ?
+              globals.numberTable != null && globals.userType == 'customer' ?
                 const BottomNavigationBarItem(
                   icon: Icon(Icons.room_service_outlined, color: Colors.white),
                   label: 'Garçom',
@@ -218,15 +233,15 @@ class _BottomState extends State<Bottom> {
 
                 case 3:
                   globals.userType == 'customer' ?
-                    globals.isSaleInTable ? {
+                    globals.numberTable != null ? {
                       Navigator.of(context).pop(),
-                      Navigator.push(context, navigator('table_info'))
+                      Navigator.push(context, navigator('waiter'))
                     } : {
                     Navigator.of(context).pop(),
                     Navigator.push(context, navigator('table'))
                   } : {
                   
-                    if (globals.isSaleInTable) {
+                    if (globals.numberTable != null) {
                       Navigator.of(context).pop(),
                       Navigator.push(context, navigator('waiter'))
                     } else {
