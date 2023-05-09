@@ -95,12 +95,16 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
   void initState() {
     super.initState();
     productSelect = widget.arguments as ProductItemList;
-    ProductsCartController().verifyItemSelected(context, productSelect);
+    idProduct = productSelect.id;
+
+    if (idProduct != 0) {
+      ProductsCartController().verifyItemSelected(context, productSelect);
+    }
+    
     autoValidation = false;
     txtQtd.text = "1";
     t = 0;
-    
-    idProduct = productSelect.id;
+
     nameProduct = productSelect.name;
     priceProduct = productSelect.price;
     descriptionProduct = productSelect.description;
@@ -782,7 +786,6 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                       
                       Navigator.pop(context);
                       Navigator.pop(context);
-                      Navigator.pop(context);
                       Navigator.push(context, navigator('products'));    
                       success(context, 'Produto adicionado com sucesso');
                     }).catchError((e){
@@ -839,9 +842,11 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
   Widget build(BuildContext context) {
     if (saveSubTotal == 0) {
       getList().then((value) {
-        setState(() {
-          saveSubTotal = subTotal;
-        });
+        if (mounted) {
+          setState(() {
+            saveSubTotal = subTotal;
+          });
+        }
       });
     }
 
