@@ -403,8 +403,7 @@ class ProductsController {
           FROM items i
           INNER JOIN products p ON p.id = i.id_product
           INNER JOIN variations v ON v.id = p.id_variation
-          INNER JOIN orders o ON o.id = i.id_order
-          INNER JOIN tb_user u ON u.uid = o.uid
+          INNER JOIN user_order u ON u.id_order = i.id_order
           WHERE p.name = @name_product AND v.category = @category_product AND u.uid = @uid
       ''', substitutionValues: {
         'name_product': nameProduct,
@@ -490,7 +489,8 @@ class ProductsController {
               (
                 SELECT SUM(ia.qtd) from items ia
                 INNER JOIN orders oa ON oa.id = ia.id_order
-                WHERE oa.uid = @uid and oa.status = @status and ia.fg_current = false AND ia.id_product = i.id_product
+                INNER JOIN user_order uoa ON uo.id_order = oa.id
+                WHERE uoa.uid = @uid and oa.status = @status and ia.status <> 'Andamento' and ia.status <> 'Excluido' AND ia.id_product = i.id_product
                 GROUP BY (ia.id_product)
               )
 
@@ -498,7 +498,8 @@ class ProductsController {
             INNER JOIN products p ON p.id = i.id_product 
             INNER JOIN variations v ON v.id = i.id_variation 
             INNER JOIN orders o ON o.id = i.id_order
-            where o.uid = @uid and o.status = @status and i.fg_current = false
+            INNER JOIN user_order uo ON uo.id_order = o.id
+            where uo.uid = @uid and o.status = @status and i.status <> 'Andamento' and i.status <> 'Excluido'
             ) t
           ORDER BY t.sum DESC
           LIMIT 10

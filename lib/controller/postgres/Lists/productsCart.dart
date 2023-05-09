@@ -16,11 +16,7 @@ class ProductsCartController {
     num total = 0;
     
     return await connectSupadatabase().then((conn) async {
-      // var querySelect = 'SELECT i.id, i.id_product, p.name, p.price, i.qtd, p.id_variation';
-      // querySelect += ' FROM items i';
-      // querySelect += ' INNER JOIN products p ON p.id = i.id_product';
-      // querySelect += ' WHERE id_order = ?';
-      // querySelect += ' ORDER BY p.name';
+
       String querySelect = '';
 
       await BusinessInformationController().getInfoCalcValue().then((value) {
@@ -30,17 +26,124 @@ class ProductsCartController {
               SELECT SUM(maxa.max) FROM (
                   SELECT AVG(pa.price * ia.qtd) FROM products pa
                   INNER JOIN items ia ON ia.id_product = pa.id
-                  WHERE ia.id_order = @idOrder AND ia.fg_current = false AND ia.relation_id = i.relation_id
+                  WHERE ia.id_order = @idOrder AND ia.status = 'Ativo' AND ia.relation_id = i.relation_id
                   GROUP BY (ia.relation_id, ia.id_variation)
                 ) AS maxa
               ), (
                 SELECT COUNT(*) - 1 as count FROM products pb
                   INNER JOIN items ib ON ib.id_product = pb.id
-                  WHERE ib.id_order = @idOrder AND ib.fg_current = false AND ib.relation_id = i.relation_id
+                  WHERE ib.id_order = @idOrder AND ib.status = 'Ativo' AND ib.relation_id = i.relation_id
               )
             FROM items i
             INNER JOIN products p ON p.id = i.id_product
-            WHERE i.id_order = @idOrder AND i.fg_current = false AND i.relation_id = i.id
+            WHERE i.id_order = @idOrder AND i.status = 'Ativo' AND i.relation_id = i.id;
+          '''
+        : querySelect = '''
+            SELECT i.id, i.id_product, p.name, i.qtd, i.id_variation, i.relation_id, i.text_variation, i.created_at, (
+              SELECT SUM(maxa.max) FROM (
+                  SELECT MAX(pa.price * ia.qtd) FROM products pa
+                  INNER JOIN items ia ON ia.id_product = pa.id
+                  WHERE ia.id_order = @idOrder AND ia.status = 'Ativo' AND ia.relation_id = i.relation_id
+                  GROUP BY (ia.relation_id, ia.id_variation)
+                ) AS maxa
+              ), (
+                SELECT COUNT(*) - 1 as count FROM products pb
+                  INNER JOIN items ib ON ib.id_product = pb.id
+                  WHERE ib.id_order = @idOrder AND ib.status = 'Ativo' AND ib.relation_id = i.relation_id
+              )
+            FROM items i
+            INNER JOIN products p ON p.id = i.id_product
+            WHERE i.id_order = @idOrder AND i.status = 'Ativo' AND i.relation_id = i.id;
+          ''';
+      });
+
+      return await conn.query(querySelect, substitutionValues: {
+        'idOrder': idSale
+      }).then((List value) {
+        conn.close();
+
+        if (value.isEmpty) {
+          return [];
+        }
+
+        for (var row in value) {
+          list.add(
+            ProductsCartList(
+              id: row[0],
+              idProduct: row[1],
+              name: row[2],
+              qtd: row[3],
+              variation: Variation(
+                id: row[4],
+              ),
+              idRelative: row[5],
+              textVariation: row[6],
+              date: row[7],
+              price: row[8],
+              agregateItems: row[9],
+            )
+          );
+
+          total += row[3] * row[4];
+        }
+
+        ProductsCartList().setTotal(total);
+      
+        return list;
+      });
+      // var results = await conn.from('items').select('''
+      //   id, 
+      //   id_product, 
+      //   qtd,
+      //   products!inner(name, price, id_variation)
+      // ''').eq('id_order', idSale);
+      // var results = await conn.query(querySelect, [idSale]);
+      // await conn.close();
+      // for (var row in results) {
+      //   list.add(
+      //     ProductsCartList(
+      //       id: row[0],
+      //       idProduct: row[1],
+      //       name: row[2],
+      //       price: row[3],
+      //       qtd: row[4],
+      //       idVariation: row[5],
+      //     )
+      //   );
+
+      //   total += row[3] * row[4];
+      // }
+
+      // ProductsCartList().setTotal(total);
+    });
+  }
+
+  Future<List<ProductsCartList>> listTable(int idSale) async {
+    List<ProductsCartList> list = [];
+    num total = 0;
+    
+    return await connectSupadatabase().then((conn) async {
+
+      String querySelect = '';
+
+      await BusinessInformationController().getInfoCalcValue().then((value) {
+        value == false ?
+          querySelect = '''
+            SELECT i.id, i.id_product, p.name, i.qtd, p.id_variation, i.relation_id, i.text_variation, i.created_at, (
+              SELECT SUM(maxa.max) FROM (
+                  SELECT AVG(pa.price * ia.qtd) FROM products pa
+                  INNER JOIN items ia ON ia.id_product = pa.id
+                  WHERE ia.id_order = @idOrder AND ia.relation_id = i.relation_id
+                  GROUP BY (ia.relation_id, ia.id_variation)
+                ) AS maxa
+              ), (
+                SELECT COUNT(*) - 1 as count FROM products pb
+                  INNER JOIN items ib ON ib.id_product = pb.id
+                  WHERE ib.id_order = @idOrder AND ib.relation_id = i.relation_id
+              )
+            FROM items i
+            INNER JOIN products p ON p.id = i.id_product
+            WHERE i.id_order = @idOrder AND i.relation_id = i.id
             ORDER BY i.id DESC;
           '''
         : querySelect = '''
@@ -48,17 +151,17 @@ class ProductsCartController {
               SELECT SUM(maxa.max) FROM (
                   SELECT MAX(pa.price * ia.qtd) FROM products pa
                   INNER JOIN items ia ON ia.id_product = pa.id
-                  WHERE ia.id_order = @idOrder AND ia.fg_current = false AND ia.relation_id = i.relation_id
+                  WHERE ia.id_order = @idOrder AND ia.relation_id = i.relation_id
                   GROUP BY (ia.relation_id, ia.id_variation)
                 ) AS maxa
               ), (
                 SELECT COUNT(*) - 1 as count FROM products pb
                   INNER JOIN items ib ON ib.id_product = pb.id
-                  WHERE ib.id_order = @idOrder AND ib.fg_current = false AND ib.relation_id = i.relation_id
+                  WHERE ib.id_order = @idOrder AND ib.relation_id = i.relation_id
               )
             FROM items i
             INNER JOIN products p ON p.id = i.id_product
-            WHERE i.id_order = @idOrder AND i.fg_current = false AND i.relation_id = i.id
+            WHERE i.id_order = @idOrder AND i.relation_id = i.id
             ORDER BY i.id DESC;
           ''';
       });
@@ -129,15 +232,10 @@ class ProductsCartController {
     num total = 0;
     
     return await connectSupadatabase().then((conn) async {
-      // var querySelect = 'SELECT p.price, p.id_variation';
-      // querySelect += ' FROM items i';
-      // querySelect += ' INNER JOIN products p ON p.id = i.id_product';
-      // querySelect += ' WHERE i.id_order = ? AND i.fg_current = ? AND p.id_variation = ?';
-      // querySelect += ' ORDER BY i.id';
+
       if (idVariation == 0) {
-        return await conn.query('SELECT p.price, p.id_variation, p.name, p.id, i.qtd, i.id FROM items i INNER JOIN products p ON p.id = i.id_product WHERE i.id_order = @idOrder AND i.fg_current = @fgCurrent ORDER BY i.id', substitutionValues: {
+        return await conn.query("SELECT p.price, p.id_variation, p.name, p.id, i.qtd, i.id FROM items i INNER JOIN products p ON p.id = i.id_product WHERE i.id_order = @idOrder AND i.status = 'Andamento' ORDER BY i.id", substitutionValues: {
           'idOrder': idSale,
-          'fgCurrent': true,
         }).then((List<List<dynamic>> value) {
           conn.close();
 
@@ -159,9 +257,8 @@ class ProductsCartController {
           return list;
         });
       } else {
-        return await conn.query('SELECT p.price, p.id_variation, p.name, p.id, i.qtd, i.id FROM items i INNER JOIN products p ON p.id = i.id_product WHERE i.id_order = @idOrder AND i.fg_current = @fgCurrent AND p.id_variation = @idVariation ORDER BY i.id', substitutionValues: {
+        return await conn.query("SELECT p.price, p.id_variation, p.name, p.id, i.qtd, i.id FROM items i INNER JOIN products p ON p.id = i.id_product WHERE i.id_order = @idOrder AND i.status = 'Andamento' AND p.id_variation = @idVariation ORDER BY i.id", substitutionValues: {
           'idOrder': idSale,
-          'fgCurrent': true,
           'idVariation': idVariation
         }).then((List<List<dynamic>> value) {
           conn.close();
@@ -191,7 +288,7 @@ class ProductsCartController {
 
   Future<void> clearItemsOnDemand() async {
     return await connectSupadatabase().then((conn) async {
-      var queryDelete = 'DELETE FROM items WHERE fg_current = true';
+      var queryDelete = "DELETE FROM items WHERE status = 'Andamento'";
       await conn.query(queryDelete);
       await conn.close();
     });
@@ -206,9 +303,8 @@ class ProductsCartController {
       // querySelect += ' WHERE i.id_order = ? AND i.fg_current = ?';
       // querySelect += ' ORDER BY i.id';
       
-      return await conn.query('SELECT i.id_variation FROM items i INNER JOIN products p ON p.id = i.id_product WHERE i.id_order = @idOrder AND i.fg_current = @fgCurrent ORDER BY i.id', substitutionValues: {
+      return await conn.query("SELECT i.id_variation FROM items i INNER JOIN products p ON p.id = i.id_product WHERE i.id_order = @idOrder AND i.status = 'Andamento' ORDER BY i.id", substitutionValues: {
         'idOrder': idSale,
-        'fgCurrent': true
       }).then((List value) {
         conn.close();
 
@@ -255,9 +351,8 @@ class ProductsCartController {
   Future<int> getIdRelation (int idOrder) async {
     return await connectSupadatabase().then((conn) async {
       
-      return await conn.query('SELECT relation_id, id FROM items WHERE id_order = @idOrder AND fg_current = @fgCurrent ORDER BY id', substitutionValues: {
+      return await conn.query("SELECT relation_id, id FROM items WHERE id_order = @idOrder AND status = 'Andamento' ORDER BY id", substitutionValues: {
         'idOrder': idOrder,
-        'fgCurrent': true
       }).then((List results) async {
         await conn.close();
         
@@ -288,13 +383,13 @@ class ProductsCartController {
 
     await connectSupadatabase().then((conn) async {
       
-      await conn.query('insert into items (id_order, id_product, qtd, fg_current, relation_id, id_variation) values (@idOrder, @idProduct, @qtd, @fgCurrent, @relationId, @idVariation)', substitutionValues: {
+      await conn.query('insert into items (id_order, id_product, qtd, relation_id, id_variation, status) values (@idOrder, @idProduct, @qtd, @relationId, @idVariation, @status)', substitutionValues: {
         'idOrder': idSale,
         'idProduct': idItem,
         'qtd': qtd,
-        'fgCurrent': true,
         'relationId': idRelation == 0 ? null : idRelation,
         'idVariation': idVariation,
+        'status': fgCurrent ? 'Andamento' : 'Ativo'
       }).then((List value) {
         conn.close();
 
@@ -320,10 +415,9 @@ class ProductsCartController {
     await getIdRelation(idSale).then((value) => idRelation = value);
 
     connectSupadatabase().then((conn) async {
-      await conn.query('UPDATE items SET relation_id = @id WHERE relation_id IS NULL AND id_order = @idOrder AND fg_current = @fgCurrent', substitutionValues: {
+      await conn.query("UPDATE items SET relation_id = @id WHERE relation_id IS NULL AND id_order = @idOrder AND status = 'Andamento'", substitutionValues: {
         'id': idRelation,
         'idOrder': idSale,
-        'fgCurrent': true
       });
       await conn.close();
     });
@@ -335,11 +429,11 @@ class ProductsCartController {
 
     await connectSupadatabase().then((conn) async {
       
-      await conn.query('insert into items (id_order, id_product, qtd, fg_current, relation_id, id_variation, text_variation) values (@idOrder, @idProduct, @qtd, @fgCurrent, @relationId, @idVariation, @textVariation)', substitutionValues: {
+      await conn.query('insert into items (id_order, id_product, qtd, status, relation_id, id_variation, text_variation) values (@idOrder, @idProduct, @qtd, @status, @relationId, @idVariation, @textVariation)', substitutionValues: {
         'idOrder': idSale,
         'idProduct': idItem,
         'qtd': qtd,
-        'fgCurrent': fgCurrent,
+        'status': fgCurrent ? 'Andamento' : 'Ativo',
         'relationId': idRelation,
         'idVariation': idVariation,
         'textVariation': textVariation,
@@ -359,28 +453,13 @@ class ProductsCartController {
     });
   }
 
-  void update(int id, int qtd) {
-    connectSupadatabase().then((conn) async {
-      
-      await conn.query('update items set qtd = @qtd where id = @id', substitutionValues: {
-        'qtd': qtd,
-        'id': id,
-      });
-      conn.close();
-      // await conn.from('items').update({'qtd': qtd}).eq('id', id);
-      // await conn.query('update items set qtd = ? where id = ?',
-      // [qtd, id]);
-      // await conn.close();
-    });
-  }
-
   Future<void> updateInfoSale(int idSale, String obs, int qtd) async {
     int idRelation = 0;
     await getIdRelation(idSale).then((value) => idRelation = value);
 
     await connectSupadatabase().then((conn) async {
       
-      await conn.query('update items set fg_current = false, observation = @obs, qtd = @qtd where relation_id = @id', substitutionValues: {
+      await conn.query("update items set status = 'Ativo', observation = @obs, qtd = @qtd where (relation_id = @id or id = @id) and status = 'Andamento'", substitutionValues: {
         'id': idRelation,
         'obs': obs,
         'qtd': qtd,
@@ -581,5 +660,16 @@ class ProductsCartController {
     if (await verifyItemEqual(context, item) == false) {
       return;
     }
+  }
+
+  Future<void> updateAllItemsIdOrder(int idOrder, int idNewOrder) async {
+    await connectSupadatabase().then((conn) async {
+      
+      await conn.query("update items set id_order = @idNewOrder where id_order = @idOrder and status = 'Ativo'", substitutionValues: {
+        'idOrder': idOrder,
+        'idNewOrder': idNewOrder,
+      });
+      await conn.close();
+    });
   }
 }
