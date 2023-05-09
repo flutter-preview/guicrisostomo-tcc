@@ -17,8 +17,14 @@ class SlideShow {
 
     return await connectSupadatabase().then((conn) async {
       
-      return await conn.query('SELECT DISTINCT category, url_image FROM variations WHERE business = @v_business AND sub_variation IS NULL AND is_show_home = true', substitutionValues: {
-        'v_business': business
+      return await conn.query('''
+        SELECT DISTINCT ON (v.category) v.category, v.url_image
+        FROM products p
+        INNER JOIN variations v ON v.id = p.id_variation
+        WHERE v.business = @business AND p.fg_ativo = true AND v.fg_ativo = true AND v.is_show_home = true
+        ORDER BY v.category
+      ''', substitutionValues: {
+        'business': business
       }).then((List value) {
         conn.close();
         for (final row in value) {
