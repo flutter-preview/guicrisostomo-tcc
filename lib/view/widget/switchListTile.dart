@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/placeholder.dart';
 
 class SwitchListTileWidget extends StatefulWidget {
   Widget title;
+  String? subtitle;
   bool value = true;
   void Function(bool)? onChanged;
   Icon? icon;
@@ -16,6 +17,7 @@ class SwitchListTileWidget extends StatefulWidget {
     this.onChanged,
     this.icon,
     this.privateValue = false,
+    this.subtitle,
   });
 
   @override
@@ -48,6 +50,14 @@ class _SwitchListTileWidgetState extends State<SwitchListTileWidget> {
           widget.title,
         ],
       ) : widget.title,
+
+      subtitle: (widget.subtitle != null) ? Text(
+        widget.subtitle!,
+        style: const TextStyle(
+          fontSize: 14,
+          color: Colors.grey,
+        ),
+      ) : null,
     );
   }
 }
