@@ -184,7 +184,7 @@ class _BottomState extends State<Bottom> {
               globals.numberTable != null && globals.userType == 'customer' ?
                 const BottomNavigationBarItem(
                   icon: Icon(Icons.room_service_outlined, color: Colors.white),
-                  label: 'Garçom',
+                  label: 'Sua mesa',
                 ) :
                 const BottomNavigationBarItem(
                   icon: Icon(Icons.table_restaurant, color: Colors.white),
