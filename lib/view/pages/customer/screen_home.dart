@@ -5,7 +5,6 @@ import 'package:intl/intl.dart';
 import 'package:tcc/controller/postgres/Lists/products.dart';
 import 'package:tcc/controller/postgres/Lists/sales.dart';
 import 'package:tcc/model/ProductItemList.dart';
-import 'package:tcc/model/ProductsCart.dart';
 import 'package:tcc/model/Sales.dart';
 import 'package:tcc/model/standardSlideShow.dart';
 import 'package:tcc/view/widget/appBar.dart';
@@ -62,7 +61,11 @@ class _ScreenHomeState extends State<ScreenHome> {
     super.initState();
     globals.userType = 'customer';
     globals.businessId = '1';
-    getSaleOnDemand();
+    getSaleOnDemand().then((value) {
+      setState(() {
+        
+      });
+    });
   }
 
   Widget dataSales() {
@@ -129,7 +132,7 @@ class _ScreenHomeState extends State<ScreenHome> {
 
                         // ignore: prefer_const_constructors
                         Text(
-                          'Mesa criada pelo garçom José',
+                          'Mesa criada pelo usuário José',
                           style: const TextStyle(
                             fontSize: 16,
                             color: Colors.black54
