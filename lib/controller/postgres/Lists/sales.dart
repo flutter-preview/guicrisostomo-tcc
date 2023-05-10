@@ -400,6 +400,7 @@ class SalesController {
                 table: value.first[4],
                 type: value.first[5],
                 total: value.first[6],
+                nameUserCreatedSale: value.first[7],
               );
 
               sale.setTotal(globals.totalSale);
@@ -440,6 +441,7 @@ class SalesController {
             table: value.first[4],
             type: value.first[5],
             total: globals.totalSale,
+            nameUserCreatedSale: value.first[6],
           );
           
           return sale;
