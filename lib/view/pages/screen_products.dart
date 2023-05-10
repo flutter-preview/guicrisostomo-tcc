@@ -22,13 +22,8 @@ class ScreenProducts extends StatefulWidget {
 }
 
 class _ScreenProductsState extends State<ScreenProducts> {
-  
-  String categorySelected = 'Pizzas';
 
   var txtProd = TextEditingController();
-  
-  List<String> categories = [];
-  List<String> sizes = [];
 
   Future<List<ProductItemList>> getProduct(category, size) async {
     List<ProductItemList> list = [];
@@ -39,43 +34,53 @@ class _ScreenProductsState extends State<ScreenProducts> {
     return list;
   } 
 
-  void getCategories() async {
+  Future<void> getCategories() async {
     await ProductsController().listCategories().then((value) {
-      setState(() {
-        categories = value;
-      });
+      globals.categoriesBusiness = value;
+      globals.sizesCategoryBusiness = [];
     });
     
   }
 
-  void getSize() async {
-    await ProductsController().listSizes(categorySelected).then((value) {
-      setState(() {
-        sizes = value;
-      });
+  Future<void> getSize() async {
+    await ProductsController().listSizes(globals.categorySelected).then((value) {
+      globals.sizesCategoryBusiness = value;
     });
   }
 
   @override
-  Widget build(BuildContext context) {
-    
-    if (categories.isEmpty) {
-      getCategories();
-    }
+  void initState() {
+    super.initState();
+    if (globals.categoriesBusiness.isEmpty) {
+      getCategories().then((value) {
+        setState(() {
+          globals.categorySelected = globals.categoriesBusiness[0];
+        });
+      });
 
+      globals.listProducts = [];
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    print('b');
     Future<Widget?> listProduct() async {
       List<Widget> listWidget = [];
-      List<ProductItemList> list = [];
-      list.clear();
+
+      if (globals.categoriesBusiness.isEmpty) {
+        return const CircularProgressIndicator();
+      }
 
       try {
-        if (sizes.isEmpty) {
-          getSize();
+        if (globals.sizesCategoryBusiness.isEmpty) {
+          await getSize();
+          globals.listProducts = [];
         }
 
-        if (list.isEmpty) {
-          if (sizes.length == 1) {
-            await getProduct(categorySelected, sizes[0]).then((value) {
+        if (globals.listProducts.isEmpty) {
+          if (globals.sizesCategoryBusiness.length == 1) {
+            await getProduct(globals.categorySelected, globals.sizesCategoryBusiness[0]).then((value) {
               listWidget.add(
                 SectionVisible(
                   nameSection: 'Produtos',
@@ -83,19 +88,61 @@ class _ScreenProductsState extends State<ScreenProducts> {
                   child: ProductItem(product: value,),
                 ),
               );
+
+              globals.listProducts = value;
             });
 
           } else {
-            for (int i = 0; i < sizes.length; i++) {
-              await getProduct(categorySelected, sizes[i]).then((value) {
+            for (int i = 0; i < globals.sizesCategoryBusiness.length; i++) {
+              await getProduct(globals.categorySelected, globals.sizesCategoryBusiness[i]).then((value) {
                 listWidget.add(
                   SectionVisible(
-                    nameSection: sizes[i],
+                    nameSection: globals.sizesCategoryBusiness[i],
                     isShowPart: true,
                     child: ProductItem(product: value,),
                   ),
                 );
+
+                globals.listProducts = value;
               });
+            }
+          }
+        } else {
+          if (globals.sizesCategoryBusiness.length == 1) {
+            listWidget.add(
+              SectionVisible(
+                nameSection: 'Produtos',
+                isShowPart: true,
+                child: ProductItem(product: globals.listProducts,),
+              ),
+            );
+
+          } else {
+            for (int i = 0; i < globals.sizesCategoryBusiness.length; i++) {
+              if (globals.sizesCategoryBusiness.length == 1) {
+                await getProduct(globals.categorySelected, globals.sizesCategoryBusiness[0]).then((value) {
+                  listWidget.add(
+                    SectionVisible(
+                      nameSection: 'Produtos',
+                      isShowPart: true,
+                      child: ProductItem(product: value,),
+                    ),
+                  );
+
+                  globals.listProducts = value;
+                });
+
+              } else {
+                for (int i = 0; i < globals.sizesCategoryBusiness.length; i++) {
+                  listWidget.add(
+                    SectionVisible(
+                      nameSection: globals.sizesCategoryBusiness[i],
+                      isShowPart: true,
+                      child: ProductItem(product: globals.listProducts,),
+                    ),
+                  );
+                }
+              }
             }
           }
         }
@@ -152,23 +199,24 @@ class _ScreenProductsState extends State<ScreenProducts> {
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   shrinkWrap: true,
-                  itemCount: categories.length,
+                  itemCount: globals.categoriesBusiness.length,
                   itemBuilder: (context, index) {
                     return Container(
                       margin: const EdgeInsets.only(right: 10),
                       child: button(
-                        categories[index],
+                        globals.categoriesBusiness[index],
                         0,
                         0,
                         null,
                         () {
                           setState(() {
-                            categorySelected = categories[index];
+                            globals.categorySelected = globals.categoriesBusiness[index];
+                            globals.sizesCategoryBusiness = [];
                           });
                         },
                         true,
                         24,
-                        categorySelected == categories[index] ? globals.primaryBlack : null,
+                        globals.categorySelected == globals.categoriesBusiness[index] ? globals.primaryBlack : null,
                       ),
                     );
                   },
@@ -181,7 +229,7 @@ class _ScreenProductsState extends State<ScreenProducts> {
             FutureBuilder(
               future: listProduct(),
               builder: (context, snapshot) {
-                if (snapshot.hasData) {
+                if (snapshot.hasData && snapshot.connectionState == ConnectionState.done) {
                   if (snapshot.data == null) {
                     return const SizedBox(
                       height: 50,

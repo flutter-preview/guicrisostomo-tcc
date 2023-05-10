@@ -1,6 +1,7 @@
 library globals;
 
 import 'package:flutter/material.dart';
+import 'package:tcc/model/ProductItemList.dart';
 
 int globalSelectedIndexBotton = 0;
 int? numberTable;
@@ -12,3 +13,7 @@ Color primaryBlack = const Color.fromARGB(255, 146, 38, 30);
 String userType = '';
 String businessId = '0';
 num totalSale = 0;
+List<String> categoriesBusiness = [];
+List<String> sizesCategoryBusiness = [];
+List<ProductItemList> listProducts = [];
+String categorySelected = '';
