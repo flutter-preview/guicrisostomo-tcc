@@ -112,7 +112,9 @@ class _ProductItemState extends State<ProductItem> {
                             //   'products/add_product',
                             //   arguments: dados.docs[index],
                             // );
+                            
                             Navigator.push(context, navigator('products/add_product', item));
+                            Navigator.push(context, navigator('loading'));
                           },
                           
                           style: ElevatedButton.styleFrom(

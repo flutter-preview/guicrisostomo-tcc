@@ -22,6 +22,33 @@ class ProductsController {
     });
   }
 
+  Future<int> getLimitItemVariation(int idVariation) async {
+    return await connectSupadatabase().then((conn) async {
+      return await conn.query('SELECT limit_items FROM variations WHERE id = @id AND business = @business AND fg_ativo = true', substitutionValues: {
+        'id': idVariation,
+        'business': globals.businessId
+      }).then((List value) {
+        conn.close();
+        return value[0][0];
+      });
+      // Variation results = await conn.from('variations').select('limit_items').eq('id', idVariation).single();
+      // return results.limitItems!;
+    });
+  }
+
+  Future<int> getLimitItemProduct(int idProduct) async {
+    return await connectSupadatabase().then((conn) async {
+      return await conn.query('SELECT stock FROM products WHERE id = @id AND fg_ativo = true', substitutionValues: {
+        'id': idProduct,
+      }).then((List value) {
+        conn.close();
+        return value[0][0];
+      });
+      // Product results = await conn.from('products').select('limit_items').eq('id', idProduct).single();
+      // return results.limitItems!;
+    });
+  }
+
   Future<List<Variation>> listVariations(int idVariation) async {
     // Variation().clearValues();
 
@@ -607,6 +634,39 @@ class ProductsController {
 
         return productsCart;
       });
+    });
+  }
+
+  Future<void> updateStockProduct(int idProduct, int qtd) async {
+    await connectSupadatabase().then((conn) async {
+      await conn.query('''
+        SELECT stock
+          FROM products
+          WHERE id = @id
+      ''', substitutionValues: {
+        'id': idProduct,
+      }).then((value) async {
+        if (value.isEmpty) {
+          return;
+        }
+
+        if (value.first[0] < qtd) {
+          throw Exception('Quantidade indisponível');
+        }
+
+        if (value.first[0] != -1) {
+          await conn.query('''
+            UPDATE products
+            SET stock = stock - @qtd
+            WHERE id = @id
+          ''', substitutionValues: {
+            'id': idProduct,
+            'qtd': qtd
+          });
+        }
+      });
+
+      conn.close();
     });
   }
 }

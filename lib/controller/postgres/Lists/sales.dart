@@ -68,7 +68,20 @@ class SalesController {
 
   Future<void> removeRelationUserOrder(int idOrder) async {
     await connectSupadatabase().then((conn) async {
-      await conn.query('delete from user_order where uid = @id_user and id_order = @id_order', substitutionValues: {
+      await conn.query('update user_order set fg_ativo = false where uid = @id_user and id_order = @id_order', substitutionValues: {
+        'id_user': FirebaseAuth.instance.currentUser!.uid,
+        'id_order': idOrder,
+      }).catchError((e) {
+        print(e);
+      });
+
+      conn.close();
+    });
+  }
+
+  Future<void> activateRelationUserOrder(int idOrder) async {
+    await connectSupadatabase().then((conn) async {
+      await conn.query('update user_order set fg_ativo = true where uid = @id_user and id_order = @id_order', substitutionValues: {
         'id_user': FirebaseAuth.instance.currentUser!.uid,
         'id_order': idOrder,
       }).catchError((e) {
@@ -90,6 +103,8 @@ class SalesController {
 
         if (list.isEmpty) {
           addRelationUserOrder(idOrder);
+        } else {
+          activateRelationUserOrder(idOrder);
         }
       }).catchError((e) {
         print(e);

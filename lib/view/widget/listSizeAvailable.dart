@@ -36,6 +36,7 @@ Widget listSize(List<ProductItemList> list) {
                     list[index],
                   ),
                 );
+                Navigator.push(context, navigator('loading'));
               },
               
               style: ElevatedButton.styleFrom(

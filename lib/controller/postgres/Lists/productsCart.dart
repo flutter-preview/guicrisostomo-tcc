@@ -1,7 +1,8 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:tcc/controller/postgres/Lists/businessInfo.dart';
+import 'package:tcc/controller/postgres/Lists/products.dart';
 import 'package:tcc/controller/postgres/Lists/sales.dart';
 import 'package:tcc/controller/postgres/utils.dart';
 import 'package:tcc/model/ProductItemList.dart';
@@ -389,7 +390,7 @@ class ProductsCartController {
         'qtd': qtd,
         'relationId': idRelation == 0 ? null : idRelation,
         'idVariation': idVariation,
-        'status': fgCurrent ? 'Andamento' : 'Ativo'
+        'status': 'Andamento'
       }).then((List value) {
         conn.close();
 
@@ -413,9 +414,11 @@ class ProductsCartController {
   Future<void> updateIdRelation(int idSale) async {
     int idRelation = 0;
     await getIdRelation(idSale).then((value) => idRelation = value);
-
     connectSupadatabase().then((conn) async {
-      await conn.query("UPDATE items SET relation_id = @id WHERE relation_id IS NULL AND id_order = @idOrder AND status = 'Andamento'", substitutionValues: {
+      await conn.query('''
+        UPDATE items SET relation_id = @id 
+          WHERE relation_id IS NULL AND id_order = @idOrder AND status = 'Andamento'
+      ''', substitutionValues: {
         'id': idRelation,
         'idOrder': idSale,
       });
@@ -635,7 +638,7 @@ class ProductsCartController {
 
   Future<bool> verifyItemEqual(BuildContext context, ProductItemList item) async {
     await SalesController().idSale().then((idOrder) async {
-      await ProductsCartController().list(idOrder).then((value) {
+      await ProductsCartController().listItemCurrent(idOrder).then((value) {
         if (value.isNotEmpty) {
           for (var itemCart in value) {
             if (itemCart.idProduct == item.id) {
@@ -651,6 +654,47 @@ class ProductsCartController {
     return true;
   }
 
+  Future<bool> isLimitedItemVariationOrProduct(BuildContext context, ProductItemList item, [int qtd = -1]) async {
+    return await SalesController().idSale().then((idOrder) async {
+      int limitVariation = -1;
+      int limitProduct = -1;
+      if (qtd == 1) {
+        await ProductsController().getLimitItemVariation(item.variation!.id!).then((limit) async {
+          limitVariation = limit;
+        });
+      }
+
+      await ProductsController().getLimitItemProduct(item.id).then((limit) async {
+        limitProduct = limit;
+      });
+
+      return await ProductsCartController().listItemCurrent(idOrder).then((value) {
+        
+        if (value.length >= limitVariation && limitVariation != -1) {
+          Navigator.pop(context);
+
+          error(context, 'Limite atingido na categoria ${item.variation!.category.toLowerCase()} e tamanho ${item.variation!.size.toLowerCase()}!');
+          return false;
+        }
+
+        if (qtd == -1){
+          qtd = 1;
+        }
+
+        if (qtd > limitProduct && limitProduct != -1) {
+          Navigator.pop(context);
+          
+          limitProduct > 0
+              ? error(context, 'Há apenas $limitProduct disponível em estoque!')
+              : error(context, 'Não há ${item.name.toLowerCase()} disponíveis em estoque!');
+          return false;
+        } else {
+          return true;
+        }
+      });
+    });
+  }
+
   Future<void> verifyItemSelected(BuildContext context, ProductItemList item) async {
     int idItemVariationSelected = item.variation!.id!;
     if (await getVariationItemPreSelected(context, idItemVariationSelected) == false) {
@@ -658,6 +702,10 @@ class ProductsCartController {
     }
 
     if (await verifyItemEqual(context, item) == false) {
+      return;
+    }
+
+    if (await isLimitedItemVariationOrProduct(context, item) == false) {
       return;
     }
   }

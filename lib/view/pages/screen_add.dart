@@ -96,13 +96,15 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
     super.initState();
     productSelect = widget.arguments as ProductItemList;
     idProduct = productSelect.id;
+    txtQtd.text = "1";
 
     if (idProduct != 0) {
-      ProductsCartController().verifyItemSelected(context, productSelect);
+      ProductsCartController().verifyItemSelected(context, productSelect).whenComplete(() {
+        Navigator.pop(context);
+      });
     }
-    
+
     autoValidation = false;
-    txtQtd.text = "1";
     t = 0;
 
     nameProduct = productSelect.name;
@@ -680,18 +682,22 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
 
 
   Widget bottom() {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: const Icon(Icons.arrow_back_ios_rounded),
-            color: globals.primary,
-          ),
+    var formKey = GlobalKey<FormState>();
 
-          SizedBox(
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(Icons.arrow_back_ios_rounded),
+          color: globals.primary,
+        ),
+
+        Form(
+          key: formKey,
+          child: SizedBox(
             height: 50,
             width: 140,
             child: TextFieldGeneral(
@@ -701,7 +707,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
               keyboardType: TextInputType.number,
               ico: null,
               validator: (value) {
-                validatorNumber(value!);
+                return validatorNumber(value!);
               },
               onChanged: (value) {
                 setState(() {
@@ -712,135 +718,153 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
               size: const [50, 140],
             ),
           ),
-          
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  globals.primary,
-                  globals.primary.withOpacity(0.8)
-                ]
-              )
-            ),
-
-            child: ElevatedButton(
-              onPressed: () async {
-                if (formKey.currentState!.validate() && subTotal != 0) {
-                  Navigator.push(context, navigator('loading'));
-
-                  int idSale;
-
-                  resetSubTotal();
-
-                  calcSubTotal();
-
-                  await SalesController().idSale().then((res) async {
-                    idSale = res;
-
-                    if (idProduct != 0) {
-                      await ProductsCartController().add(idSale, idProduct, nameProduct, int.parse(txtQtd.text), idVariation, false);
-                    }
-
-                    (variations.map((e) async {
-                      if (e.textController.isNotEmpty) {
-                        e.textController.entries.forEach((element) async {
-                          if (element.value.text != '') {
-                            await ProductsCartController().addVariation(idSale, element.key, int.parse(txtQtd.text), e.id!, element.value.text, false);
-                          }
-                        });
-                      }
-
-                      e.productItemSelected.forEach((key, bool value) async {
-                        if (value && e.price > 0) {
-                          await ProductsCartController().add(idSale, key.id, '', int.parse(txtQtd.text), e.id!, false);
-                        }
-                      });
-
-                      e.subVariation.map((sub)  {
-                        if (e.value == sub.category && sub.productItemSelected.isNotEmpty) {
-                          sub.textController.entries.forEach((element) async {
-                            if (element.value.text != '') {
-                              await ProductsCartController().addVariation(idSale, element.key, int.parse(txtQtd.text), sub.id!, element.value.text, false);
-                            }
-                          });
-                          
-                          sub.productItemSelected.forEach((key, bool value) async {
-                            
-                            if (value && sub.price > 0) {
-                              await ProductsCartController().add(idSale, key.id, '', int.parse(txtQtd.text), sub.id!, false);
-                            }
-
-                          });
-                        }
-                      }).toList();
-                    }).toList());
-
-                    await ProductsCartController().updateInfoSale(idSale, txtObservation.text, int.parse(txtQtd.text));
-
-                    await SalesController().getTotal().then((res){
-                      // SalesController().updateTotal(idSale, res + subTotal);
-                      globals.isSelectNewItem = false;
-                      
-                      Navigator.pop(context);
-                      Navigator.pop(context);
-                      Navigator.push(context, navigator('products'));    
-                      success(context, 'Produto adicionado com sucesso');
-                    }).catchError((e){
-                      error(context, 'Ocorreu um erro ao adicionar o produto: $e');
-                      
-                    });
-
-                  }).catchError((e){
-                    error(context, 'Ocorreu um erro ao adicionar o produto: $e');
-                    print(e);
-                  });
-
-                } else {
-                  setState(() {
-                    autoValidation = true;
-                  });
-                }
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.transparent,
-                padding: const EdgeInsets.all(10),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  
-                  const Icon(
-                    Icons.add_shopping_cart,
-                    color: Colors.white,
-                    size: 30,
-                  ),
-
-                  const SizedBox(width: 10),
-
-                  Text(
-                    'R\$ ${subTotal.toStringAsFixed(2)}',
-                    style: const TextStyle(
-                      fontSize: 20,
-                      color: Colors.white,
-                    ),
-                  ),
-                ],
-              ),
+        ),
+        
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                globals.primary,
+                globals.primary.withOpacity(0.8)
+              ]
             )
           ),
-        ],
-      );
-    }
+
+          child: ElevatedButton(
+            onPressed: () async {
+              if (formKey.currentState!.validate() && subTotal != 0) {
+                Navigator.push(context, navigator('loading'));
+                
+                bool verification = false;
+
+                await ProductsCartController().isLimitedItemVariationOrProduct(context, productSelect, int.parse(txtQtd.text)).then((value) {
+                  if (!value) {
+                    return;
+                  }
+
+                  verification = value;
+                });
+
+                if (!verification) {
+                  return;
+                }
+
+                int idSale;
+
+                resetSubTotal();
+
+                calcSubTotal();
+
+                await SalesController().idSale().then((res) async {
+                  idSale = res;
+
+                  if (idProduct != 0) {
+                    await ProductsCartController().add(idSale, idProduct, nameProduct, int.parse(txtQtd.text), idVariation, false);
+                    await ProductsController().updateStockProduct(idProduct, int.parse(txtQtd.text));
+                  }
+
+                  (variations.map((e) async {
+                    if (e.textController.isNotEmpty) {
+                      e.textController.entries.forEach((element) async {
+                        if (element.value.text != '') {
+                          await ProductsCartController().addVariation(idSale, element.key, int.parse(txtQtd.text), e.id!, element.value.text, false);
+                        }
+                      });
+                    }
+
+                    e.productItemSelected.forEach((key, bool value) async {
+                      if (value && e.price > 0) {
+                        await ProductsCartController().add(idSale, key.id, '', int.parse(txtQtd.text), e.id!, false);
+                      }
+                    });
+
+                    e.subVariation.map((sub)  {
+                      if (e.value == sub.category && sub.productItemSelected.isNotEmpty) {
+                        sub.textController.entries.forEach((element) async {
+                          if (element.value.text != '') {
+                            await ProductsCartController().addVariation(idSale, element.key, int.parse(txtQtd.text), sub.id!, element.value.text, false);
+                          }
+                        });
+                        
+                        sub.productItemSelected.forEach((key, bool value) async {
+                          
+                          if (value && sub.price > 0) {
+                            await ProductsCartController().add(idSale, key.id, '', int.parse(txtQtd.text), sub.id!, false);
+                          }
+
+                        });
+                      }
+                    }).toList();
+                  }).toList());
+
+                  await ProductsCartController().updateInfoSale(idSale, txtObservation.text, int.parse(txtQtd.text));
+
+                  await SalesController().getTotal().then((res){
+                    // SalesController().updateTotal(idSale, res + subTotal);
+                    globals.isSelectNewItem = false;
+                    
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    Navigator.push(context, navigator('products'));    
+                    success(context, 'Produto adicionado com sucesso');
+                  }).catchError((e){
+                    error(context, 'Ocorreu um erro ao adicionar o produto: $e');
+                    
+                  });
+
+                }).catchError((e){
+                  error(context, 'Ocorreu um erro ao adicionar o produto: $e');
+                  print(e);
+                });
+
+              } else {
+                setState(() {
+                  autoValidation = true;
+                });
+              }
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.transparent,
+              padding: const EdgeInsets.all(10),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                
+                const Icon(
+                  Icons.add_shopping_cart,
+                  color: Colors.white,
+                  size: 30,
+                ),
+
+                const SizedBox(width: 10),
+
+                Text(
+                  'R\$ ${subTotal.toStringAsFixed(2)}',
+                  style: const TextStyle(
+                    fontSize: 20,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+          )
+        ),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+
     if (saveSubTotal == 0) {
+
       getList().then((value) {
         if (mounted) {
           setState(() {
@@ -1003,6 +1027,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
 
                           await SalesController().idSale().then((res) async {
                             await ProductsCartController().add(res, idProduct, nameProduct, int.parse(txtQtd.text), idVariation);
+                            // await ProductsController().updateStockProduct(idProduct, int.parse(txtQtd.text));
                           });
                         })
                     ],
