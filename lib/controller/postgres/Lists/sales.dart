@@ -2,7 +2,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tcc/controller/postgres/Lists/businessInfo.dart';
 import 'package:tcc/controller/postgres/utils.dart';
-import 'package:tcc/model/ProductsCart.dart';
 import 'package:tcc/globals.dart' as globals;
 import 'package:tcc/model/Sales.dart';
 
@@ -311,19 +310,103 @@ class SalesController {
 
   Future<Sales?> listSalesOnDemand() async {
     return await connectSupadatabase().then((conn) async {
-      
-      return await conn.query(
-        '''
+      return (globals.totalSale == 0) ?
+      await BusinessInformationController().getInfoCalcValue().then((value) async {
+        if (value == true || value == null) {
+          return await conn.query('''
+            SELECT o.id, o.cnpj, o.datetime, uo.uid, o.table_number, o.type, (
+              SELECT SUM(MAX.MAX) FROM (
+                SELECT MAX(p.price * i.qtd) from items i 
+                  INNER JOIN products p ON p.id = i.id_product 
+                  INNER JOIN orders o ON o.id = i.id_order 
+                  INNER JOIN user_order u ON u.id_order = o.id
+                  where u.uid = @uid and o.status = @status and i.status = 'Ativo' and o.table_number = @table
+                  GROUP BY (i.relation_id, i.id_variation)
+                ) AS max
+            )
+              FROM orders o
+              INNER JOIN user_order uo ON uo.id_order = o.id
+              WHERE uo.uid = @uid and o.status = @status and o.table_number = @table
+              ]
+            ''', substitutionValues: {
+            'uid': FirebaseAuth.instance.currentUser!.uid,
+            'status': 'Andamento',
+            'table': globals.numberTable,
+          }).then((List value) {
+            conn.close();
+        
+            if (value.isEmpty) {
+              return null;
+            } else {
+              Sales sale = Sales(
+                id: value.first[0],
+                cnpj: value.first[1],
+                date: value.first[2],
+                uid: value.first[3],
+                status: 'Andamento',
+                table: value.first[4],
+                type: value.first[5],
+                total: value.first[6],
+              );
+              
+              return sale;
+            }
+          });
+        } else {
+          return await conn.query('''
+            SELECT o.id, o.cnpj, o.datetime, uo.uid, o.table_number, o.type, (
+              SELECT SUM(avg.AVG) FROM (
+                SELECT AVG(p.price * i.qtd) from items i 
+                  INNER JOIN products p ON p.id = i.id_product 
+                  INNER JOIN orders o ON o.id = i.id_order 
+                  INNER JOIN user_order u ON u.id_order = o.id
+                  where u.uid = @uid and o.status = @status and i.status = 'Ativo' and o.table_number = @table
+                  GROUP BY (i.relation_id, i.id_variation)
+                ) AS avg
+            )
+              FROM orders o
+              INNER JOIN user_order uo ON uo.id_order = o.id
+              WHERE uo.uid = @uid and o.status = @status and o.table_number = @table
+            ''', substitutionValues: {
+            'uid': FirebaseAuth.instance.currentUser!.uid,
+            'status': 'Andamento',
+            'table': globals.numberTable,
+          }).then((List value) {
+            conn.close();
+        
+            if (value.isEmpty) {
+              return null;
+            } else {
+              Sales sale = Sales(
+                id: value.first[0],
+                cnpj: value.first[1],
+                date: value.first[2],
+                uid: value.first[3],
+                status: 'Andamento',
+                table: value.first[4],
+                type: value.first[5],
+                total: value.first[6],
+              );
+
+              sale.setTotal(globals.totalSale);
+              
+              return sale;
+            }
+          });
+        }
+      })
+      : await conn.query('''
         SELECT o.id, o.cnpj, o.datetime, uo.uid, o.table_number, o.type
           FROM orders o
           INNER JOIN user_order uo ON uo.id_order = o.id
-          WHERE uo.uid = @uid and o.status = @status
+          WHERE uo.uid = @uid and o.status = @status and o.table_number = @table
         ''', substitutionValues: {
         'uid': FirebaseAuth.instance.currentUser!.uid,
         'status': 'Andamento',
+        'table': globals.numberTable,
       }).then((List value) {
         conn.close();
-        
+    
         if (value.isEmpty) {
           return null;
         } else {
@@ -335,14 +418,11 @@ class SalesController {
             status: 'Andamento',
             table: value.first[4],
             type: value.first[5],
+            total: globals.totalSale,
           );
-
-          sale.setTotal(globals.totalSale);
           
           return sale;
         }
-      }).catchError((e) {
-        print(e);
       });
     });
   }
