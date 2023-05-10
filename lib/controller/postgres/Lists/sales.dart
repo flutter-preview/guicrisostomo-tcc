@@ -327,7 +327,6 @@ class SalesController {
               FROM orders o
               INNER JOIN user_order uo ON uo.id_order = o.id
               WHERE uo.uid = @uid and o.status = @status and o.table_number = @table
-              ]
             ''', substitutionValues: {
             'uid': FirebaseAuth.instance.currentUser!.uid,
             'status': 'Andamento',
