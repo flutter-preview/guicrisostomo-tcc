@@ -61,14 +61,10 @@ class _ScreenHomeState extends State<ScreenHome> {
     super.initState();
     globals.userType = 'customer';
     globals.businessId = '1';
-    getSaleOnDemand().then((value) {
-      setState(() {
-        
-      });
-    });
   }
 
   Widget dataSales() {
+
     return FutureBuilder(
       future: getSaleOnDemand(),
       builder: (context, snapshot) {
@@ -89,15 +85,9 @@ class _ScreenHomeState extends State<ScreenHome> {
             );
           }
 
-          if (!mounted) {
-            setState(() {
-            
-            });
-          }
-
           DateTime date = snapshot.data!.date;
           String dateText = DateFormat("d 'de' MMMM 'de' y 'às' HH':'mm':'ss", "pt_BR").format(date);
-          num total = snapshot.data!.getTotal();
+          num total = globals.totalSale;
 
           return Column(
             children: [
