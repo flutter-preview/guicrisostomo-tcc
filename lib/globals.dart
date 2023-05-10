@@ -15,5 +15,4 @@ String businessId = '0';
 num totalSale = 0;
 List<String> categoriesBusiness = [];
 List<String> sizesCategoryBusiness = [];
-List<ProductItemList> listProducts = [];
 String categorySelected = '';

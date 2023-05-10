@@ -57,8 +57,6 @@ class _ScreenProductsState extends State<ScreenProducts> {
           globals.categorySelected = globals.categoriesBusiness[0];
         });
       });
-
-      globals.listProducts = [];
     }
   }
 
@@ -67,6 +65,7 @@ class _ScreenProductsState extends State<ScreenProducts> {
     print('b');
     Future<Widget?> listProduct() async {
       List<Widget> listWidget = [];
+      List<ProductItemList> list = [];
 
       if (globals.categoriesBusiness.isEmpty) {
         return const CircularProgressIndicator();
@@ -75,10 +74,10 @@ class _ScreenProductsState extends State<ScreenProducts> {
       try {
         if (globals.sizesCategoryBusiness.isEmpty) {
           await getSize();
-          globals.listProducts = [];
+          list = [];
         }
 
-        if (globals.listProducts.isEmpty) {
+        if (list.isEmpty) {
           if (globals.sizesCategoryBusiness.length == 1) {
             await getProduct(globals.categorySelected, globals.sizesCategoryBusiness[0]).then((value) {
               listWidget.add(
@@ -89,7 +88,7 @@ class _ScreenProductsState extends State<ScreenProducts> {
                 ),
               );
 
-              globals.listProducts = value;
+              list = value;
             });
 
           } else {
@@ -103,7 +102,7 @@ class _ScreenProductsState extends State<ScreenProducts> {
                   ),
                 );
 
-                globals.listProducts = value;
+                list = value;
               });
             }
           }
@@ -113,7 +112,7 @@ class _ScreenProductsState extends State<ScreenProducts> {
               SectionVisible(
                 nameSection: 'Produtos',
                 isShowPart: true,
-                child: ProductItem(product: globals.listProducts,),
+                child: ProductItem(product: list,),
               ),
             );
 
@@ -129,7 +128,7 @@ class _ScreenProductsState extends State<ScreenProducts> {
                     ),
                   );
 
-                  globals.listProducts = value;
+                  list = value;
                 });
 
               } else {
@@ -138,7 +137,7 @@ class _ScreenProductsState extends State<ScreenProducts> {
                     SectionVisible(
                       nameSection: globals.sizesCategoryBusiness[i],
                       isShowPart: true,
-                      child: ProductItem(product: globals.listProducts,),
+                      child: ProductItem(product: list,),
                     ),
                   );
                 }
