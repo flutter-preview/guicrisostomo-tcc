@@ -323,6 +323,13 @@ class SalesController {
                   where u.uid = @uid and o.status = @status and i.status = 'Ativo' and o.table_number = @table
                   GROUP BY (i.relation_id, i.id_variation)
                 ) AS max
+            ), (
+              SELECT ua.name
+                FROM tb_user ua
+                INNER JOIN user_order uoa ON uoa.uid = ua.uid
+                WHERE uoa.id_order = o.id
+                ORDER BY uoa.id
+                LIMIT 1
             )
               FROM orders o
               INNER JOIN user_order uo ON uo.id_order = o.id
@@ -346,6 +353,7 @@ class SalesController {
                 table: value.first[4],
                 type: value.first[5],
                 total: value.first[6],
+                nameUserCreatedSale: value.first[7],
               );
               
               return sale;
@@ -362,6 +370,13 @@ class SalesController {
                   where u.uid = @uid and o.status = @status and i.status = 'Ativo' and o.table_number = @table
                   GROUP BY (i.relation_id, i.id_variation)
                 ) AS avg
+            ), (
+              SELECT ua.name
+                FROM tb_user ua
+                INNER JOIN user_order uoa ON uoa.uid = ua.uid
+                WHERE uoa.id_order = o.id
+                ORDER BY uoa.id
+                LIMIT 1
             )
               FROM orders o
               INNER JOIN user_order uo ON uo.id_order = o.id
@@ -395,7 +410,14 @@ class SalesController {
         }
       })
       : await conn.query('''
-        SELECT o.id, o.cnpj, o.datetime, uo.uid, o.table_number, o.type
+        SELECT o.id, o.cnpj, o.datetime, uo.uid, o.table_number, o.type, (
+            SELECT ua.name
+              FROM tb_user ua
+              INNER JOIN user_order uoa ON uoa.uid = ua.uid
+              WHERE uoa.id_order = o.id
+              ORDER BY uoa.id
+              LIMIT 1
+          )
           FROM orders o
           INNER JOIN user_order uo ON uo.id_order = o.id
           WHERE uo.uid = @uid and o.status = @status and o.table_number = @table

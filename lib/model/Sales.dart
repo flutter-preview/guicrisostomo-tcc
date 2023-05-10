@@ -10,6 +10,7 @@ class Sales {
   String status;
   DateTime date;
   num total = 0.0;
+  String nameUserCreatedSale = '';
   
   Sales({
     required this.id,
@@ -23,6 +24,7 @@ class Sales {
     required this.status,
     required this.date,
     this.total = 0.0,
+    this.nameUserCreatedSale = ''
   });
 
   num getTotal() {

@@ -121,11 +121,13 @@ class _ScreenHomeState extends State<ScreenHome> {
                         const SizedBox(width: 5,),
 
                         // ignore: prefer_const_constructors
-                        Text(
-                          'Mesa criada pelo usuário José',
-                          style: const TextStyle(
-                            fontSize: 16,
-                            color: Colors.black54
+                        Flexible(
+                          child: Text(
+                            'Mesa criada pelo usuário ${snapshot.data!.nameUserCreatedSale}',
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Colors.black54
+                            ),
                           ),
                         )
                       ],
