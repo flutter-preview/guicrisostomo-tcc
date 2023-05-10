@@ -353,7 +353,7 @@ class SalesController {
       date1 = DateTime.now().subtract(const Duration(days: 180));
     } else if (dateStart == 'Últimos 365 dias') {
       date1 = DateTime.now().subtract(const Duration(days: 365));
-    } else if (dateStart == 'Tudo') {
+    } else if (dateStart == 'Todos') {
       date1 = DateTime.parse('2021-01-01');
     } else {
       String dateCustom = dateEnd.split(' - ').map((e) => e.split('/').reversed.join('-')).toString().replaceAll(RegExp('([()])'), '');
@@ -383,20 +383,20 @@ class SalesController {
             SELECT o.id, o.cnpj, o.datetime, uo.uid, o.status, o.table_number, 
               (
                 SELECT SUM(MAX.MAX) FROM (
-                  SELECT MAX(p.price * i.qtd) from items i 
-                    INNER JOIN products p ON p.id = i.id_product 
-                    INNER JOIN orders o ON o.id = i.id_order 
-                    WHERE o.cnpj = @cnpj and (o.status LIKE @status AND o.datetime BETWEEN @datetime and @datetime2)
-                    GROUP BY (i.relation_id, i.id_variation)
+                  SELECT MAX(pa.price * ia.qtd) from items ia 
+                    INNER JOIN products pa ON pa.id = ia.id_product 
+                    INNER JOIN orders oa ON oa.id = ia.id_order 
+                    WHERE oa.id = o.id and ia.status <> 'Cancelado'
+                    GROUP BY (ia.relation_id, ia.id_variation)
                   ) AS max
               ) AS total, 
               (
                 SELECT COUNT(*) FROM (
-                  SELECT MAX(p.price * i.qtd) from items i 
-                    INNER JOIN products p ON p.id = i.id_product 
-                    INNER JOIN orders o ON o.id = i.id_order 
-                    WHERE o.cnpj = @cnpj and (o.status LIKE @status AND o.datetime BETWEEN @datetime and @datetime2)
-                    GROUP BY (i.relation_id, i.id_variation)
+                  SELECT MAX(pa.price * ia.qtd) from items ia 
+                    INNER JOIN products pa ON pa.id = ia.id_product 
+                    INNER JOIN orders oa ON oa.id = ia.id_order 
+                    WHERE oa.id = o.id and ia.status <> 'Cancelado'
+                    GROUP BY (ia.relation_id, ia.id_variation)
                   ) AS max
               ) AS qtd
               FROM orders o
@@ -408,22 +408,22 @@ class SalesController {
           querySelect = '''
             SELECT o.id, o.cnpj, o.datetime, uo.uid, o.status, o.table_number, 
               (
-                SELECT SUM(avg.AVG) FROM (
-                  SELECT AVG(p.price * i.qtd) from items i 
-                    INNER JOIN products p ON p.id = i.id_product 
-                    INNER JOIN orders o ON o.id = i.id_order 
-                    WHERE o.cnpj = @cnpj and (o.status LIKE @status AND o.datetime BETWEEN @datetime and @datetime2)
-                    GROUP BY (i.relation_id, i.id_variation)
-                  ) AS avg
+                SELECT SUM(MAX.avg) FROM (
+                  SELECT AVG(pa.price * ia.qtd) from items ia 
+                    INNER JOIN products pa ON pa.id = ia.id_product 
+                    INNER JOIN orders oa ON oa.id = ia.id_order 
+                    WHERE oa.id = o.id and ia.status <> 'Cancelado'
+                    GROUP BY (ia.relation_id, ia.id_variation)
+                  ) AS max
               ) AS total, 
               (
                 SELECT COUNT(*) FROM (
-                  SELECT AVG(p.price * i.qtd) from items i 
-                    INNER JOIN products p ON p.id = i.id_product 
-                    INNER JOIN orders o ON o.id = i.id_order 
-                    WHERE o.cnpj = @cnpj and (o.status LIKE @status AND o.datetime BETWEEN @datetime and @datetime2)
-                    GROUP BY (i.relation_id, i.id_variation)
-                  ) AS avg
+                  SELECT MAX(pa.price * ia.qtd) from items ia 
+                    INNER JOIN products pa ON pa.id = ia.id_product 
+                    INNER JOIN orders oa ON oa.id = ia.id_order 
+                    WHERE oa.id = o.id and ia.status <> 'Cancelado'
+                    GROUP BY (ia.relation_id, ia.id_variation)
+                  ) AS max
               ) AS qtd
               FROM orders o
               INNER JOIN business b ON b.cnpj = o.cnpj
@@ -443,6 +443,10 @@ class SalesController {
         conn.close();
         List<Sales> sales = [];
 
+        if (value.isEmpty) {
+          return sales;
+        }
+
         for (var element in value) {
           sales.add(
             Sales(
@@ -452,14 +456,16 @@ class SalesController {
               uid: element[3],
               status: element[4],
               table: element[5],
-              total: element[6],
+              total: element[6] ?? 0.0,
             ),
           );
         }
 
         return sales;
-      }).catchError((e) {
-        print(e);
+      }).onError((error, stackTrace) {
+        conn.close();
+        print(error);
+        return [];
       });
     });
   }
