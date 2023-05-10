@@ -181,12 +181,13 @@ class SalesController {
                 INNER JOIN products p ON p.id = i.id_product 
                 INNER JOIN orders o ON o.id = i.id_order 
                 INNER JOIN user_order u ON u.id_order = o.id
-                where u.uid = @uid and o.status = @status and i.status = 'Ativo'
+                where u.uid = @uid and o.status = @status and i.status = 'Ativo' and o.table_number = @table
                 GROUP BY (i.relation_id, i.id_variation)
               ) AS max
             ''', substitutionValues: {
             'uid': FirebaseAuth.instance.currentUser!.uid,
             'status': 'Andamento',
+            'table': globals.numberTable,
           }).then((List value) {
             conn.close();
 
@@ -207,12 +208,13 @@ class SalesController {
                 INNER JOIN products p ON p.id = i.id_product 
                 INNER JOIN orders o ON o.id = i.id_order 
                 INNER JOIN user_order u ON u.id_order = o.id
-                where u.uid = @uid and o.status = @status and i.status = 'Ativo'
+                where u.uid = @uid and o.status = @status and i.status = 'Ativo' and o.table_number = @table
                 GROUP BY (i.relation_id, i.id_variation)
               ) AS avg
             ''', substitutionValues: {
             'uid': FirebaseAuth.instance.currentUser!.uid,
             'status': 'Andamento',
+            'table': globals.numberTable,
           }).then((List value) {
             conn.close();
 
