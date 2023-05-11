@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:tcc/controller/firebase/auth.dart';
 import 'package:tcc/controller/postgres/Lists/productsCart.dart';
 import 'package:tcc/controller/postgres/Lists/sales.dart';
 import 'package:tcc/globals.dart' as globals;
@@ -294,12 +295,15 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
               180,
               50,
               type != 'Mesa' ? Icons.arrow_forward : Icons.check,
-              () {
+              () async {
                 type != 'Mesa' ?
                   Navigator.push(context, navigator('finalize_order_customer/address'))
                 :
+                  Navigator.pop(context);
+                  Navigator.push(context, navigator('loading'));
                   SalesController().finalizeSale(hasCloseTable);
                   Navigator.pop(context);
+                  await LoginController().redirectUser(context);
               },
               false
             ),

@@ -592,21 +592,6 @@ class SalesController {
 
   Future<void> finalizeSale([bool hasCloseTable = true]) async {
     await connectSupadatabase().then((conn) async {
-      
-      if (hasCloseTable) {
-        await conn.query('''
-          UPDATE orders SET orders.status = 'Para impressão' 
-            FROM user_order
-            WHERE orders.cnpj = @cnpj AND orders.status = 'Andamento' AND orders.id = user_order.id_order AND user_order.uid = @uid
-        ''', substitutionValues: {
-          'cnpj': globals.businessId,
-          'uid': FirebaseAuth.instance.currentUser != null ? FirebaseAuth.instance.currentUser!.uid : null,
-        }).catchError((e) {
-          print(e);
-        });
-
-        globals.numberTable = null;
-      }
 
       await conn.query('''
         UPDATE items SET status = 'Para impressão' 
@@ -614,16 +599,38 @@ class SalesController {
             SELECT id 
               FROM orders o
               INNER JOIN user_order uo ON uo.id_order = o.id
-              WHERE uo.id_order = o.id AND o.cnpj = @cnpj AND uo.uid = @uid AND o.status = 'Andamento'
+              WHERE uo.id_order = o.id AND o.cnpj = @cnpj AND uo.uid = @uid AND o.status = 'Andamento' AND o.table_number = @table
           ) AND status = 'Ativo'
       ''', substitutionValues: {
         'cnpj': globals.businessId,
         'uid': FirebaseAuth.instance.currentUser != null ? FirebaseAuth.instance.currentUser!.uid : null,
+        'table': globals.numberTable,
       }).then((value) {
         conn.close();
       }).catchError((e) {
         print(e);
       });
+
+      if (hasCloseTable) {
+        await conn.query('''
+          UPDATE orders SET status = 'Para impressão' 
+            FROM user_order
+            WHERE id_order = (
+              SELECT id 
+                FROM orders o
+                INNER JOIN user_order uo ON uo.id_order = o.id
+                WHERE uo.id_order = o.id AND o.cnpj = @cnpj AND uo.uid = @uid AND o.status = 'Andamento' AND o.table_number = @table
+            ) AND status = 'Ativo'
+        ''', substitutionValues: {
+          'cnpj': globals.businessId,
+          'uid': FirebaseAuth.instance.currentUser != null ? FirebaseAuth.instance.currentUser!.uid : null,
+          'table': globals.numberTable,
+        }).catchError((e) {
+          print(e);
+        });
+
+        globals.numberTable = null;
+      }
     });
   }
 }
