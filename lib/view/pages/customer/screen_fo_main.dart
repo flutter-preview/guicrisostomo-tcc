@@ -160,7 +160,7 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
               children: [
                 const PartFinalizeOrder(partUser: 1),
 
-                if (globals.userEmail != null)
+                (globals.userEmail == null) ?
                   Column(
                     children: [
                       const SizedBox(height: 20,),
@@ -180,20 +180,23 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
                         0, 
                         Icons.person_add, 
                         () => Navigator.pushNamed(context, 'register')
-                      )
+                      ),
                     ],
-                  ),
+                  ) :
+                Column(
+                  children: [
+                    const SizedBox(height: 20,),
 
-                const SizedBox(height: 20,),
-
-                RadioButon(
-                  list: listRadioButton,
-                  callback: (value) {
-                    setState(() {
-                      type = value;
-                    });
-                  },
-                ),
+                    RadioButon(
+                      list: listRadioButton,
+                      callback: (value) {
+                        setState(() {
+                          type = value;
+                        });
+                      },
+                    ),
+                  ],
+                )
               ],
             ) : 
             Column(
@@ -271,7 +274,7 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
         ),
       ),
 
-      bottomSheet: Padding(
+      bottomSheet: (globals.userEmail != null) ? Padding(
         padding: const EdgeInsets.all(20),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -329,7 +332,7 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
             ),
           ],
         ),
-      ),
+      ) : null,
     ) : Container(
       color: Colors.white,
       child: Center(
