@@ -24,12 +24,15 @@ class _ScreenPermissionsState extends State<ScreenPermissions> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarWidget(
-        pageName: 'Permissões',
-        context: context,
-        withoutIcons: true,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(60),
+        child: AppBarWidget(
+          pageName: 'Permissões',
+          context: context,
+          withoutIcons: true,
+        ),
       ),
-
+      
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(

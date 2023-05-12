@@ -60,10 +60,13 @@ class _ScreenInfoEmployeeState extends State<ScreenInfoEmployee> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarWidget(
-        pageName: 'Informações do funcionário',
-        context: context,
-        withoutIcons: true,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(60),
+        child: AppBarWidget(
+          pageName: 'Informações do funcionário',
+          context: context,
+          withoutIcons: true,
+        ),
       ),
 
       body: SingleChildScrollView(

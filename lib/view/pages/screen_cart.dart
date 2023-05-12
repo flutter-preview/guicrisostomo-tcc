@@ -47,10 +47,13 @@ class _ScreenCartState extends State<ScreenCart> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarWidget(
-        pageName: 'Carrinho',
-        context: context,
-        withoutIcons: true,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(60),
+        child: AppBarWidget(
+          pageName: 'Carrinho',
+          context: context,
+          withoutIcons: true,
+        ),
       ),
 
       body: CustomScrollView(

@@ -163,11 +163,15 @@ class _ScreenProductsState extends State<ScreenProducts> {
     }
 
     return Scaffold(
-      appBar: appBarWidget(
-        pageName: 'Produtos',
-        context: context,
-        icon: Icons.restaurant_menu,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(60),
+        child: AppBarWidget(
+          pageName: 'Produtos',
+          context: context,
+          icon: Icons.restaurant_menu,
+        ),
       ),
+
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(

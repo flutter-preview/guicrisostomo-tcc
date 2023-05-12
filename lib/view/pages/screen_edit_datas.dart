@@ -58,15 +58,20 @@ class _ScreenEditDatasState extends State<ScreenEditDatas> {
   Widget build(BuildContext context) {
     // var user = ModalRoute.of(context)!.settings.arguments as dynamic;
     return Scaffold(
-      appBar: (globals.userType != 'employee') ? appBarWidget(
+      appBar: (globals.userType != 'employee') ? PreferredSize(
+        preferredSize: const Size.fromHeight(60),
+        child: AppBarWidget(
         pageName: 'Editar dados',
         context: context,
         withoutIcons: true,
-      ) : appBarWidget(
+      )) : PreferredSize(
+        preferredSize: const Size.fromHeight(60),
+        child: AppBarWidget(
             pageName: 'Perfil', 
             context: context, 
             icon: Icons.person,
           ),
+        ),
 
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),

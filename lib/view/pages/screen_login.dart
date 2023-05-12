@@ -5,6 +5,7 @@ import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/imageMainScreens.dart';
 import 'package:tcc/view/widget/textFieldGeneral.dart';
+import 'package:tcc/globals.dart' as globals;
 
 class ScreenLogin extends StatefulWidget {
   const ScreenLogin({super.key});
@@ -31,7 +32,11 @@ class _ScreenLoginState extends State<ScreenLogin> {
 
   void logIn() {
     if (formKey.currentState!.validate()) {
-      LoginController().login(context, txtEmail.text, txtPassword.text);
+      LoginController().login(context, txtEmail.text, txtPassword.text).whenComplete(() {
+        setState(() {
+          globals.userEmail = txtEmail.text;
+        });
+      });
     } else {
       setState(() {
         autoValidation = true;

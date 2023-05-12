@@ -24,10 +24,13 @@ class _ScreenSmartphoneEmployeeState extends State<ScreenSmartphoneEmployee> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarWidget(
-        pageName: 'Smartphones do funcionário', 
-        context: context,
-        withoutIcons: true,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(60),
+        child: AppBarWidget(
+          pageName: 'Smartphones do funcionário', 
+          context: context,
+          withoutIcons: true,
+        ),
       ),
 
       body: SingleChildScrollView(

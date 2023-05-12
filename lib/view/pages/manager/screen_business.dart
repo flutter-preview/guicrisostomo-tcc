@@ -32,10 +32,13 @@ class _ScreenBusinessState extends State<ScreenBusiness> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarWidget(
-        pageName: 'Editar empresa', 
-        context: context,
-        withoutIcons: true,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(60),
+        child: AppBarWidget(
+          pageName: 'Editar empresa', 
+          context: context,
+          withoutIcons: true,
+        ),
       ),
 
       body: SingleChildScrollView(

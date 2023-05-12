@@ -189,10 +189,13 @@ class _ScreenHomeState extends State<ScreenHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarWidget(
-        pageName: 'Inicio',
-        context: context,
-        icon: Icons.home
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(60),
+        child: AppBarWidget(
+          pageName: 'Inicio',
+          context: context,
+          icon: Icons.home
+        ),
       ),
 
       body: SingleChildScrollView(

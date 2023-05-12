@@ -19,10 +19,13 @@ class _ScreenInfoTableState extends State<ScreenInfoTable> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarWidget(
-        pageName: 'Informações da mesa ${widget.arguments}',
-        context: context,
-        withoutIcons: true,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(60),
+        child: AppBarWidget(
+          pageName: 'Informações da mesa ${widget.arguments}',
+          context: context,
+          withoutIcons: true,
+        ),
       ),
 
       body: SingleChildScrollView(

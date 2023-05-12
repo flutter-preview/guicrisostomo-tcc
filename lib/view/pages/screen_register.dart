@@ -6,6 +6,7 @@ import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/imageMainScreens.dart';
 import 'package:tcc/view/widget/textFieldGeneral.dart';
+import 'package:tcc/globals.dart' as globals;
 
 class ScreenRegister extends StatefulWidget {
   const ScreenRegister({super.key});
@@ -45,7 +46,11 @@ class _ScreenRegisterState extends State<ScreenRegister> {
     void register() {
       if (formKey.currentState!.validate()) {
         
-        LoginController().createAccount(context, txtName.text, txtEmail.text, txtPhone.text, txtPassword.text);
+        LoginController().createAccount(context, txtName.text, txtEmail.text, txtPhone.text, txtPassword.text).whenComplete(() {
+          setState(() {
+            globals.userEmail = txtEmail.text;
+          });
+        });
 
       } else {
         setState(() {

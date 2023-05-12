@@ -18,11 +18,15 @@ class _ScreenRatingEmployeeState extends State<ScreenRatingEmployee> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarWidget(
-        pageName: 'Avaliações - ${widget.idEmployee}',
-        context: context,
-        withoutIcons: true,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(60),
+        child: AppBarWidget(
+          pageName: 'Avaliações - ${widget.idEmployee}',
+          context: context,
+          withoutIcons: true,
+        ),
       ),
+
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(

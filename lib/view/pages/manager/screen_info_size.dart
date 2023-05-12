@@ -19,10 +19,13 @@ class _ScreenInfoSizeState extends State<ScreenInfoSize> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarWidget(
-        pageName: 'Tamanho ${widget.id}', 
-        context: context,
-        withoutIcons: true,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(60),
+        child: AppBarWidget(
+          pageName: 'Tamanho ${widget.id}', 
+          context: context,
+          withoutIcons: true,
+        ),
       ),
 
       body: SingleChildScrollView(

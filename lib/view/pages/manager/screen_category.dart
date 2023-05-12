@@ -20,10 +20,13 @@ class _ScreenCategoriesState extends State<ScreenCategories> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarWidget(
-        pageName: 'Categorias de Produtos', 
-        context: context,
-        withoutIcons: true,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(60),
+        child: AppBarWidget(
+          pageName: 'Categorias de Produtos', 
+          context: context,
+          withoutIcons: true,
+        )
       ),
 
       body: SingleChildScrollView(

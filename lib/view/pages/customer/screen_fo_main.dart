@@ -161,38 +161,29 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
               children: [
                 const PartFinalizeOrder(partUser: 1),
 
-                TextFieldGeneral(
-                  label: 'Nome',
-                  variavel: txtName,
-                  context: context,
-                  keyboardType: TextInputType.name,
-                  ico: Icons.person,
-                  validator: (value) {
-                    validatorString(value!);
-                  },
-                ),
+                if (globals.userEmail != null)
+                  Column(
+                    children: [
+                      const SizedBox(height: 20,),
+                      Text(
+                        'Para finalizar o pedido é necessário estar logado. Caso não tenha uma conta, clique no botão abaixo para criar uma.',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                        ),
+                      ),
 
-                const SizedBox(height: 20,),
+                      const SizedBox(height: 20,),
 
-                TextFieldGeneral(
-                  label: 'Telefone',
-                  variavel: txtPhone,
-                  context: context,
-                  keyboardType: TextInputType.phone,
-                  ico: Icons.phone,
-                  validator: (value) {
-                    validatorPhone(value!);
-                  },
-                  inputFormatter: [maskFormatter],
-                  
-                  onChanged: (value) => {
-                    if (value.length <= 14) {
-                      txtPhone.value = maskFormatter.updateMask(mask: "(##) ####-#####")
-                    } else {
-                      txtPhone.value = maskFormatter.updateMask(mask: "(##) #####-####")
-                    }
-                  },
-                ),
+                      button(
+                        'Registrar', 
+                        0, 
+                        0, 
+                        Icons.person_add, 
+                        () => Navigator.pushNamed(context, 'register')
+                      )
+                    ],
+                  ),
 
                 const SizedBox(height: 20,),
 

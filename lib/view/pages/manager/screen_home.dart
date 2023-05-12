@@ -44,10 +44,13 @@ class _ScreenHomeManagerState extends State<ScreenHomeManager> {
         child: Column(
           mainAxisSize: MainAxisSize.max,
           children: [
-            appBarWidget(
-              pageName: 'Home',
-              context: context,
-              icon: Icons.home,
+            PreferredSize(
+              preferredSize: const Size.fromHeight(60),
+              child: AppBarWidget(
+                pageName: 'Home',
+                context: context,
+                icon: Icons.home,
+              ),
             ),
 
             Container(

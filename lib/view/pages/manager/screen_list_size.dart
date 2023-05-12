@@ -43,10 +43,13 @@ class _ScreenListSizeState extends State<ScreenListSize> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarWidget(
-        pageName: 'Tamanhos de Produtos', 
-        context: context,
-        icon: Icons.category,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(60),
+        child: AppBarWidget(
+          pageName: 'Tamanhos de Produtos', 
+          context: context,
+          icon: Icons.category,
+        ),
       ),
 
       body: SingleChildScrollView(

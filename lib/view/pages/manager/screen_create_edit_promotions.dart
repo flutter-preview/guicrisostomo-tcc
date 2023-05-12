@@ -38,10 +38,13 @@ class _ScreenCreateEditPromotionState extends State<ScreenCreateEditPromotion> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarWidget(
-        pageName: widget.id == null ? 'Criar Promoção' : 'Editar Promoção', 
-        context: context,
-        withoutIcons: true,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(60),
+        child: AppBarWidget(
+          pageName: widget.id == null ? 'Criar Promoção' : 'Editar Promoção', 
+          context: context,
+          withoutIcons: true,
+        ),
       ),
 
       body: SingleChildScrollView(

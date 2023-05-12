@@ -149,10 +149,13 @@ class _ScreenVerificationTableState extends State<ScreenVerificationTable> {
   Widget build(BuildContext context) {
     
     return Scaffold(
-      appBar: appBarWidget(
-        pageName: 'Vincular a uma mesa',
-        context: context,
-        icon: Icons.table_restaurant_rounded,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(60),
+        child: AppBarWidget(
+          pageName: 'Vincular a uma mesa',
+          context: context,
+          icon: Icons.table_restaurant_rounded,
+        ),
       ),
 
       body: Padding(

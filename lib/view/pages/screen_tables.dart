@@ -25,10 +25,13 @@ class _ScreenTablesState extends State<ScreenTables> {
         preferredSize: const Size.fromHeight(250),
         child: Column(
           children: [
-            appBarWidget(
-              pageName: 'Mesas',
-              context: context,
-              icon: Icons.table_restaurant,
+            PreferredSize(
+              preferredSize: const Size.fromHeight(60),
+              child: AppBarWidget(
+                pageName: 'Mesas',
+                context: context,
+                icon: Icons.table_restaurant,
+              ),
             ),
 
             Container(
@@ -83,10 +86,13 @@ class _ScreenTablesState extends State<ScreenTables> {
             ),
           ],
         )
-      ) : appBarWidget(
-        pageName: 'Mesas',
-        context: context,
-        icon: Icons.table_restaurant,
+      ) : PreferredSize(
+        preferredSize: const Size.fromHeight(60),
+        child: AppBarWidget(
+          pageName: 'Mesas',
+          context: context,
+          icon: Icons.table_restaurant,
+        ),
       ),
       
       body: SingleChildScrollView(

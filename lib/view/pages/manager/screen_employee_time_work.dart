@@ -45,10 +45,13 @@ class _ScreenTimeWorkEmployeeState extends State<ScreenTimeWorkEmployee> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarWidget(
-        pageName: 'Horário de trabalho do funcionário ${widget.id}',
-        context: context,
-        withoutIcons: true,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(60),
+        child: AppBarWidget(
+          pageName: 'Horário de trabalho do funcionário ${widget.id}',
+          context: context,
+          withoutIcons: true,
+        ),
       ),
 
       body: SingleChildScrollView(

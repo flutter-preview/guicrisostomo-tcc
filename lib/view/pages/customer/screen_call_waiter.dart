@@ -76,10 +76,13 @@ class _ScreenCallWaiterState extends State<ScreenCallWaiter> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarWidget(
-        pageName: 'Mesa',
-        context: context,
-        icon: Icons.room_service,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(60),
+        child: AppBarWidget(
+          pageName: 'Mesa',
+          context: context,
+          icon: Icons.room_service,
+        ),
       ),
 
       body: idSale != 0 ? SingleChildScrollView(

@@ -187,10 +187,13 @@ class _ScreenInfoItemState extends State<ScreenInfoItem> {
     }
 
     return Scaffold(
-      appBar: appBarWidget(
-        pageName: 'Informações do item', 
-        context: context,
-        withoutIcons: true,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(60),
+        child: AppBarWidget(
+          pageName: 'Informações do item', 
+          context: context,
+          withoutIcons: true,
+        ),
       ),
 
       body: SingleChildScrollView(

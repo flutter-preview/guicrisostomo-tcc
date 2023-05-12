@@ -53,10 +53,13 @@ class _ScreenProfileState extends State<ScreenProfile> {
     }
 
     return Scaffold(
-      appBar: appBarWidget(
-        pageName: 'Perfil',
-        context: context,
-        icon: Icons.person,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(60),
+        child: AppBarWidget(
+          pageName: 'Perfil',
+          context: context,
+          icon: Icons.person,
+        ),
       ),
 
       body: SingleChildScrollView(

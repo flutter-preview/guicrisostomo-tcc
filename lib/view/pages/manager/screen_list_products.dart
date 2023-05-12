@@ -17,10 +17,13 @@ class _ScreenListProductsState extends State<ScreenListProducts> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarWidget(
-        pageName: 'Produtos',
-        context: context,
-        icon: Icons.restaurant_menu,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(60),
+        child: AppBarWidget(
+          pageName: 'Produtos',
+          context: context,
+          icon: Icons.restaurant_menu,
+        ),
       ),
 
       body: SingleChildScrollView(

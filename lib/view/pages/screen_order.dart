@@ -106,11 +106,15 @@ class _ScreenOrderState extends State<ScreenOrder> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarWidget(
-        pageName: 'Pedidos',
-        context: context,
-        svg: 'lib/images/iconOrder.svg',
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(60),
+        child: AppBarWidget(
+          pageName: 'Pedidos',
+          context: context,
+          svg: 'lib/images/iconOrder.svg',
+        ),
       ),
+      
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
