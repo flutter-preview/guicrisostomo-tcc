@@ -53,8 +53,6 @@ class LoginController {
         error(context, 'Ocorreu um erro ao fazer login: ${e.code.toString()}');
       })
     };
-
-    Navigator.pop(context);
   }
 
   Future<void> saveDatasUser(String? uid, String name, String email, String? phone, int type, BuildContext context) async {
