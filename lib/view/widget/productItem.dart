@@ -70,12 +70,13 @@ class _ProductItemState extends State<ProductItem> {
                     ) : null,
                     
                     title: Text(
-                      name,
+                      name.toUpperCase(),
                       style: TextStyle(
                         fontSize: 20,
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
                       ),
+                      overflow: TextOverflow.ellipsis,
                     ),
             
                     subtitle: Column(
