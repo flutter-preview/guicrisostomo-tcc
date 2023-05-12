@@ -6,12 +6,10 @@ import 'package:tcc/controller/postgres/Lists/sales.dart';
 import 'package:tcc/globals.dart' as globals;
 import 'package:tcc/main.dart';
 import 'package:tcc/model/standardRadioButton.dart';
-import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/customer/partFinalizeOrder.dart';
 import 'package:tcc/view/widget/radioButton.dart';
 import 'package:tcc/view/widget/switchListTile.dart';
-import 'package:tcc/view/widget/textFieldGeneral.dart';
 
 class ScreenFOMain extends StatefulWidget {
   const ScreenFOMain({super.key});
@@ -39,9 +37,22 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
 
   bool hasCloseTable = false;
 
+  List<RadioButtonList> listRadioButton = [
+    RadioButtonList(
+      name: 'Entrega',
+      icon: Icons.local_shipping,
+    ),
+
+    RadioButtonList(
+      name: 'Retirada',
+      icon: Icons.person,
+    ),
+  ];
+
   @override
   void initState() {
     super.initState();
+    RadioButtonList.setGroup('Entrega');
     getTypeSale().then((value) {
       setState(() {
         type = value;
@@ -51,18 +62,6 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
 
   @override
   Widget build(BuildContext context) {
-
-    List<RadioButtonList> listRadioButton = [
-      RadioButtonList(
-        name: 'Entrega',
-        icon: Icons.local_shipping,
-      ),
-
-      RadioButtonList(
-        name: 'Retirada',
-        icon: Icons.person,
-      ),
-    ];
     
     return type != '' ? Scaffold(
       appBar: PreferredSize(
@@ -101,7 +100,7 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Dados pessoais - Etapa 1/3',
+                          type == 'Entrega' ? 'Dados pessoais - Etapa 1/3' : 'Dados pessoais - Etapa 1/2',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 20,
@@ -189,6 +188,11 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
 
                 RadioButon(
                   list: listRadioButton,
+                  callback: (value) {
+                    setState(() {
+                      type = value;
+                    });
+                  },
                 ),
               ],
             ) : 
@@ -287,9 +291,7 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
               50,
               type != 'Mesa' ? Icons.arrow_forward : Icons.check,
               () {
-                if (type != 'Mesa') {
-                  Navigator.push(context, navigator('finalize_order_customer/address'));
-                } else {
+                if (type == 'Mesa') {
                   SalesController().finalizeSale(hasCloseTable).whenComplete(() {
 
                     LoginController().getTypeUser().then((typeUser) {
@@ -317,6 +319,10 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
                     });
 
                   });
+                } else if (type == 'Entrega') {
+                  Navigator.push(context, navigator('finalize_order_customer/address'));
+                } else {
+                  Navigator.pushNamed(context, 'finalize_order_customer/payment');
                 }
               },
               false
