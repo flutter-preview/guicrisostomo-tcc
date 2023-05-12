@@ -163,7 +163,7 @@ class SalesController {
     })
     : await connectSupadatabase().then((conn) async {
       return await conn.query('SELECT id FROM orders WHERE table_number = @table and status = @status and cnpj = @cnpj', substitutionValues: {
-        'table': globals.numberTable,
+        'table': globals.numberTable ?? 0,
         'status': 'Andamento',
         'cnpj': globals.businessId,
       }).then((List value) async {
@@ -195,13 +195,13 @@ class SalesController {
                 INNER JOIN products p ON p.id = i.id_product 
                 INNER JOIN orders o ON o.id = i.id_order 
                 INNER JOIN user_order u ON u.id_order = o.id
-                where u.uid = @uid and o.status = @status and i.status = 'Ativo' and o.table_number = @table and u.fg_ativo = true
+                where u.uid = @uid and o.status = @status and i.status = 'Ativo' and coalesce(o.table_number, 0) = @table and u.fg_ativo = true
                 GROUP BY (i.relation_id, i.id_variation)
               ) AS max
             ''', substitutionValues: {
             'uid': FirebaseAuth.instance.currentUser!.uid,
             'status': 'Andamento',
-            'table': globals.numberTable,
+            'table': globals.numberTable ?? 0,
           }).then((List value) {
             conn.close();
 
@@ -222,13 +222,13 @@ class SalesController {
                 INNER JOIN products p ON p.id = i.id_product 
                 INNER JOIN orders o ON o.id = i.id_order 
                 INNER JOIN user_order u ON u.id_order = o.id
-                where u.uid = @uid and o.status = @status and i.status = 'Ativo' and o.table_number = @table and u.fg_ativo = true
+                where u.uid = @uid and o.status = @status and i.status = 'Ativo' and coalesce(o.table_number, 0) = @table and u.fg_ativo = true
                 GROUP BY (i.relation_id, i.id_variation)
               ) AS avg
             ''', substitutionValues: {
             'uid': FirebaseAuth.instance.currentUser!.uid,
             'status': 'Andamento',
-            'table': globals.numberTable,
+            'table': globals.numberTable ?? 0,
           }).then((List value) {
             conn.close();
 
@@ -257,11 +257,11 @@ class SalesController {
               SELECT MAX(p.price * i.qtd) from items i 
                 INNER JOIN products p ON p.id = i.id_product 
                 INNER JOIN orders o ON o.id = i.id_order
-                where o.table_number = @table and o.status = @status and o.cnpj = @cnpj
+                where coalesce(o.table_number, 0) = @table and o.status = @status and o.cnpj = @cnpj
                 GROUP BY (i.relation_id, i.id_variation)
               ) AS max
             ''', substitutionValues: {
-            'table': globals.numberTable,
+            'table': globals.numberTable ?? 0,
             'status': 'Andamento',
             'cnpj': globals.businessId,
           }).then((List value) {
@@ -283,11 +283,11 @@ class SalesController {
               SELECT AVG(p.price * i.qtd) from items i 
                 INNER JOIN products p ON p.id = i.id_product 
                 INNER JOIN orders o ON o.id = i.id_order 
-                where o.table_number = @table and o.status = @status and o.cnpj = @cnpj
+                where coalesce(o.table_number, 0) = @table and o.status = @status and o.cnpj = @cnpj
                 GROUP BY (i.relation_id, i.id_variation)
               ) AS avg
             ''', substitutionValues: {
-            'table': globals.numberTable,
+            'table': globals.numberTable ?? 0,
             'status': 'Andamento',
             'cnpj': globals.businessId,
           }).then((List value) {
@@ -314,13 +314,13 @@ class SalesController {
       await BusinessInformationController().getInfoCalcValue().then((value) async {
         if (value == true || value == null) {
           return await conn.query('''
-            SELECT o.id, o.cnpj, o.datetime, uo.uid, o.table_number, o.type, (
+            SELECT o.id, o.cnpj, o.datetime, uo.uid, coalesce(o.table_number, 0), o.type, (
               SELECT SUM(MAX.MAX) FROM (
                 SELECT MAX(p.price * i.qtd) from items i 
                   INNER JOIN products p ON p.id = i.id_product 
                   INNER JOIN orders o ON o.id = i.id_order 
                   INNER JOIN user_order u ON u.id_order = o.id
-                  where u.uid = @uid and o.status = @status and i.status = 'Ativo' and o.table_number = @table and u.fg_ativo = true
+                  where u.uid = @uid and o.status = @status and i.status = 'Ativo' and coalesce(o.table_number, 0) = @table and u.fg_ativo = true
                   GROUP BY (i.relation_id, i.id_variation)
                 ) AS max
             ), (
@@ -333,11 +333,11 @@ class SalesController {
             )
               FROM orders o
               INNER JOIN user_order uo ON uo.id_order = o.id
-              WHERE uo.uid = @uid and o.status = @status and o.table_number = @table and uo.fg_ativo = true
+              WHERE uo.uid = @uid and o.status = @status and coalesce(o.table_number, 0) = @table and uo.fg_ativo = true
             ''', substitutionValues: {
             'uid': FirebaseAuth.instance.currentUser!.uid,
             'status': 'Andamento',
-            'table': globals.numberTable,
+            'table': globals.numberTable ?? 0,
           }).then((List value) {
             conn.close();
         
@@ -361,13 +361,13 @@ class SalesController {
           });
         } else {
           return await conn.query('''
-            SELECT o.id, o.cnpj, o.datetime, uo.uid, o.table_number, o.type, (
+            SELECT o.id, o.cnpj, o.datetime, uo.uid, coalesce(o.table_number, 0), o.type, (
               SELECT SUM(avg.AVG) FROM (
                 SELECT AVG(p.price * i.qtd) from items i 
                   INNER JOIN products p ON p.id = i.id_product 
                   INNER JOIN orders o ON o.id = i.id_order 
                   INNER JOIN user_order u ON u.id_order = o.id
-                  where u.uid = @uid and o.status = @status and i.status = 'Ativo' and o.table_number = @table and u.fg_ativo = true
+                  where u.uid = @uid and o.status = @status and i.status = 'Ativo' and coalesce(o.table_number, 0) = @table and u.fg_ativo = true
                   GROUP BY (i.relation_id, i.id_variation)
                 ) AS avg
             ), (
@@ -380,11 +380,11 @@ class SalesController {
             )
               FROM orders o
               INNER JOIN user_order uo ON uo.id_order = o.id
-              WHERE uo.uid = @uid and o.status = @status and o.table_number = @table and uo.fg_ativo = true
+              WHERE uo.uid = @uid and o.status = @status and coalesce(o.table_number, 0) = @table and uo.fg_ativo = true
             ''', substitutionValues: {
             'uid': FirebaseAuth.instance.currentUser!.uid,
             'status': 'Andamento',
-            'table': globals.numberTable,
+            'table': globals.numberTable ?? 0,
           }).then((List value) {
             conn.close();
         
@@ -411,7 +411,7 @@ class SalesController {
         }
       })
       : await conn.query('''
-        SELECT o.id, o.cnpj, o.datetime, uo.uid, o.table_number, o.type, (
+        SELECT o.id, o.cnpj, o.datetime, uo.uid, coalesce(o.table_number, 0), o.type, (
             SELECT ua.name
               FROM tb_user ua
               INNER JOIN user_order uoa ON uoa.uid = ua.uid
@@ -421,11 +421,11 @@ class SalesController {
           )
           FROM orders o
           INNER JOIN user_order uo ON uo.id_order = o.id
-          WHERE uo.uid = @uid and o.status = @status and o.table_number = @table and uo.fg_ativo = true
+          WHERE uo.uid = @uid and o.status = @status and coalesce(o.table_number, 0) = @table and uo.fg_ativo = true
         ''', substitutionValues: {
         'uid': FirebaseAuth.instance.currentUser!.uid,
         'status': 'Andamento',
-        'table': globals.numberTable,
+        'table': globals.numberTable ?? 0,
       }).then((List value) {
         conn.close();
     
@@ -500,7 +500,7 @@ class SalesController {
       await BusinessInformationController().getInfoCalcValue().then((value) {
         if (value == true || value == null) {
           querySelect = '''
-            SELECT o.id, o.cnpj, o.datetime, uo.uid, o.status, o.table_number, 
+            SELECT o.id, o.cnpj, o.datetime, uo.uid, o.status, coalesce(o.table_number, 0), 
               (
                 SELECT SUM(MAX.MAX) FROM (
                   SELECT MAX(pa.price * ia.qtd) from items ia 
@@ -526,7 +526,7 @@ class SalesController {
             ''';
         } else {
           querySelect = '''
-            SELECT o.id, o.cnpj, o.datetime, uo.uid, o.status, o.table_number, 
+            SELECT o.id, o.cnpj, o.datetime, uo.uid, o.status, coalesce(o.table_number, 0), 
               (
                 SELECT SUM(MAX.avg) FROM (
                   SELECT AVG(pa.price * ia.qtd) from items ia 
@@ -599,12 +599,12 @@ class SalesController {
             SELECT o.id 
               FROM orders o
               INNER JOIN user_order uo ON uo.id_order = o.id
-              WHERE o.cnpj = @cnpj AND uo.uid = @uid AND o.status = 'Andamento' AND o.table_number = @table and uo.fg_ativo = true
+              WHERE o.cnpj = @cnpj AND uo.uid = @uid AND o.status = 'Andamento' AND coalesce(o.table_number, 0) = @table and uo.fg_ativo = true
           ) AND status = 'Ativo'
       ''', substitutionValues: {
         'cnpj': globals.businessId,
         'uid': FirebaseAuth.instance.currentUser!.uid,
-        'table': globals.numberTable,
+        'table': globals.numberTable ?? 0,
       }).catchError((e) {
         print(e);
       });
@@ -616,12 +616,12 @@ class SalesController {
               SELECT o.id 
                 FROM orders o
                 INNER JOIN user_order uo ON uo.id_order = o.id
-                WHERE o.cnpj = @cnpj AND uo.uid = @uid AND o.status = 'Andamento' AND o.table_number = @table and uo.fg_ativo = true
+                WHERE o.cnpj = @cnpj AND uo.uid = @uid AND o.status = 'Andamento' AND coalesce(o.table_number, 0) = @table and uo.fg_ativo = true
             ) AND status = 'Andamento'
         ''', substitutionValues: {
           'cnpj': globals.businessId,
           'uid': FirebaseAuth.instance.currentUser!.uid,
-          'table': globals.numberTable,
+          'table': globals.numberTable ?? 0,
         }).catchError((e) {
           print(e);
         });
