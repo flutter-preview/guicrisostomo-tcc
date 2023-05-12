@@ -29,7 +29,7 @@ PreferredSizeWidget appBarWidget({
           ),
           
           child: const Icon(
-              Icons.exit_to_app,
+              Icons.logout,
               size: 30,
             ),
           onPressed: () { 
