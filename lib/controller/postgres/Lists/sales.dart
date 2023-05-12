@@ -20,11 +20,13 @@ class SalesController {
       });
 
       return await conn.query(
-        'select id from orders where datetime = @datetime and cnpj = @cnpj and status = @status and type = @type', substitutionValues: {
+        '''
+          select id from orders where datetime = @datetime and cnpj = @cnpj and status = @status and coalesce(type, '') = @type
+        ''', substitutionValues: {
           'datetime': now,
           'cnpj': globals.businessId,
           'status': 'Aguardando usuário',
-          'type': globals.numberTable != null ? 'Mesa' : null,
+          'type': globals.numberTable != null ? 'Mesa' : '',
         },
       ).then((List value) {
         conn.close();
@@ -142,11 +144,11 @@ class SalesController {
           INNER JOIN user_order ON user_order.id_order = orders.id
           WHERE user_order.uid = @uid and orders.status = @status and user_order.fg_ativo = true
       ''', substitutionValues: {
-        'uid': FirebaseAuth.instance.currentUser!.uid,
+        'uid': FirebaseAuth.instance.currentUser?.uid,
         'status': 'Andamento',
-      }).then((List value) async {
+      }).then((List? value) async {
         conn.close();
-        List list = value;
+        List list = value ?? [];
 
         if (list.isEmpty) {
           await add().then((value) async {
