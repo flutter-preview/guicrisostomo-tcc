@@ -126,10 +126,10 @@ Route navigator([String? name, Object? arguments]) {
       page = const ScreenFOMain();
       break;
     case 'finalize_order_customer/address' :
-      page = const ScreenFOGetAddress();
+      page = ScreenFOGetAddress(typeSale: arguments.toString(),);
       break;
     case 'finalize_order_customer/payment' : 
-      page = const ScreenFOPayment();
+      page = ScreenFOPayment(typeSale: arguments.toString(),);
       break;
     // case 'notifications' :
     //   page = const ScreenNotifications();
@@ -287,8 +287,8 @@ Future<void> main() async {
         'order' :(context) => const ScreenOrder(),
         'order/info' :(context) => ScreenInfoOrder(),
         'finalize_order_customer' :(context) => const ScreenFOMain(),
-        'finalize_order_customer/address' :(context) => const ScreenFOGetAddress(),
-        'finalize_order_customer/payment' :(context) => const ScreenFOPayment(),
+        'finalize_order_customer/address' :(context) => const ScreenFOGetAddress(typeSale: '',),
+        'finalize_order_customer/payment' :(context) => const ScreenFOPayment(typeSale: '',),
         // 'notifications' :(context) => const ScreenNotifications(),
         'terms' :(context) => const ScreenTerms(),
         'loading' :(context) => const ScreenLoading(),

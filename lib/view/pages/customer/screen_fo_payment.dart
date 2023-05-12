@@ -8,7 +8,11 @@ import 'package:tcc/globals.dart' as globals;
 import 'package:tcc/view/widget/textFieldGeneral.dart';
 
 class ScreenFOPayment extends StatefulWidget {
-  const ScreenFOPayment({super.key});
+  final String typeSale;
+  const ScreenFOPayment({
+    super.key,
+    required this.typeSale
+  });
 
   @override
   State<ScreenFOPayment> createState() => _ScreenFOPaymentState();
@@ -193,35 +197,33 @@ class _ScreenFOPaymentState extends State<ScreenFOPayment> {
                     ),
                 ],
               ),
-
-            const SizedBox(height: 50),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                button(
-                  'Voltar',
-                  180,
-                  50,
-                  Icons.arrow_back,
-                  () => Navigator.pop(context)
-                ),
-
-                button(
-                  'Finalizar',
-                  180,
-                  50,
-                  Icons.check,
-                  () => {
-                    Navigator.popUntil(context, ModalRoute.withName('home'))
-                  },
-                ),
-              ],
-            ),
             
           ],
         ),
+      ),
+
+      bottomSheet: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          button(
+            'Voltar',
+            180,
+            50,
+            Icons.arrow_back,
+            () => Navigator.pop(context)
+          ),
+
+          button(
+            'Finalizar',
+            180,
+            50,
+            Icons.check,
+            () => {
+              Navigator.popUntil(context, ModalRoute.withName('home'))
+            },
+          ),
+        ],
       ),
     );
   }

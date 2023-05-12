@@ -323,9 +323,9 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
 
                   });
                 } else if (type == 'Entrega') {
-                  Navigator.push(context, navigator('finalize_order_customer/address'));
+                  Navigator.push(context, navigator('finalize_order_customer/address', type));
                 } else {
-                  Navigator.pushNamed(context, 'finalize_order_customer/payment');
+                  Navigator.push(context, navigator('finalize_order_customer/payment', type));
                 }
               },
               false

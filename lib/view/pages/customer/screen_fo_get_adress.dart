@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:tcc/main.dart';
-import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/addressExistent.dart';
-import 'package:tcc/view/widget/bottonNavigation.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/customer/partFinalizeOrder.dart';
-import 'package:tcc/view/widget/cartInfo.dart';
-import 'package:tcc/view/widget/textFieldGeneral.dart';
 import 'package:tcc/globals.dart' as globals;
 
 class ScreenFOGetAddress extends StatefulWidget {
-  const ScreenFOGetAddress({super.key});
+  final String typeSale;
+  const ScreenFOGetAddress({
+    super.key,
+    required this.typeSale
+  });
 
   @override
   State<ScreenFOGetAddress> createState() => _ScreenFOGetAddressState();
@@ -96,36 +96,34 @@ class _ScreenFOGetAddressState extends State<ScreenFOGetAddress> {
               txtNeighborhood: txtNeighborhood,
               txtComplement: txtComplement
             ),
-
-            const SizedBox(height: 50),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                button(
-                  'Voltar',
-                  180,
-                  50,
-                  Icons.arrow_back,
-                  () => Navigator.pop(context)
-                ),
-
-                button(
-                  'Avançar',
-                  180,
-                  50,
-                  Icons.arrow_forward,
-                  () => {
-                    Navigator.push(context, navigator('finalize_order_customer/payment')),
-                  },
-                  false
-                ),
-              ],
-            ),
             
           ],
         ),
+      ),
+
+      bottomSheet: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          button(
+            'Voltar',
+            180,
+            50,
+            Icons.arrow_back,
+            () => Navigator.pop(context)
+          ),
+
+          button(
+            'Avançar',
+            180,
+            50,
+            Icons.arrow_forward,
+            () => {
+              Navigator.push(context, navigator('finalize_order_customer/payment', widget.typeSale)),
+            },
+            false
+          ),
+        ],
       ),
     );
   }
