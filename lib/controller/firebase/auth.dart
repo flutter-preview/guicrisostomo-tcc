@@ -54,7 +54,7 @@ class LoginController {
       })
     };
 
-    Navigator.of(context).pop();
+    Navigator.pop(context);
   }
 
   Future<void> saveDatasUser(String? uid, String name, String email, String? phone, int type, BuildContext context) async {
@@ -109,7 +109,7 @@ class LoginController {
       }
     });
 
-    Navigator.of(context).pop();
+    Navigator.pop(context);
   }
 
   Future<void> login(context, String email, String senha) async {
@@ -119,7 +119,7 @@ class LoginController {
         .signInWithEmailAndPassword(email: email, password: senha)
         .then((res) async {
       success(context, 'Usuário autenticado com sucesso.');
-      // Navigator.of(context).pop();
+      // Navigator.pop(context);
       redirectUser(context);
 
     }).catchError((e) {
@@ -138,7 +138,7 @@ class LoginController {
       }
     });
 
-    Navigator.of(context).pop();
+    Navigator.pop(context);
   }
 
   Future<void> forgetPassword(String email, context) async {
@@ -148,7 +148,7 @@ class LoginController {
       error(context, 'Ocorreu um erro ao enviar seu e-mail de recuperação de senha: ${e.code.toString()}');
     });
 
-    Navigator.of(context).pop();
+    Navigator.pop(context);
     Navigator.pushNamed(
       context,
       'presentation',
@@ -165,8 +165,8 @@ class LoginController {
     }
     
     await FirebaseAuth.instance.signOut();
-    Navigator.of(context).pop();
-    Navigator.of(context).pop();
+    Navigator.pop(context);
+    Navigator.pop(context);
     Navigator.pushNamed(
       context,
       'presentation',
@@ -270,11 +270,11 @@ class LoginController {
       error(context, "Ocorreu um erro ao entrar: $onError");
     });
 
-    Navigator.of(context).pop();
+    Navigator.pop(context);
   }
 
-  Future<void> redirectUser(context, [value]) async {
-    // Navigator.of(context).pop();
+  Future<void> redirectUser(BuildContext context, [value]) async {
+    // Navigator.pop(context);
       // var t = await getTypeUser() ?? 'Cliente';
       // success(context, t);
       // return;
@@ -305,37 +305,37 @@ class LoginController {
           //   [value.user?.uid, value.user?.displayName, value.user?.email, null, 1, value.user?.photoURL]);
         },);
 
-        Navigator.of(context).pop();
+        Navigator.pop(context);
         Navigator.push(
           context,
           navigator('home'),
         );
 
         return;
-      }
-
-      switch (typeUser) {
-        case 'Cliente':
-          Navigator.of(context).pop();
-          Navigator.push(
-            context,
-            navigator('home'),
-          );
-          break;
-        case 'Gerente':
-          Navigator.of(context).pop();
-          Navigator.push(
-            context,
-            navigator('home_manager'),
-          );
-          break;
-        default:
-          Navigator.of(context).pop();
-          Navigator.push(
-            context,
-            navigator('home_employee'),
-          );
-          break;
+      } else {
+        switch (typeUser) {
+          case 'Cliente':
+            Navigator.pop(context);
+            Navigator.push(
+              context,
+              navigator('home'),
+            );
+            break;
+          case 'Gerente':
+            Navigator.pop(context);
+            Navigator.push(
+              context,
+              navigator('home_manager'),
+            );
+            break;
+          default:
+            Navigator.pop(context);
+            Navigator.push(
+              context,
+              navigator('home_employee'),
+            );
+            break;
+        }
       }
     });
   }

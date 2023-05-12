@@ -21,7 +21,7 @@ class TablesController {
   Future<bool> isTableCreated(int number) async {
     return await connectSupadatabase().then((conn) async {
       return await conn.query('''
-        SELECT table_number FROM sales WHERE table_number = @number AND status = 'Andamento';
+        SELECT table_number FROM sales WHERE table_number = @number AND status = 'Andamento' AND uo.fg_ativo = true;
       ''').then((value) {
         if (value.isNotEmpty) {
           return true;
@@ -38,7 +38,7 @@ class TablesController {
         SELECT table_number 
           FROM orders o
           INNER JOIN user_order uo ON uo.id_order = o.id 
-          WHERE o.status = 'Andamento' AND uo.uid = @uid AND o.type = 'Mesa';
+          WHERE o.status = 'Andamento' AND uo.uid = @uid AND o.type = 'Mesa' AND uo.fg_ativo = true;
       ''', substitutionValues: {
         'uid': FirebaseAuth.instance.currentUser!.uid,
       }).then((value) {

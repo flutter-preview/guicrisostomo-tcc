@@ -742,6 +742,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
 
                 await ProductsCartController().isLimitedItemVariationOrProduct(context, productSelect, int.parse(txtQtd.text)).then((value) {
                   if (!value) {
+                    Navigator.pop(context);
                     return;
                   }
 
@@ -749,6 +750,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                 });
 
                 if (!verification) {
+                  Navigator.pop(context);
                   return;
                 }
 

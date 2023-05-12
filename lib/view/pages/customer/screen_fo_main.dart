@@ -295,15 +295,38 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
               180,
               50,
               type != 'Mesa' ? Icons.arrow_forward : Icons.check,
-              () async {
-                type != 'Mesa' ?
-                  Navigator.push(context, navigator('finalize_order_customer/address'))
-                :
-                  Navigator.pop(context);
-                  Navigator.push(context, navigator('loading'));
-                  SalesController().finalizeSale(hasCloseTable);
-                  Navigator.pop(context);
-                  await LoginController().redirectUser(context);
+              () {
+                if (type != 'Mesa') {
+                  Navigator.push(context, navigator('finalize_order_customer/address'));
+                } else {
+                  SalesController().finalizeSale(hasCloseTable).whenComplete(() {
+
+                    LoginController().getTypeUser().then((typeUser) {
+                      if (hasCloseTable) {
+                        setState(() {
+                          globals.numberTable = null;
+                          globals.totalSale = 0;
+                          globals.isSelectNewItem = false;
+                        });
+                      }
+
+                      Navigator.pop(context);
+
+                      switch (typeUser) {
+                        case 'Cliente':
+                          Navigator.pushReplacementNamed(context, 'home');
+                          break;
+                        case 'Gerente':
+                          Navigator.pushReplacementNamed(context, 'home_manager');
+                          break;
+                        default:
+                          Navigator.pushReplacementNamed(context, 'home_employee');
+                          break;
+                      }
+                    });
+
+                  });
+                }
               },
               false
             ),

@@ -140,7 +140,7 @@ class SalesController {
         SELECT orders.id 
           FROM orders 
           INNER JOIN user_order ON user_order.id_order = orders.id
-          WHERE user_order.uid = @uid and orders.status = @status
+          WHERE user_order.uid = @uid and orders.status = @status and user_order.fg_ativo = true
       ''', substitutionValues: {
         'uid': FirebaseAuth.instance.currentUser!.uid,
         'status': 'Andamento',
@@ -195,7 +195,7 @@ class SalesController {
                 INNER JOIN products p ON p.id = i.id_product 
                 INNER JOIN orders o ON o.id = i.id_order 
                 INNER JOIN user_order u ON u.id_order = o.id
-                where u.uid = @uid and o.status = @status and i.status = 'Ativo' and o.table_number = @table
+                where u.uid = @uid and o.status = @status and i.status = 'Ativo' and o.table_number = @table and u.fg_ativo = true
                 GROUP BY (i.relation_id, i.id_variation)
               ) AS max
             ''', substitutionValues: {
@@ -222,7 +222,7 @@ class SalesController {
                 INNER JOIN products p ON p.id = i.id_product 
                 INNER JOIN orders o ON o.id = i.id_order 
                 INNER JOIN user_order u ON u.id_order = o.id
-                where u.uid = @uid and o.status = @status and i.status = 'Ativo' and o.table_number = @table
+                where u.uid = @uid and o.status = @status and i.status = 'Ativo' and o.table_number = @table and u.fg_ativo = true
                 GROUP BY (i.relation_id, i.id_variation)
               ) AS avg
             ''', substitutionValues: {
@@ -320,20 +320,20 @@ class SalesController {
                   INNER JOIN products p ON p.id = i.id_product 
                   INNER JOIN orders o ON o.id = i.id_order 
                   INNER JOIN user_order u ON u.id_order = o.id
-                  where u.uid = @uid and o.status = @status and i.status = 'Ativo' and o.table_number = @table
+                  where u.uid = @uid and o.status = @status and i.status = 'Ativo' and o.table_number = @table and u.fg_ativo = true
                   GROUP BY (i.relation_id, i.id_variation)
                 ) AS max
             ), (
               SELECT ua.name
                 FROM tb_user ua
                 INNER JOIN user_order uoa ON uoa.uid = ua.uid
-                WHERE uoa.id_order = o.id
+                WHERE uoa.id_order = o.id and uoa.fg_ativo = true
                 ORDER BY uoa.id
                 LIMIT 1
             )
               FROM orders o
               INNER JOIN user_order uo ON uo.id_order = o.id
-              WHERE uo.uid = @uid and o.status = @status and o.table_number = @table
+              WHERE uo.uid = @uid and o.status = @status and o.table_number = @table and uo.fg_ativo = true
             ''', substitutionValues: {
             'uid': FirebaseAuth.instance.currentUser!.uid,
             'status': 'Andamento',
@@ -367,20 +367,20 @@ class SalesController {
                   INNER JOIN products p ON p.id = i.id_product 
                   INNER JOIN orders o ON o.id = i.id_order 
                   INNER JOIN user_order u ON u.id_order = o.id
-                  where u.uid = @uid and o.status = @status and i.status = 'Ativo' and o.table_number = @table
+                  where u.uid = @uid and o.status = @status and i.status = 'Ativo' and o.table_number = @table and u.fg_ativo = true
                   GROUP BY (i.relation_id, i.id_variation)
                 ) AS avg
             ), (
               SELECT ua.name
                 FROM tb_user ua
                 INNER JOIN user_order uoa ON uoa.uid = ua.uid
-                WHERE uoa.id_order = o.id
+                WHERE uoa.id_order = o.id and uoa.fg_ativo = true
                 ORDER BY uoa.id
                 LIMIT 1
             )
               FROM orders o
               INNER JOIN user_order uo ON uo.id_order = o.id
-              WHERE uo.uid = @uid and o.status = @status and o.table_number = @table
+              WHERE uo.uid = @uid and o.status = @status and o.table_number = @table and uo.fg_ativo = true
             ''', substitutionValues: {
             'uid': FirebaseAuth.instance.currentUser!.uid,
             'status': 'Andamento',
@@ -415,13 +415,13 @@ class SalesController {
             SELECT ua.name
               FROM tb_user ua
               INNER JOIN user_order uoa ON uoa.uid = ua.uid
-              WHERE uoa.id_order = o.id
+              WHERE uoa.id_order = o.id and uoa.fg_ativo = true
               ORDER BY uoa.id
               LIMIT 1
           )
           FROM orders o
           INNER JOIN user_order uo ON uo.id_order = o.id
-          WHERE uo.uid = @uid and o.status = @status and o.table_number = @table
+          WHERE uo.uid = @uid and o.status = @status and o.table_number = @table and uo.fg_ativo = true
         ''', substitutionValues: {
         'uid': FirebaseAuth.instance.currentUser!.uid,
         'status': 'Andamento',
@@ -522,7 +522,7 @@ class SalesController {
               FROM orders o
               INNER JOIN business b ON b.cnpj = o.cnpj
               INNER JOIN user_order uo ON uo.id_order = o.id
-              WHERE o.cnpj = @cnpj AND (o.status LIKE @status AND o.datetime BETWEEN @datetime and @datetime2)
+              WHERE o.cnpj = @cnpj AND (o.status LIKE @status AND o.datetime BETWEEN @datetime and @datetime2) and uo.fg_ativo = true
             ''';
         } else {
           querySelect = '''
@@ -548,7 +548,7 @@ class SalesController {
               FROM orders o
               INNER JOIN business b ON b.cnpj = o.cnpj
               INNER JOIN user_order uo ON uo.id_order = o.id
-              WHERE o.cnpj = @cnpj and (o.status LIKE @status AND o.datetime BETWEEN @datetime and @datetime2)
+              WHERE o.cnpj = @cnpj and (o.status LIKE @status AND o.datetime BETWEEN @datetime and @datetime2) and uo.fg_ativo = true
             ''';
         }
 
@@ -596,41 +596,38 @@ class SalesController {
       await conn.query('''
         UPDATE items SET status = 'Para impressão' 
           WHERE id_order = (
-            SELECT id 
+            SELECT o.id 
               FROM orders o
               INNER JOIN user_order uo ON uo.id_order = o.id
-              WHERE uo.id_order = o.id AND o.cnpj = @cnpj AND uo.uid = @uid AND o.status = 'Andamento' AND o.table_number = @table
+              WHERE o.cnpj = @cnpj AND uo.uid = @uid AND o.status = 'Andamento' AND o.table_number = @table and uo.fg_ativo = true
           ) AND status = 'Ativo'
       ''', substitutionValues: {
         'cnpj': globals.businessId,
-        'uid': FirebaseAuth.instance.currentUser != null ? FirebaseAuth.instance.currentUser!.uid : null,
+        'uid': FirebaseAuth.instance.currentUser!.uid,
         'table': globals.numberTable,
-      }).then((value) {
-        conn.close();
       }).catchError((e) {
         print(e);
       });
 
       if (hasCloseTable) {
         await conn.query('''
-          UPDATE orders SET status = 'Para impressão' 
-            FROM user_order
-            WHERE id_order = (
-              SELECT id 
+          UPDATE orders SET status = 'Para impressão'
+            WHERE id = (
+              SELECT o.id 
                 FROM orders o
                 INNER JOIN user_order uo ON uo.id_order = o.id
-                WHERE uo.id_order = o.id AND o.cnpj = @cnpj AND uo.uid = @uid AND o.status = 'Andamento' AND o.table_number = @table
-            ) AND status = 'Ativo'
+                WHERE o.cnpj = @cnpj AND uo.uid = @uid AND o.status = 'Andamento' AND o.table_number = @table and uo.fg_ativo = true
+            ) AND status = 'Andamento'
         ''', substitutionValues: {
           'cnpj': globals.businessId,
-          'uid': FirebaseAuth.instance.currentUser != null ? FirebaseAuth.instance.currentUser!.uid : null,
+          'uid': FirebaseAuth.instance.currentUser!.uid,
           'table': globals.numberTable,
         }).catchError((e) {
           print(e);
         });
-
-        globals.numberTable = null;
       }
+
+      conn.close();
     });
   }
 }

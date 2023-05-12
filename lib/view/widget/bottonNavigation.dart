@@ -88,6 +88,7 @@ class _BottomState extends State<Bottom> {
 
   Future<bool> getListItemCurrent() async {
     return await SalesController().idSale().then((value) async {
+      print('idSale: $value');
       if (value != 0) {
         return await ProductsCartController().listItemCurrent(value).then((products) {
           if (products.isNotEmpty) {
@@ -98,16 +99,6 @@ class _BottomState extends State<Bottom> {
         });
       } else {
         return false;
-      }
-    });
-  }
-
-  Future<void> verifyVinculateTableUser() async {
-    await TablesController().userVinculatedToTable().then((value) {
-      if (value != 0) {
-        setState(() {
-          globals.numberTable = value;
-        });
       }
     });
   }
@@ -124,7 +115,13 @@ class _BottomState extends State<Bottom> {
     });
 
     if (globals.numberTable == null) {
-      verifyVinculateTableUser();
+      TablesController().userVinculatedToTable().then((value) {
+        if (value != 0) {
+          setState(() {
+            globals.numberTable = value;
+          });
+        }
+      });
     }
   }
 

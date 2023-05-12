@@ -431,7 +431,7 @@ class ProductsController {
           INNER JOIN products p ON p.id = i.id_product
           INNER JOIN variations v ON v.id = p.id_variation
           INNER JOIN user_order u ON u.id_order = i.id_order
-          WHERE p.name = @name_product AND v.category = @category_product AND u.uid = @uid
+          WHERE p.name = @name_product AND v.category = @category_product AND u.uid = @uid and u.fg_ativo = true
       ''', substitutionValues: {
         'name_product': nameProduct,
         'category_product': categoryProduct,
@@ -517,7 +517,7 @@ class ProductsController {
                 SELECT SUM(ia.qtd) from items ia
                 INNER JOIN orders oa ON oa.id = ia.id_order
                 INNER JOIN user_order uoa ON uo.id_order = oa.id
-                WHERE uoa.uid = @uid and oa.status = @status and ia.status <> 'Andamento' and ia.status <> 'Excluido' AND ia.id_product = i.id_product
+                WHERE uoa.uid = @uid and oa.status = @status and ia.status <> 'Andamento' and ia.status <> 'Excluido' AND ia.id_product = i.id_product and uoa.fg_ativo = true
                 GROUP BY (ia.id_product)
               )
 
@@ -526,7 +526,7 @@ class ProductsController {
             INNER JOIN variations v ON v.id = i.id_variation 
             INNER JOIN orders o ON o.id = i.id_order
             INNER JOIN user_order uo ON uo.id_order = o.id
-            where uo.uid = @uid and o.status = @status and i.status <> 'Andamento' and i.status <> 'Excluido'
+            where uo.uid = @uid and o.status = @status and i.status <> 'Andamento' and i.status <> 'Excluido' and uo.fg_ativo = true
             ) t
           ORDER BY t.sum DESC
           LIMIT 10
@@ -650,7 +650,7 @@ class ProductsController {
           return;
         }
 
-        if (value.first[0] < qtd) {
+        if (value.first[0] < qtd && value.first[0] != -1) {
           throw Exception('Quantidade indisponível');
         }
 

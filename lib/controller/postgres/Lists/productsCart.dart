@@ -658,7 +658,7 @@ class ProductsCartController {
     return await SalesController().idSale().then((idOrder) async {
       int limitVariation = -1;
       int limitProduct = -1;
-      if (qtd == 1) {
+      if (qtd == -1) {
         await ProductsController().getLimitItemVariation(item.variation!.id!).then((limit) async {
           limitVariation = limit;
         });
