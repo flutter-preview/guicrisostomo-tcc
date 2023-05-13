@@ -229,6 +229,7 @@ Future<void> main() async {
   
   FirebaseAuth auth = FirebaseAuth.instance;
   User? user = auth.currentUser;
+  print(user?.uid);
   
   if (user != null) {
     route = await LoginController().getTypeUser().then((value) {
@@ -239,6 +240,8 @@ Future<void> main() async {
       } else {
         return 'home_employee';
       }
+    }).catchError((onError) {
+      return 'presentation';
     });
   } else {
     route = 'presentation';

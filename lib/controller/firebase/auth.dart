@@ -40,14 +40,17 @@ class LoginController {
   }
 
   Future<void> signInAnonymously(context) async {
+    
     Navigator.push(context, navigator('loading'));
     
     (FirebaseAuth.instance.currentUser?.uid != null) ? {
+      Navigator.pop(context),
       await userLogin(),
       success(context, 'Usuário autenticado com sucesso.'),
     } : {
       await FirebaseAuth.instance.signInAnonymously().then((value) async {
-        await saveDatasUser(FirebaseAuth.instance.currentUser?.uid, 'Visitante', 'visitante@hungry.com', null, 1, context);
+        await saveDatasUser(value.user?.uid, 'Visitante', 'visitante@hungry.com', null, 1, context);
+        Navigator.pop(context);
         await userLogin();
       }).catchError((e) {
         error(context, 'Ocorreu um erro ao fazer login: ${e.code.toString()}');
@@ -75,7 +78,7 @@ class LoginController {
       // });
 
       success(context, 'Usuário criado com sucesso.');
-      redirectUser(context);
+      await redirectUser(context);
     });
   }
 
@@ -153,6 +156,15 @@ class LoginController {
     );
   }
 
+  Future<void> deleteUser(String uid) async {
+    await connectSupadatabase().then((conn) async {
+      await conn.query('delete from tb_user where uid = @uid', substitutionValues: {
+        'uid': uid,
+      });
+      conn.close();
+    });
+  }
+
   Future<void> logout(context) async {
     Navigator.push(context, navigator('loading'));
 
@@ -160,6 +172,11 @@ class LoginController {
 
     if (googleSignIn.clientId != null) {
       await googleSignIn.signOut();
+    }
+
+    if (FirebaseAuth.instance.currentUser?.isAnonymous == true) {
+      await deleteUser(FirebaseAuth.instance.currentUser?.uid ?? '');
+      await FirebaseAuth.instance.currentUser?.delete();
     }
     
     await FirebaseAuth.instance.signOut();
@@ -173,7 +190,7 @@ class LoginController {
 
   Future<dynamic> userLogin() async {
 
-    var uid = FirebaseAuth.instance.currentUser!.uid;
+    var uid = FirebaseAuth.instance.currentUser?.uid;
 
     return connectSupadatabase().then((conn) async {
       
@@ -271,7 +288,7 @@ class LoginController {
     Navigator.pop(context);
   }
 
-  Future<void> redirectUser(BuildContext context, [value]) async {
+  Future<void> redirectUser(context, [value]) async {
     // Navigator.pop(context);
       // var t = await getTypeUser() ?? 'Cliente';
       // success(context, t);
