@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:tcc/controller/firebase/auth.dart';
@@ -36,6 +37,7 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
   String? type = '';
 
   bool hasCloseTable = false;
+  bool isUserAnonymous = false;
 
   List<RadioButtonList> listRadioButton = [
     RadioButtonList(
@@ -57,6 +59,17 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
       setState(() {
         type = value;
       });
+    });
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user == null) {
+        setState(() {
+          isUserAnonymous = true;
+        });
+      } else {
+        setState(() {
+          isUserAnonymous = false;
+        });
+      }
     });
   }
 
@@ -160,7 +173,7 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
               children: [
                 const PartFinalizeOrder(partUser: 1),
 
-                (globals.userEmail == null) ?
+                (isUserAnonymous) ?
                   Column(
                     children: [
                       const SizedBox(height: 20,),
@@ -274,7 +287,7 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
         ),
       ),
 
-      bottomSheet: (globals.userEmail != null) ? Padding(
+      bottomSheet: (!isUserAnonymous) ? Padding(
         padding: const EdgeInsets.all(20),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -333,13 +346,6 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
           ],
         ),
       ) : null,
-    ) : Container(
-      color: Colors.white,
-      child: Center(
-        child: CircularProgressIndicator(
-          color: globals.primary,
-        ),
-      ),
-    );
+    ) : Container();
   }
 }

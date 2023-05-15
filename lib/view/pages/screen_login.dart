@@ -32,11 +32,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
 
   void logIn() {
     if (formKey.currentState!.validate()) {
-      LoginController().login(context, txtEmail.text, txtPassword.text).whenComplete(() {
-        setState(() {
-          globals.userEmail = txtEmail.text;
-        });
-      });
+      LoginController().login(context, txtEmail.text, txtPassword.text);
     } else {
       setState(() {
         autoValidation = true;

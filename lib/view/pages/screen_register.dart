@@ -46,11 +46,7 @@ class _ScreenRegisterState extends State<ScreenRegister> {
     void register() {
       if (formKey.currentState!.validate()) {
         
-        LoginController().createAccount(context, txtName.text, txtEmail.text, txtPhone.text, txtPassword.text).whenComplete(() {
-          setState(() {
-            globals.userEmail = txtEmail.text;
-          });
-        });
+        LoginController().createAccount(context, txtName.text, txtEmail.text, txtPhone.text, txtPassword.text);
 
       } else {
         setState(() {
