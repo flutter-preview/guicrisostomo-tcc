@@ -202,28 +202,31 @@ class _ScreenFOPaymentState extends State<ScreenFOPayment> {
         ),
       ),
 
-      bottomSheet: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          button(
-            'Voltar',
-            180,
-            50,
-            Icons.arrow_back,
-            () => Navigator.pop(context)
-          ),
-
-          button(
-            'Finalizar',
-            180,
-            50,
-            Icons.check,
-            () => {
-              Navigator.popUntil(context, ModalRoute.withName('home'))
-            },
-          ),
-        ],
+      bottomSheet: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            button(
+              'Voltar',
+              180,
+              50,
+              Icons.arrow_back,
+              () => Navigator.pop(context)
+            ),
+      
+            button(
+              'Finalizar',
+              180,
+              50,
+              Icons.check,
+              () => {
+                Navigator.popUntil(context, ModalRoute.withName('home'))
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

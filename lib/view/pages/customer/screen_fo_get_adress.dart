@@ -101,29 +101,32 @@ class _ScreenFOGetAddressState extends State<ScreenFOGetAddress> {
         ),
       ),
 
-      bottomSheet: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          button(
-            'Voltar',
-            180,
-            50,
-            Icons.arrow_back,
-            () => Navigator.pop(context)
-          ),
-
-          button(
-            'Avançar',
-            180,
-            50,
-            Icons.arrow_forward,
-            () => {
-              Navigator.push(context, navigator('finalize_order_customer/payment', widget.typeSale)),
-            },
-            false
-          ),
-        ],
+      bottomSheet: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            button(
+              'Voltar',
+              180,
+              50,
+              Icons.arrow_back,
+              () => Navigator.pop(context)
+            ),
+      
+            button(
+              'Avançar',
+              180,
+              50,
+              Icons.arrow_forward,
+              () => {
+                Navigator.push(context, navigator('finalize_order_customer/payment', widget.typeSale)),
+              },
+              false
+            ),
+          ],
+        ),
       ),
     );
   }
