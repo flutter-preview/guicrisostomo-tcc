@@ -56,9 +56,15 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
     super.initState();
     RadioButtonList.setGroup('Entrega');
     getTypeSale().then((value) {
-      setState(() {
-        type = value;
-      });
+      if (value == 'Mesa') {
+        setState(() {
+          type = 'Mesa';
+        });
+      } else {
+        setState(() {
+          type = RadioButtonList.getGroup();
+        });
+      }
     });
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
       if (user == null) {
@@ -346,6 +352,13 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
           ],
         ),
       ) : null,
-    ) : Container();
+    ) : Container(
+      color: Colors.white,
+      child: const Center(
+        child: CircularProgressIndicator(
+          color: Colors.red,
+        ),
+      ),
+    );
   }
 }
