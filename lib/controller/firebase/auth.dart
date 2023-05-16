@@ -354,4 +354,12 @@ class LoginController {
       }
     });
   }
+
+  Future<void> updatePassword(context, String password) async {
+    await FirebaseAuth.instance.currentUser?.updatePassword(password).then((value) {
+      success(context, 'Senha atualizada com sucesso.');
+    }).catchError((e) {
+      error(context, 'Ocorreu um erro ao atualizar sua senha: ${e.code.toString()}');
+    });
+  }
 }
