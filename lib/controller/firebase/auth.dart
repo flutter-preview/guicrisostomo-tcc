@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:tcc/controller/postgres/utils.dart';
 import 'package:tcc/main.dart';
+import 'package:tcc/model/Address.dart';
+import 'package:tcc/model/User.dart';
 import 'package:tcc/view/widget/snackBars.dart';
       
 class LoginController {
@@ -360,6 +362,60 @@ class LoginController {
       success(context, 'Senha atualizada com sucesso.');
     }).catchError((e) {
       error(context, 'Ocorreu um erro ao atualizar sua senha: ${e.code.toString()}');
+    });
+  }
+
+  Future<UserList> getUser() async {
+    return await connectSupadatabase().then((conn) {
+      return conn.query('''
+        select 
+          u.uid, 
+          u.name, 
+          u.email, 
+          u.phone, 
+          u.type, 
+          u.image, 
+          a.id, 
+          a.street, 
+          a.district, 
+          a.number, 
+          a.city, 
+          a.state, 
+          a.zip,
+          a.complement,
+          a.reference,
+          a.nickname
+        from tb_user u 
+        left join address a on u.uid = a.uid
+        where u.uid = @uid and a.fg_active = true
+      ''', substitutionValues: {
+        'uid': FirebaseAuth.instance.currentUser?.uid,
+      }).then((List value) {
+        conn.close();
+        
+        return UserList(
+          uid: value[0][0],
+          name: value[0][1],
+          email: value[0][2],
+          phone: value[0][3],
+          type: value[0][4],
+          image: value[0][5],
+          address: value[0][6] != null ? [
+            Address(
+              id: value[0][6],
+              street: value[0][7],
+              district: value[0][8],
+              number: value[0][9],
+              city: value[0][10],
+              state: value[0][11],
+              zip: value[0][12],
+              complement: value[0][13],
+              reference: value[0][14],
+              nickname: value[0][15],
+            )
+          ] : null,
+        );
+      });
     });
   }
 }
