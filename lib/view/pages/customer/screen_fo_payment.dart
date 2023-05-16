@@ -195,6 +195,8 @@ class _ScreenFOPaymentState extends State<ScreenFOPayment> {
                         validatorNumber(value!);
                       },
                     ),
+
+                  
                 ],
               ),
             
@@ -202,7 +204,7 @@ class _ScreenFOPaymentState extends State<ScreenFOPayment> {
         ),
       ),
 
-      bottomSheet: Padding(
+      bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(20),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -293,7 +293,7 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
         ),
       ),
 
-      bottomSheet: (!isUserAnonymous) ? Padding(
+      bottomNavigationBar: (!isUserAnonymous) ? Padding(
         padding: const EdgeInsets.all(20),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

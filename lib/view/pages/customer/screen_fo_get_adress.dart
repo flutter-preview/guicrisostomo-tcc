@@ -101,7 +101,7 @@ class _ScreenFOGetAddressState extends State<ScreenFOGetAddress> {
         ),
       ),
 
-      bottomSheet: Padding(
+      bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(20),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
