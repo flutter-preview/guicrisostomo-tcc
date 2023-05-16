@@ -448,4 +448,14 @@ class LoginController {
       });
     });
   }
+
+  Future<void> updateImage(context, String image) async {
+    await connectSupadatabase().then((conn) async {
+      await conn.query('update tb_user set image=@image where uid=@uid', substitutionValues: {
+        'image': image,
+        'uid': FirebaseAuth.instance.currentUser?.uid,
+      });
+      conn.close();
+    });
+  }
 }
