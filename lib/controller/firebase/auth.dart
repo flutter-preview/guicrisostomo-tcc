@@ -418,4 +418,34 @@ class LoginController {
       });
     });
   }
+
+  Future<void> updateAddress(context, Address address) async {
+    await connectSupadatabase().then((conn) async {
+      await conn.query('update address set street=@street, district=@district, number=@number, city=@city, state=@state, zip=@zip, complement=@complement, reference=@reference, nickname=@nickname where id=@id', substitutionValues: {
+        'street': address.street,
+        'district': address.district,
+        'number': address.number,
+        'city': address.city,
+        'state': address.state,
+        'zip': address.zip,
+        'complement': address.complement,
+        'reference': address.reference,
+        'nickname': address.nickname,
+        'id': address.id,
+      });
+      conn.close();
+    });
+  }
+
+  Future<bool> isNickNameAddressExist(String nickname) async {
+    return await connectSupadatabase().then((conn) async {
+      return await conn.query('select nickname from address where nickname = @nickname and uid = @uid', substitutionValues: {
+        'nickname': nickname,
+        'uid': FirebaseAuth.instance.currentUser?.uid,
+      }).then((List value) {
+        conn.close();
+        return value.isNotEmpty;
+      });
+    });
+  }
 }
