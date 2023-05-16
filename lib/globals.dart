@@ -5,7 +5,6 @@ import 'package:tcc/model/ProductItemList.dart';
 
 int globalSelectedIndexBotton = 0;
 int? numberTable;
-bool isUserTyping = false;
 bool isSelectNewItem = false;
 Color primary = const Color.fromRGBO(186, 49, 39, 1);
 Color secundary = const Color.fromRGBO(234, 182, 47, 1);

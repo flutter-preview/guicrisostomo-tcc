@@ -28,7 +28,7 @@ class _CartInfoState extends State<CartInfo> {
   }
 
   Future<Widget> cartInfo(context) async {
-    return !globals.isUserTyping && globals.userType != 'manager' && total != 0 ? Container(
+    return globals.userType != 'manager' && total != 0 ? Container(
       margin: const EdgeInsets.fromLTRB(0, 0, 10, 10),
       padding: const EdgeInsets.only(top: 10),
       child: Row(

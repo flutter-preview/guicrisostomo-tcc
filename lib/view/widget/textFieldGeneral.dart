@@ -60,10 +60,6 @@ class _TextFieldGeneralState extends State<TextFieldGeneral> {
     DateTime? date;
     DateTime? pickedDateSingle;
     DateTimeRange? pickedDate;
-
-    setState(() {
-      globals.isUserTyping = true;
-    });
     
     if (widget.keyboardType == TextInputType.datetime) {
       widget.multipleDate ? {
@@ -268,24 +264,6 @@ class _TextFieldGeneralState extends State<TextFieldGeneral> {
                 if (widget.isHour) {
                   await onTapHour();
                 }
-              },
-          
-              onEditingComplete: () {
-                setState(() {
-                  globals.isUserTyping = false;
-                });
-              },
-          
-              onSaved: (value) {
-                setState(() {
-                  globals.isUserTyping = false;
-                });
-              },
-          
-              onTapOutside: (event) {
-                setState(() {
-                  globals.isUserTyping = false;
-                });
               },
             ),
           ),
