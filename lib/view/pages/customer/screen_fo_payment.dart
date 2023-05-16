@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:tcc/model/standardListDropDown.dart';
 import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/bottonNavigation.dart';
@@ -20,6 +21,11 @@ class ScreenFOPayment extends StatefulWidget {
 
 class _ScreenFOPaymentState extends State<ScreenFOPayment> {
   var txtMoney = TextEditingController();
+  MaskTextInputFormatter maskFormatter = MaskTextInputFormatter(
+    mask: 'R\$ #,##0.00',
+    filter: { "#": RegExp(r'[0-9]') },
+    type: MaskAutoCompletionType.lazy,
+  );
 
   List<DropDownList> paymentMethods = [
     DropDownList(name: 'Dinheiro', icon: Icons.attach_money_outlined),
@@ -189,10 +195,23 @@ class _ScreenFOPaymentState extends State<ScreenFOPayment> {
                       label: 'Troco para quanto?', 
                       variavel: txtMoney,
                       context: context, 
-                      keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                      keyboardType: const TextInputType.numberWithOptions(),
                       ico: Icons.attach_money,
                       validator: (value) {
-                        validatorNumber(value!);
+                        return validatorString(value!);
+                      },
+                      inputFormatter: [maskFormatter],
+
+                      onChanged: (value) {
+                        if (maskFormatter.getUnmaskedText().length == 3) {
+                          txtMoney.value = maskFormatter.updateMask(mask: "R\$ ##,##");
+                        } else if (maskFormatter.getUnmaskedText().length == 4) {
+                          txtMoney.value = maskFormatter.updateMask(mask: "R\$ ###,##");
+                        } else if (maskFormatter.getUnmaskedText().length == 5) {
+                          txtMoney.value = maskFormatter.updateMask(mask: "R\$ #.###,##");
+                        } else if (maskFormatter.getUnmaskedText().length < 3) {
+                          txtMoney.value = maskFormatter.updateMask(mask: "R\$ #,##");
+                        }
                       },
                     ),
 
