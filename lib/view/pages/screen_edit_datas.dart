@@ -28,6 +28,7 @@ class _ScreenEditDatasState extends State<ScreenEditDatas> {
   var txtNumberHome = TextEditingController();
   var txtComplement = TextEditingController();
   var txtNeighborhood = TextEditingController();
+  var txtNickName = TextEditingController();
 
   bool autoValidation = false;
 
@@ -162,7 +163,7 @@ class _ScreenEditDatasState extends State<ScreenEditDatas> {
               child: Column(
                 children: [
             
-                  AddressExistent(txtAddress: txtAddress, txtNumberHome: txtNumberHome, txtNeighborhood: txtNeighborhood, txtComplement: txtComplement)
+                  AddressExistent(txtAddress: txtAddress, txtNumberHome: txtNumberHome, txtNeighborhood: txtNeighborhood, txtComplement: txtComplement, txtNickName: txtNickName),
                 ]
               ),
             ),

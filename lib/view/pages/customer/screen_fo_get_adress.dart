@@ -21,6 +21,7 @@ class _ScreenFOGetAddressState extends State<ScreenFOGetAddress> {
   var txtNumberHome = TextEditingController();
   var txtNeighborhood = TextEditingController();
   var txtComplement = TextEditingController();
+  var txtNickName = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +95,8 @@ class _ScreenFOGetAddressState extends State<ScreenFOGetAddress> {
               txtAddress: txtStreetAddress,
               txtNumberHome: txtNumberHome,
               txtNeighborhood: txtNeighborhood,
-              txtComplement: txtComplement
+              txtComplement: txtComplement,
+              txtNickName: txtNickName,
             ),
             
           ],

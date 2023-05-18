@@ -365,73 +365,71 @@ class LoginController {
     });
   }
 
-  Future<UserList> getUser() async {
+  Future<List<Address>> getAddress() async {
     return await connectSupadatabase().then((conn) {
       return conn.query('''
-        select 
-          u.uid, 
-          u.name, 
-          u.email, 
-          u.phone, 
-          u.type, 
-          u.image, 
-          a.id, 
-          a.street, 
-          a.district, 
-          a.number, 
-          a.city, 
-          a.state, 
-          a.zip,
-          a.complement,
-          a.reference,
-          a.nickname
-        from tb_user u 
-        left join address a on u.uid = a.uid
-        where u.uid = @uid and a.fg_active = true
+        select id, street, district, number, city, state, zip, complement, reference, nickname
+          from address 
+          where uid = @uid and fg_active = true
+          order by id desc
       ''', substitutionValues: {
         'uid': FirebaseAuth.instance.currentUser?.uid,
       }).then((List value) {
         conn.close();
         
-        return UserList(
-          uid: value[0][0],
-          name: value[0][1],
-          email: value[0][2],
-          phone: value[0][3],
-          type: value[0][4],
-          image: value[0][5],
-          address: value[0][6] != null ? [
-            Address(
-              id: value[0][6],
-              street: value[0][7],
-              district: value[0][8],
-              number: value[0][9],
-              city: value[0][10],
-              state: value[0][11],
-              zip: value[0][12],
-              complement: value[0][13],
-              reference: value[0][14],
-              nickname: value[0][15],
-            )
-          ] : null,
-        );
+        return value.map((e) => Address(
+          id: e[0],
+          street: e[1],
+          district: e[2],
+          number: e[3],
+          city: e[4],
+          state: e[5],
+          zip: e[6],
+          complement: e[7],
+          reference: e[8],
+          nickname: e[9],
+        )).toList();
       });
     });
   }
 
-  Future<void> updateAddress(context, Address address) async {
+  Future<void> updateAddress(context, Address address, String street, String district, int number, String nickname, [String? city, String? state, String? zip, String? complement, String? reference]) async {
     await connectSupadatabase().then((conn) async {
       await conn.query('update address set street=@street, district=@district, number=@number, city=@city, state=@state, zip=@zip, complement=@complement, reference=@reference, nickname=@nickname where id=@id', substitutionValues: {
-        'street': address.street,
-        'district': address.district,
-        'number': address.number,
-        'city': address.city,
-        'state': address.state,
-        'zip': address.zip,
-        'complement': address.complement,
-        'reference': address.reference,
-        'nickname': address.nickname,
+        'street': street,
+        'district': district,
+        'number': number,
+        'city': city,
+        'state': state,
+        'zip': zip,
+        'complement': complement,
+        'reference': reference,
+        'nickname': nickname,
         'id': address.id,
+      }).then((value) {
+        success(context, 'Endereço atualizado com sucesso');
+      }).catchError((onError) {
+        error(context, 'Ocorreu um erro ao atualizar o endereço: $onError');
+      });
+      conn.close();
+    });
+  }
+
+  Future<void> insertAddress(context, String street, String district, int number, String nickname, [String? city, String? state, String? zip, String? complement, String? reference]) async {
+    await connectSupadatabase().then((conn) async {
+      await conn.query('insert into address (street, district, number, city, state, zip, complement, reference, nickname, uid) values (@street, @district, @number, @city, @state, @zip, @complement, @reference, @nickname, @uid)', substitutionValues: {
+        'street': street,
+        'district': district,
+        'number': number,
+        'city': city,
+        'state': state,
+        'zip': zip,
+        'complement': complement,
+        'reference': reference,
+        'nickname': nickname,
+        'uid': FirebaseAuth.instance.currentUser?.uid,
+      }).then((value) {
+        success(context, 'Endereço cadastrado com sucesso.');
       });
       conn.close();
     });
