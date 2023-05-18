@@ -24,11 +24,6 @@ class _ScreenEditDatasState extends State<ScreenEditDatas> {
   var txtEmail = TextEditingController();
   var txtName = TextEditingController();
   var txtPhone = TextEditingController();
-  var txtAddress = TextEditingController();
-  var txtNumberHome = TextEditingController();
-  var txtComplement = TextEditingController();
-  var txtNeighborhood = TextEditingController();
-  var txtNickName = TextEditingController();
 
   bool autoValidation = false;
 
@@ -157,16 +152,7 @@ class _ScreenEditDatasState extends State<ScreenEditDatas> {
 
             const SizedBox(height: 20,),
 
-            Form(
-              key: formKeyAddress,
-              autovalidateMode: autoValidation ? AutovalidateMode.always : AutovalidateMode.disabled,
-              child: Column(
-                children: [
-            
-                  AddressExistent(txtAddress: txtAddress, txtNumberHome: txtNumberHome, txtNeighborhood: txtNeighborhood, txtComplement: txtComplement, txtNickName: txtNickName),
-                ]
-              ),
-            ),
+            AddressExistent(),
 
             // Form(
             //   key: formKey,

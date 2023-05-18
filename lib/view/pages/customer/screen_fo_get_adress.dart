@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tcc/main.dart';
+import 'package:tcc/model/Address.dart';
 import 'package:tcc/view/widget/addressExistent.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/customer/partFinalizeOrder.dart';
@@ -7,6 +8,7 @@ import 'package:tcc/globals.dart' as globals;
 
 class ScreenFOGetAddress extends StatefulWidget {
   final String typeSale;
+
   const ScreenFOGetAddress({
     super.key,
     required this.typeSale
@@ -22,6 +24,7 @@ class _ScreenFOGetAddressState extends State<ScreenFOGetAddress> {
   var txtNeighborhood = TextEditingController();
   var txtComplement = TextEditingController();
   var txtNickName = TextEditingController();
+  Address? addressSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -92,11 +95,7 @@ class _ScreenFOGetAddressState extends State<ScreenFOGetAddress> {
             const SizedBox(height: 20),
 
             AddressExistent(
-              txtAddress: txtStreetAddress,
-              txtNumberHome: txtNumberHome,
-              txtNeighborhood: txtNeighborhood,
-              txtComplement: txtComplement,
-              txtNickName: txtNickName,
+              addressSelected: addressSelected,
             ),
             
           ],
