@@ -177,6 +177,25 @@ class _AddressExistentState extends State<AddressExistent> {
                                               ),
                                             ],
                                           ),
+
+                                          IconButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                Navigator.push(context, navigator('create_edit_address', listAddress[i])).then((value) async {
+                                                  await getAddress().then((value) {
+
+                                                    setState(() {
+                                                      listAddress = value;
+                                                      groupLocals = listAddress[i].nickname;
+                                                    });
+
+                                                  });
+                                                });
+                                              });
+                                            },
+                                            icon: const Icon(Icons.delete),
+                                            color: globals.primary,
+                                          ),
               
                                           IconButton(
                                             onPressed: () {
@@ -195,7 +214,7 @@ class _AddressExistentState extends State<AddressExistent> {
                                             },
                                             icon: const Icon(Icons.edit),
                                             color: globals.primary,
-                                          )
+                                          ),
                                         ],
                                       ),
               
