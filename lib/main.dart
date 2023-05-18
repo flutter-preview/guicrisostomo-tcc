@@ -6,7 +6,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:tcc/controller/firebase/auth.dart';
 import 'package:tcc/firebase_options.dart';
+import 'package:tcc/model/Address.dart';
 import 'package:tcc/view/pages/customer/screen_call_waiter.dart';
+import 'package:tcc/view/pages/customer/screen_create_edit_address.dart';
 import 'package:tcc/view/pages/customer/screen_fo_get_adress.dart';
 import 'package:tcc/view/pages/customer/screen_fo_main.dart';
 import 'package:tcc/view/pages/customer/screen_fo_payment.dart';
@@ -130,6 +132,9 @@ Route navigator([String? name, Object? arguments]) {
       break;
     case 'finalize_order_customer/payment' : 
       page = ScreenFOPayment(typeSale: arguments.toString(),);
+      break;
+    case 'create_edit_address' :
+      page = ScreenCreateEditAddress(addressSelected: arguments as Address?);
       break;
     // case 'notifications' :
     //   page = const ScreenNotifications();
@@ -282,7 +287,7 @@ Future<void> main() async {
         'cart/info_item' :(context) => const ScreenInfoItem(arguments: {},),
         'products' :(context) => const ScreenProducts(),
         'products/info_product' :(context) => const ScreenInfoProduct(arguments: {},),
-        'products/add_product' :(context) => ScreenAddItem(),
+        'products/add_product' :(context) => const ScreenAddItem(),
         'list_products' :(context) => const ScreenListProducts(),
         'profile' :(context) => const ScreenProfile(),
         'profile/edit_datas' :(context) => ScreenEditDatas(),
@@ -292,6 +297,7 @@ Future<void> main() async {
         'finalize_order_customer' :(context) => const ScreenFOMain(),
         'finalize_order_customer/address' :(context) => const ScreenFOGetAddress(typeSale: '',),
         'finalize_order_customer/payment' :(context) => const ScreenFOPayment(typeSale: '',),
+        'create_edit_address' :(context) => ScreenCreateEditAddress(),
         // 'notifications' :(context) => const ScreenNotifications(),
         'terms' :(context) => const ScreenTerms(),
         'loading' :(context) => const ScreenLoading(),
