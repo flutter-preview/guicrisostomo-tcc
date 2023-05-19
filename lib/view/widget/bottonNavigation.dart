@@ -107,7 +107,7 @@ class _BottomState extends State<Bottom> {
   void initState() {
     super.initState();
     getListItemCurrent().then((value) {
-      if (value) {
+      if (value && mounted) {
         setState(() {
           globals.isSelectNewItem = true;
         });
