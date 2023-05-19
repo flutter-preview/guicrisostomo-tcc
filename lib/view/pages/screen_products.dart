@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tcc/controller/postgres/Lists/products.dart';
 import 'package:tcc/model/ProductItemList.dart';
+import 'package:tcc/model/standardSlideShow.dart';
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigation.dart';
 import 'package:tcc/view/widget/button.dart';
@@ -10,7 +11,7 @@ import 'package:tcc/view/widget/textFieldGeneral.dart';
 import 'package:tcc/globals.dart' as globals;
 
 class ScreenProducts extends StatefulWidget {
-  final Object? arguments;
+  final SlideShow? arguments;
 
   const ScreenProducts({
     super.key,
@@ -55,7 +56,17 @@ class _ScreenProductsState extends State<ScreenProducts> {
       getCategories().then((value) {
         setState(() {
           globals.categorySelected = globals.categoriesBusiness[0];
+
+          if (widget.arguments != null) {
+            globals.categorySelected = widget.arguments!.title;
+          }
         });
+      });
+    } else {
+      setState(() {
+        if (widget.arguments != null) {
+          globals.categorySelected = widget.arguments!.title;
+        }
       });
     }
   }

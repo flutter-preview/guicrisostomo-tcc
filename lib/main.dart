@@ -8,6 +8,7 @@ import 'package:tcc/controller/firebase/auth.dart';
 import 'package:tcc/firebase_options.dart';
 import 'package:tcc/model/Address.dart';
 import 'package:tcc/model/Sales.dart';
+import 'package:tcc/model/standardSlideShow.dart';
 import 'package:tcc/view/pages/customer/screen_call_waiter.dart';
 import 'package:tcc/view/pages/customer/screen_create_edit_address.dart';
 import 'package:tcc/view/pages/customer/screen_fo_get_adress.dart';
@@ -102,7 +103,7 @@ Route navigator([String? name, Object? arguments]) {
       page = ScreenInfoItem(arguments: arguments);
       break;
     case 'products' :
-      page = ScreenProducts(arguments: arguments);
+      page = ScreenProducts(arguments: arguments as SlideShow?);
       break;
     case 'products/info_product' :
       page = ScreenInfoProduct(arguments: arguments);
