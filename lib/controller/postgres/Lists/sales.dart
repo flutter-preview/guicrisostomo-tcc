@@ -526,6 +526,7 @@ class SalesController {
               INNER JOIN business b ON b.cnpj = o.cnpj
               INNER JOIN user_order uo ON uo.id_order = o.id
               WHERE o.cnpj = @cnpj AND (o.status LIKE @status AND o.datetime BETWEEN @datetime and @datetime2) and uo.fg_ativo = true
+              ORDER BY o.datetime DESC
             ''';
         } else {
           querySelect = '''
@@ -552,6 +553,7 @@ class SalesController {
               INNER JOIN business b ON b.cnpj = o.cnpj
               INNER JOIN user_order uo ON uo.id_order = o.id
               WHERE o.cnpj = @cnpj and (o.status LIKE @status AND o.datetime BETWEEN @datetime and @datetime2) and uo.fg_ativo = true
+              ORDER BY o.datetime DESC
             ''';
         }
 
