@@ -83,10 +83,7 @@ class _ScreenOrderState extends State<ScreenOrder> {
   List<Sales> listSales = [];
 
   Future<List<Sales>> getSales(String cnpj, String dateStart, String dateEnd, String buttonStatusSelected) async {
-    setState(() {
-      
-    });
-    
+
     if (formKeyDate.currentState != null) {
       if (!formKeyDate.currentState!.validate()) {
         return [];
@@ -102,6 +99,15 @@ class _ScreenOrderState extends State<ScreenOrder> {
     });
   }
 
+  @override
+  void initState() {
+    super.initState();
+    getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected).then((value) {
+      setState(() {
+        listSales = value;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -129,44 +135,40 @@ class _ScreenOrderState extends State<ScreenOrder> {
                   children: [
                     Column(
                       children: [
-                        StatefulBuilder(
-                          builder: (context, setState) {
-                            return SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              padding: const EdgeInsets.symmetric(horizontal: 10),
-                              child: Wrap(
-                                spacing: 10,
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Wrap(
+                            spacing: 10,
                     
-                                children: [
-                                  button('Todos', 0, 0, null, () => {
-                                    setState(() {
-                                      buttonStatusSelected = '';
-                                      getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected);
-                                    })
-                                  }, true, 16, buttonStatusSelected == '' ? globals.primaryBlack : globals.primary.withOpacity(0.8)),
-                                  button('Em andamento', 0, 0, null, () => {
-                                    setState(() {
-                                      buttonStatusSelected = 'ANDAMENTO';
-                                      getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected);
-                                    })
-                                  }, true, 16, buttonStatusSelected == 'ANDAMENTO' ? globals.primaryBlack : globals.primary.withOpacity(0.8)),
-                                  button('Finalizados', 0, 0, null, () => {
-                                    setState(() {
-                                      buttonStatusSelected = 'FINALIZADO';
-                                      getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected);
-                                    })
-                                  }, true, 16, buttonStatusSelected == 'FINALIZADO' ? globals.primaryBlack : globals.primary.withOpacity(0.8)),
-                                  button('Cancelados', 0, 0, null, () => {
-                                    setState(() {
-                                      buttonStatusSelected = 'CANCELADO';
-                                      getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected);
-                                    })
-                                  }, true, 16, buttonStatusSelected == 'CANCELADO' ? globals.primaryBlack : globals.primary.withOpacity(0.8)
-                                  ),
-                                ],
+                            children: [
+                              button('Todos', 0, 0, null, () => {
+                                setState(() {
+                                  buttonStatusSelected = '';
+                                  getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected);
+                                })
+                              }, true, 16, buttonStatusSelected == '' ? globals.primaryBlack : globals.primary.withOpacity(0.8)),
+                              button('Em andamento', 0, 0, null, () => {
+                                setState(() {
+                                  buttonStatusSelected = 'ANDAMENTO';
+                                  getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected);
+                                })
+                              }, true, 16, buttonStatusSelected == 'ANDAMENTO' ? globals.primaryBlack : globals.primary.withOpacity(0.8)),
+                              button('Finalizados', 0, 0, null, () => {
+                                setState(() {
+                                  buttonStatusSelected = 'FINALIZADO';
+                                  getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected);
+                                })
+                              }, true, 16, buttonStatusSelected == 'FINALIZADO' ? globals.primaryBlack : globals.primary.withOpacity(0.8)),
+                              button('Cancelados', 0, 0, null, () => {
+                                setState(() {
+                                  buttonStatusSelected = 'CANCELADO';
+                                  getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected);
+                                })
+                              }, true, 16, buttonStatusSelected == 'CANCELADO' ? globals.primaryBlack : globals.primary.withOpacity(0.8)
                               ),
-                            );
-                          },
+                            ],
+                          ),
                         ),
                       ],
                     ),
@@ -246,8 +248,8 @@ class _ScreenOrderState extends State<ScreenOrder> {
             ),
         
             FutureBuilder(
-              future: getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected),
               initialData: listSales,
+              future: getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done && snapshot.hasData && snapshot.data!.isNotEmpty) {
                   return listViewOrder(listSales);
