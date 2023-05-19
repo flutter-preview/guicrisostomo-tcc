@@ -503,7 +503,7 @@ class SalesController {
       await BusinessInformationController().getInfoCalcValue().then((value) {
         if (value == true || value == null) {
           querySelect = '''
-            SELECT o.id, o.cnpj, o.datetime, uo.uid, o.status, coalesce(o.table_number, 0), 
+            SELECT o.id, o.cnpj, o.datetime, uo.uid, o.status, o.payment, o.type, o.change, o.observation, coalesce(o.table_number, 0), 
               (
                 SELECT SUM(MAX.MAX) FROM (
                   SELECT MAX(pa.price * ia.qtd) from items ia 
@@ -530,7 +530,7 @@ class SalesController {
             ''';
         } else {
           querySelect = '''
-            SELECT o.id, o.cnpj, o.datetime, uo.uid, o.status, coalesce(o.table_number, 0), 
+            SELECT o.id, o.cnpj, o.datetime, uo.uid, o.status, o.payment, o.type, o.change, o.observation, coalesce(o.table_number, 0), 
               (
                 SELECT SUM(MAX.avg) FROM (
                   SELECT AVG(pa.price * ia.qtd) from items ia 
@@ -580,8 +580,13 @@ class SalesController {
               date: element[2],
               uid: element[3],
               status: element[4],
-              table: element[5],
-              total: element[6] ?? 0.0,
+              payment: element[5],
+              type: element[6],
+              change: num.parse(element[7] ?? '0'),
+              observation: element[8],
+              table: element[9],
+              total: element[10] ?? 0,
+              items: element[11],
             ),
           );
         }

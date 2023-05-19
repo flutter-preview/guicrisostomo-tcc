@@ -11,7 +11,8 @@ class Sales {
   DateTime date;
   num total = 0.0;
   String nameUserCreatedSale = '';
-  num change = 0.0;
+  num change;
+  int items;
 
   Sales({
     required this.id,
@@ -25,7 +26,9 @@ class Sales {
     required this.status,
     required this.date,
     this.total = 0.0,
-    this.nameUserCreatedSale = ''
+    this.nameUserCreatedSale = '',
+    this.change = 0.0,
+    this.items = 0,
   });
 
   num getTotal() {
