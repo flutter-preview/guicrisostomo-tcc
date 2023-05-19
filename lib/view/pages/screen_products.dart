@@ -52,7 +52,7 @@ class _ScreenProductsState extends State<ScreenProducts> {
   @override
   void initState() {
     super.initState();
-    if (globals.categoriesBusiness.isEmpty) {
+    if (globals.categoriesBusiness.isEmpty && mounted) {
       getCategories().then((value) {
         setState(() {
           globals.categorySelected = globals.categoriesBusiness[0];
@@ -63,37 +63,50 @@ class _ScreenProductsState extends State<ScreenProducts> {
         });
       });
     } else {
-      setState(() {
-        if (widget.arguments != null) {
+      if (mounted && widget.arguments != null) {
+        setState(() {
           globals.categorySelected = widget.arguments!.title;
-        }
-      });
+          globals.sizesCategoryBusiness = [];
+        });
+      }
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    print('b');
-    Future<Widget?> listProduct() async {
-      List<Widget> listWidget = [];
-      List<ProductItemList> list = [];
+  Future<Widget?> listProduct() async {
+    List<Widget> listWidget = [];
+    List<ProductItemList> list = [];
 
-      if (globals.categoriesBusiness.isEmpty) {
-        return const CircularProgressIndicator();
+    if (globals.categoriesBusiness.isEmpty) {
+      await getCategories();
+      globals.sizesCategoryBusiness = [];
+    }
+
+    try {
+      if (globals.sizesCategoryBusiness.isEmpty) {
+        await getSize();
+        list = [];
       }
 
-      try {
-        if (globals.sizesCategoryBusiness.isEmpty) {
-          await getSize();
-          list = [];
-        }
+      if (list.isEmpty) {
+        if (globals.sizesCategoryBusiness.length == 1) {
+          await getProduct(globals.categorySelected, globals.sizesCategoryBusiness[0]).then((value) {
+            listWidget.add(
+              SectionVisible(
+                nameSection: 'Produtos',
+                isShowPart: true,
+                child: ProductItem(product: value,),
+              ),
+            );
 
-        if (list.isEmpty) {
-          if (globals.sizesCategoryBusiness.length == 1) {
-            await getProduct(globals.categorySelected, globals.sizesCategoryBusiness[0]).then((value) {
+            list = value;
+          });
+
+        } else {
+          for (int i = 0; i < globals.sizesCategoryBusiness.length; i++) {
+            await getProduct(globals.categorySelected, globals.sizesCategoryBusiness[i]).then((value) {
               listWidget.add(
                 SectionVisible(
-                  nameSection: 'Produtos',
+                  nameSection: globals.sizesCategoryBusiness[i],
                   isShowPart: true,
                   child: ProductItem(product: value,),
                 ),
@@ -101,13 +114,25 @@ class _ScreenProductsState extends State<ScreenProducts> {
 
               list = value;
             });
+          }
+        }
+      } else {
+        if (globals.sizesCategoryBusiness.length == 1) {
+          listWidget.add(
+            SectionVisible(
+              nameSection: 'Produtos',
+              isShowPart: true,
+              child: ProductItem(product: list,),
+            ),
+          );
 
-          } else {
-            for (int i = 0; i < globals.sizesCategoryBusiness.length; i++) {
-              await getProduct(globals.categorySelected, globals.sizesCategoryBusiness[i]).then((value) {
+        } else {
+          for (int i = 0; i < globals.sizesCategoryBusiness.length; i++) {
+            if (globals.sizesCategoryBusiness.length == 1) {
+              await getProduct(globals.categorySelected, globals.sizesCategoryBusiness[0]).then((value) {
                 listWidget.add(
                   SectionVisible(
-                    nameSection: globals.sizesCategoryBusiness[i],
+                    nameSection: 'Produtos',
                     isShowPart: true,
                     child: ProductItem(product: value,),
                   ),
@@ -115,63 +140,42 @@ class _ScreenProductsState extends State<ScreenProducts> {
 
                 list = value;
               });
-            }
-          }
-        } else {
-          if (globals.sizesCategoryBusiness.length == 1) {
-            listWidget.add(
-              SectionVisible(
-                nameSection: 'Produtos',
-                isShowPart: true,
-                child: ProductItem(product: list,),
-              ),
-            );
 
-          } else {
-            for (int i = 0; i < globals.sizesCategoryBusiness.length; i++) {
-              if (globals.sizesCategoryBusiness.length == 1) {
-                await getProduct(globals.categorySelected, globals.sizesCategoryBusiness[0]).then((value) {
-                  listWidget.add(
-                    SectionVisible(
-                      nameSection: 'Produtos',
-                      isShowPart: true,
-                      child: ProductItem(product: value,),
-                    ),
-                  );
-
-                  list = value;
-                });
-
-              } else {
-                for (int i = 0; i < globals.sizesCategoryBusiness.length; i++) {
-                  listWidget.add(
-                    SectionVisible(
-                      nameSection: globals.sizesCategoryBusiness[i],
-                      isShowPart: true,
-                      child: ProductItem(product: list,),
-                    ),
-                  );
-                }
+            } else {
+              for (int i = 0; i < globals.sizesCategoryBusiness.length; i++) {
+                listWidget.add(
+                  SectionVisible(
+                    nameSection: globals.sizesCategoryBusiness[i],
+                    isShowPart: true,
+                    child: ProductItem(product: list,),
+                  ),
+                );
               }
             }
           }
         }
+      }
 
-        if (listWidget.isNotEmpty) {
-          return Column(
-            children: listWidget,
-          );
-        }
-      } catch (e) {
-        return const Text(
-          'Produto não encontrado',
-          style: TextStyle(
-            fontSize: 20,
-            color: Colors.black45,
-          ),
+      if (listWidget.isNotEmpty) {
+        return Column(
+          children: listWidget,
         );
       }
+    } catch (e) {
+      return const Text(
+        'Produto não encontrado',
+        style: TextStyle(
+          fontSize: 20,
+          color: Colors.black45,
+        ),
+      );
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    print('b');
+    
 
     return Scaffold(
       appBar: PreferredSize(
