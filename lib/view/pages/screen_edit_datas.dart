@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tcc/controller/firebase/auth.dart';
 import 'package:tcc/utils.dart';
@@ -136,7 +137,7 @@ class _ScreenEditDatasState extends State<ScreenEditDatas> {
                 
                         if (formKey.currentState!.validate()) {
                   
-                          // LoginController().updateUser(user.id, txtName.text, txtEmail.text, txtPhone.text, context);
+                          LoginController().updateUser(FirebaseAuth.instance.currentUser!.uid, txtName.text, txtEmail.text, txtPhone.text, context);
                 
                         } else {
                           setState(() {
