@@ -622,7 +622,7 @@ class SalesController {
 
       if (hasCloseTable) {
         await conn.query('''
-          UPDATE orders SET status = 'Para impressão', type = @type, address = @address, payment = @payment, change = @change
+          UPDATE orders SET status = 'Ativo', type = @type, address = @address, payment = @payment, change = @change
             WHERE id = (
               SELECT o.id 
                 FROM orders o
