@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tcc/main.dart';
 import 'package:tcc/model/Sales.dart';
+import 'package:tcc/globals.dart' as globals;
 
 Widget listViewOrder(List<Sales> dados) {
 
@@ -13,12 +14,20 @@ Widget listViewOrder(List<Sales> dados) {
       DateTime date = item.date;
       String dateText = DateFormat("d 'de' MMMM 'de' y 'às' HH':'mm':'ss", "pt_BR").format(date);
       num total = item.total;
+      String status = item.status;
 
       return Card(
         color: Colors.white,
         child: ListTile(
           contentPadding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-          
+          leading: status == 'Andamento' ? Icon(
+            Icons.timer_outlined,
+            color: globals.primary,
+          ) : Icon(
+            Icons.check_circle_outline,
+            color: globals.primary,
+          ),
+
           title: Text(
             'Data: $dateText',
             style: const TextStyle(
