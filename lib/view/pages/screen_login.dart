@@ -94,12 +94,21 @@ class _ScreenLoginState extends State<ScreenLogin> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    button('Esqueci minha senha', 300, 50, null, () {
-                      Navigator.push(
-                        context,
-                        navigator('login/forget_password'),
-                      );
-                    }),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          navigator('login/forget_password'),
+                        );
+                      }, 
+                      child: Text(
+                        'Esqueceu a senha ?',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: globals.primary,
+                        ),
+                      ),
+                    ),
                   ],
                 )
               ),
