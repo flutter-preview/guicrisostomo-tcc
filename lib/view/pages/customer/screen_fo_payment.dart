@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:tcc/controller/firebase/auth.dart';
+import 'package:tcc/controller/postgres/Lists/sales.dart';
 import 'package:tcc/model/Sales.dart';
 import 'package:tcc/model/standardListDropDown.dart';
 import 'package:tcc/utils.dart';
@@ -242,8 +244,63 @@ class _ScreenFOPaymentState extends State<ScreenFOPayment> {
               180,
               50,
               Icons.check,
-              () => {
-                Navigator.popUntil(context, ModalRoute.withName('home'))
+              () async {
+
+                if (methodSelected == 'Dinheiro') {
+                  txtMoney.text = txtMoney.text.replaceAll('R\$ ', '');
+                  txtMoney.text = txtMoney.text.replaceAll('.', '');
+                  txtMoney.text = txtMoney.text.replaceAll(',', '.');
+                  
+                  if (txtMoney.text.isEmpty) {
+                    return;
+                  }
+
+                  if (double.parse(txtMoney.text) < globals.totalSale) {
+                    return;
+                  }
+
+                  txtMoney.text = hasMoney ? txtMoney.text : '0';
+                } else {
+                  txtMoney.text = '0';
+                }
+
+                await SalesController().finalizeSale(true, widget.sale.type!, widget.sale.addressId, methodSelected, num.parse(txtMoney.text));
+                LoginController().getTypeUser().then((typeUser) {
+                  setState(() {
+                    globals.numberTable = null;
+                    globals.totalSale = 0;
+                    globals.isSelectNewItem = false;
+                  });
+
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+
+                  switch (typeUser) {
+                    case 'Cliente':
+                      try {
+                        Navigator.pushReplacementNamed(context, 'home');
+                      } catch (e) {
+                        Navigator.pushNamed(context, 'home');
+                      }
+
+                      
+                      break;
+                    case 'Gerente':
+                      try {
+                        Navigator.pushReplacementNamed(context, 'home_manager');
+                      } catch (e) {
+                        Navigator.pushNamed(context, 'home_manager');
+                      }
+                      break;
+                    default:
+                      try {
+                        Navigator.pushReplacementNamed(context, 'home_employee');
+                      } catch (e) {
+                        Navigator.pushNamed(context, 'home_employee');
+                      }
+                      break;
+                  }
+                });
               },
             ),
           ],

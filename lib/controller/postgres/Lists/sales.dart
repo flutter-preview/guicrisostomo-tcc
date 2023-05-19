@@ -592,7 +592,13 @@ class SalesController {
     });
   }
 
-  Future<void> finalizeSale([bool hasCloseTable = true]) async {
+  Future<void> finalizeSale([bool hasCloseTable = true, String type = '', int? idAddressSelected, String typePayment = '', num change = 0]) async {
+    if (typePayment != 'Dinheiro') {
+      change = 0;
+    }
+
+    type = globals.numberTable != null ? 'Mesa' : type;
+
     await connectSupadatabase().then((conn) async {
 
       await conn.query('''
@@ -613,7 +619,7 @@ class SalesController {
 
       if (hasCloseTable) {
         await conn.query('''
-          UPDATE orders SET status = 'Para impressão'
+          UPDATE orders SET status = 'Para impressão', type = @type, address = @address, payment = @payment, change = @change
             WHERE id = (
               SELECT o.id 
                 FROM orders o
@@ -624,6 +630,10 @@ class SalesController {
           'cnpj': globals.businessId,
           'uid': FirebaseAuth.instance.currentUser!.uid,
           'table': globals.numberTable ?? 0,
+          'type': type,
+          'address': idAddressSelected,
+          'payment': typePayment,
+          'change': change,
         }).catchError((e) {
           print(e);
         });

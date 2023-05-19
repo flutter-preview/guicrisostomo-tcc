@@ -11,7 +11,8 @@ class Sales {
   DateTime date;
   num total = 0.0;
   String nameUserCreatedSale = '';
-  
+  num change = 0.0;
+
   Sales({
     required this.id,
     required this.uid,
