@@ -262,6 +262,7 @@ class _ScreenInfoOrderState extends State<ScreenInfoOrder> {
                     if (snapshot.connectionState == ConnectionState.done) {
                       return ProductsCart(
                         product: list,
+                        isShowButtonDelete: false,
                       );
                     } else {
                       return const Center(
