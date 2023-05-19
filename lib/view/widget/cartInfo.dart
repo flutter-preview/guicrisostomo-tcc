@@ -179,7 +179,7 @@ class _CartInfoState extends State<CartInfo> {
     super.initState();
     getInfo().then((value) {
       print(value);
-      if (value != 0) {
+      if (value != 0 && mounted) {
         setState(() {});
       }
     });
