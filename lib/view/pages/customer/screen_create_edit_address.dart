@@ -66,6 +66,7 @@ class _ScreenCreateEditAddressState extends State<ScreenCreateEditAddress> {
                 validator: (value) {
                   return validatorString(value!);
                 },
+                textCapitalization: TextCapitalization.sentences,
               ),
         
               const SizedBox(height: 20),
@@ -79,6 +80,7 @@ class _ScreenCreateEditAddressState extends State<ScreenCreateEditAddress> {
                 validator: (value) {
                   return validatorString(value!);
                 },
+                textCapitalization: TextCapitalization.sentences,
               ),
         
               const SizedBox(height: 20,),
@@ -105,6 +107,7 @@ class _ScreenCreateEditAddressState extends State<ScreenCreateEditAddress> {
                 validator: (value) {
                   return validatorString(value!);
                 },
+                textCapitalization: TextCapitalization.sentences,
               ),
         
               const SizedBox(height: 20,),
@@ -115,9 +118,7 @@ class _ScreenCreateEditAddressState extends State<ScreenCreateEditAddress> {
                 context: context,
                 keyboardType: TextInputType.streetAddress,
                 ico: Icons.info_outline_rounded,
-                validator: (value) {
-                  validatorString(value!);
-                },
+                textCapitalization: TextCapitalization.sentences,
               ),
         
               const SizedBox(height: 20,),
@@ -128,6 +129,7 @@ class _ScreenCreateEditAddressState extends State<ScreenCreateEditAddress> {
                 context: context,
                 keyboardType: TextInputType.streetAddress,
                 ico: Icons.info_outline_rounded,
+                textCapitalization: TextCapitalization.sentences,
               )
             ],
           ),
