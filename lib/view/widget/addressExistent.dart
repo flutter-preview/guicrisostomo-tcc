@@ -6,10 +6,8 @@ import 'package:tcc/model/Address.dart';
 import 'package:tcc/view/widget/sectionVisible.dart';
 
 class AddressExistent extends StatefulWidget {
-  Address? addressSelected;
-  AddressExistent({
+  const AddressExistent({
     super.key,
-    this.addressSelected,
   });
 
   @override
@@ -85,6 +83,7 @@ class _AddressExistentState extends State<AddressExistent> {
       setState(() {
         listAddress = value;
         groupLocals = value[0].nickname;
+        globals.idAddressSelected = value[0].id;
       });
     });
   }
@@ -143,7 +142,7 @@ class _AddressExistentState extends State<AddressExistent> {
                                       onChanged: (value) => {
                                         setState(() {
                                           groupLocals = value!;
-                                          widget.addressSelected = listAddress[i];
+                                          globals.idAddressSelected = listAddress[i].id;
                                         }),
                                       },
                                       

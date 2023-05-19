@@ -406,10 +406,6 @@ class LoginController {
         'reference': reference,
         'nickname': nickname,
         'id': address.id,
-      }).then((value) {
-        success(context, 'Endereço atualizado com sucesso');
-      }).catchError((onError) {
-        error(context, 'Ocorreu um erro ao atualizar o endereço: $onError');
       });
       conn.close();
     });
@@ -428,8 +424,6 @@ class LoginController {
         'reference': reference,
         'nickname': nickname,
         'uid': FirebaseAuth.instance.currentUser?.uid,
-      }).then((value) {
-        success(context, 'Endereço cadastrado com sucesso.');
       });
       conn.close();
     });

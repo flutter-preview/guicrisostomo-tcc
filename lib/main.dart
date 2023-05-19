@@ -7,6 +7,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:tcc/controller/firebase/auth.dart';
 import 'package:tcc/firebase_options.dart';
 import 'package:tcc/model/Address.dart';
+import 'package:tcc/model/Sales.dart';
 import 'package:tcc/view/pages/customer/screen_call_waiter.dart';
 import 'package:tcc/view/pages/customer/screen_create_edit_address.dart';
 import 'package:tcc/view/pages/customer/screen_fo_get_adress.dart';
@@ -131,7 +132,7 @@ Route navigator([String? name, Object? arguments]) {
       page = ScreenFOGetAddress(typeSale: arguments.toString(),);
       break;
     case 'finalize_order_customer/payment' : 
-      page = ScreenFOPayment(typeSale: arguments.toString(),);
+      page = ScreenFOPayment(sale: arguments as Sales,);
       break;
     case 'create_edit_address' :
       page = ScreenCreateEditAddress(addressSelected: arguments as Address?);
@@ -296,7 +297,7 @@ Future<void> main() async {
         'order/info' :(context) => ScreenInfoOrder(),
         'finalize_order_customer' :(context) => const ScreenFOMain(),
         'finalize_order_customer/address' :(context) => const ScreenFOGetAddress(typeSale: '',),
-        'finalize_order_customer/payment' :(context) => const ScreenFOPayment(typeSale: '',),
+        'finalize_order_customer/payment' :(context) => ScreenFOPayment(sale: Sales(id: 0, uid: '0', cnpj: '0', status: 'a', date: DateTime.now()),),
         'create_edit_address' :(context) => ScreenCreateEditAddress(),
         // 'notifications' :(context) => const ScreenNotifications(),
         'terms' :(context) => const ScreenTerms(),

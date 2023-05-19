@@ -1,10 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tcc/main.dart';
 import 'package:tcc/model/Address.dart';
+import 'package:tcc/model/Sales.dart';
 import 'package:tcc/view/widget/addressExistent.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/customer/partFinalizeOrder.dart';
 import 'package:tcc/globals.dart' as globals;
+import 'package:tcc/view/widget/snackBars.dart';
 
 class ScreenFOGetAddress extends StatefulWidget {
   final String typeSale;
@@ -95,7 +98,6 @@ class _ScreenFOGetAddressState extends State<ScreenFOGetAddress> {
             const SizedBox(height: 20),
 
             AddressExistent(
-              addressSelected: addressSelected,
             ),
             
           ],
@@ -121,8 +123,12 @@ class _ScreenFOGetAddressState extends State<ScreenFOGetAddress> {
               180,
               50,
               Icons.arrow_forward,
-              () => {
-                Navigator.push(context, navigator('finalize_order_customer/payment', widget.typeSale)),
+              () {
+                if (globals.idAddressSelected == null) {
+                  return error(context, 'Selecione um endereço para entrega.');
+                } else {
+                  Navigator.push(context, navigator('finalize_order_customer/payment', Sales(id: 0, uid: FirebaseAuth.instance.currentUser!.uid, cnpj: globals.businessId, status: 'Andamento', date: DateTime.now(), type: widget.typeSale, total: globals.totalSale, table: globals.numberTable, addressId: globals.idAddressSelected)));
+                }
               },
               false
             ),

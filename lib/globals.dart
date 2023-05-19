@@ -15,3 +15,4 @@ num totalSale = 0;
 List<String> categoriesBusiness = [];
 List<String> sizesCategoryBusiness = [];
 String categorySelected = '';
+int? idAddressSelected;

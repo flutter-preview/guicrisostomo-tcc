@@ -6,6 +6,7 @@ import 'package:tcc/controller/postgres/Lists/productsCart.dart';
 import 'package:tcc/controller/postgres/Lists/sales.dart';
 import 'package:tcc/globals.dart' as globals;
 import 'package:tcc/main.dart';
+import 'package:tcc/model/Sales.dart';
 import 'package:tcc/model/standardRadioButton.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/customer/partFinalizeOrder.dart';
@@ -344,7 +345,7 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
                 } else if (type == 'Entrega') {
                   Navigator.push(context, navigator('finalize_order_customer/address', type));
                 } else {
-                  Navigator.push(context, navigator('finalize_order_customer/payment', type));
+                  Navigator.push(context, navigator('finalize_order_customer/payment', Sales(id: 0, uid: FirebaseAuth.instance.currentUser!.uid, cnpj: globals.businessId, status: 'Andamento', date: DateTime.now(), type: type, total: globals.totalSale, table: globals.numberTable)));
                 }
               },
               false
