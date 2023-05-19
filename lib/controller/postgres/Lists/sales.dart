@@ -462,19 +462,20 @@ class SalesController {
     }
 
     if (dateStart == 'Hoje') {
-      date1 = DateTime.now();
-    } else if (dateStart == 'Ontem') {
       date1 = DateTime.now().subtract(const Duration(days: 1));
+    } else if (dateStart == 'Ontem') {
+      date1 = DateTime.now().subtract(const Duration(days: 2));
+      date2 = DateTime.now().subtract(const Duration(days: 1));
     } else if (dateStart == 'Últimos 7 dias') {
-      date1 = DateTime.now().subtract(const Duration(days: 7));
+      date1 = DateTime.now().subtract(const Duration(days: 8));
     } else if (dateStart == 'Últimos 30 dias') {
-      date1 = DateTime.now().subtract(const Duration(days: 30));
+      date1 = DateTime.now().subtract(const Duration(days: 31));
     } else if (dateStart == 'Últimos 90 dias') {
-      date1 = DateTime.now().subtract(const Duration(days: 90));
+      date1 = DateTime.now().subtract(const Duration(days: 91));
     } else if (dateStart == 'Últimos 180 dias') {
-      date1 = DateTime.now().subtract(const Duration(days: 180));
+      date1 = DateTime.now().subtract(const Duration(days: 181));
     } else if (dateStart == 'Últimos 365 dias') {
-      date1 = DateTime.now().subtract(const Duration(days: 365));
+      date1 = DateTime.now().subtract(const Duration(days: 366));
     } else if (dateStart == 'Todos') {
       date1 = DateTime.parse('2021-01-01');
     } else {
