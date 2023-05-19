@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tcc/controller/firebase/auth.dart';
 import 'package:tcc/utils.dart';
+import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/globals.dart' as globals;
 import 'package:tcc/view/widget/textFieldGeneral.dart';
@@ -27,10 +28,13 @@ class _ScreenForgetPasswordState extends State<ScreenForgetPassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Recuperação de senha'),
-        centerTitle: true,
-        backgroundColor: globals.primary,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(60),
+        child: AppBarWidget(
+          pageName: 'Esqueci minha senha',
+          withoutIcons: true,
+          context: context,
+        ),
       ),
 
       body: Padding(
