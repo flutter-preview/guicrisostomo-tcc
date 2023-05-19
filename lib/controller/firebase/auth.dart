@@ -393,6 +393,35 @@ class LoginController {
     });
   }
 
+  Future<Address> getAddressId(int idAddress) async {
+    return await connectSupadatabase().then((conn) {
+      return conn.query('''
+        select id, street, district, number, city, state, zip, complement, reference, nickname
+          from address 
+          where id = @id and uid = @uid
+          order by id desc
+      ''', substitutionValues: {
+        'id': idAddress,
+        'uid': FirebaseAuth.instance.currentUser?.uid,
+      }).then((List value) {
+        conn.close();
+        
+        return Address(
+          id: value[0][0],
+          street: value[0][1],
+          district: value[0][2],
+          number: value[0][3],
+          city: value[0][4],
+          state: value[0][5],
+          zip: value[0][6],
+          complement: value[0][7],
+          reference: value[0][8],
+          nickname: value[0][9],
+        );
+      });
+    });
+  }
+
   Future<void> updateAddress(context, Address address, String street, String district, int number, String nickname, [String? city, String? state, String? zip, String? complement, String? reference]) async {
     await connectSupadatabase().then((conn) async {
       await conn.query('update address set street=@street, district=@district, number=@number, city=@city, state=@state, zip=@zip, complement=@complement, reference=@reference, nickname=@nickname where id=@id', substitutionValues: {

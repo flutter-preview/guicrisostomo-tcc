@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:tcc/controller/firebase/auth.dart';
 import 'package:tcc/controller/postgres/Lists/productsCart.dart';
+import 'package:tcc/model/Address.dart';
 import 'package:tcc/model/ProductsCart.dart';
 import 'package:tcc/model/Sales.dart';
 import 'package:tcc/view/widget/appBar.dart';
@@ -54,6 +56,14 @@ class _ScreenInfoOrderState extends State<ScreenInfoOrder> {
   
   Future<List<ProductsCartList>> getList() async {
     return await ProductsCartController().list(orderSelect.id).then((value) {
+      return value;
+    }).catchError((onError) {
+      print(onError);
+    });
+  }
+
+  Future<Address> getAddress() async {
+    return await LoginController().getAddressId(orderSelect.addressId!).then((value) {
       return value;
     }).catchError((onError) {
       print(onError);
@@ -126,6 +136,52 @@ class _ScreenInfoOrderState extends State<ScreenInfoOrder> {
                         const SizedBox(width: 10,),
                         Text(
                           'Mesa: ${orderSelect.table}',
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+
+              if (orderSelect.type == 'Entrega')
+                Column(
+                  children: [
+                    const SizedBox(height: 10,),
+
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(Icons.location_on, size: 30, color: globals.primary),
+                        const SizedBox(width: 10,),
+                        FutureBuilder(
+                          future: getAddress(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.done) {
+                              return Column(
+                                children: [
+                                  Text(
+                                    'Endereço: ${snapshot.data!.street}, ${snapshot.data!.number} - ${snapshot.data!.district}, ${snapshot.data!.city} - ${snapshot.data!.state}',
+                                  ),
+
+                                  const SizedBox(height: 10,),
+
+                                  Text(
+                                    'Referência: ${snapshot.data!.reference}',
+                                  ),
+
+                                  const SizedBox(height: 10,),
+
+                                  Text(
+                                    'Complemento: ${snapshot.data!.complement}',
+                                  ),
+
+                                ],
+                              );
+                            } else {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                          }
                         )
                       ],
                     ),
