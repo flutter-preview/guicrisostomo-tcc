@@ -435,6 +435,15 @@ class LoginController {
     });
   }
 
+  Future<void> deleteAddress(int id) async {
+    await connectSupadatabase().then((conn) async {
+      await conn.query('update address set fg_active = false where id = @id', substitutionValues: {
+        'id': id,
+      });
+      conn.close();
+    });
+  }
+
   Future<bool> isNickNameAddressExist(String nickname) async {
     return await connectSupadatabase().then((conn) async {
       return await conn.query('select nickname from address where nickname = @nickname and uid = @uid', substitutionValues: {

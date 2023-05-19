@@ -151,69 +151,50 @@ class _AddressExistentState extends State<AddressExistent> {
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         mainAxisSize: MainAxisSize.max,
                                         children: [
-                                          Row(
-                                            mainAxisSize: MainAxisSize.min,
+                                          Text(
+                                            listAddress[i].nickname,
+                                            style: const TextStyle(
+                                              fontFamily: 'Roboto',
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w700,
+                                              color: Colors.black,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
 
+                                          Row(
                                             children: [
-                                              Icon(
-                                                Icons.house,
+                                              IconButton(
+                                                onPressed: () {
+                                                  setState(() {
+                                                    LoginController().deleteAddress(listAddress[i].id);
+                                                    listAddress.removeAt(i);
+                                                    groupLocals = listAddress[0].nickname;
+                                                  });
+                                                },
+                                                icon: const Icon(Icons.delete),
                                                 color: globals.primary,
                                               ),
-              
-                                              const SizedBox(width: 10),
-              
-                                              SizedBox(
-                                                width: MediaQuery.of(context).size.width * 0.3,
-                                                child: Text(
-                                                  listAddress[i].nickname,
-                                                  style: const TextStyle(
-                                                    fontFamily: 'Roboto',
-                                                    fontSize: 20,
-                                                    fontWeight: FontWeight.w700,
-                                                    color: Colors.black,
-                                                  ),
-                                                  overflow: TextOverflow.ellipsis,
-                                                ),
+
+                                              IconButton(
+                                                onPressed: () {
+                                                  setState(() {
+                                                    Navigator.push(context, navigator('create_edit_address', listAddress[i])).then((value) async {
+                                                      await getAddress().then((value) {
+
+                                                        setState(() {
+                                                          listAddress = value;
+                                                          groupLocals = listAddress[i].nickname;
+                                                        });
+
+                                                      });
+                                                    });
+                                                  });
+                                                },
+                                                icon: const Icon(Icons.edit),
+                                                color: globals.primary,
                                               ),
                                             ],
-                                          ),
-
-                                          IconButton(
-                                            onPressed: () {
-                                              setState(() {
-                                                Navigator.push(context, navigator('create_edit_address', listAddress[i])).then((value) async {
-                                                  await getAddress().then((value) {
-
-                                                    setState(() {
-                                                      listAddress = value;
-                                                      groupLocals = listAddress[i].nickname;
-                                                    });
-
-                                                  });
-                                                });
-                                              });
-                                            },
-                                            icon: const Icon(Icons.delete),
-                                            color: globals.primary,
-                                          ),
-              
-                                          IconButton(
-                                            onPressed: () {
-                                              setState(() {
-                                                Navigator.push(context, navigator('create_edit_address', listAddress[i])).then((value) async {
-                                                  await getAddress().then((value) {
-
-                                                    setState(() {
-                                                      listAddress = value;
-                                                      groupLocals = listAddress[i].nickname;
-                                                    });
-
-                                                  });
-                                                });
-                                              });
-                                            },
-                                            icon: const Icon(Icons.edit),
-                                            color: globals.primary,
                                           ),
                                         ],
                                       ),
