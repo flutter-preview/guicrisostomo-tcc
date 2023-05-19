@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:tcc/controller/firebase/auth.dart';
@@ -35,24 +36,25 @@ class _AppBarWidgetState extends State<AppBarWidget> {
         : Icon(widget.icon, color: Colors.white, size: 30),
         
       actions: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.transparent,
-              shape: const CircleBorder(),
-              shadowColor: Colors.transparent,
-            ),
-            
-            child: const Icon(
-                Icons.logout,
-                size: 30,
+        if (FirebaseAuth.instance.currentUser != null)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.transparent,
+                shape: const CircleBorder(),
+                shadowColor: Colors.transparent,
               ),
-            onPressed: () {
-              LoginController().logout(context);
-            },
+              
+              child: const Icon(
+                  Icons.logout,
+                  size: 30,
+                ),
+              onPressed: () {
+                LoginController().logout(context);
+              },
+            ),
           ),
-        ),
       ],
       title: Text(widget.pageName),
       
