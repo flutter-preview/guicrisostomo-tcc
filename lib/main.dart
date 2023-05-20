@@ -55,12 +55,16 @@ import 'package:tcc/view/pages/screen_profile.dart';
 import 'package:tcc/view/pages/screen_register.dart';
 import 'package:tcc/view/pages/screen_terms.dart';
 import 'package:tcc/view/pages/screen_verification_table.dart';
+import 'package:tcc/view/pages/screen_verify_email.dart';
 
 Route navigator([String? name, Object? arguments]) {
   Widget page;
   switch (name) {
     case 'presentation' :
       page = const ScreenPresentation();
+      break;
+    case 'verify_email' :
+      page = const ScreenVerifyEmail();
       break;
     case 'login' :
       page = const ScreenLogin();
@@ -235,17 +239,21 @@ Future<void> main() async {
   print(user?.uid);
   
   if (user != null) {
-    route = await LoginController().getTypeUser().then((value) {
-      if (value == 'Cliente') {
-        return 'home';
-      } else if (value == 'Gerente') {
-        return 'home_manager';
-      } else {
-        return 'home_employee';
-      }
-    }).catchError((onError) {
-      return 'presentation';
-    });
+    if (user.emailVerified == false) {
+      route = 'verify_email';
+    } else {
+      route = await LoginController().getTypeUser().then((value) {
+        if (value == 'Cliente') {
+          return 'home';
+        } else if (value == 'Gerente') {
+          return 'home_manager';
+        } else {
+          return 'home_employee';
+        }
+      }).catchError((onError) {
+        return 'presentation';
+      });
+    }
   } else {
     route = 'presentation';
   }
@@ -270,6 +278,7 @@ Future<void> main() async {
 
       routes: {
         'presentation' :(context) => const ScreenPresentation(),
+        'verify_email' :(context) => const ScreenVerifyEmail(),
         'login' :(context) => const ScreenLogin(),
         'login/forget_password' :(context) => const ScreenForgetPassword(),
         'register' :(context) => const ScreenRegister(),

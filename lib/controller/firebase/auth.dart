@@ -250,7 +250,7 @@ class LoginController {
         .then((res) async {
       success(context, 'Usuário autenticado com sucesso.');
       // Navigator.pop(context);
-      redirectUser(context, null, FirebaseAuth.instance.currentUser != null);
+      redirectUser(context);
 
     }).catchError((e) {
       switch (e.code) {
@@ -396,6 +396,16 @@ class LoginController {
       // var t = await getTypeUser() ?? 'Cliente';
       // success(context, t);
       // return;
+
+    if (FirebaseAuth.instance.currentUser?.emailVerified == false) {
+      return await FirebaseAuth.instance.currentUser?.sendEmailVerification().then((value) {
+        Navigator.pop(context);
+        Navigator.push(context, navigator('verify_email'));
+        success(context, 'E-mail de verificação enviado com sucesso.');
+      }).catchError((e) {
+        error(context, 'Ocorreu um erro ao enviar o e-mail de verificação: ${e.code.toString()}');
+      });
+    }
       
     await getTypeUser().then((String? typeUser) async {
       
