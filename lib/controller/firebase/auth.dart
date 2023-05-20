@@ -47,17 +47,122 @@ class LoginController {
     
     (FirebaseAuth.instance.currentUser?.uid != null) ? {
       Navigator.pop(context),
-      await userLogin(),
       success(context, 'Usuário autenticado com sucesso.'),
     } : {
       await FirebaseAuth.instance.signInAnonymously().then((value) async {
         await saveDatasUser(value.user?.uid, 'Visitante', 'visitante@hungry.com', null, 1, context);
         Navigator.pop(context);
-        await userLogin();
       }).catchError((e) {
         error(context, 'Ocorreu um erro ao fazer login: ${e.code.toString()}');
       })
     };
+  }
+
+  Future<int?> getPhoneNumberUser() async {
+    return await connectSupadatabase().then((conn) async {
+      return await conn.query('select phone from tb_user where uid = @id', substitutionValues: {
+        'id': FirebaseAuth.instance.currentUser?.uid,
+      }).then((List value) {
+        conn.close();
+        return value[0][0];
+      });
+    });
+  }
+
+  Future<UserList> userLogin() async {
+    return await connectSupadatabase().then((conn) async {
+      return await conn.query('''
+        select uid, name, email, phone, type, image from tb_user where uid = @uid
+      ''', substitutionValues: {
+        'uid': FirebaseAuth.instance.currentUser?.uid,
+      }).then((List value) {
+        conn.close();
+        return UserList(
+          uid: value[0][1],
+          name: value[0][2],
+          email: value[0][3],
+          phone: value[0][4],
+          type: value[0][5],
+          image: value[0][6],
+        );
+      });
+    });
+  }
+
+  Future<void> syncPhoneNumberFirebase(int phoneNumber, context) async {
+    await FirebaseAuth.instance.verifyPhoneNumber(
+      phoneNumber: '+55 $phoneNumber',
+      verificationCompleted: (PhoneAuthCredential credential) async {
+        // ANDROID ONLY!
+
+        // Sign the user in (or link) with the auto-generated credential
+        await FirebaseAuth.instance.currentUser?.linkWithCredential(credential);
+        Navigator.pop(context);
+      },
+      verificationFailed: (FirebaseAuthException e) {
+        if (e.code == 'invalid-phone-number') {
+          error(context, 'O número de telefone fornecido é inválido.');
+        } else if (e.code == 'invalid-verification-code') {
+          error(context, 'O código de verificação fornecido é inválido.');
+        } else {
+          error(context, 'Ocorreu um erro ao verificar seu telefone: ${e.code.toString()}');
+        }
+      },
+      codeSent: (String verificationId, int? resendToken) async {
+        // Update the UI - wait for the user to enter the SMS code
+        String smsCode = '';
+
+        await showDialog(
+          context: context, 
+          builder: (context) => AlertDialog(
+            title: const Text('Digite o código de verificação'),
+            content: TextField(
+              onChanged: (value) {
+                smsCode = value;
+              },
+              keyboardType: TextInputType.number,
+              maxLength: 6,
+            ),
+            actions: [
+              TextButton(
+                onPressed: () async {
+                  // Navigator.pop(context);
+                  // Create a PhoneAuthCredential with the code
+                  PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: smsCode);
+
+                  // Sign the user in (or link) with the credential
+                  await FirebaseAuth.instance.currentUser?.linkWithCredential(credential).then((value) async {
+                    Navigator.pop(context);
+                    success(context, 'Telefone confirmado com sucesso.');
+                    await addPhoneNumberToDatabase(phoneNumber);
+                  }).catchError((e) {
+                    error(context, 'Ocorreu um erro ao confirmar seu telefone: ${e.code.toString()}');
+                  });
+                },
+                child: const Text('Confirmar'),
+              ),
+            ],
+          ),
+        );
+      },
+      codeAutoRetrievalTimeout: (String verificationId) {},
+    );
+  }
+
+  Future<void> savePhoneNumber(int phoneNumber, context) async {
+    Navigator.push(context, navigator('loading'));
+    await syncPhoneNumberFirebase(phoneNumber, context);
+    Navigator.pop(context);
+  }
+
+  Future<void> addPhoneNumberToDatabase(int phoneNumber) async {
+    await connectSupadatabase().then((conn) async {
+      await conn.query('update tb_user set phone=@phone where uid=@uid', substitutionValues: {
+        'phone': phoneNumber,
+        'uid': FirebaseAuth.instance.currentUser?.uid,
+      });
+      conn.close();
+    });
   }
 
   Future<void> saveDatasUser(String? uid, String name, String email, String? phone, int type, BuildContext context) async {
@@ -188,33 +293,6 @@ class LoginController {
       context,
       'presentation',
     );
-  }
-
-  Future<dynamic> userLogin() async {
-
-    var uid = FirebaseAuth.instance.currentUser?.uid;
-
-    return connectSupadatabase().then((conn) async {
-      
-      // return await conn.from('tb_user').select(
-      //   '*'
-      // ).eq(
-      //   'uid', uid
-      // ).single().then((value) {
-      //   return value;
-      // }).then((value) {
-      //   UserList user = UserList.fromJson(value);
-      //   return user;
-      // });
-      return conn.query('select * from tb_user where uid = @uid', substitutionValues: {
-        'uid': uid,
-      }).then((List value) {
-        conn.close();
-        return value;
-      });
-      // Results results = await conn.query('select * from user where uid = ?', [uid]);
-      // conn.close();
-    });
   }
 
   Future<void> updateUser(id, name, email, phone, context) async {
