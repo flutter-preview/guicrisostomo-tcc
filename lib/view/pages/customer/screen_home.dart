@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tcc/controller/postgres/Lists/products.dart';
@@ -109,7 +110,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                 ],
               ),
 
-              if (snapshot.data!.table != null)
+              if (snapshot.data!.table != null && snapshot.data!.table != 0)
                 Column(
                   children: [
                     const SizedBox(height: 10,),
