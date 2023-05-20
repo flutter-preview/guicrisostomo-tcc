@@ -151,7 +151,7 @@ class LoginController {
             ],
           ),
         );
-      },a
+      },
       codeAutoRetrievalTimeout: (String verificationId) {},
     );
   }
@@ -198,31 +198,47 @@ class LoginController {
 
   Future<void> createAccount(context, String name, String email, String phone, String password) async {
     Navigator.push(context, navigator('loading'));
-    
-    await FirebaseAuth.instance
-      .createUserWithEmailAndPassword(email: email, password: password)
-      .then((res) async {
-        
-        saveDatasUser(res.user?.uid, name, email, phone.replaceAll(RegExp(r'[-() ]'), ''), 1, context);
-        // final MySqlConnection conn = await connectMySQL();
-        // await conn.query('insert into user (uid, name, email, phone, type) values (?, ?, ?, ?, ?)',
-        // [res.user?.uid, name, email, phone.replaceAll(RegExp(r'[-() ]'), ''), 1]);
 
-        // conn.close();
+    (FirebaseAuth.instance.currentUser == null) ?
+      await FirebaseAuth.instance
+        .createUserWithEmailAndPassword(email: email, password: password)
+        .then((res) async {
+          
+          saveDatasUser(res.user?.uid, name, email, phone.replaceAll(RegExp(r'[-() ]'), ''), 1, context);
+          // final MySqlConnection conn = await connectMySQL();
+          // await conn.query('insert into user (uid, name, email, phone, type) values (?, ?, ?, ?, ?)',
+          // [res.user?.uid, name, email, phone.replaceAll(RegExp(r'[-() ]'), ''), 1]);
 
-        
-    }).catchError((e) {
-      switch (e.code) {
-        case 'email-already-in-use':
-          error(context, 'O email já foi cadastrado.');
-          break;
-        case 'invalid-email':
-          error(context, 'O email é inválido.');
-          break;
-        default:
-          error(context, e.code.toString());
-      }
-    });
+          // conn.close();
+
+          
+      }).catchError((e) {
+        switch (e.code) {
+          case 'email-already-in-use':
+            error(context, 'O email já foi cadastrado.');
+            break;
+          case 'invalid-email':
+            error(context, 'O email é inválido.');
+            break;
+          default:
+            error(context, e.code.toString());
+        }
+      })
+    :
+      await FirebaseAuth.instance.currentUser?.linkWithCredential(EmailAuthProvider.credential(email: email, password: password)).then((value) async {
+        await saveDatasUser(value.user?.uid, name, email, phone.replaceAll(RegExp(r'[-() ]'), ''), 1, context);
+      }).catchError((e) {
+        switch (e.code) {
+          case 'email-already-in-use':
+            error(context, 'O email já foi cadastrado.');
+            break;
+          case 'invalid-email':
+            error(context, 'O email é inválido.');
+            break;
+          default:
+            error(context, e.code.toString());
+        }
+      });
 
     Navigator.pop(context);
   }
@@ -284,7 +300,7 @@ class LoginController {
 
     final GoogleSignIn googleSignIn = GoogleSignIn();
 
-    if (googleSignIn.clientId != null) {
+    if (await googleSignIn.isSignedIn() == true) {
       await googleSignIn.signOut();
     }
 
@@ -360,7 +376,7 @@ class LoginController {
     );
     
     // Once signed in, return the UserCredential
-    return await FirebaseAuth.instance.signInWithCredential(credential);
+    return (FirebaseAuth.instance.currentUser == null) ? await FirebaseAuth.instance.signInWithCredential(credential) : await FirebaseAuth.instance.currentUser?.linkWithCredential(credential);
   }
 
   Future<void> signIn(context) async {

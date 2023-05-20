@@ -70,16 +70,8 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
         });
       }
     });
-    FirebaseAuth.instance.authStateChanges().listen((User? user) {
-      if (user == null) {
-        setState(() {
-          isUserAnonymous = true;
-        });
-      } else {
-        setState(() {
-          isUserAnonymous = false;
-        });
-      }
+    setState(() {
+      FirebaseAuth.instance.currentUser!.isAnonymous ? isUserAnonymous = true : isUserAnonymous = false;
     });
 
     LoginController().getPhoneNumberUser().then((value) {
