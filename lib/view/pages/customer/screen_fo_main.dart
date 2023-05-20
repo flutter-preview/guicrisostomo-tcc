@@ -93,6 +93,9 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
 
   @override
   Widget build(BuildContext context) {
+
+    hasPhoneNumber = FirebaseAuth.instance.currentUser!.phoneNumber != null || FirebaseAuth.instance.currentUser?.phoneNumber == '' ? true : false;
+
     return type != '' ? Scaffold(
       appBar: PreferredSize(
         preferredSize: type != 'Mesa' ? const Size.fromHeight(220) : const Size.fromHeight(250),
@@ -256,11 +259,7 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
                         button('Salvar', 170, 50, Icons.save, () {
                           if (txtPhone.text.isNotEmpty) {
                             int phone = int.parse(txtPhone.text.replaceAll('(', '').replaceAll(')', '').replaceAll('-', '').replaceAll(' ', ''));
-                            LoginController().savePhoneNumber(phone, context).whenComplete(() {
-                              setState(() {
-                                hasPhoneNumber = true;
-                              });
-                            });
+                            LoginController().savePhoneNumber(phone, context);
                           } else {
                             error(context, 'Informe um número de telefone válido.');
                           }

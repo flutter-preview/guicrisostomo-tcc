@@ -93,16 +93,7 @@ class LoginController {
     await FirebaseAuth.instance.verifyPhoneNumber(
       phoneNumber: '+55 $phoneNumber',
       verificationCompleted: (PhoneAuthCredential credential) async {
-        // ANDROID ONLY!
-
-        // Sign the user in (or link) with the auto-generated credential
-        await FirebaseAuth.instance.currentUser?.linkWithCredential(credential).then((value) {
-          success(context, 'Número de telefone verificado com sucesso.');
-          Navigator.pop(context);
-          savePhoneDataBase(phoneNumber);
-        }).catchError((e) {
-          error(context, 'Ocorreu um erro ao verificar o número de telefone: ${e.code.toString()}');
-        });
+        
       },
       verificationFailed: (FirebaseAuthException e) {
         if (e.code == 'invalid-phone-number') {
@@ -116,10 +107,13 @@ class LoginController {
         } else {
           error(context, 'Ocorreu um erro ao verificar o número de telefone: ${e.code.toString()}');
         }
+
+        Navigator.pop(context);
       },
       codeSent: (String verificationId, int? resendToken) async {
         // Update the UI - wait for the user to enter the SMS code
         String smsCode = '';
+        Navigator.pop(context);
 
         await showDialog(
           context: context, 
@@ -129,21 +123,26 @@ class LoginController {
               onChanged: (value) {
                 smsCode = value;
               },
+              keyboardType: TextInputType.number,
+              maxLength: 6,
             ),
             actions: [
               TextButton(
-                onPressed: () async {
+                onPressed: () {
                   // Navigator.pop(context);
                   // Create a PhoneAuthCredential with the code
                   PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: smsCode);
 
                   // Sign the user in (or link) with the credential
-                  await FirebaseAuth.instance.currentUser?.linkWithCredential(credential).whenComplete(() {
+                  
+                  FirebaseAuth.instance.currentUser?.linkWithCredential(credential).then((value) async {
+                    
                     success(context, 'Número de telefone verificado com sucesso.');
+                    
+                    await savePhoneDataBase(phoneNumber);
                     Navigator.pop(context);
-                    savePhoneDataBase(phoneNumber);
-                  }).catchError((e) {
-                    error(context, 'Ocorreu um erro ao verificar o número de telefone: ${e.code.toString()}');
+                  }).onError((e, stackTrace) {
+                    error(context, 'Ocorreu um erro ao verificar o número de telefone: ${e.toString()}');
                   });
                 },
                 child: const Text('Confirmar'),
@@ -159,7 +158,7 @@ class LoginController {
   Future<void> savePhoneNumber(int phoneNumber, context) async {
     Navigator.push(context, navigator('loading'));
     await syncPhoneNumberFirebase(phoneNumber, context);
-    Navigator.pop(context);
+    
   }
 
   Future<void> savePhoneDataBase(int phoneNumber) async {
@@ -226,7 +225,7 @@ class LoginController {
       })
     :
       await FirebaseAuth.instance.currentUser?.linkWithCredential(EmailAuthProvider.credential(email: email, password: password)).then((value) async {
-        await saveDatasUser(value.user?.uid, name, email, phone.replaceAll(RegExp(r'[-() ]'), ''), 1, context);
+        await updateUser(value.user?.uid, name, email, phone.replaceAll(RegExp(r'[-() ]'), ''), context);
       }).catchError((e) {
         switch (e.code) {
           case 'email-already-in-use':
@@ -251,7 +250,7 @@ class LoginController {
         .then((res) async {
       success(context, 'Usuário autenticado com sucesso.');
       // Navigator.pop(context);
-      redirectUser(context);
+      redirectUser(context, null, FirebaseAuth.instance.currentUser != null);
 
     }).catchError((e) {
       switch (e.code) {
@@ -380,10 +379,11 @@ class LoginController {
   }
 
   Future<void> signIn(context) async {
+    bool isUserAlreajyExist = FirebaseAuth.instance.currentUser != null;
     await signInGoogle(context).then((value) async {
       success(context, 'Usuário autenticado com sucesso');
 
-      redirectUser(context, value);
+      redirectUser(context, value, isUserAlreajyExist);
     }).catchError((onError) {
       error(context, "Ocorreu um erro ao entrar: $onError");
     });
@@ -391,7 +391,7 @@ class LoginController {
     Navigator.pop(context);
   }
 
-  Future<void> redirectUser(context, [value]) async {
+  Future<void> redirectUser(context, [value, bool isUserAlreajyExist = false]) async {
     // Navigator.pop(context);
       // var t = await getTypeUser() ?? 'Cliente';
       // success(context, t);
@@ -431,6 +431,10 @@ class LoginController {
 
         return;
       } else {
+        if (isUserAlreajyExist == true) {
+          await LoginController().updateUser(FirebaseAuth.instance.currentUser?.uid, value.user?.displayName, value.user?.email, FirebaseAuth.instance.currentUser?.phoneNumber?.replaceAll('+55', ''), context);
+        }
+
         switch (typeUser) {
           case 'Cliente':
             Navigator.pop(context);
