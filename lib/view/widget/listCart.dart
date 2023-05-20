@@ -346,7 +346,10 @@ class _ProductsCartState extends State<ProductsCart> {
                         context,
                         navigator(
                           'cart/info_item',
-                          dados,
+                          {
+                            'dados': dados,
+                            'isShowButtonDelete': widget.isShowButtonDelete,
+                          }
                         )
                       );
                     },
@@ -358,7 +361,10 @@ class _ProductsCartState extends State<ProductsCart> {
                       context,
                       navigator(
                         'cart/info_item',
-                        dados,
+                        {
+                          'dados': dados,
+                          'isShowButtonDelete': widget.isShowButtonDelete,
+                        }
                       )
                     );
                   },

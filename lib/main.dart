@@ -282,7 +282,7 @@ Future<void> main() async {
         'table/info' :(context) => const ScreenInfoTable(),
         'waiter' :(context) => const ScreenCallWaiter(),
         'cart' :(context) => const ScreenCart(),
-        'cart/info_item' :(context) => const ScreenInfoItem(arguments: {},),
+        'cart/info_item' :(context) => const ScreenInfoItem(arguments: null,),
         'products' :(context) => const ScreenProducts(),
         'products/info_product' :(context) => const ScreenInfoProduct(arguments: {},),
         'products/add_product' :(context) => const ScreenAddItem(),

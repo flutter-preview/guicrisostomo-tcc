@@ -10,6 +10,7 @@ import 'package:tcc/view/widget/snackBars.dart';
 
 class ScreenInfoItem extends StatefulWidget {
   final Object? arguments;
+
   const ScreenInfoItem({
     super.key,
     required this.arguments,
@@ -23,7 +24,10 @@ class _ScreenInfoItemState extends State<ScreenInfoItem> {
 
   @override
   Widget build(BuildContext context) {
-    ProductsCartList productsCartList = widget.arguments as ProductsCartList;
+    Map<String, dynamic>? arguments = widget.arguments as Map<String, dynamic>?;
+    
+    ProductsCartList? productsCartList = arguments!['dados'] as ProductsCartList;
+    bool userCanDelete = arguments['isShowButtonDelete'] as bool? ?? true;
     int idRelative = productsCartList.idRelative!;
 
     Future<Widget> getItems(Variation variation) async {
@@ -62,7 +66,8 @@ class _ScreenInfoItemState extends State<ScreenInfoItem> {
             
           list.add(
             ListTile(
-              leading: IconButton(
+              
+              leading: (userCanDelete) ? IconButton(
                 icon: const Icon(Icons.delete),
                 color: Colors.red,
                 onPressed: () async {
@@ -82,7 +87,7 @@ class _ScreenInfoItemState extends State<ScreenInfoItem> {
 
                   });
                 },
-              ),
+              ) : null,
 
               title: Text(
                 item.name!,
@@ -99,7 +104,7 @@ class _ScreenInfoItemState extends State<ScreenInfoItem> {
                 ),
               ) : null,
 
-              trailing: Row(
+              trailing: (userCanDelete) ?  Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
@@ -120,6 +125,12 @@ class _ScreenInfoItemState extends State<ScreenInfoItem> {
                     },
                   )
                 ],
+              ) : Text(
+                'R\$ ${item.price!.toStringAsFixed(2)}',
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.red
+                ),
               ),
 
               onTap: () {
