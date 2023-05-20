@@ -96,16 +96,25 @@ class LoginController {
         // ANDROID ONLY!
 
         // Sign the user in (or link) with the auto-generated credential
-        await FirebaseAuth.instance.currentUser?.linkWithCredential(credential);
-        Navigator.pop(context);
+        await FirebaseAuth.instance.currentUser?.linkWithCredential(credential).then((value) {
+          success(context, 'Número de telefone verificado com sucesso.');
+          Navigator.pop(context);
+          savePhoneDataBase(phoneNumber);
+        }).catchError((e) {
+          error(context, 'Ocorreu um erro ao verificar o número de telefone: ${e.code.toString()}');
+        });
       },
       verificationFailed: (FirebaseAuthException e) {
         if (e.code == 'invalid-phone-number') {
           error(context, 'O número de telefone fornecido é inválido.');
+        } else if (e.code == 'too-many-requests') {
+          error(context, 'O número de solicitações excedeu o limite. Tente novamente mais tarde.');
+        } else if (e.code == 'session-expired') {
+          error(context, 'A sessão expirou. Tente novamente mais tarde.');
         } else if (e.code == 'invalid-verification-code') {
-          error(context, 'O código de verificação fornecido é inválido.');
+          error(context, 'O código de verificação é inválido.');
         } else {
-          error(context, 'Ocorreu um erro ao verificar seu telefone: ${e.code.toString()}');
+          error(context, 'Ocorreu um erro ao verificar o número de telefone: ${e.code.toString()}');
         }
       },
       codeSent: (String verificationId, int? resendToken) async {
@@ -120,8 +129,6 @@ class LoginController {
               onChanged: (value) {
                 smsCode = value;
               },
-              keyboardType: TextInputType.number,
-              maxLength: 6,
             ),
             actions: [
               TextButton(
@@ -131,12 +138,12 @@ class LoginController {
                   PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: smsCode);
 
                   // Sign the user in (or link) with the credential
-                  await FirebaseAuth.instance.currentUser?.linkWithCredential(credential).then((value) async {
+                  await FirebaseAuth.instance.currentUser?.linkWithCredential(credential).whenComplete(() {
+                    success(context, 'Número de telefone verificado com sucesso.');
                     Navigator.pop(context);
-                    success(context, 'Telefone confirmado com sucesso.');
-                    await addPhoneNumberToDatabase(phoneNumber);
+                    savePhoneDataBase(phoneNumber);
                   }).catchError((e) {
-                    error(context, 'Ocorreu um erro ao confirmar seu telefone: ${e.code.toString()}');
+                    error(context, 'Ocorreu um erro ao verificar o número de telefone: ${e.code.toString()}');
                   });
                 },
                 child: const Text('Confirmar'),
@@ -155,7 +162,7 @@ class LoginController {
     Navigator.pop(context);
   }
 
-  Future<void> addPhoneNumberToDatabase(int phoneNumber) async {
+  Future<void> savePhoneDataBase(int phoneNumber) async {
     await connectSupadatabase().then((conn) async {
       await conn.query('update tb_user set phone=@phone where uid=@uid', substitutionValues: {
         'phone': phoneNumber,
@@ -191,31 +198,47 @@ class LoginController {
 
   Future<void> createAccount(context, String name, String email, String phone, String password) async {
     Navigator.push(context, navigator('loading'));
-    
-    await FirebaseAuth.instance
-      .createUserWithEmailAndPassword(email: email, password: password)
-      .then((res) async {
-        
-        saveDatasUser(res.user?.uid, name, email, phone.replaceAll(RegExp(r'[-() ]'), ''), 1, context);
-        // final MySqlConnection conn = await connectMySQL();
-        // await conn.query('insert into user (uid, name, email, phone, type) values (?, ?, ?, ?, ?)',
-        // [res.user?.uid, name, email, phone.replaceAll(RegExp(r'[-() ]'), ''), 1]);
 
-        // conn.close();
+    (FirebaseAuth.instance.currentUser == null) ?
+      await FirebaseAuth.instance
+        .createUserWithEmailAndPassword(email: email, password: password)
+        .then((res) async {
+          
+          saveDatasUser(res.user?.uid, name, email, phone.replaceAll(RegExp(r'[-() ]'), ''), 1, context);
+          // final MySqlConnection conn = await connectMySQL();
+          // await conn.query('insert into user (uid, name, email, phone, type) values (?, ?, ?, ?, ?)',
+          // [res.user?.uid, name, email, phone.replaceAll(RegExp(r'[-() ]'), ''), 1]);
 
-        
-    }).catchError((e) {
-      switch (e.code) {
-        case 'email-already-in-use':
-          error(context, 'O email já foi cadastrado.');
-          break;
-        case 'invalid-email':
-          error(context, 'O email é inválido.');
-          break;
-        default:
-          error(context, e.code.toString());
-      }
-    });
+          // conn.close();
+
+          
+      }).catchError((e) {
+        switch (e.code) {
+          case 'email-already-in-use':
+            error(context, 'O email já foi cadastrado.');
+            break;
+          case 'invalid-email':
+            error(context, 'O email é inválido.');
+            break;
+          default:
+            error(context, e.code.toString());
+        }
+      })
+    :
+      await FirebaseAuth.instance.currentUser?.linkWithCredential(EmailAuthProvider.credential(email: email, password: password)).then((value) async {
+        await saveDatasUser(value.user?.uid, name, email, phone.replaceAll(RegExp(r'[-() ]'), ''), 1, context);
+      }).catchError((e) {
+        switch (e.code) {
+          case 'email-already-in-use':
+            error(context, 'O email já foi cadastrado.');
+            break;
+          case 'invalid-email':
+            error(context, 'O email é inválido.');
+            break;
+          default:
+            error(context, e.code.toString());
+        }
+      });
 
     Navigator.pop(context);
   }
@@ -277,7 +300,7 @@ class LoginController {
 
     final GoogleSignIn googleSignIn = GoogleSignIn();
 
-    if (googleSignIn.clientId != null) {
+    if (await googleSignIn.isSignedIn() == true) {
       await googleSignIn.signOut();
     }
 
@@ -353,7 +376,7 @@ class LoginController {
     );
     
     // Once signed in, return the UserCredential
-    return await FirebaseAuth.instance.signInWithCredential(credential);
+    return (FirebaseAuth.instance.currentUser == null) ? await FirebaseAuth.instance.signInWithCredential(credential) : await FirebaseAuth.instance.currentUser?.linkWithCredential(credential);
   }
 
   Future<void> signIn(context) async {
