@@ -142,6 +142,8 @@ class _ScreenInfoOrderState extends State<ScreenInfoOrder> {
                   ],
                 ),
 
+              const SizedBox(height: 10,),
+
               if (orderSelect.type == 'Entrega')
                 Column(
                   children: [
@@ -155,26 +157,35 @@ class _ScreenInfoOrderState extends State<ScreenInfoOrder> {
                         FutureBuilder(
                           future: getAddress(),
                           builder: (context, snapshot) {
-                            if (snapshot.connectionState == ConnectionState.done) {
-                              return Column(
-                                children: [
-                                  Text(
-                                    'Endereço: ${snapshot.data!.street}, ${snapshot.data!.number} - ${snapshot.data!.district}, ${snapshot.data!.city} - ${snapshot.data!.state}',
-                                  ),
-
-                                  const SizedBox(height: 10,),
-
-                                  Text(
-                                    'Referência: ${snapshot.data!.reference}',
-                                  ),
-
-                                  const SizedBox(height: 10,),
-
-                                  Text(
-                                    'Complemento: ${snapshot.data!.complement}',
-                                  ),
-
-                                ],
+                            if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
+                              return Flexible(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Endereço: ${snapshot.data!.street}, ${snapshot.data!.number} - ${snapshot.data!.district}, ${snapshot.data!.city ?? 'cidade não informada'} - ${snapshot.data!.state ?? 'estado não informado'}',
+                                    ),
+                              
+                                    const SizedBox(height: 10,),
+                              
+                                    Text(
+                                      'Referência: ${snapshot.data!.reference ?? 'vazio'}',
+                                      style: TextStyle(
+                                        color: Colors.black54
+                                      )
+                                    ),
+                              
+                                    const SizedBox(height: 10,),
+                              
+                                    Text(
+                                      'Complemento: ${snapshot.data!.complement ?? 'vazio'}',
+                                      style: TextStyle(
+                                        color: Colors.black54
+                                      )
+                                    ),
+                              
+                                  ],
+                                ),
                               );
                             } else {
                               return const Center(
