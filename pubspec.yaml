@@ -96,8 +96,6 @@ flutter:
     - lib/images/imgPizza.png
     - lib/images/imgPizza.jpg
     - lib/images/imgFood.jpg
-    - lib/images/imgMe.png
-    - lib/images/imgProfessor.png
     - lib/images/google_logo.png
     - .env
 
