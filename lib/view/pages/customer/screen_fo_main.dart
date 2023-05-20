@@ -8,10 +8,13 @@ import 'package:tcc/globals.dart' as globals;
 import 'package:tcc/main.dart';
 import 'package:tcc/model/Sales.dart';
 import 'package:tcc/model/standardRadioButton.dart';
+import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/customer/partFinalizeOrder.dart';
 import 'package:tcc/view/widget/radioButton.dart';
+import 'package:tcc/view/widget/snackBars.dart';
 import 'package:tcc/view/widget/switchListTile.dart';
+import 'package:tcc/view/widget/textFieldGeneral.dart';
 
 class ScreenFOMain extends StatefulWidget {
   const ScreenFOMain({super.key});
@@ -21,7 +24,6 @@ class ScreenFOMain extends StatefulWidget {
 }
 
 class _ScreenFOMainState extends State<ScreenFOMain> {
-  var txtName = TextEditingController();
   var txtPhone = TextEditingController();
   var maskFormatter = MaskTextInputFormatter(
     mask: '(##) #####-####', 
@@ -39,6 +41,7 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
 
   bool hasCloseTable = false;
   bool isUserAnonymous = false;
+  bool hasPhoneNumber = false;
 
   List<RadioButtonList> listRadioButton = [
     RadioButtonList(
@@ -75,6 +78,14 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
       } else {
         setState(() {
           isUserAnonymous = false;
+        });
+      }
+    });
+
+    LoginController().getPhoneNumberUser().then((value) {
+      if (value != null) {
+        setState(() {
+          hasPhoneNumber = true;
         });
       }
     });
@@ -176,69 +187,110 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
           children: [
 
             type != 'Mesa' ?
-            Column(
-              children: [
-                const PartFinalizeOrder(partUser: 1),
+              Column(
+                children: [
+                  const PartFinalizeOrder(partUser: 1),
 
-                (isUserAnonymous) ?
+                  (isUserAnonymous) ?
+                    Column(
+                      children: [
+                        const SizedBox(height: 20,),
+                        Text(
+                          'Para finalizar o pedido é necessário estar logado. Caso não tenha uma conta, clique no botão abaixo para criar uma.',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                          ),
+                        ),
+
+                        const SizedBox(height: 20,),
+
+                        button(
+                          'Registrar', 
+                          0, 
+                          0, 
+                          Icons.person_add, 
+                          () => Navigator.pushNamed(context, 'register')
+                        ),
+                      ],
+                    ) : (hasPhoneNumber) ?
                   Column(
                     children: [
                       const SizedBox(height: 20,),
-                      Text(
-                        'Para finalizar o pedido é necessário estar logado. Caso não tenha uma conta, clique no botão abaixo para criar uma.',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                        ),
-                      ),
 
-                      const SizedBox(height: 20,),
-
-                      button(
-                        'Registrar', 
-                        0, 
-                        0, 
-                        Icons.person_add, 
-                        () => Navigator.pushNamed(context, 'register')
+                      RadioButon(
+                        list: listRadioButton,
+                        callback: (value) {
+                          setState(() {
+                            type = value;
+                          });
+                        },
                       ),
                     ],
-                  ) :
-                Column(
-                  children: [
-                    const SizedBox(height: 20,),
+                  ) : Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      children: [
+                        Text(
+                          'Para finalizar o pedido é necessário informar um número de telefone.',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                          ),
+                        ),
 
-                    RadioButon(
-                      list: listRadioButton,
-                      callback: (value) {
-                        setState(() {
-                          type = value;
-                        });
-                      },
+                        const SizedBox(height: 20,),
+                        
+                        TextFieldGeneral(
+                          label: 'Telefone', 
+                          variavel: txtPhone, 
+                          keyboardType: TextInputType.phone,
+                          inputFormatter: [maskFormatter],
+                          validator: (value) {
+                            return validatorPhone(value!);
+                          },
+                          ico: Icons.phone,
+                        ),
+
+                        const SizedBox(height: 20,),
+                  
+                        button('Salvar', 170, 50, Icons.save, () {
+                          if (txtPhone.text.isNotEmpty) {
+                            int phone = int.parse(txtPhone.text.replaceAll('(', '').replaceAll(')', '').replaceAll('-', '').replaceAll(' ', ''));
+                            LoginController().savePhoneNumber(phone).whenComplete(() {
+                              setState(() {
+                                hasPhoneNumber = true;
+                              });
+                            });
+                          } else {
+                            error(context, 'Informe um número de telefone válido.');
+                          }
+                        })
+                      ],
                     ),
-                  ],
-                )
-              ],
-            ) : 
-            Column(
-              children: [
-                SwitchListTileWidget(
-                  title: const Text(
-                    'Fechar mesa',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 16,
+                  )
+                ],
+              ) : 
+              Column(
+                children: [
+                  SwitchListTileWidget(
+                    title: const Text(
+                      'Fechar mesa',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                      ),
                     ),
-                  ),
-                  subtitle: 'Ao fechar a mesa, não será possível adicionar novos pedidos.',
-                  value: hasCloseTable,
-                  onChanged: (value) {
-                    setState(() {
-                      hasCloseTable = value;
-                    });
-                  },
-                )
-              ],
-            ),
+                    subtitle: 'Ao fechar a mesa, não será possível adicionar novos pedidos.',
+                    value: hasCloseTable,
+                    onChanged: (value) {
+                      setState(() {
+                        hasCloseTable = value;
+                      });
+                    },
+                  )
+                ],
+              ),
             
           ],
         ),
