@@ -154,34 +154,34 @@ class _ScreenOrderState extends State<ScreenOrder> {
                               }, true, 16, buttonStatusSelected == '' ? globals.primaryBlack : globals.primary.withOpacity(0.8)),
                               button('Em andamento', 0, 0, null, () => {
                                 setState(() {
-                                  buttonStatusSelected = 'ANDAMENTO';
+                                  buttonStatusSelected = 'Andamento';
                                   getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected).then((value) {
                                     setState(() {
                                       listSales = value;
                                     });
                                   });
                                 })
-                              }, true, 16, buttonStatusSelected == 'ANDAMENTO' ? globals.primaryBlack : globals.primary.withOpacity(0.8)),
+                              }, true, 16, buttonStatusSelected == 'Andamento' ? globals.primaryBlack : globals.primary.withOpacity(0.8)),
                               button('Finalizados', 0, 0, null, () => {
                                 setState(() {
-                                  buttonStatusSelected = 'FINALIZADO';
+                                  buttonStatusSelected = 'Finalizado';
                                   getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected).then((value) {
                                     setState(() {
                                       listSales = value;
                                     });
                                   });
                                 })
-                              }, true, 16, buttonStatusSelected == 'FINALIZADO' ? globals.primaryBlack : globals.primary.withOpacity(0.8)),
+                              }, true, 16, buttonStatusSelected == 'Finalizado' ? globals.primaryBlack : globals.primary.withOpacity(0.8)),
                               button('Cancelados', 0, 0, null, () => {
                                 setState(() {
-                                  buttonStatusSelected = 'CANCELADO';
+                                  buttonStatusSelected = 'Cancelado';
                                   getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected).then((value) {
                                     setState(() {
                                       listSales = value;
                                     });
                                   });
                                 })
-                              }, true, 16, buttonStatusSelected == 'CANCELADO' ? globals.primaryBlack : globals.primary.withOpacity(0.8)
+                              }, true, 16, buttonStatusSelected == 'Cancelado' ? globals.primaryBlack : globals.primary.withOpacity(0.8)
                               ),
                             ],
                           ),
@@ -201,7 +201,11 @@ class _ScreenOrderState extends State<ScreenOrder> {
                             keyboardType: TextInputType.number,
                             ico: Icons.numbers,
                             onChanged: (p0) {
-                              getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected);
+                              getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected).then((value) {
+                                setState(() {
+                                  listSales = value;
+                                });
+                              });
                             },
                           ),
                     
