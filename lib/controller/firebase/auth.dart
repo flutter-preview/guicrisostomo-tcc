@@ -209,6 +209,7 @@ class LoginController {
         .then((res) async {
           
           saveDatasUser(res.user?.uid, name, email, phone.replaceAll(RegExp(r'[-() ]'), ''), 1, context);
+          res.user?.updateDisplayName(name);
           // final MySqlConnection conn = await connectMySQL();
           // await conn.query('insert into user (uid, name, email, phone, type) values (?, ?, ?, ?, ?)',
           // [res.user?.uid, name, email, phone.replaceAll(RegExp(r'[-() ]'), ''), 1]);
