@@ -323,7 +323,7 @@ class LoginController {
     );
   }
 
-  Future<void> updateUser(id, name, email, phone, context) async {
+  Future<void> updateUser(id, name, email, phone, context, [bool hasRedirect = true]) async {
     await connectSupadatabase().then((conn) async {
       
       // await conn.from('tb_user').update({
@@ -343,7 +343,11 @@ class LoginController {
         'uid': id,
       }).then((List value) {
         conn.close();
-        redirectUser(context);
+
+        if (hasRedirect) {
+          redirectUser(context);
+        }
+        
         success(context, 'Usuário atualizado com sucesso.');
       });
     });
