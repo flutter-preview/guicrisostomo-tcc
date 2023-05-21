@@ -82,8 +82,13 @@ class _AddressExistentState extends State<AddressExistent> {
     getAddress().then((value) {
       setState(() {
         listAddress = value;
-        groupLocals = value[0].nickname;
-        globals.idAddressSelected = value[0].id;
+        if (listAddress.isEmpty) {
+          groupLocals = 'New address';
+        } else {
+          groupLocals = value[0].nickname;
+          globals.idAddressSelected = value[0].id;
+        }
+        
       });
     });
   }
