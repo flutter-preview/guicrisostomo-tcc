@@ -78,8 +78,9 @@ class _ScreenRegisterState extends State<ScreenRegister> {
                 keyboardType: TextInputType.name,
                 ico: Icons.person,
                 validator: (value) {
-                  validatorString(value!);
+                  return validatorString(value!);
                 },
+                textCapitalization: TextCapitalization.sentences,
               ),
 
               const SizedBox(height: 20,),
@@ -91,8 +92,9 @@ class _ScreenRegisterState extends State<ScreenRegister> {
                 keyboardType: TextInputType.emailAddress,
                 ico: Icons.person,
                 validator: (value) {
-                  validatorEmail(value!);
+                  return validatorEmail(value!);
                 },
+                textCapitalization: TextCapitalization.sentences,
               ),
 
               const SizedBox(height: 20,),
@@ -104,7 +106,7 @@ class _ScreenRegisterState extends State<ScreenRegister> {
                 keyboardType: TextInputType.phone,
                 ico: Icons.phone,
                 validator: (value) {
-                  validatorPhone(value!);
+                  return validatorPhone(value!);
                 },
                 inputFormatter: [maskFormatter],
                 
@@ -129,7 +131,7 @@ class _ScreenRegisterState extends State<ScreenRegister> {
                 ico: Icons.lock,
 
                 validator: (value) {
-                  validatorPassword(value!);
+                  return validatorPassword(value!);
                 },
 
                 isPassword: true,
@@ -145,7 +147,7 @@ class _ScreenRegisterState extends State<ScreenRegister> {
                 ico: Icons.lock,
 
                 validator: (value) {
-                  validatorConfirmPassword(value!, txtPassword);
+                  return validatorConfirmPassword(value!, txtPassword);
                 },
 
                 onFieldSubmitted: (value) => {

@@ -102,6 +102,7 @@ class _ScreenEditDatasState extends State<ScreenEditDatas> {
                         validator: (value) {
                           return validatorString(value!);
                         },
+                        textCapitalization: TextCapitalization.sentences,
                       ),
                 
                       const SizedBox(height: 10,),
