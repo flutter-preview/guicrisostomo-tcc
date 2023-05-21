@@ -34,10 +34,13 @@ class _ScreenProfileState extends State<ScreenProfile> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    getUser();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    if (nameUser == "Nome") {
-      getUser();
-    }
 
     Widget returnPhotoUser() {
       if (phoneUser != null) {
@@ -67,41 +70,47 @@ class _ScreenProfileState extends State<ScreenProfile> {
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-            Center(
-              child: Column(
-                children: [
-                  
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(50.0),
-                    child: SizedBox(
-                      width: 100,
-                      height: 100,
-                  
-                      child: CachedNetworkImage(
-                        imageUrl: photoUser??"https://www.pngkey.com/png/full/114-1149878_setting-user-avatar-in-specific-size-without-breaking.png",
-                        fit: BoxFit.fill,
-                        placeholder: (context, url) => CircularProgressIndicator(),
-                        errorWidget: (context, url, error) => Icon(Icons.error),
-                        
+
+            (nameUser != "Nome") ?
+              Center(
+                child: Column(
+                  children: [
+                    
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(50.0),
+                      child: SizedBox(
+                        width: 100,
+                        height: 100,
+                    
+                        child: CachedNetworkImage(
+                          imageUrl: photoUser??"https://www.pngkey.com/png/full/114-1149878_setting-user-avatar-in-specific-size-without-breaking.png",
+                          fit: BoxFit.fill,
+                          placeholder: (context, url) => CircularProgressIndicator(),
+                          errorWidget: (context, url, error) => Icon(Icons.error),
+                          
+                        ),
                       ),
                     ),
-                  ),
 
-                  SizedBox(height: 10,),
+                    SizedBox(height: 10,),
 
-                  Text(
-                    nameUser,
-                    style: TextStyle(
-                      fontFamily: 'Roboto',
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700,
+                    Text(
+                      nameUser,
+                      style: TextStyle(
+                        fontFamily: 'Roboto',
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
-                  ),
 
-                  returnPhotoUser(),
-                ],
+                    returnPhotoUser(),
+                  ],
+                ),
+              )
+            : 
+              Center(
+                child: CircularProgressIndicator(),
               ),
-            ),
 
             SizedBox(height: 10,),
 
@@ -120,7 +129,9 @@ class _ScreenProfileState extends State<ScreenProfile> {
                       Navigator.push(
                         context,
                         navigator('profile/edit_datas', user),
-                      )
+                      ).then((value) {
+                        getUser();
+                      })
                     },
                   ),
                 ),
