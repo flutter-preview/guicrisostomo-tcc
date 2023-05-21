@@ -525,7 +525,7 @@ class SalesController {
               FROM orders o
               INNER JOIN business b ON b.cnpj = o.cnpj
               INNER JOIN user_order uo ON uo.id_order = o.id
-              WHERE o.cnpj = @cnpj AND (o.status LIKE @status AND o.datetime BETWEEN @datetime and @datetime2) and uo.fg_ativo = true
+              WHERE o.cnpj = @cnpj AND (o.status LIKE @status AND o.datetime BETWEEN @datetime and @datetime2) and uo.fg_ativo = true and uo.uid = @uid
               ORDER BY o.datetime DESC
             ''';
         } else {
@@ -552,7 +552,7 @@ class SalesController {
               FROM orders o
               INNER JOIN business b ON b.cnpj = o.cnpj
               INNER JOIN user_order uo ON uo.id_order = o.id
-              WHERE o.cnpj = @cnpj and (o.status LIKE @status AND o.datetime BETWEEN @datetime and @datetime2) and uo.fg_ativo = true
+              WHERE o.cnpj = @cnpj and (o.status LIKE @status AND o.datetime BETWEEN @datetime and @datetime2) and uo.fg_ativo = true and uo.uid = @uid
               ORDER BY o.datetime DESC
             ''';
         }
@@ -564,6 +564,7 @@ class SalesController {
         'datetime': date1,
         'datetime2': date2,
         'status': buttonStatusSelected,
+        'uid': FirebaseAuth.instance.currentUser!.uid,
       }).then((List value) {
         conn.close();
         List<Sales> sales = [];
