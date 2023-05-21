@@ -18,7 +18,7 @@ Widget button(
   ) {
       return Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(10),
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -30,14 +30,17 @@ Widget button(
         ),
         child: ElevatedButton(
           
-          style: ElevatedButton.styleFrom(
-            minimumSize: Size(width, height),
-            backgroundColor: Colors.transparent,
-            padding: const EdgeInsets.all(10),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
+          style: ButtonStyle(
+            minimumSize: MaterialStateProperty.all<Size>(Size(width, height)),
+            backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),
+            padding: MaterialStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.all(10)),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              )
             ),
-            elevation: 5
+            elevation: MaterialStateProperty.all(05),
+            shadowColor: MaterialStateProperty.all<Color>(Colors.black),
           ),
           
           onPressed: () {
