@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tcc/controller/firebase/auth.dart';
+import 'package:tcc/model/User.dart';
 import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/addressExistent.dart';
 import 'package:tcc/view/widget/appBar.dart';
@@ -35,6 +36,12 @@ class _ScreenEditDatasState extends State<ScreenEditDatas> {
   void initState() {
     autoValidation = false;
     super.initState();
+
+    UserList user = widget.arguments as UserList;
+
+    txtName.text = user.name;
+    txtEmail.text = user.email;
+    txtPhone.text = user.phone;
   }
 
   var maskFormatter = MaskTextInputFormatter(
@@ -77,6 +84,7 @@ class _ScreenEditDatasState extends State<ScreenEditDatas> {
           children: [
             SectionVisible(
               nameSection: 'Dados pessoais',
+              isShowPart: true,
               child: 
                 Form(
                   key: formKey,
@@ -92,7 +100,7 @@ class _ScreenEditDatasState extends State<ScreenEditDatas> {
                         keyboardType: TextInputType.name,
                         ico: Icons.person,
                         validator: (value) {
-                          validatorString(value!);
+                          return validatorString(value!);
                         },
                       ),
                 
@@ -105,7 +113,7 @@ class _ScreenEditDatasState extends State<ScreenEditDatas> {
                         keyboardType: TextInputType.emailAddress,
                         ico: Icons.email_outlined,
                         validator: (value) {
-                          validatorEmail(value!);
+                          return validatorEmail(value!);
                         },
                       ),
                 
@@ -120,7 +128,7 @@ class _ScreenEditDatasState extends State<ScreenEditDatas> {
                         inputFormatter: [maskFormatter],
 
                         validator: (value) {
-                          validatorPhone(value!);
+                          return validatorPhone(value!);
                         },
                         onChanged: (value) => {
                           if (value.length <= 14) {
@@ -153,7 +161,7 @@ class _ScreenEditDatasState extends State<ScreenEditDatas> {
 
             const SizedBox(height: 20,),
 
-            AddressExistent(),
+            const AddressExistent(),
 
             // Form(
             //   key: formKey,
