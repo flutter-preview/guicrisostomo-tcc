@@ -52,3 +52,4 @@ config.proxy.fatec
 android/google-services.json
 android/client_secret_732995296377-diqk55tsa4j93gnsm2e706rm41sciq9q.apps.googleusercontent.com.json
 .env
+.vscode/settings.json
