@@ -146,7 +146,10 @@ class _ScreenEditDatasState extends State<ScreenEditDatas> {
                 
                         if (formKey.currentState!.validate()) {
                   
-                          LoginController().updateUser(FirebaseAuth.instance.currentUser!.uid, txtName.text, txtEmail.text, txtPhone.text, context, false);
+                          LoginController().updateUser(FirebaseAuth.instance.currentUser!.uid, txtName.text, txtEmail.text, txtPhone.text, context, false).whenComplete(() async {
+                            await FirebaseAuth.instance.currentUser!.updateDisplayName(txtName.text);
+                            await FirebaseAuth.instance.currentUser!.updateEmail(txtEmail.text);
+                          });
                 
                         } else {
                           setState(() {
