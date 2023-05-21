@@ -242,7 +242,7 @@ class _ScreenTransitionManagerUserState extends State<ScreenTransitionManagerUse
             padding: const EdgeInsets.all(10),
             child: ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, 'registerRestaurant');
+                Navigator.pushNamed(context, 'register_business');
               }, 
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all<Color>(globals.primary),

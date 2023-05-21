@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:intl/intl.dart';
 import 'package:tcc/controller/postgres/utils.dart';
 import 'package:tcc/main.dart';
 import 'package:tcc/model/Address.dart';
@@ -608,6 +607,29 @@ class LoginController {
     await connectSupadatabase().then((conn) async {
       await conn.query('update tb_user set image=@image where uid=@uid', substitutionValues: {
         'image': image,
+        'uid': FirebaseAuth.instance.currentUser?.uid,
+      });
+      conn.close();
+    });
+  }
+
+  Future<int> getTypeUserText(String typeUser) async {
+    return await connectSupadatabase().then((conn) async {
+      return await conn.query('select id from type_user where name = @name', substitutionValues: {
+        'name': typeUser,
+      }).then((List value) {
+        conn.close();
+        return value[0][0];
+      });
+    });
+  }
+
+  Future<void> updateTypeUser(String typeUser) async {
+    int type = await getTypeUserText(typeUser);
+
+    await connectSupadatabase().then((conn) async {
+      await conn.query('update tb_user set type = @type where uid=@uid', substitutionValues: {
+        'type': type,
         'uid': FirebaseAuth.instance.currentUser?.uid,
       });
       conn.close();
