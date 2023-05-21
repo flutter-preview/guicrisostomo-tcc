@@ -145,25 +145,41 @@ class _ScreenOrderState extends State<ScreenOrder> {
                               button('Todos', 0, 0, null, () => {
                                 setState(() {
                                   buttonStatusSelected = '';
-                                  getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected);
+                                  getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected).then((value) {
+                                    setState(() {
+                                      listSales = value;
+                                    });
+                                  });
                                 })
                               }, true, 16, buttonStatusSelected == '' ? globals.primaryBlack : globals.primary.withOpacity(0.8)),
                               button('Em andamento', 0, 0, null, () => {
                                 setState(() {
                                   buttonStatusSelected = 'ANDAMENTO';
-                                  getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected);
+                                  getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected).then((value) {
+                                    setState(() {
+                                      listSales = value;
+                                    });
+                                  });
                                 })
                               }, true, 16, buttonStatusSelected == 'ANDAMENTO' ? globals.primaryBlack : globals.primary.withOpacity(0.8)),
                               button('Finalizados', 0, 0, null, () => {
                                 setState(() {
                                   buttonStatusSelected = 'FINALIZADO';
-                                  getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected);
+                                  getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected).then((value) {
+                                    setState(() {
+                                      listSales = value;
+                                    });
+                                  });
                                 })
                               }, true, 16, buttonStatusSelected == 'FINALIZADO' ? globals.primaryBlack : globals.primary.withOpacity(0.8)),
                               button('Cancelados', 0, 0, null, () => {
                                 setState(() {
                                   buttonStatusSelected = 'CANCELADO';
-                                  getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected);
+                                  getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected).then((value) {
+                                    setState(() {
+                                      listSales = value;
+                                    });
+                                  });
                                 })
                               }, true, 16, buttonStatusSelected == 'CANCELADO' ? globals.primaryBlack : globals.primary.withOpacity(0.8)
                               ),
@@ -207,7 +223,11 @@ class _ScreenOrderState extends State<ScreenOrder> {
                                     txtDropDown = value!;
             
                                     if (txtDropDown != 'Personalizado') {
-                                      getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected);
+                                      getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected).then((value) {
+                                        setState(() {
+                                          listSales = value;
+                                        });
+                                      });
                                     }
             
                                   });
@@ -227,7 +247,11 @@ class _ScreenOrderState extends State<ScreenOrder> {
                                       ico: Icons.date_range,
                                       onChanged: (value) {
                                         setState(() {
-                                          getSales(txtCode.text, txtDropDown, value, buttonStatusSelected);
+                                          getSales(txtCode.text, txtDropDown, value, buttonStatusSelected).then((value) {
+                                            setState(() {
+                                              listSales = value;
+                                            });
+                                          });
                                         });
                                       },
                                       validator: (value) {
