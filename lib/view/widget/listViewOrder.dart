@@ -9,6 +9,7 @@ Widget listViewOrder(List<Sales> dados) {
   return ListView.builder(
     itemCount: dados.length,
     shrinkWrap: true,
+    physics: const NeverScrollableScrollPhysics(),
     itemBuilder: (context, index) {
       Sales item = dados[index];
       DateTime date = item.date;
