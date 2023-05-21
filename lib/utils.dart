@@ -75,7 +75,7 @@ String? validatorPhone(String? text) {
     return 'Informe apenas números';
   }
 
-  if (text.length < 14) {
+  if (text.length < 10) {
     return 'Telefone inválido';
   }
 
