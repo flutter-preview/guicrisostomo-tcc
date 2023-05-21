@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:intl/intl.dart';
 import 'package:tcc/controller/postgres/utils.dart';
 import 'package:tcc/main.dart';
 import 'package:tcc/model/Address.dart';
@@ -77,13 +78,18 @@ class LoginController {
         'uid': FirebaseAuth.instance.currentUser?.uid,
       }).then((List value) {
         conn.close();
+
+        // NumberFormat phoneFormat = NumberFormat("'\('00'\)'00000,0000");
+        
+        String phoneNumber = value[0][3].toString().replaceAllMapped(RegExp(r'(\d{2})(\d{4})(\d+)'), (Match m) => "(${m[1]}) ${m[2]}-${m[3]}");
+
         return UserList(
-          uid: value[0][1],
-          name: value[0][2],
-          email: value[0][3],
-          phone: value[0][4],
-          type: value[0][5],
-          image: value[0][6],
+          uid: value[0][0],
+          name: value[0][1],
+          email: value[0][2],
+          phone: phoneNumber,
+          type: value[0][4],
+          image: value[0][5],
         );
       });
     });

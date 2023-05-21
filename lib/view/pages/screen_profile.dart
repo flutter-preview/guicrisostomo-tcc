@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tcc/controller/firebase/auth.dart';
 import 'package:tcc/main.dart';
+import 'package:tcc/model/User.dart';
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigation.dart';
 
@@ -16,20 +17,20 @@ class ScreenProfile extends StatefulWidget {
 }
 
 class _ScreenProfileState extends State<ScreenProfile> {
-  QueryDocumentSnapshot? user;
+  UserList? user;
   String nameUser = "Nome";
   String? phoneUser = "(99) 99999-9999";
-  String photoUser = "https://i.pinimg.com/originals/0c/3b/3a/0c3b3adb1a7530892e55ef36d3be6cb8.png";
+  String? photoUser;
 
   void getUser() async {
-    // await LoginController().userLogin().then((value){
-    //   setState(() {
-    //     user = value;
-    //     nameUser = value.data()['name'];
-    //     phoneUser = value.data()['phone'];
-    //     photoUser = value.data()['photo'];
-    //   });
-    // });
+    await LoginController().userLogin().then((value){
+      setState(() {
+        user = value;
+        nameUser = value.name;
+        phoneUser = value.phone;
+        photoUser = value.image;
+      });
+    });
   }
 
   @override
@@ -77,7 +78,7 @@ class _ScreenProfileState extends State<ScreenProfile> {
                       height: 100,
                   
                       child: CachedNetworkImage(
-                        imageUrl: photoUser,
+                        imageUrl: photoUser??"https://www.pngkey.com/png/full/114-1149878_setting-user-avatar-in-specific-size-without-breaking.png",
                         fit: BoxFit.fill,
                         placeholder: (context, url) => CircularProgressIndicator(),
                         errorWidget: (context, url, error) => Icon(Icons.error),
