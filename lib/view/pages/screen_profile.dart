@@ -1,13 +1,13 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tcc/controller/firebase/auth.dart';
 import 'package:tcc/main.dart';
 import 'package:tcc/model/User.dart';
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigation.dart';
+import 'package:tcc/globals.dart' as globals;
 
 class ScreenProfile extends StatefulWidget {
   const ScreenProfile({super.key});
@@ -109,10 +109,12 @@ class _ScreenProfileState extends State<ScreenProfile> {
               children: [
                 Card(
                   child: ListTile(
+                    
                     contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                    title: Text('Editar dados'),
 
-                    trailing: Icon(Icons.arrow_right, size: 20),
+                    title: Text('Editar dados'),
+                    leading: Icon(Icons.person, size: 30, color: Colors.red,),
+                    trailing: Icon(Icons.arrow_right, size: 20, color: globals.primary,),
 
                     onTap: () async => {
                       Navigator.push(
@@ -128,15 +130,13 @@ class _ScreenProfileState extends State<ScreenProfile> {
                 Card(
                   child: ListTile(
                     contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                    title: Text('Sobre'),
+                    leading: Icon(Icons.manage_accounts, size: 30, color: Colors.red,),
+                    title: Text('Sou um gerente'),
 
-                    trailing: Icon(Icons.arrow_right, size: 20),
+                    trailing: Icon(Icons.arrow_right, size: 20, color: globals.primary,),
 
-                    onTap: () => {
-                      Navigator.pushNamed(
-                        context,
-                        'profile/about',
-                      )
+                    onTap: () {
+                      
                     },
                   ),
                 ),
@@ -147,8 +147,8 @@ class _ScreenProfileState extends State<ScreenProfile> {
                   child: ListTile(
                     contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     title: Text('Sair'),
-
-                    trailing: Icon(Icons.arrow_right, size: 20),
+                    leading: Icon(Icons.logout, size: 30, color: Colors.red,),
+                    trailing: Icon(Icons.arrow_right, size: 20, color: Colors.red,),
 
                     onTap: () => {
                       LoginController().logout(context)
