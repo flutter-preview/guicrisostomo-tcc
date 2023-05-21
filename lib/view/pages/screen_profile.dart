@@ -147,7 +147,7 @@ class _ScreenProfileState extends State<ScreenProfile> {
                     trailing: Icon(Icons.arrow_right, size: 20, color: globals.primary,),
 
                     onTap: () {
-                      
+                      Navigator.pushNamed(context, 'transition_manager_user');
                     },
                   ),
                 ),

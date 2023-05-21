@@ -54,6 +54,7 @@ import 'package:tcc/view/pages/screen_products.dart';
 import 'package:tcc/view/pages/screen_profile.dart';
 import 'package:tcc/view/pages/screen_register.dart';
 import 'package:tcc/view/pages/screen_terms.dart';
+import 'package:tcc/view/pages/screen_transition_manager.dart';
 import 'package:tcc/view/pages/screen_verification_table.dart';
 import 'package:tcc/view/pages/screen_verify_email.dart';
 
@@ -137,6 +138,9 @@ Route navigator([String? name, Object? arguments]) {
       break;
     case 'create_edit_address' :
       page = ScreenCreateEditAddress(addressSelected: arguments as Address?);
+      break;
+    case 'transition_manager_user' :
+      page = const ScreenTransitionManagerUser();
       break;
     // case 'notifications' :
     //   page = const ScreenNotifications();
@@ -304,6 +308,7 @@ Future<void> main() async {
         'finalize_order_customer/address' :(context) => const ScreenFOGetAddress(typeSale: '',),
         'finalize_order_customer/payment' :(context) => ScreenFOPayment(sale: Sales(id: 0, uid: '0', cnpj: '0', status: 'a', date: DateTime.now()),),
         'create_edit_address' :(context) => ScreenCreateEditAddress(),
+        'transition_manager_user' :(context) => const ScreenTransitionManagerUser(),
         // 'notifications' :(context) => const ScreenNotifications(),
         'terms' :(context) => const ScreenTerms(),
         'loading' :(context) => const ScreenLoading(),
