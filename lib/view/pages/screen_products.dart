@@ -172,6 +172,32 @@ class _ScreenProductsState extends State<ScreenProducts> {
     }
   }
 
+  IconData? getIconCategory(String category) {
+    
+    switch (category) {
+      case 'PIZZA': case 'PIZZAS':
+        return Icons.local_pizza;
+      case 'SALGADO': case 'SALGADOS':
+        return Icons.fastfood;
+      case 'SUCO': case 'SUCOS':
+        return Icons.local_bar_rounded;
+      case 'REFRIGERANTE': case 'REFRIGERANTES': case 'BEBIDA': case 'BEBIDAS':
+        return Icons.local_bar_rounded;
+      case 'SANDUÍCHE': case 'SANDUÍCHES':
+        return Icons.fastfood;
+      case 'HAMBÚRGUER': case 'HAMBÚRGUERES': case 'CACHORRO-QUENTE': case 'CACHORROS-QUENTES':
+        return Icons.lunch_dining_rounded;
+      case 'SOBREMESA': case 'SOBREMESAS':
+        return Icons.icecream;
+      case 'LANCHE': case 'LANCHES':
+        return Icons.lunch_dining_rounded;
+      case 'COMIDA': case 'COMIDAS':
+        return Icons.dinner_dining_rounded;
+      default:
+        return Icons.fastfood;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     print('b');
@@ -211,34 +237,49 @@ class _ScreenProductsState extends State<ScreenProducts> {
             SectionVisible(
               nameSection: 'Categorias',
               isShowPart: true,
-              child: SizedBox(
-                height: 50,
-                width: double.infinity,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
-                  itemCount: globals.categoriesBusiness.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      margin: const EdgeInsets.only(right: 10),
-                      child: button(
-                        globals.categoriesBusiness[index],
-                        0,
-                        0,
-                        null,
-                        () {
-                          setState(() {
-                            globals.categorySelected = globals.categoriesBusiness[index];
-                            globals.sizesCategoryBusiness = [];
-                          });
-                        },
-                        true,
-                        24,
-                        globals.categorySelected == globals.categoriesBusiness[index] ? globals.primaryBlack : null,
+              child: GridView.count(
+                crossAxisCount: 2,
+                childAspectRatio: 2,
+                shrinkWrap: true,
+                children: [
+                  for (int i = 0; i < globals.categoriesBusiness.length; i++)
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          globals.categorySelected = globals.categoriesBusiness[i];
+                          globals.sizesCategoryBusiness = [];
+                        });
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          color: globals.categorySelected == globals.categoriesBusiness[i] ? globals.primary : Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                            color: globals.categorySelected == globals.categoriesBusiness[i] ? globals.primary : Colors.black45,
+                            width: 1,
+                          ),
+                        ),
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                getIconCategory(globals.categoriesBusiness[i].toUpperCase()),
+                                color: globals.categorySelected == globals.categoriesBusiness[i] ? Colors.white : Colors.black45,
+                              ),
+                              Text(
+                                globals.categoriesBusiness[i],
+                                style: TextStyle(
+                                  color: globals.categorySelected == globals.categoriesBusiness[i] ? Colors.white : Colors.black45,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                    );
-                  },
-                ),
+                    ),
+                ]
               ),
             ),
 
