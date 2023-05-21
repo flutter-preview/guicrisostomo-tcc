@@ -3,6 +3,7 @@ import 'package:tcc/controller/firebase/auth.dart';
 import 'package:tcc/globals.dart' as globals;
 import 'package:tcc/main.dart';
 import 'package:tcc/model/Address.dart';
+import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/sectionVisible.dart';
 
 class AddressExistent extends StatefulWidget {
@@ -26,54 +27,22 @@ class _AddressExistentState extends State<AddressExistent> {
   }
 
   Widget newAddress() {
-    return Theme(
-      data: ThemeData(
-        radioTheme: RadioThemeData(
-          fillColor: MaterialStateColor.resolveWith((states) => globals.primaryBlack),
-        )
-      ),
-      child: RadioListTile(
-        value: 'New address',
-        groupValue: groupLocals,
-        onChanged: (value) {
+    return button('Novo endereço', 0, 0, Icons.location_on_outlined, () {
+      Navigator.push(context, navigator('create_edit_address')).then((value) async {
+        await getAddress().then((value) {
           setState(() {
-            groupLocals = value.toString();
+            listAddress = value;
+            
+            if (listAddress.isEmpty) {
+              groupLocals = 'New address';
+            } else {
+              groupLocals = listAddress[0].nickname;
+              globals.idAddressSelected = listAddress[0].id;
+            }
           });
-
-          Navigator.push(context, navigator('create_edit_address')).then((value) {
-            setState(() {
-              getAddress().then((value) {
-                setState(() {
-                  listAddress = value;
-                  groupLocals = listAddress[0].nickname;
-                });
-              });
-            });
-          });
-        },
-        
-        title: Row(
-          children: [
-            const Flexible(
-              child: Text(
-                'Cadastrar novo endereço',
-                style: TextStyle(
-                  fontFamily: 'Roboto',
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.black,
-                ),
-              ),
-            ),
-        
-            Icon(
-              Icons.add,
-              color: globals.primary,
-            ),
-          ],
-        ),
-      ),
-    );
+        });
+      });
+    });
   }
 
   @override
