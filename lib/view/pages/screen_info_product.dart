@@ -11,6 +11,7 @@ import 'package:tcc/view/widget/comments.dart';
 import 'package:tcc/view/widget/listSizeAvailable.dart';
 import 'package:tcc/view/widget/sectionVisible.dart';
 import 'package:tcc/view/widget/textFieldGeneral.dart';
+import '../../globals.dart' as globals;
 
 class ScreenInfoProduct extends StatefulWidget {
   final Object? arguments;
@@ -137,7 +138,7 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
 
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(200),
+        preferredSize: const Size.fromHeight(150),
         child: AppBar(
           titleSpacing: 0,
           automaticallyImplyLeading: false,
@@ -180,7 +181,7 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
               
                 
                 Padding(
-                  padding: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -190,15 +191,17 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.max,
                         children: [
-                          Text(
-                            nameProduct,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 26,
-                              fontWeight: FontWeight.w700,
+                          Flexible(
+                            child: Text(
+                              nameProduct,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 26,
+                                fontWeight: FontWeight.w700,
+                              ),
                             ),
                           ),
-
+                      
                           IconButton(
                             onPressed: () async {
                               await ProductsController().setProductFavorite(idProduct, isFavorite).then((value) {
@@ -214,15 +217,6 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
                           ),
                         ],
                       ),
-
-                      descriptionProduct == null ? const SizedBox() :
-                        Text(
-                          descriptionProduct!,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                          ),
-                        ),
                     ]
                   ),
                 ),
@@ -236,7 +230,53 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: globals.primary,
+                  ),
+                  color: Colors.white,
+                ),
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  
+                  children: [
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.info_outline,
+                          size: 20,
+                          color: globals.primary,
+                        ),
+              
+                        const SizedBox(width: 10,),
+              
+                        const Text(
+                          'Descrição',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                
+                    const SizedBox(height: 10,),
+                
+                    Text(
+                      descriptionProduct ?? '',
+                      style: const TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
               const SizedBox(height: 10,),
               
               SectionVisible(
