@@ -918,7 +918,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                   children: [
                     
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 50, 20, 20),
+                      padding: const EdgeInsets.fromLTRB(20, 70, 20, 20),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.stretch,
