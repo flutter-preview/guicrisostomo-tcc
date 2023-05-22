@@ -95,7 +95,7 @@ class _CartInfoState extends State<CartInfo> {
                   Row(
                     children: [
                       Text(
-                        'R\$ ${total.toStringAsFixed(2)}',
+                        'R\$ ${total.toStringAsFixed(2).replaceAll('.', ',')}',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 14,
