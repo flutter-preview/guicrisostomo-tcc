@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:tcc/controller/firebase/auth.dart';
 import 'package:tcc/controller/postgres/Lists/sales.dart';
+import 'package:tcc/main.dart';
 import 'package:tcc/model/Sales.dart';
 import 'package:tcc/model/standardListDropDown.dart';
 import 'package:tcc/utils.dart';
@@ -257,6 +258,7 @@ class _ScreenFOPaymentState extends State<ScreenFOPayment> {
               50,
               Icons.check,
               () async {
+                Navigator.push(context, navigator('loading'));
 
                 if (methodSelected == 'Dinheiro') {
                   if (!hasMoney) {
@@ -265,11 +267,13 @@ class _ScreenFOPaymentState extends State<ScreenFOPayment> {
 
                   if (txtMoney.text.isEmpty) {
                     error(context, 'Informe o valor do troco');
+                    Navigator.pop(context);
                     return;
                   }
 
                   if (double.parse(txtMoney.text) < globals.totalSale) {
                     error(context, 'O valor do troco não pode ser menor que o valor total da compra');
+                    Navigator.pop(context);
                     return;
                   }
 
@@ -290,6 +294,7 @@ class _ScreenFOPaymentState extends State<ScreenFOPayment> {
                     globals.isSelectNewItem = false;
                   });
 
+                  Navigator.pop(context);
                   Navigator.pop(context);
                   Navigator.pop(context);
 
