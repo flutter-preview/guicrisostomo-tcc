@@ -617,7 +617,7 @@ class SalesController {
             SELECT o.id 
               FROM orders o
               INNER JOIN user_order uo ON uo.id_order = o.id
-              WHERE o.cnpj = @cnpj AND uo.uid = @uid AND o.status = 'Andamento' AND coalesce(o.table_number, 0) = @table and uo.fg_ativo = true
+              WHERE o.cnpj = @cnpj AND uo.uid = @uid AND o.status = 'Andamento' AND coalesce(o.table_number, 0) = @table and uo.fg_ativo = true LIMIT 1
           ) AND status = 'Ativo'
       ''', substitutionValues: {
         'cnpj': globals.businessId,
@@ -634,7 +634,7 @@ class SalesController {
               SELECT o.id 
                 FROM orders o
                 INNER JOIN user_order uo ON uo.id_order = o.id
-                WHERE o.cnpj = @cnpj AND uo.uid = @uid AND o.status = 'Andamento' AND coalesce(o.table_number, 0) = @table and uo.fg_ativo = true
+                WHERE o.cnpj = @cnpj AND uo.uid = @uid AND o.status = 'Andamento' AND coalesce(o.table_number, 0) = @table and uo.fg_ativo = true LIMIT 1
             ) AND status = 'Andamento'
         ''', substitutionValues: {
           'cnpj': globals.businessId,
