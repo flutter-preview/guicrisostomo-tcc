@@ -370,7 +370,6 @@ class LoginController {
   // Sign in with Google
 
   Future<dynamic> signInGoogle(context) async {
-    Navigator.push(context, navigator('loading'));
     // Trigger the authentication flow
     // await connectSupadatabase().then((value) async {
     //   await value.auth.signInWithOAuth(Provider.google);
@@ -394,16 +393,18 @@ class LoginController {
   }
 
   Future<void> signIn(context) async {
+    Navigator.push(context, navigator('loading'));
     bool isUserAlreajyExist = FirebaseAuth.instance.currentUser != null;
     await signInGoogle(context).then((value) async {
       success(context, 'Usuário autenticado com sucesso');
 
+      Navigator.pop(context);
       redirectUser(context, value, isUserAlreajyExist);
     }).catchError((onError) {
       error(context, "Ocorreu um erro ao entrar: $onError");
     });
 
-    Navigator.pop(context);
+    
   }
 
   Future<void> redirectUser(context, [value, bool isUserAlreajyExist = false]) async {
