@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:tcc/controller/postgres/Lists/sales.dart';
-import 'package:tcc/main.dart';
 import 'package:tcc/model/Sales.dart';
 import 'package:tcc/model/standardListDropDown.dart';
 import 'package:tcc/utils.dart';
@@ -132,57 +130,176 @@ class _ScreenOrderState extends State<ScreenOrder> {
                 isShowPart: true,
                 child: Column(
                   children: [
-                    Column(
+                    GridView.count(
+                      crossAxisCount: 2,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      childAspectRatio: 3,
+                      mainAxisSpacing: 10,
+                      crossAxisSpacing: 10,
                       children: [
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Wrap(
-                            spacing: 10,
-                    
-                            children: [
-                              button('Todos', 0, 0, null, () => {
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              buttonStatusSelected = '';
+                              getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected).then((value) {
                                 setState(() {
-                                  buttonStatusSelected = '';
-                                  getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected).then((value) {
-                                    setState(() {
-                                      listSales = value;
-                                    });
-                                  });
-                                })
-                              }, true, 16, buttonStatusSelected == '' ? globals.primaryBlack : globals.primary.withOpacity(0.8)),
-                              button('Em andamento', 0, 0, null, () => {
-                                setState(() {
-                                  buttonStatusSelected = 'Andamento';
-                                  getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected).then((value) {
-                                    setState(() {
-                                      listSales = value;
-                                    });
-                                  });
-                                })
-                              }, true, 16, buttonStatusSelected == 'Andamento' ? globals.primaryBlack : globals.primary.withOpacity(0.8)),
-                              button('Finalizados', 0, 0, null, () => {
-                                setState(() {
-                                  buttonStatusSelected = 'Finalizado';
-                                  getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected).then((value) {
-                                    setState(() {
-                                      listSales = value;
-                                    });
-                                  });
-                                })
-                              }, true, 16, buttonStatusSelected == 'Finalizado' ? globals.primaryBlack : globals.primary.withOpacity(0.8)),
-                              button('Cancelados', 0, 0, null, () => {
-                                setState(() {
-                                  buttonStatusSelected = 'Cancelado';
-                                  getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected).then((value) {
-                                    setState(() {
-                                      listSales = value;
-                                    });
-                                  });
-                                })
-                              }, true, 16, buttonStatusSelected == 'Cancelado' ? globals.primaryBlack : globals.primary.withOpacity(0.8)
+                                  listSales = value;
+                                });
+                              });
+                            });
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: buttonStatusSelected == '' ? globals.primary : Colors.white,
+                              border: Border.all(
+                                color: globals.primary.withOpacity(0.8),
+                                width: 1,
                               ),
-                            ],
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.select_all, color: buttonStatusSelected == '' ? Colors.white : globals.primary.withOpacity(0.8), size: 20),
+                                                  
+                                const SizedBox(width: 10),
+                                                  
+                                Text('Tudo', style: TextStyle(color: buttonStatusSelected == '' ? Colors.white : globals.primary.withOpacity(0.8), fontSize: 16)),
+                              ],
+                            ),
+                          ),
+                        ),
+
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              buttonStatusSelected = 'Andamento';
+                              getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected).then((value) {
+                                setState(() {
+                                  listSales = value;
+                                });
+                              });
+                            });
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: buttonStatusSelected == 'Andamento' ? globals.primary : Colors.white,
+                              border: Border.all(
+                                color: globals.primary.withOpacity(0.8),
+                                width: 1,
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.timer_sharp, color: buttonStatusSelected == 'Andamento' ? Colors.white : globals.primary.withOpacity(0.8), size: 20),
+                                                  
+                                const SizedBox(width: 10),
+                                                  
+                                Text('Em andamento', style: TextStyle(color: buttonStatusSelected == 'Andamento' ? Colors.white : globals.primary.withOpacity(0.8), fontSize: 16)),
+                              ],
+                            ),
+                          ),
+                        ),
+
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              buttonStatusSelected = 'Ativo';
+                              getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected).then((value) {
+                                setState(() {
+                                  listSales = value;
+                                });
+                              });
+                            });
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: buttonStatusSelected == 'Ativo' ? globals.primary : Colors.white,
+                              border: Border.all(
+                                color: globals.primary.withOpacity(0.8),
+                                width: 1,
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.check_circle_outline, color: buttonStatusSelected == 'Ativo' ? Colors.white : globals.primary.withOpacity(0.8), size: 20),
+                                                  
+                                const SizedBox(width: 10),
+                                                  
+                                Text('Ativos', style: TextStyle(color: buttonStatusSelected == 'Ativo' ? Colors.white : globals.primary.withOpacity(0.8), fontSize: 16)),
+                              ],
+                            ),
+                          ),
+                        ),
+
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              buttonStatusSelected = 'Finalizado';
+                              getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected).then((value) {
+                                setState(() {
+                                  listSales = value;
+                                });
+                              });
+                            });
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: buttonStatusSelected == 'Finalizado' ? globals.primary : Colors.white,
+                              border: Border.all(
+                                color: globals.primary.withOpacity(0.8),
+                                width: 1,
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.check_circle, color: buttonStatusSelected == 'Finalizado' ? Colors.white : globals.primary.withOpacity(0.8), size: 20),
+                                                  
+                                const SizedBox(width: 10),
+                                                  
+                                Text('Finalizados', style: TextStyle(color: buttonStatusSelected == 'Finalizado' ? Colors.white : globals.primary.withOpacity(0.8), fontSize: 16)),
+                              ],
+                            ),
+                          ),
+                        ),
+
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              buttonStatusSelected = 'Cancelado';
+                              getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected).then((value) {
+                                setState(() {
+                                  listSales = value;
+                                });
+                              });
+                            });
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: buttonStatusSelected == 'Cancelado' ? globals.primary : Colors.white,
+                              border: Border.all(
+                                color: globals.primary.withOpacity(0.8),
+                                width: 1,
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.cancel, color: buttonStatusSelected == 'Cancelado' ? Colors.white : globals.primary.withOpacity(0.8), size: 20),
+                                                  
+                                const SizedBox(width: 10),
+                                                  
+                                Text('Cancelados', style: TextStyle(color: buttonStatusSelected == 'Cancelado' ? Colors.white : globals.primary.withOpacity(0.8), fontSize: 16)),
+                              ],
+                            ),
                           ),
                         ),
                       ],
