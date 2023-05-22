@@ -54,48 +54,34 @@ class _BottomState extends State<Bottom> {
   }
 
   Widget selectNewItem() {
-    return FutureBuilder(
-      future: getListItemCurrent(),
-      builder: (context, builder) {
-        if (builder.data == true || globals.isSelectNewItem) {
-          return Container(
-            color: Colors.white,
-            padding: const EdgeInsets.all(10),
-            
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Text(
-                  'Selecione novo item',
-                  style: TextStyle(
-                    color: globals.primary,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+    return (globals.isSelectNewItem) ? Container(
+      color: Colors.white,
+      padding: const EdgeInsets.all(10),
+      
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Text(
+            'Selecione novo item',
+            style: TextStyle(
+              color: globals.primary,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
 
-                cancelSelection(),
-              ],
-            )
-          );
-        } else {
-          return CartInfo();
-        }
-      }
-    );
+          cancelSelection(),
+        ],
+      )
+    ) : CartInfo();
   }
 
   Future<bool> getListItemCurrent() async {
     return await SalesController().idSale().then((value) async {
-      print('idSale: $value');
       if (value != 0) {
         return await ProductsCartController().listItemCurrent(value).then((products) {
-          if (products.isNotEmpty) {
-            return true;
-          } else {
-            return false;
-          }
+          return products.isNotEmpty;
         });
       } else {
         return false;
@@ -107,11 +93,9 @@ class _BottomState extends State<Bottom> {
   void initState() {
     super.initState();
     getListItemCurrent().then((value) {
-      if (value && mounted) {
-        setState(() {
-          globals.isSelectNewItem = true;
-        });
-      }
+      setState(() {
+        globals.isSelectNewItem = value;
+      });
     });
 
     if (globals.numberTable == null) {

@@ -67,6 +67,12 @@ class _ScreenProductsState extends State<ScreenProducts> {
           globals.sizesCategoryBusiness = [];
         });
       }
+
+      if (globals.categorySelected == '') {
+        setState(() {
+          globals.categorySelected = globals.categoriesBusiness[0];
+        });
+      }
     }
   }
 
@@ -205,7 +211,7 @@ class _ScreenProductsState extends State<ScreenProducts> {
 
   @override
   Widget build(BuildContext context) {
-    
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),

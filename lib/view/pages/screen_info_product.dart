@@ -30,7 +30,7 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
 
   var txtComment = TextEditingController();
 
-  List<ProductItemList> productsVariation = [];
+  List<ProductItemList>? productsVariation;
   List<CommentsProduct> commentsProduct = [];
 
   String textDateTime = '';
@@ -42,92 +42,95 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
   String? urlImageProduct;
   String categoryProduct = '';
   bool isFavorite = false;
+  Object? argument;
 
   @override
-  Widget build(BuildContext context) {
-    final argument = widget.arguments;
+  void initState() {
+    super.initState();
+    argument = widget.arguments;
 
-    Future<ProductItemList> getProduct([bool isNull = false]) async {
-      if (argument.runtimeType == int || isNull) {
-        int idProduct = argument as int;
-        return await ProductsController().getProduct(idProduct).then((value) {
-          return value;
-        });
-      } else {
-        return argument as ProductItemList;
-      }
-    }
+    getProduct(argument.runtimeType == int).then((value) {
+      idProduct = value.id;
+      productSelect = value;
+      nameProduct = value.name;
+      descriptionProduct = value.description;
+      urlImageProduct = value.link_image;
+      categoryProduct = value.variation!.category;
+      isFavorite = value.isFavorite;
 
-    Future<Widget> getListVariations() async {
-      await ProductsController().getAllProductsVariations(nameProduct, categoryProduct).then((value) {
+      setState(() {});
+
+      getListVariations().then((value) {
         productsVariation = value;
       });
 
-      return listSize(productsVariation);
-    }
-
-    Future<List<CommentsProduct>> getCommentsProductUser() async {
-      if (productSelect == null) {
-        return [];
-      }
-      
-      if (commentsProduct.isNotEmpty) {
-        return commentsProduct;
-      }
-
-      return await ProductsController().getCommentsProductUser(productSelect!.name, productSelect!.variation!.category);
-    }
-
-    Future<Widget> getListComments() async {
-      if (commentsProduct.isEmpty) {
-        commentsProduct = await getCommentsProductUser();
-      }
-
-      return comments(this.context, commentsProduct);
-    }
-
-    Future<void> getProductLastSale() async {
-      NumberFormat formatter = NumberFormat("00");
-      DateTime? lastSale;
-
-      if (productSelect == null) {
-        return;
-      }
-
-      await ProductsController().getProductLastSale(productSelect!.name, productSelect!.variation!.category).then((value) {
-        if (value == null) {
-          textDateTime = 'nunca';
-          return;
-        }
-
-        lastSale = value.toLocal();
-
-        textDateTime = '${formatter.format(lastSale!.day)}/${formatter.format(lastSale!.month)}/${lastSale!.year} às ${formatter.format(lastSale!.hour)}:${formatter.format(lastSale!.minute)}';
+      getCommentsProductUser();
+      getProductLastSale().then((value) {
+        textDateTime = value;
+        setState(() {});
       });
+    });
+  }
 
-    }
-
-    if (textDateTime == '') {
-      getProduct(argument.runtimeType == int).then((value) {
-        idProduct = value.id;
-        productSelect = value;
-        nameProduct = value.name;
-        descriptionProduct = value.description;
-        urlImageProduct = value.link_image;
-        categoryProduct = value.variation!.category;
-        isFavorite = value.isFavorite;
-      // });
-
-        if (mounted) {
-          setState(() {});
-
-          
-          getListVariations();
-          getCommentsProductUser();
-          getProductLastSale();
-        }
+  Future<ProductItemList> getProduct([bool isNull = false]) async {
+    if (argument.runtimeType == int || isNull) {
+      int idProduct = argument as int;
+      return await ProductsController().getProduct(idProduct).then((value) {
+        return value;
       });
+    } else {
+      return argument as ProductItemList;
     }
+  }
+
+  Future<List<ProductItemList>> getListVariations() async {
+    return await ProductsController().getAllProductsVariations(nameProduct, categoryProduct).then((value) {
+      return value;
+    });
+  }
+
+  Future<List<CommentsProduct>> getCommentsProductUser() async {
+    if (productSelect == null) {
+      return [];
+    }
+    
+    if (commentsProduct.isNotEmpty) {
+      return commentsProduct;
+    }
+
+    return await ProductsController().getCommentsProductUser(productSelect!.name, productSelect!.variation!.category);
+  }
+
+  Future<Widget> getListComments() async {
+    if (commentsProduct.isEmpty) {
+      commentsProduct = await getCommentsProductUser();
+    }
+
+    return comments(context, commentsProduct);
+  }
+
+  Future<String> getProductLastSale() async {
+    NumberFormat formatter = NumberFormat("00");
+    DateTime? lastSale;
+
+    if (productSelect == null) {
+      return '';
+    }
+
+    return await ProductsController().getProductLastSale(productSelect!.name, productSelect!.variation!.category).then((value) {
+      if (value == null) {
+        return 'nunca';
+      }
+
+      lastSale = value.toLocal();
+
+      return '${formatter.format(lastSale!.day)}/${formatter.format(lastSale!.month)}/${lastSale!.year} às ${formatter.format(lastSale!.hour)}:${formatter.format(lastSale!.minute)}';
+    });
+
+  }
+
+  @override
+  Widget build(BuildContext context) {
 
     print('object');
 
@@ -141,7 +144,7 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: NetworkImage(
-                  urlImageProduct ?? 'https://www.thermaxglobal.com/wp-content/uploads/2020/05/image-not-found.jpg',
+                  urlImageProduct ?? 'https://lh3.googleusercontent.com/p/AF1QipM9XLEM_XjI2c-GlcHbZgNmHNYpKPpQbJeUriqO=w600-h0',
                 ),
                 fit: BoxFit.cover,
                 colorFilter: ColorFilter.mode(
@@ -234,7 +237,7 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
           child: Column(
             children: [
               const SizedBox(height: 10,),
-        
+              
               const Center(
                 child: Text(
                   'Tamanhos disponíveis',
@@ -247,18 +250,11 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
         
               const SizedBox(height: 10,),
         
-              FutureBuilder(
-                future: getListVariations(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return snapshot.data as Widget;
-                  } else {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                },
-              ),
+              productsVariation != null ? 
+                listSize(productsVariation!) : 
+                const Center(
+                  child: CircularProgressIndicator(),
+                ),
 
               const SizedBox(height: 10,),
         

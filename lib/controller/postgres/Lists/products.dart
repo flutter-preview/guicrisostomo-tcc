@@ -166,7 +166,7 @@ class ProductsController {
       //   return results.map((e) => e.category!).toList();
       // });
       return await conn.query('''
-        SELECT DISTINCT v.category
+        SELECT v.category
         FROM products p
         INNER JOIN variations v ON v.id = p.id_variation
         WHERE v.business = @business AND p.fg_ativo = true AND v.fg_ativo = true AND v.is_show_home = true
@@ -215,10 +215,11 @@ class ProductsController {
       // });
       
       return await conn.query('''
-        SELECT DISTINCT v.size
+        SELECT v.size
         FROM products p
         INNER JOIN variations v ON v.id = p.id_variation
         WHERE v.category = @category AND p.fg_ativo = true AND v.fg_ativo = true AND v.business = @business
+        GROUP BY v.size
         ORDER BY v.size
       ''', substitutionValues: {
         'category': category,

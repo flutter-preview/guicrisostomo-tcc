@@ -1,5 +1,5 @@
 import 'package:tcc/controller/postgres/utils.dart';
-import 'package:tcc/view/widget/snackBars.dart';
+import 'package:tcc/globals.dart' as globals;
 
 class SlideShow {
   String path;
@@ -34,6 +34,14 @@ class SlideShow {
               path: row[1],
             )
           );
+
+          if (globals.categoriesBusiness == []) {
+            globals.categoriesBusiness.add(row[0]);
+          } else {
+            if (!globals.categoriesBusiness.contains(row[0])) {
+              globals.categoriesBusiness.add(row[0]);
+            }
+          }
         }
         return list;
       }).catchError((e) {

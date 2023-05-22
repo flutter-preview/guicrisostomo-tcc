@@ -19,11 +19,8 @@ class _CartInfoState extends State<CartInfo> {
 
   Future<num> getInfo() async {
     return await SalesController().getTotal().then((value) {
-      total = value[0];
       items = value[1];
-      globals.totalSale = total;
-
-      return total;
+      return value[0];
     });
   }
 
@@ -178,10 +175,8 @@ class _CartInfoState extends State<CartInfo> {
   void initState() {
     super.initState();
     getInfo().then((value) {
-      print(value);
-      if (value != 0 && mounted) {
-        setState(() {});
-      }
+      total = value;
+      globals.totalSale = value;
     });
   }
 
