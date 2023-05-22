@@ -304,7 +304,7 @@ class ProductsCartController {
       // querySelect += ' WHERE i.id_order = ? AND i.fg_current = ?';
       // querySelect += ' ORDER BY i.id';
       
-      return await conn.query("SELECT i.id_variation FROM items i INNER JOIN products p ON p.id = i.id_product WHERE i.id_order = @idOrder AND i.status = 'Andamento' ORDER BY i.id", substitutionValues: {
+      return await conn.query("SELECT i.id_variation FROM items i WHERE i.id_order = @idOrder AND i.status = 'Andamento' ORDER BY i.id", substitutionValues: {
         'idOrder': idSale,
       }).then((List value) {
         conn.close();
@@ -621,93 +621,88 @@ class ProductsCartController {
     });
   }
 
-  Future<bool> getVariationItemPreSelected(BuildContext context, int itemVariationSelected) async {
-    await SalesController().idSale().then((idOrder) async {
-      await ProductsCartController().getVariationItem(idOrder).then((value) {
-        print('itemVariationSelected: $itemVariationSelected - value: $value');
-        if (itemVariationSelected != value && value != 0) {
-          Navigator.pop(context);
-          error(context, 'Não é possível adicionar produtos de variações diferentes no mesmo item');
-          return false;
-        }
-      });
+  Future<Map<bool, int>> getVariationItemPreSelected(BuildContext context, int itemVariationSelected, int idOrder) async {
+    return await ProductsCartController().getVariationItem(idOrder).then((value) {
+      if (itemVariationSelected != value && value != 0) {
+        error(context, 'Não é possível adicionar produtos de variações diferentes no mesmo item');
+        Navigator.pop(context);
+        
+        return {false: 0};
+      } else {
+        return {true: value};
+      }
     });
+  }
+
+  bool verifyItemEqual(BuildContext context, ProductItemList item, List<ProductsCartList> cartList) {
+    for (var itemCart in cartList) {
+      print('itemCart.idProduct: ${itemCart.idProduct} - item.id: ${item.id}');
+      if (itemCart.idProduct == item.id) {
+        error(context, 'Este produto já foi adicionado');
+        Navigator.pop(context);
+        
+        return false;
+      }
+    }
 
     return true;
   }
 
-  Future<bool> verifyItemEqual(BuildContext context, ProductItemList item) async {
-    await SalesController().idSale().then((idOrder) async {
-      await ProductsCartController().listItemCurrent(idOrder).then((value) {
-        if (value.isNotEmpty) {
-          for (var itemCart in value) {
-            if (itemCart.idProduct == item.id) {
-              Navigator.pop(context);
-              error(context, 'Este produto já foi adicionado');
-              return false;
-            }
-          }
-        }
+  Future<bool> isLimitedItemVariationOrProduct(BuildContext context, ProductItemList item, int idOrder, [int qtd = -1]) async {
+  
+    int limitVariation = -1;
+    int limitProduct = -1;
+    if (qtd == -1) {
+      await ProductsController().getLimitItemVariation(item.variation!.id!).then((limit) async {
+        limitVariation = limit;
       });
+    }
+
+    await ProductsController().getLimitItemProduct(item.id).then((limit) async {
+      limitProduct = limit;
     });
 
-    return true;
-  }
+    return await ProductsCartController().listItemCurrent(idOrder).then((value) {
+      
+      if (verifyItemEqual(context, item, value) == false) {
+        return false;
+      }
+      
+      if (value.length >= limitVariation && limitVariation != -1) {
+        Navigator.pop(context);
 
-  Future<bool> isLimitedItemVariationOrProduct(BuildContext context, ProductItemList item, [int qtd = -1]) async {
-    return await SalesController().idSale().then((idOrder) async {
-      int limitVariation = -1;
-      int limitProduct = -1;
-      if (qtd == -1) {
-        await ProductsController().getLimitItemVariation(item.variation!.id!).then((limit) async {
-          limitVariation = limit;
-        });
+        error(context, 'Limite atingido na categoria ${item.variation!.category.toLowerCase()} e tamanho ${item.variation!.size.toLowerCase()}!');
+        return false;
       }
 
-      await ProductsController().getLimitItemProduct(item.id).then((limit) async {
-        limitProduct = limit;
-      });
+      if (qtd == -1){
+        qtd = 1;
+      }
 
-      return await ProductsCartController().listItemCurrent(idOrder).then((value) {
+      if (qtd > limitProduct && limitProduct != -1) {
+        Navigator.pop(context);
         
-        if (value.length >= limitVariation && limitVariation != -1) {
-          Navigator.pop(context);
-
-          error(context, 'Limite atingido na categoria ${item.variation!.category.toLowerCase()} e tamanho ${item.variation!.size.toLowerCase()}!');
-          return false;
-        }
-
-        if (qtd == -1){
-          qtd = 1;
-        }
-
-        if (qtd > limitProduct && limitProduct != -1) {
-          Navigator.pop(context);
-          
-          limitProduct > 0
-              ? error(context, 'Há apenas $limitProduct disponível em estoque!')
-              : error(context, 'Não há ${item.name.toLowerCase()} disponíveis em estoque!');
-          return false;
-        } else {
-          return true;
-        }
-      });
+        limitProduct > 0
+            ? error(context, 'Há apenas $limitProduct disponível em estoque!')
+            : error(context, 'Não há ${item.name.toLowerCase()} disponíveis em estoque!');
+        return false;
+      } else {
+        return true;
+      }
     });
   }
 
   Future<void> verifyItemSelected(BuildContext context, ProductItemList item) async {
-    int idItemVariationSelected = item.variation!.id!;
-    if (await getVariationItemPreSelected(context, idItemVariationSelected) == false) {
-      return;
-    }
+    await SalesController().idSale().then((idOrder) async {
+    
+      int idItemVariationSelected = item.variation!.id!;
+      await getVariationItemPreSelected(context, idItemVariationSelected, idOrder).then((value) async {
+        if (value.keys.first) {
+          await isLimitedItemVariationOrProduct(context, item, idOrder);
+        }
+      });
 
-    if (await verifyItemEqual(context, item) == false) {
-      return;
-    }
-
-    if (await isLimitedItemVariationOrProduct(context, item) == false) {
-      return;
-    }
+    });
   }
 
   Future<void> updateAllItemsIdOrder(int idOrder, int idNewOrder) async {
