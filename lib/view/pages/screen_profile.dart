@@ -22,8 +22,14 @@ class _ScreenProfileState extends State<ScreenProfile> {
   String? phoneUser = "(99) 99999-9999";
   String? photoUser;
 
-  void getUser() async {
-    await LoginController().userLogin().then((value){
+  Future<UserList> getUser() async {
+    return await LoginController().userLogin();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getUser().then((value) {
       setState(() {
         user = value;
         nameUser = value.name;
@@ -31,12 +37,6 @@ class _ScreenProfileState extends State<ScreenProfile> {
         photoUser = value.image;
       });
     });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getUser();
   }
 
   @override
