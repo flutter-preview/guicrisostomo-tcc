@@ -235,7 +235,7 @@ class ProductsController {
   }
 
   Future<List<ProductItemList>> list(String categorySelected, String sizeSelected, String searchProduct) async {
-    searchProduct = '%$searchProduct%';
+    searchProduct = '%${searchProduct.toUpperCase()}%';
     
     return await connectSupadatabase().then((conn) async {
       
