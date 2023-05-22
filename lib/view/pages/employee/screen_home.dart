@@ -1,13 +1,11 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tcc/controller/firebase/auth.dart';
 import 'package:tcc/controller/postgres/Lists/table.dart';
 import 'package:tcc/main.dart';
-import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigation.dart';
 import 'package:tcc/globals.dart' as globals
 ;
@@ -252,7 +250,11 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                         );
                       }
                     ),
-                  ]) : const Center(
+                  ]) : (snapshot.hasError) ?
+                  Center(
+                    child: Text('Erro ao carregar dados: ${snapshot.error}')
+                  )
+                   : const Center(
                     child: CircularProgressIndicator(),
                   );
                 }
