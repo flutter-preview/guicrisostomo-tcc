@@ -159,7 +159,7 @@ class _ScreenRegisterState extends State<ScreenRegister> {
 
               const SizedBox(height: 50,),
 
-              button('Cadastrar', 350, 70, Icons.person_add_outlined, () {
+              button('Cadastrar', MediaQuery.of(context).size.width - 100, 0, Icons.person_add_outlined, () {
 
                 register();
 
@@ -167,7 +167,7 @@ class _ScreenRegisterState extends State<ScreenRegister> {
 
               const SizedBox(height: 20,),
 
-              button('Entrar com Google', 295, 50, null, () {
+              button('Entrar com Google', MediaQuery.of(context).size.width - 100, 0, null, () {
                 LoginController().signIn(context);
               }, true, 24, null, 'lib/images/google_logo.png'),
 

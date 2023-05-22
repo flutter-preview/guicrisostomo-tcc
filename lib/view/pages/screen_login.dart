@@ -116,7 +116,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
 
               const SizedBox(height: 40,),
 
-              button('Entrar', 295, 50, Icons.input_outlined, () {
+              button('Entrar', MediaQuery.of(context).size.width - 100, 0, Icons.input_outlined, () {
 
                 logIn();
 
@@ -124,7 +124,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
 
               const SizedBox(height: 20,),
 
-              button('Entrar com Google', 295, 50, null, () {
+              button('Entrar com Google', MediaQuery.of(context).size.width - 100, 0, null, () {
                 LoginController().signIn(context);
               }, true, 24, null, 'lib/images/google_logo.png'),
               
