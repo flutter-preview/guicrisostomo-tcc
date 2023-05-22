@@ -23,8 +23,6 @@ class _ScreenOrderState extends State<ScreenOrder> {
   String txtDropDown = 'Hoje';
   String buttonStatusSelected = '';
 
-  var formKeyDate = GlobalKey<FormState>();
-
   List<DropDownList> listDropDown = [
     DropDownList(
       name: 'Todos',
@@ -80,14 +78,9 @@ class _ScreenOrderState extends State<ScreenOrder> {
   List<Sales> listSales = [];
 
   Future<List<Sales>> getSales(String cnpj, String dateStart, String dateEnd, String buttonStatusSelected) async {
-
-    if (formKeyDate.currentState != null) {
-      if (!formKeyDate.currentState!.validate()) {
-        return [];
-      }
-      
-    } else {
-      return [];
+    
+    if (dateStart == 'Personalizado') {
+      dateStart = dateEnd = DateTime.now().toString();
     }
     
     return await SalesController().getSales(cnpj, dateStart, dateEnd, buttonStatusSelected).then((value) {
@@ -123,271 +116,258 @@ class _ScreenOrderState extends State<ScreenOrder> {
         child: Column(
           children: [
         
-            Form(
-              key: formKeyDate,
-              child: SectionVisible(
-                nameSection: 'Filtrar',
-                isShowPart: true,
-                child: Column(
-                  children: [
-                    GridView.count(
-                      crossAxisCount: 2,
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      childAspectRatio: 3,
-                      mainAxisSpacing: 10,
-                      crossAxisSpacing: 10,
+            SectionVisible(
+              nameSection: 'Filtrar',
+              isShowPart: true,
+              child: Column(
+                children: [
+                  GridView.count(
+                    crossAxisCount: 2,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    childAspectRatio: 3,
+                    mainAxisSpacing: 10,
+                    crossAxisSpacing: 10,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            buttonStatusSelected = '';
+                            getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected).then((value) {
+                              setState(() {
+                                listSales = value;
+                              });
+                            });
+                          });
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: buttonStatusSelected == '' ? globals.primary : Colors.white,
+                            border: Border.all(
+                              color: globals.primary.withOpacity(0.8),
+                              width: 1,
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.select_all, color: buttonStatusSelected == '' ? Colors.white : globals.primary.withOpacity(0.8), size: 20),
+                                                
+                              const SizedBox(width: 10),
+                                                
+                              Text('Tudo', style: TextStyle(color: buttonStatusSelected == '' ? Colors.white : globals.primary.withOpacity(0.8), fontSize: 16)),
+                            ],
+                          ),
+                        ),
+                      ),
+
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            buttonStatusSelected = 'Andamento';
+                            getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected).then((value) {
+                              setState(() {
+                                listSales = value;
+                              });
+                            });
+                          });
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: buttonStatusSelected == 'Andamento' ? globals.primary : Colors.white,
+                            border: Border.all(
+                              color: globals.primary.withOpacity(0.8),
+                              width: 1,
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.timer_sharp, color: buttonStatusSelected == 'Andamento' ? Colors.white : globals.primary.withOpacity(0.8), size: 20),
+                                                
+                              const SizedBox(width: 10),
+                                                
+                              Text('Em andamento', style: TextStyle(color: buttonStatusSelected == 'Andamento' ? Colors.white : globals.primary.withOpacity(0.8), fontSize: 16)),
+                            ],
+                          ),
+                        ),
+                      ),
+
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            buttonStatusSelected = 'Ativo';
+                            getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected).then((value) {
+                              setState(() {
+                                listSales = value;
+                              });
+                            });
+                          });
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: buttonStatusSelected == 'Ativo' ? globals.primary : Colors.white,
+                            border: Border.all(
+                              color: globals.primary.withOpacity(0.8),
+                              width: 1,
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.check_circle_outline, color: buttonStatusSelected == 'Ativo' ? Colors.white : globals.primary.withOpacity(0.8), size: 20),
+                                                
+                              const SizedBox(width: 10),
+                                                
+                              Text('Ativos', style: TextStyle(color: buttonStatusSelected == 'Ativo' ? Colors.white : globals.primary.withOpacity(0.8), fontSize: 16)),
+                            ],
+                          ),
+                        ),
+                      ),
+
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            buttonStatusSelected = 'Finalizado';
+                            getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected).then((value) {
+                              setState(() {
+                                listSales = value;
+                              });
+                            });
+                          });
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: buttonStatusSelected == 'Finalizado' ? globals.primary : Colors.white,
+                            border: Border.all(
+                              color: globals.primary.withOpacity(0.8),
+                              width: 1,
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.check_circle, color: buttonStatusSelected == 'Finalizado' ? Colors.white : globals.primary.withOpacity(0.8), size: 20),
+                                                
+                              const SizedBox(width: 10),
+                                                
+                              Text('Finalizados', style: TextStyle(color: buttonStatusSelected == 'Finalizado' ? Colors.white : globals.primary.withOpacity(0.8), fontSize: 16)),
+                            ],
+                          ),
+                        ),
+                      ),
+
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            buttonStatusSelected = 'Cancelado';
+                            getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected).then((value) {
+                              setState(() {
+                                listSales = value;
+                              });
+                            });
+                          });
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: buttonStatusSelected == 'Cancelado' ? globals.primary : Colors.white,
+                            border: Border.all(
+                              color: globals.primary.withOpacity(0.8),
+                              width: 1,
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.cancel, color: buttonStatusSelected == 'Cancelado' ? Colors.white : globals.primary.withOpacity(0.8), size: 20),
+                                                
+                              const SizedBox(width: 10),
+                                                
+                              Text('Cancelados', style: TextStyle(color: buttonStatusSelected == 'Cancelado' ? Colors.white : globals.primary.withOpacity(0.8), fontSize: 16)),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  
+                  const SizedBox(height: 20),
+                  
+                  if (globals.userType != 'customer')
+                    Column(
                       children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              buttonStatusSelected = '';
-                              getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected).then((value) {
-                                setState(() {
-                                  listSales = value;
-                                });
+                        TextFieldGeneral(
+                          label: 'Código do pedido',
+                          variavel: txtCode,
+                          context: context,
+                          keyboardType: TextInputType.number,
+                          ico: Icons.numbers,
+                          onChanged: (p0) {
+                            getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected).then((value) {
+                              setState(() {
+                                listSales = value;
                               });
                             });
                           },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: buttonStatusSelected == '' ? globals.primary : Colors.white,
-                              border: Border.all(
-                                color: globals.primary.withOpacity(0.8),
-                                width: 1,
-                              ),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.select_all, color: buttonStatusSelected == '' ? Colors.white : globals.primary.withOpacity(0.8), size: 20),
-                                                  
-                                const SizedBox(width: 10),
-                                                  
-                                Text('Tudo', style: TextStyle(color: buttonStatusSelected == '' ? Colors.white : globals.primary.withOpacity(0.8), fontSize: 16)),
-                              ],
-                            ),
-                          ),
                         ),
-
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              buttonStatusSelected = 'Andamento';
-                              getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected).then((value) {
-                                setState(() {
-                                  listSales = value;
-                                });
-                              });
-                            });
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: buttonStatusSelected == 'Andamento' ? globals.primary : Colors.white,
-                              border: Border.all(
-                                color: globals.primary.withOpacity(0.8),
-                                width: 1,
-                              ),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.timer_sharp, color: buttonStatusSelected == 'Andamento' ? Colors.white : globals.primary.withOpacity(0.8), size: 20),
-                                                  
-                                const SizedBox(width: 10),
-                                                  
-                                Text('Em andamento', style: TextStyle(color: buttonStatusSelected == 'Andamento' ? Colors.white : globals.primary.withOpacity(0.8), fontSize: 16)),
-                              ],
-                            ),
-                          ),
-                        ),
-
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              buttonStatusSelected = 'Ativo';
-                              getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected).then((value) {
-                                setState(() {
-                                  listSales = value;
-                                });
-                              });
-                            });
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: buttonStatusSelected == 'Ativo' ? globals.primary : Colors.white,
-                              border: Border.all(
-                                color: globals.primary.withOpacity(0.8),
-                                width: 1,
-                              ),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.check_circle_outline, color: buttonStatusSelected == 'Ativo' ? Colors.white : globals.primary.withOpacity(0.8), size: 20),
-                                                  
-                                const SizedBox(width: 10),
-                                                  
-                                Text('Ativos', style: TextStyle(color: buttonStatusSelected == 'Ativo' ? Colors.white : globals.primary.withOpacity(0.8), fontSize: 16)),
-                              ],
-                            ),
-                          ),
-                        ),
-
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              buttonStatusSelected = 'Finalizado';
-                              getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected).then((value) {
-                                setState(() {
-                                  listSales = value;
-                                });
-                              });
-                            });
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: buttonStatusSelected == 'Finalizado' ? globals.primary : Colors.white,
-                              border: Border.all(
-                                color: globals.primary.withOpacity(0.8),
-                                width: 1,
-                              ),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.check_circle, color: buttonStatusSelected == 'Finalizado' ? Colors.white : globals.primary.withOpacity(0.8), size: 20),
-                                                  
-                                const SizedBox(width: 10),
-                                                  
-                                Text('Finalizados', style: TextStyle(color: buttonStatusSelected == 'Finalizado' ? Colors.white : globals.primary.withOpacity(0.8), fontSize: 16)),
-                              ],
-                            ),
-                          ),
-                        ),
-
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              buttonStatusSelected = 'Cancelado';
-                              getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected).then((value) {
-                                setState(() {
-                                  listSales = value;
-                                });
-                              });
-                            });
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: buttonStatusSelected == 'Cancelado' ? globals.primary : Colors.white,
-                              border: Border.all(
-                                color: globals.primary.withOpacity(0.8),
-                                width: 1,
-                              ),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.cancel, color: buttonStatusSelected == 'Cancelado' ? Colors.white : globals.primary.withOpacity(0.8), size: 20),
-                                                  
-                                const SizedBox(width: 10),
-                                                  
-                                Text('Cancelados', style: TextStyle(color: buttonStatusSelected == 'Cancelado' ? Colors.white : globals.primary.withOpacity(0.8), fontSize: 16)),
-                              ],
-                            ),
-                          ),
-                        ),
+                  
+                        const SizedBox(height: 20),
                       ],
                     ),
-                    
-                    const SizedBox(height: 20),
-                    
-                    if (globals.userType != 'customer')
-                      Column(
-                        children: [
-                          TextFieldGeneral(
-                            label: 'Código do pedido',
-                            variavel: txtCode,
-                            context: context,
-                            keyboardType: TextInputType.number,
-                            ico: Icons.numbers,
-                            onChanged: (p0) {
+                  
+                  if (globals.userType != 'employee')
+                    Column(
+                      children: [
+                        DropDown(
+                          text: 'Data',
+                          variavel: txtDropDown,
+                          itemsDropDownButton: listDropDown,
+                          callback: (value) {
+                            setState(() {
+                              txtDropDown = value!;
+                            });
+
+                            if (txtDropDown != 'Personalizado') {
                               getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected).then((value) {
                                 setState(() {
                                   listSales = value;
                                 });
                               });
-                            },
-                          ),
+                            }
+                            
+                          },
+                        ),
                     
-                          const SizedBox(height: 20),
-                        ],
-                      ),
+                        const SizedBox(height: 20),
                     
-                    if (globals.userType != 'employee')
-                      StatefulBuilder(
-                        builder: (context, setState) {
-                          return Column(
+                        if (txtDropDown == 'Personalizado')
+                          Column(
                             children: [
-                              DropDown(
-                                text: 'Data',
-                                variavel: txtDropDown,
-                                itemsDropDownButton: listDropDown,
-                                callback: (value) {
-                                  setState(() {
-                                    txtDropDown = value!;
-            
-                                    if (txtDropDown != 'Personalizado') {
-                                      getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected).then((value) {
-                                        setState(() {
-                                          listSales = value;
-                                        });
-                                      });
-                                    }
-            
+                              TextFieldGeneral(
+                                label: 'Data',
+                                variavel: txtDateFilter,
+                                keyboardType: TextInputType.datetime,
+                                ico: Icons.date_range,
+                                onChanged: (value) {
+                                  getSales(txtCode.text, txtDropDown, value, buttonStatusSelected).then((value) {
+                                    setState(() {
+                                      listSales = value;
+                                    });
                                   });
-                                  
                                 },
                               ),
                           
                               const SizedBox(height: 20),
-                          
-                              if (txtDropDown == 'Personalizado')
-                                Column(
-                                  children: [
-                                    TextFieldGeneral(
-                                      label: 'Data',
-                                      variavel: txtDateFilter,
-                                      keyboardType: TextInputType.datetime,
-                                      ico: Icons.date_range,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          getSales(txtCode.text, txtDropDown, value, buttonStatusSelected).then((value) {
-                                            setState(() {
-                                              listSales = value;
-                                            });
-                                          });
-                                        });
-                                      },
-                                      validator: (value) {
-                                        return validatorString(value);
-                                      },
-                                    ),
-                                
-                                    const SizedBox(height: 20),
-                                  ],
-                                ),
                             ],
-                          );
-                        }
-                      ),
-                  ],
-                ),
+                          ),
+                      ],
+                    ),
+                ],
               ),
             ),
         
