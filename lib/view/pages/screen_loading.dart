@@ -10,12 +10,19 @@ class ScreenLoading extends StatefulWidget {
 }
 
 class _ScreenLoadingState extends State<ScreenLoading> {
+  Future<bool> _onWillPop() async {
+    return false; //<-- SEE HERE
+  }
+  
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: CircularProgressIndicator.adaptive(
-          valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator.adaptive(
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
+          ),
         ),
       ),
     );
