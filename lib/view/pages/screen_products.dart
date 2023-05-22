@@ -4,7 +4,6 @@ import 'package:tcc/model/ProductItemList.dart';
 import 'package:tcc/model/standardSlideShow.dart';
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigation.dart';
-import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/productItem.dart';
 import 'package:tcc/view/widget/sectionVisible.dart';
 import 'package:tcc/view/widget/textFieldGeneral.dart';
@@ -27,34 +26,33 @@ class _ScreenProductsState extends State<ScreenProducts> {
   var txtProd = TextEditingController();
 
   Future<List<ProductItemList>> getProduct(category, size) async {
-    List<ProductItemList> list = [];
-    await ProductsController().list(category, size, txtProd.text).then((value) {
-      list = value;
+    return await ProductsController().list(category, size, txtProd.text).then((value) {
+      return value;
     });
-
-    return list;
   } 
 
-  Future<void> getCategories() async {
-    await ProductsController().listCategories().then((value) {
-      globals.categoriesBusiness = value;
-      globals.sizesCategoryBusiness = [];
+  Future<List<String>> getCategories() async {
+    globals.sizesCategoryBusiness = [];
+
+    return await ProductsController().listCategories().then((value) {
+      return value;
     });
-    
   }
 
-  Future<void> getSize() async {
-    await ProductsController().listSizes(globals.categorySelected).then((value) {
-      globals.sizesCategoryBusiness = value;
+  Future<List<String>> getSize() async {
+    return await ProductsController().listSizes(globals.categorySelected).then((value) {
+      return value;
     });
   }
 
   @override
   void initState() {
     super.initState();
-    if (globals.categoriesBusiness.isEmpty && mounted) {
+    if (globals.categoriesBusiness.isEmpty) {
       getCategories().then((value) {
         setState(() {
+          globals.categoriesBusiness = value;
+
           globals.categorySelected = globals.categoriesBusiness[0];
 
           if (widget.arguments != null) {
@@ -63,7 +61,7 @@ class _ScreenProductsState extends State<ScreenProducts> {
         });
       });
     } else {
-      if (mounted && widget.arguments != null) {
+      if (widget.arguments != null) {
         setState(() {
           globals.categorySelected = widget.arguments!.title;
           globals.sizesCategoryBusiness = [];
@@ -77,13 +75,19 @@ class _ScreenProductsState extends State<ScreenProducts> {
     List<ProductItemList> list = [];
 
     if (globals.categoriesBusiness.isEmpty) {
-      await getCategories();
+      await getCategories().then((value) {
+        globals.categoriesBusiness = value;
+      });
+
       globals.sizesCategoryBusiness = [];
     }
 
     try {
       if (globals.sizesCategoryBusiness.isEmpty) {
-        await getSize();
+        await getSize().then((value) {
+          globals.sizesCategoryBusiness = value;
+        });
+
         list = [];
       }
 
@@ -170,6 +174,7 @@ class _ScreenProductsState extends State<ScreenProducts> {
         ),
       );
     }
+    return null;
   }
 
   IconData? getIconCategory(String category) {
@@ -200,9 +205,7 @@ class _ScreenProductsState extends State<ScreenProducts> {
 
   @override
   Widget build(BuildContext context) {
-    print('b');
     
-
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
