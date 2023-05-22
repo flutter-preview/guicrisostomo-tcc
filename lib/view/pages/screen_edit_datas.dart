@@ -8,6 +8,7 @@ import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigation.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/sectionVisible.dart';
+import 'package:tcc/view/widget/snackBars.dart';
 import 'package:tcc/view/widget/textFieldGeneral.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:tcc/globals.dart' as globals;
@@ -86,155 +87,98 @@ class _ScreenEditDatasState extends State<ScreenEditDatas> {
               nameSection: 'Dados pessoais',
               isShowPart: true,
               child: 
-                Form(
-                  key: formKey,
-                  autovalidateMode: autoValidation ? AutovalidateMode.always : AutovalidateMode.disabled,
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 20,),
-                
-                      TextFieldGeneral(
-                        label: 'Nome', 
-                        variavel: txtName,
-                        context: context, 
-                        keyboardType: TextInputType.name,
-                        ico: Icons.person,
-                        validator: (value) {
-                          return validatorString(value!);
-                        },
-                        textCapitalization: TextCapitalization.sentences,
-                      ),
-                
-                      const SizedBox(height: 10,),
-                
-                      TextFieldGeneral(
-                        label: 'E-mail', 
-                        variavel: txtEmail,
-                        context: context, 
-                        keyboardType: TextInputType.emailAddress,
-                        ico: Icons.email_outlined,
-                        validator: (value) {
-                          return validatorEmail(value!);
-                        },
-                      ),
-                
-                      const SizedBox(height: 10,),
-                
-                      TextFieldGeneral(
-                        label: 'Telefone', 
-                        variavel: txtPhone,
-                        context: context, 
-                        keyboardType: TextInputType.number,
-                        ico: Icons.phone,
-                        inputFormatter: [maskFormatter],
+                Column(
+                  children: [
+                    Form(
+                      key: formKey,
+                      autovalidateMode: autoValidation ? AutovalidateMode.always : AutovalidateMode.disabled,
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 20,),
+                    
+                          TextFieldGeneral(
+                            label: 'Nome', 
+                            variavel: txtName,
+                            context: context, 
+                            keyboardType: TextInputType.name,
+                            ico: Icons.person,
+                            validator: (value) {
+                              return validatorString(value!);
+                            },
+                            textCapitalization: TextCapitalization.sentences,
+                          ),
+                    
+                          const SizedBox(height: 10,),
+                    
+                          TextFieldGeneral(
+                            label: 'E-mail', 
+                            variavel: txtEmail,
+                            context: context, 
+                            keyboardType: TextInputType.emailAddress,
+                            ico: Icons.email_outlined,
+                            validator: (value) {
+                              return validatorEmail(value!);
+                            },
+                          ),
+                    
+                          const SizedBox(height: 10,),
+                    
+                          TextFieldGeneral(
+                            label: 'Telefone', 
+                            variavel: txtPhone,
+                            context: context, 
+                            keyboardType: TextInputType.number,
+                            ico: Icons.phone,
+                            inputFormatter: [maskFormatter],
 
-                        validator: (value) {
-                          return validatorPhone(value!);
-                        },
-                        onChanged: (value) => {
-                          if (value.length <= 14) {
-                            txtPhone.value = maskFormatter.updateMask(mask: "(##) ####-#####")
-                          } else {
-                            txtPhone.value = maskFormatter.updateMask(mask: "(##) #####-####")
-                          }
-                        }
+                            validator: (value) {
+                              return validatorPhone(value!);
+                            },
+                            onChanged: (value) => {
+                              if (value.length <= 14) {
+                                txtPhone.value = maskFormatter.updateMask(mask: "(##) ####-#####")
+                              } else {
+                                txtPhone.value = maskFormatter.updateMask(mask: "(##) #####-####")
+                              }
+                            }
+                          ),
+                    
+                          const SizedBox(height: 50,),
+                    
+                          button('Salvar', 280, 50, Icons.save, () {
+                    
+                            if (formKey.currentState!.validate()) {
+                      
+                              LoginController().updateUser(FirebaseAuth.instance.currentUser!.uid, txtName.text, txtEmail.text, txtPhone.text, context, false).whenComplete(() async {
+                                await FirebaseAuth.instance.currentUser!.updateDisplayName(txtName.text);
+                                await FirebaseAuth.instance.currentUser!.updateEmail(txtEmail.text);
+                              });
+                    
+                            } else {
+                              setState(() {
+                                autoValidation = true;
+                              });
+                            }
+                    
+                          })
+                        ]
                       ),
-                
-                      const SizedBox(height: 50,),
-                
-                      button('Salvar', 280, 50, Icons.save, () {
-                
-                        if (formKey.currentState!.validate()) {
+                    ),
                   
-                          LoginController().updateUser(FirebaseAuth.instance.currentUser!.uid, txtName.text, txtEmail.text, txtPhone.text, context, false).whenComplete(() async {
-                            await FirebaseAuth.instance.currentUser!.updateDisplayName(txtName.text);
-                            await FirebaseAuth.instance.currentUser!.updateEmail(txtEmail.text);
-                          });
-                
-                        } else {
-                          setState(() {
-                            autoValidation = true;
-                          });
-                        }
-                
-                      })
-                    ]
-                  ),
+                    const SizedBox(height: 20,),
+
+                    button('Alterar senha', 280, 50, Icons.lock, () {
+                      FirebaseAuth.instance.sendPasswordResetEmail(email: FirebaseAuth.instance.currentUser!.email!).whenComplete(() {
+                        success(context, 'Foi enviado um e-mail para ${FirebaseAuth.instance.currentUser!.email} com as instruções para alterar a senha.');
+                      });
+                    }),
+                  ],
                 ),
             ),
 
             const SizedBox(height: 20,),
 
             const AddressExistent(),
-
-            // Form(
-            //   key: formKey,
-            //   autovalidateMode: autoValidation ? AutovalidateMode.always : AutovalidateMode.disabled,
-
-            //   child: Column(
-            //     children: [
-            //       TextFieldGeneral(
-            //         label: 'Nome', 
-            //         variavel: txtName,
-            //         context: context, 
-            //         keyboardType: TextInputType.name,
-            //         ico: Icons.person,
-            //         validator: (value) {
-            //           validatorString(value!);
-            //         },
-            //       ),
-
-            //       const SizedBox(height: 10,),
-
-            //       TextFieldGeneral(
-            //         label: 'E-mail', 
-            //         variavel: txtEmail,
-            //         context: context, 
-            //         keyboardType: TextInputType.emailAddress,
-            //         ico: Icons.person,
-            //         validator: (value) {
-            //           validatorEmail(value!);
-            //         },
-            //       ),
-
-            //       const SizedBox(height: 10,),
-
-            //       TextFieldGeneral(
-            //         label: 'Telefone', 
-            //         variavel: txtPhone,
-            //         context: context, 
-            //         keyboardType: TextInputType.number,
-            //         ico: Icons.person,
-            //         validator: (value) {
-            //           validatorPhone(value!);
-            //         },
-            //         onChanged: (value) => {
-            //           if (value.length <= 14) {
-            //             txtPhone.value = maskFormatter.updateMask(mask: "(##) ####-#####")
-            //           } else {
-            //             txtPhone.value = maskFormatter.updateMask(mask: "(##) #####-####")
-            //           }
-            //         }
-            //       ),
-
-            //       const SizedBox(height: 50,),
-
-            //       button('Salvar', 280, 50, Icons.save, () {
-
-            //         if (formKey.currentState!.validate()) {
-              
-            //           // LoginController().updateUser(user.id, txtName.text, txtEmail.text, txtPhone.text, context);
-
-            //         } else {
-            //           setState(() {
-            //             autoValidation = true;
-            //           });
-            //         }
-
-            //       })
-            //     ]
-            //   ),
-            // ),
           ],
         ),
       ),
