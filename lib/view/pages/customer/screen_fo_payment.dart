@@ -8,6 +8,7 @@ import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/customer/partFinalizeOrder.dart';
 import 'package:tcc/globals.dart' as globals;
+import 'package:tcc/view/widget/snackBars.dart';
 import 'package:tcc/view/widget/textFieldGeneral.dart';
 
 class ScreenFOPayment extends StatefulWidget {
@@ -106,6 +107,17 @@ class _ScreenFOPaymentState extends State<ScreenFOPayment> {
             const PartFinalizeOrder(partUser: 3),
 
             const SizedBox(height: 20),
+
+            Text(
+              'Total: R\$ ${globals.totalSale.toStringAsFixed(2).replaceAll('.', ',')}',
+              style: TextStyle(
+                color: globals.primaryBlack,
+                fontSize: 16,
+                fontWeight: FontWeight.w600
+              ),
+            ),
+
+            const SizedBox(height: 10),
 
             Center(
               child: SizedBox(
@@ -252,10 +264,12 @@ class _ScreenFOPaymentState extends State<ScreenFOPayment> {
                   txtMoney.text = txtMoney.text.replaceAll(',', '.');
                   
                   if (txtMoney.text.isEmpty) {
+                    error(context, 'Informe o valor do troco');
                     return;
                   }
 
                   if (double.parse(txtMoney.text) < globals.totalSale) {
+                    error(context, 'O valor do troco não pode ser menor que o valor total da compra');
                     return;
                   }
 
