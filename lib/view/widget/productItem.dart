@@ -6,6 +6,7 @@ import 'package:tcc/globals.dart' as globals;
 import 'package:tcc/main.dart';
 import 'package:tcc/model/ProductItemList.dart';
 import 'package:tcc/model/Variation.dart';
+import 'package:tcc/view/widget/snackBars.dart';
 
 class ProductItem extends StatefulWidget {
   final List<ProductItemList> product;
@@ -166,10 +167,11 @@ class _ProductItemState extends State<ProductItem> {
 
                         IconButton(
                           onPressed: () async {
+                            setState(() {
+                              item.isFavorite = !item.isFavorite;
+                            });
                             await ProductsController().setProductFavorite(idItem, isFavorite).then((value) {
-                              setState(() {
-                                item.isFavorite = !item.isFavorite;
-                              });
+                              success(context, 'Produto ${item.isFavorite ? 'adicionado' : 'removido'} dos favoritos com sucesso!');
                             });
                           }, 
                           icon: item.isFavorite ? 
