@@ -655,6 +655,10 @@ class ProductsCartController {
     if (qtd == -1) {
       await ProductsController().getLimitItemVariation(item.variation!.id!).then((limit) async {
         limitVariation = limit;
+
+        if (limitVariation == 0) {
+          limitVariation = -1;
+        }
       });
     }
 
