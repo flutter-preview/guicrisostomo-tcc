@@ -9,6 +9,7 @@ import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/bottonNavigation.dart';
 import 'package:tcc/view/widget/comments.dart';
 import 'package:tcc/view/widget/listSizeAvailable.dart';
+import 'package:tcc/view/widget/sectionVisible.dart';
 import 'package:tcc/view/widget/textFieldGeneral.dart';
 
 class ScreenInfoProduct extends StatefulWidget {
@@ -58,10 +59,10 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
       categoryProduct = value.variation!.category;
       isFavorite = value.isFavorite;
 
-      setState(() {});
-
       getListVariations().then((value) {
-        productsVariation = value;
+        setState(() {
+          productsVariation = value;
+        });
       });
 
       getCommentsProductUser();
@@ -238,101 +239,84 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
             children: [
               const SizedBox(height: 10,),
               
-              const Center(
-                child: Text(
-                  'Tamanhos disponíveis',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700,
+              SectionVisible(
+                nameSection: 'Tamanhos disponíveis', 
+                isShowPart: true,
+                child: productsVariation != null ? 
+                  listSize(productsVariation!) : 
+                  const Center(
+                    child: CircularProgressIndicator(),
                   ),
-                ),
               ),
-        
-              const SizedBox(height: 10,),
-        
-              productsVariation != null ? 
-                listSize(productsVariation!) : 
-                const Center(
-                  child: CircularProgressIndicator(),
-                ),
 
               const SizedBox(height: 10,),
         
-              const Center(
-                child: Text(
-                  'Informações adicionais',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700,
+              SectionVisible(
+                nameSection: 'Informações adicionais',
+                isShowPart: true, 
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Row(
+                    children: [
+                      SvgPicture.asset(
+                        iconOrder,
+                        fit: BoxFit.scaleDown,
+                        height: 20,
+                      ),
+                
+                      Text(
+                        'Último pedido: $textDateTime',
+                      )
+                    ],
                   ),
                 ),
               ),
         
+              
+        
               const SizedBox(height: 10,),
         
-              Padding(
-                padding: const EdgeInsets.all(10),
-                child: Row(
+              SectionVisible(
+                nameSection: 'Comentários', 
+                child: Column(
                   children: [
-                    SvgPicture.asset(
-                      iconOrder,
-                      fit: BoxFit.scaleDown,
-                      height: 20,
+                    FutureBuilder(
+                      future: getListComments(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return snapshot.data as Widget;
+                        } else {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                      },
                     ),
               
-                    Text(
-                      'Último pedido: $textDateTime',
-                    )
+                    const SizedBox(height: 10,),
+              
+                    TextFieldGeneral(
+                      label: 'Escrever comentário',
+                      variavel: txtComment,
+                      keyboardType: TextInputType.text,
+                      context: context,
+                      ico: Icons.person_outline,
+                      icoSuffix: Icons.send_outlined,
+                      textCapitalization: TextCapitalization.sentences,
+                      validator: (value) {
+                        validatorString(value!);
+                      },
+
+                      eventPressIconSuffix: () async {
+                        await ProductsController().addCommentProductUser(productSelect!.id, FirebaseAuth.instance.currentUser!.uid, txtComment.text);
+                        setState(() {
+                          getCommentsProductUser();
+                        });
+                      },
+              
+                    ),
                   ],
                 ),
-              ),
-        
-              const SizedBox(height: 10,),
-        
-              const Text(
-                'Comentários',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-        
-              const SizedBox(height: 10,),
-        
-              FutureBuilder(
-                future: getListComments(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return snapshot.data as Widget;
-                  } else {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                },
-              ),
-        
-              const SizedBox(height: 10,),
-        
-              TextFieldGeneral(
-                label: 'Escrever comentário',
-                variavel: txtComment,
-                keyboardType: TextInputType.text,
-                context: context,
-                ico: Icons.person_outline,
-                icoSuffix: Icons.send_outlined,
-                textCapitalization: TextCapitalization.sentences,
-                validator: (value) {
-                  validatorString(value!);
-                },
-
-                eventPressIconSuffix: () async {
-                  await ProductsController().addCommentProductUser(productSelect!.id, FirebaseAuth.instance.currentUser!.uid, txtComment.text);
-                  setState(() {
-                    getCommentsProductUser();
-                  });
-                },
-        
               ),
             ]
           ),
