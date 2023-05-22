@@ -24,6 +24,12 @@ Widget listViewOrder(List<Sales> dados) {
           leading: status == 'Andamento' ? Icon(
             Icons.timer_outlined,
             color: globals.primary,
+          ) : status == 'Finalizado' ? Icon(
+            Icons.check_circle,
+            color: globals.primary,
+          ) : status == 'Cancelado' ? Icon(
+            Icons.cancel_outlined,
+            color: globals.primary,
           ) : Icon(
             Icons.check_circle_outline,
             color: globals.primary,
