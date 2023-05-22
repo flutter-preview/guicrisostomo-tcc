@@ -347,6 +347,11 @@ class LoginController {
         if (hasRedirect) {
           redirectUser(context);
         }
+
+        FirebaseAuth.instance.currentUser?.updateDisplayName(name);
+        FirebaseAuth.instance.currentUser?.updateEmail(email);
+        FirebaseAuth.instance.currentUser?.updatePhoneNumber(phone.replaceAll(RegExp(r'[-() ]'), ''));
+        FirebaseAuth.instance.currentUser?.reload();
         
         success(context, 'Usuário atualizado com sucesso.');
       });
