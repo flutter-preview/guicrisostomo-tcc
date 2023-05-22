@@ -26,11 +26,27 @@ class _ProductItemState extends State<ProductItem> {
       (widget.product.isNotEmpty) ?
         Column(
           children: [
-            Text(
-              'Clique no item para saber mais sobre o produto',
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.black45,
+            Padding(
+              padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+              child: Row(
+                children: const [
+                  Icon(
+                    Icons.info_outline_rounded,
+                    color: Colors.black45,
+                  ),
+                        
+                  SizedBox(width: 5,),
+                        
+                  Flexible(
+                    child: Text(
+                      'Clique no item para saber mais sobre o produto',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.black45,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
 
