@@ -232,52 +232,54 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: globals.primary,
-                  ),
-                  color: Colors.white,
-                ),
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  
-                  children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.info_outline,
-                          size: 20,
-                          color: globals.primary,
-                        ),
-              
-                        const SizedBox(width: 10,),
-              
-                        const Text(
-                          'Descrição',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                
-                    const SizedBox(height: 10,),
-                
-                    Text(
-                      descriptionProduct ?? '',
-                      style: const TextStyle(
-                        fontSize: 16,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
 
-              const SizedBox(height: 10,),
+              if (descriptionProduct != null && descriptionProduct!.isNotEmpty)
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: globals.primary,
+                    ),
+                    color: Colors.white,
+                  ),
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.info_outline,
+                            size: 20,
+                            color: globals.primary,
+                          ),
+                
+                          const SizedBox(width: 10,),
+                
+                          const Text(
+                            'Descrição',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                  
+                      const SizedBox(height: 10,),
+                  
+                      Text(
+                        descriptionProduct ?? '',
+                        style: const TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
+
+                      const SizedBox(height: 10,),
+                    ],
+                  ),
+                ),
               
               SectionVisible(
                 nameSection: 'Tamanhos disponíveis', 
