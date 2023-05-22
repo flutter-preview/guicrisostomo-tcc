@@ -1,5 +1,11 @@
+import 'dart:async';
+
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:tcc/controller/firebase/auth.dart';
+import 'package:tcc/controller/postgres/Lists/table.dart';
 import 'package:tcc/main.dart';
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigation.dart';
@@ -14,11 +20,28 @@ class ScreenHomeEmployee extends StatefulWidget {
 }
 
 class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
+  List<int> tablesCall = [];
+
+  Future<List<int>> getTablesCall() async {
+    return await TablesController().getAllTablesCallWaiter().then((value) {
+      return value;
+    });
+  }
+
+  @override
+  void initState() {
+    globals.userType = 'employee';
+    globals.businessId = '1';
+    getTablesCall().then((value) {
+      setState(() {
+        tablesCall = value;
+      });
+    });
+    super.initState();
+  }
+  
   @override
   Widget build(BuildContext context) {
-    setState(() {
-      globals.userType = 'employee';
-    });
     
     return Scaffold(
       appBar: PreferredSize(
@@ -38,10 +61,7 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                   IconButton(
                     icon: const Icon(Icons.logout),
                     onPressed: () => {
-                      Navigator.pushReplacement(
-                        context,
-                        navigator('login'),
-                      )
+                      LoginController().logout(context),
                     },
                   )
                 ],
@@ -56,9 +76,9 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
 
                   children: [
 
-                    const Center(
+                    Center(
                       child: Text(
-                        'Olá, João',
+                        'Olá, ${FirebaseAuth.instance.currentUser!.displayName}!',
                         style: TextStyle(
                           fontSize: 24,
                           color: Colors.white,
@@ -118,71 +138,96 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
       ),
 
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         child: Column(
-          mainAxisSize: MainAxisSize.max,
           children: [
+            StreamBuilder<List<int>>(
+              initialData: tablesCall,
+              stream: Stream.periodic(
+                const Duration(seconds: 5)).asyncMap((i) => getTablesCall()),
+              builder: (context, snapshot) {
+                return (snapshot.hasData) ? Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+            
+                    Text(
+                      'Última atualização: ${DateTime.now().hour}:${DateTime.now().minute}:${DateTime.now().second}'
+                    ),
+                    
+                    ListView.builder(
+                      itemCount: snapshot.data?.length ?? 0,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        int numberTable = snapshot.data![index];
+                        
+                        return Card(
+                          color: globals.primaryBlack,
+            
+                          child: ListTile(
+                            contentPadding: const EdgeInsets.all(10),
+                            
+                            title: Text(
+                              'Mesa $numberTable chamando',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+            
+                            trailing: SizedBox(
+                              height: 50,
+                              width: 100,
+                              child: Center(
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.green,
+                                    padding: const EdgeInsets.all(10),
+                                  ),
+                                  onPressed: () {
+                                    
+                                  },
+                                  
+                                  child: Row(
+                                    children: const [
+                                      Icon(Icons.check, size: 20, color: Colors.white,),
+                                      SizedBox(width: 5),
+                                      Text(
+                                        'Atender',
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            leading: const Icon(Icons.table_bar, size: 40, color: Colors.white,),
+                            
+                            onTap: () => {
+                              Navigator.push(
+                                context,
+                                navigator('manager/products'),
+                              )
+                            },
+                          ),
+                        );
+                      }
+                    ),
+                  ]) : const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              ),
             
             Card(
               color: globals.primaryBlack,
-
-              child: ListTile(
-                contentPadding: const EdgeInsets.all(10),
-                
-                title: const Text(
-                  'MESA 30 CHAMANDO',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-
-                trailing: SizedBox(
-                  height: 50,
-                  width: 100,
-                  child: Center(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                        padding: const EdgeInsets.all(10),
-                      ),
-                      onPressed: () {
-                        
-                      },
-                      
-                      child: Row(
-                        children: const [
-                          Icon(Icons.check, size: 20, color: Colors.white,),
-                          SizedBox(width: 5),
-                          Text(
-                            'Atender',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                leading: const Icon(Icons.table_bar, size: 40, color: Colors.white,),
-                
-                onTap: () => {
-                  Navigator.push(
-                    context,
-                    navigator('manager/products'),
-                  )
-                },
-              ),
-            ),
-
-            Card(
-              color: globals.primaryBlack,
-
+    
               child: const ListTile(
                 contentPadding: EdgeInsets.all(10),
-
+    
                 leading: Icon(Icons.add, size: 40, color: Colors.white,),
-
+    
                 title: Text(
                   'Fazer novo pedido',
                   style: TextStyle(
@@ -191,13 +236,13 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-
+    
                 trailing: Icon(Icons.arrow_right, size: 30, color: Colors.white,),
               ),
             ),
-
+    
             const SizedBox(height: 20),
-
+    
             SectionVisible(
               nameSection: 'Acesso rápido',
               child: Column(
@@ -210,7 +255,7 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                         'Acessar pedidos',
                         style: TextStyle(color: Colors.white),
                       ),
-
+    
                       trailing: const Icon(Icons.arrow_right, size: 20, color: Colors.white,),
                       leading: const Icon(Icons.shopping_cart, size: 20, color: Colors.white,),
                       
@@ -231,7 +276,7 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                         'Fazer novo pedido',
                         style: TextStyle(color: Colors.white),
                       ),
-
+    
                       trailing: const Icon(Icons.arrow_right, size: 20, color: Colors.white,),
                       leading: const Icon(Icons.shopping_cart, size: 20, color: Colors.white,),
                       
@@ -243,7 +288,7 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                       },
                     ),
                   ),
-
+    
                   Card(
                     color: globals.primaryBlack,
                     child: ListTile(
@@ -252,7 +297,7 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                         'Acessar cardápio',
                         style: TextStyle(color: Colors.white),
                       ),
-
+    
                       trailing: const Icon(Icons.arrow_right, size: 20, color: Colors.white,),
                       leading: SvgPicture.asset('lib/images/iconMenu.svg', height: 25, fit: BoxFit.fill,),
                       
@@ -264,7 +309,7 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                       },
                     ),
                   ),
-
+    
                   Card(
                     color: globals.primaryBlack,
                     child: ListTile(
@@ -273,10 +318,10 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                         'Cadastrar novo produto',
                         style: TextStyle(color: Colors.white),
                       ),
-
+    
                       trailing: const Icon(Icons.arrow_right, size: 20, color: Colors.white,),
                       leading: const Icon(Icons.add, size: 20, color: Colors.white,),
-
+    
                       onTap: () => {
                         Navigator.push(
                           context,
@@ -285,7 +330,7 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                       },
                     ),
                   ),
-
+    
                   Card(
                     color: globals.primaryBlack,
                     child: ListTile(
@@ -294,7 +339,7 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                         'Acessar avaliações',
                         style: TextStyle(color: Colors.white),
                       ),
-
+    
                       trailing: const Icon(Icons.arrow_right, size: 20, color: Colors.white,),
                       leading: const Icon(Icons.star, size: 20, color: Colors.white,),
                       
@@ -303,7 +348,7 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                       },
                     ),
                   ),
-
+    
                   Card(
                     color: globals.primaryBlack,
                     child: ListTile(
@@ -312,7 +357,7 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                         'Rotas de entrega',
                         style: TextStyle(color: Colors.white),
                       ),
-
+    
                       trailing: const Icon(Icons.arrow_right, size: 20, color: Colors.white,),
                       leading: const Icon(Icons.delivery_dining, size: 20, color: Colors.white,),
                       
@@ -324,7 +369,7 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                       },
                     ),
                   ),
-
+    
                   Card(
                     color: globals.primaryBlack,
                     child: ListTile(
@@ -333,7 +378,7 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                         'Acessar dados da empresa',
                         style: TextStyle(color: Colors.white),
                       ),
-
+    
                       trailing: const Icon(Icons.arrow_right, size: 20, color: Colors.white,),
                       leading: const Icon(Icons.business, size: 20, color: Colors.white,),
                       
@@ -345,7 +390,7 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                       },
                     ),
                   ),
-
+    
                   Card(
                     color: globals.primaryBlack,
                     child: ListTile(
@@ -354,7 +399,7 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                         'Acessar dados do usuário',
                         style: TextStyle(color: Colors.white),
                       ),
-
+    
                       trailing: const Icon(Icons.arrow_right, size: 20, color: Colors.white,),
                       leading: const Icon(Icons.person, size: 20, color: Colors.white,),
                       
@@ -369,9 +414,9 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                 ],
               )
             ),
-
+    
             const SizedBox(height: 20),
-
+    
             SectionVisible(
               nameSection: 'Mesas ativas',
               isShowPart: true,

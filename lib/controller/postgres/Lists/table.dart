@@ -88,4 +88,26 @@ class TablesController {
       });
     });
   }
+
+  Future<List<int>> getAllTablesCallWaiter() async {
+    return await connectSupadatabase().then((conn) async {
+      return await conn.query('''
+        SELECT table_number FROM call_waiter WHERE business = @business ORDER BY id DESC;
+      ''', substitutionValues: {
+        'business': globals.businessId,
+      }).then((value) {
+        if (value.isNotEmpty) {
+          List<int> list = [];
+
+          for (var item in value) {
+            list.add(item[0]);
+          }
+
+          return list;
+        } else {
+          return [];
+        }
+      });
+    });
+  }
 }
