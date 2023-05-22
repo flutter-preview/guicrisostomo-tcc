@@ -1013,25 +1013,26 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                       ),
 
                       const SizedBox(height: 20),
-                    
-                      button(
-                        'Agregar outro item', 
-                        0, 
-                        0, 
-                        Icons.add, 
-                        () async {
-                          Navigator.pop(context);
-                          Navigator.push(context, navigator('products'));
-                          
-                          setState(() {
-                            globals.isSelectNewItem = true;
-                          });
+                      
+                      if (productSelect.variation!.limitItems == null || productSelect.variation!.limitItems == 0 || (productSelect.variation!.limitItems! > items.length + 1))
+                        button(
+                          'Agregar outro item', 
+                          0, 
+                          0, 
+                          Icons.add, 
+                          () async {
+                            Navigator.pop(context);
+                            Navigator.push(context, navigator('products'));
+                            
+                            setState(() {
+                              globals.isSelectNewItem = true;
+                            });
 
-                          await SalesController().idSale().then((res) async {
-                            await ProductsCartController().add(res, idProduct, nameProduct, int.parse(txtQtd.text), idVariation);
-                            // await ProductsController().updateStockProduct(idProduct, int.parse(txtQtd.text));
-                          });
-                        })
+                            await SalesController().idSale().then((res) async {
+                              await ProductsCartController().add(res, idProduct, nameProduct, int.parse(txtQtd.text), idVariation);
+                              // await ProductsController().updateStockProduct(idProduct, int.parse(txtQtd.text));
+                            });
+                          })
                     ],
                   ) : Container(),
 
