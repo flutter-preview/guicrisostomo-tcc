@@ -28,6 +28,8 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
     });
   }
 
+  num mediaStar = 3.50;
+
   @override
   void initState() {
     globals.userType = 'employee';
@@ -45,7 +47,7 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
     
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(250),
+        preferredSize: const Size.fromHeight(270),
         child: Container(
           width: double.infinity,
           color: globals.primaryBlack,
@@ -89,22 +91,58 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                     const SizedBox(height: 10),
 
                     Row(
-                      children: const [
-                        Icon(
+                      children: [
+                        const Icon(
                           Icons.star,
                           size: 30,
                           color: Colors.white,
                         ),
 
-                        SizedBox(width: 10),
+                        const SizedBox(width: 10),
 
                         Text(
-                          'Seu desempenho:',
+                          'Seu desempenho: ',
                           style: TextStyle(
                             fontSize: 20,
                             color: Colors.white,
                           ),
                         ),
+
+                        const SizedBox(width: 10),
+
+                        Column(
+                          children: [
+                            Text(
+                              mediaStar.toStringAsFixed(2).replaceAll('.00', ''),
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.white,
+                              ),
+                            ),
+
+                            Row(
+                              children: [
+                                const SizedBox(width: 10),
+
+                                for (num i = 1; i <= 5; i++)
+                                  (i < mediaStar) ? const Icon(
+                                    Icons.star,
+                                    size: 20,
+                                    color: Colors.white,
+                                  ) : ((mediaStar - (i - 1) < 1) && (mediaStar - (i - 1) > 0)) ?
+                                    const Icon(
+                                      Icons.star_half,
+                                      size: 20,
+                                      color: Colors.white,
+                                    ) : const Icon(
+                                      Icons.star_border,
+                                      size: 20,
+                                      color: Colors.white,
+                                    )
+                              ],
+                            )
+                          ],
+                        )
                       ],
                     ),
 
