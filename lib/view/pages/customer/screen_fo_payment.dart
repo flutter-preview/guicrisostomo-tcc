@@ -259,10 +259,10 @@ class _ScreenFOPaymentState extends State<ScreenFOPayment> {
               () async {
 
                 if (methodSelected == 'Dinheiro') {
-                  txtMoney.text = txtMoney.text.replaceAll('R\$ ', '');
-                  txtMoney.text = txtMoney.text.replaceAll('.', '');
-                  txtMoney.text = txtMoney.text.replaceAll(',', '.');
-                  
+                  if (!hasMoney) {
+                    txtMoney.text = globals.totalSale.toStringAsFixed(2);
+                  }
+
                   if (txtMoney.text.isEmpty) {
                     error(context, 'Informe o valor do troco');
                     return;
@@ -272,6 +272,10 @@ class _ScreenFOPaymentState extends State<ScreenFOPayment> {
                     error(context, 'O valor do troco não pode ser menor que o valor total da compra');
                     return;
                   }
+
+                  txtMoney.text = txtMoney.text.replaceAll('R\$ ', '');
+                  txtMoney.text = txtMoney.text.replaceAll('.', '');
+                  txtMoney.text = txtMoney.text.replaceAll(',', '.');
 
                   txtMoney.text = hasMoney ? txtMoney.text : '0';
                 } else {
