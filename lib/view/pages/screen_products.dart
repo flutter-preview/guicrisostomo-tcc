@@ -275,7 +275,7 @@ class _ScreenProductsState extends State<ScreenProducts> {
                             children: [
                               Icon(
                                 getIconCategory(globals.categoriesBusiness[i].toUpperCase()),
-                                color: globals.categorySelected == globals.categoriesBusiness[i] ? Colors.white : Colors.black45,
+                                color: globals.categorySelected == globals.categoriesBusiness[i] ? Colors.white : globals.primary,
                               ),
                               Text(
                                 globals.categoriesBusiness[i],
