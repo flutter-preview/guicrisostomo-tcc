@@ -17,8 +17,6 @@ class ProductsController {
         conn.close();
         return value[0]['id'];
       });
-      // Variation results = await conn.from('variations').select('id').eq('category', category).eq('size', size).single();
-      // return results.id!;
     });
   }
 
@@ -31,8 +29,6 @@ class ProductsController {
         conn.close();
         return value[0][0];
       });
-      // Variation results = await conn.from('variations').select('limit_items').eq('id', idVariation).single();
-      // return results.limitItems!;
     });
   }
 
@@ -44,8 +40,6 @@ class ProductsController {
         conn.close();
         return value[0][0];
       });
-      // Product results = await conn.from('products').select('limit_items').eq('id', idProduct).single();
-      // return results.limitItems!;
     });
   }
 
@@ -139,32 +133,7 @@ class ProductsController {
     List<String> listCategories = [];
 
     return await connectSupadatabase().then((conn) async {
-      // var querySelect = '''
       
-      // ''';
-      // var querySelect = 'SELECT DISTINCT v.category';
-      // querySelect += ' FROM products p';
-      // querySelect += ' INNER JOIN variations v ON v.id = p.id_variation';
-      // querySelect += ' WHERE v.business = ?';
-      // querySelect += ' GROUP BY v.category';
-      // querySelect += ' ORDER BY v.category';
-      
-// await conn.from('products').select('''
-//         id, 
-//         name, 
-//         description, 
-//         price,
-//         id_variation,
-//         variations!inner(category, size)
-//       ''').eq('variations.business', globals.businessId).eq('fg_ativo', true).then((value) {
-      // return await conn.from('get_category').select('''
-      //   category
-      // ''').eq('business', globals.businessId).eq('fg_ativo', true).then((value) {
-      //   List<dynamic> item = value;
-      //   List<Variation> results = item.map((e) => Variation.fromJson(e)).toList();
-
-      //   return results.map((e) => e.category!).toList();
-      // });
       return await conn.query('''
         SELECT v.category
         FROM products p
@@ -199,20 +168,6 @@ class ProductsController {
     List<String> listSizes = [];
 
     return await connectSupadatabase().then((conn) async {
-      // var querySelect = 'SELECT DISTINCT v.size';
-      // querySelect += ' FROM products p';
-      // querySelect += ' INNER JOIN variations v ON v.id = p.id_variation';
-      // querySelect += ' WHERE v.category = ?';
-      // querySelect += ' ORDER BY v.size';
-
-      // return await conn.from('products').select('''
-      //   variations!inner(size)
-      // ''').eq('variations.category', category).eq('variations.business', globals.businessId).eq('fg_ativo', true).then((value) {
-      //   List<dynamic> item = value;
-      //   List<Variation> results = item.map((e) => Variation.fromJson(e)).toList();
-
-      //   return results.map((e) => e.size!).toList();
-      // });
       
       return await conn.query('''
         SELECT v.size
@@ -241,7 +196,7 @@ class ProductsController {
     return await connectSupadatabase().then((conn) async {
       
       return await conn.query('''
-          SELECT p.id, p.name, p.price, p.description, p.link_image, v.category, v.size, p.id_variation, COALESCE(
+          SELECT p.id, p.name, p.price, p.description, p.link_image, v.category, v.size, p.id_variation, v.limit_items, COALESCE(
           (SELECT f.id
             FROM favorites f 
             WHERE f.id_product = p.id AND f.uid = @uid
@@ -269,51 +224,23 @@ class ProductsController {
               variation: Variation(
                 category: row[5],
                 size: row[6],
-                id: row[7]
+                id: row[7],
+                limitItems: row[8]
               ),
-              isFavorite: row[8] != 0
+              isFavorite: row[9] != 0
             ));
           }
-        // List<ProductItemList> results = value.map((e) => ProductItemList(
-        //   id: e[0],
-        //   name: e[1],
-        //   price: e[2],
-        //   description: e[3],
-        //   link_image: e[4],
-        //   variation: Variation(
-        //     category: e[5],
-        //     size: e[6],
-        //     id: e[7]
-        //   ),
-        // )).toList();
         conn.close();
-        // if (item.isEmpty) {
-        //   return [];
-        // }
 
         return results;
       });
       
     });
   }
-  // list() async {
-  //   return await connectSupadatabase().then((conn) async {
-  //     var results = await conn.query('SELECT * FROM products');
-  //     await conn.close();
-  //     return results;
-  //   });
-  // }
 
   Future<void> add(String name, num price, String description, String category, String size, String urlImage) async {
     getIdVariation(category, size).then((results) async {
       await connectSupadatabase().then((conn) async {
-        // await conn.from('products').insert({
-        //   'name': name.toUpperCase(),
-        //   'price': price,
-        //   'description': description,
-        //   'id_variation': results,
-        //   'urlImage': urlImage
-        // });
         
         await conn.query('insert into products (name, price, description, id_variation, urlImage) values (@name, @price, @description, @id_variation, @urlImage)', substitutionValues: {
           'name': name.toUpperCase(),
@@ -323,9 +250,6 @@ class ProductsController {
           'urlImage': urlImage
         });
         conn.close();
-        // await conn.query('insert into products (name, price, description, id_variation, urlImage) values (?, ?, ?, ?, ?)',
-        // [name.toUpperCase(), price, description, results.first[0], urlImage]);
-        // await conn.close();
       });
     });
   }
@@ -338,8 +262,6 @@ class ProductsController {
         'id': id
       });
       conn.close();
-      // await conn.query('delete from products where id = ?', [id]);
-      // await conn.close();
     });
   }
 
@@ -356,16 +278,6 @@ class ProductsController {
           'id': id
         });
         conn.close();
-        // await conn.from('products').update({
-        //   'name': name.toUpperCase(),
-        //   'price': price,
-        //   'description': description,
-        //   'id_variation': results,
-        //   'urlImage': urlImage
-        // }).eq('id', id);
-        // await conn.query('update products set name = ?, price = ?, description = ?, id_variation = ?, urlImage = ? where id = ?',
-        // [name.toUpperCase(), price, description, results.first[0], urlImage, id]);
-        // await conn.close();
       });
     });
   }
