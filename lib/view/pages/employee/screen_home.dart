@@ -179,8 +179,7 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
           children: [
             StreamBuilder<List<int>>(
               initialData: tablesCall,
-              stream: Stream.periodic(
-                const Duration(seconds: 5)).asyncMap((i) => getTablesCall()),
+              stream: Stream.periodic(const Duration(seconds: 30)).asyncMap((event) async => await getTablesCall()),
               builder: (context, snapshot) {
                 return (snapshot.hasData) ? Column(
                   mainAxisSize: MainAxisSize.max,
