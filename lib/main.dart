@@ -33,6 +33,7 @@ import 'package:tcc/view/pages/manager/screen_list_smartphone_employee.dart';
 import 'package:tcc/view/pages/manager/screen_more_option.dart';
 import 'package:tcc/view/pages/manager/screen_permissions.dart';
 import 'package:tcc/view/pages/manager/screen_register_employee.dart';
+import 'package:tcc/view/pages/screen_error.dart';
 import 'package:tcc/view/pages/screen_info_item.dart';
 import 'package:tcc/view/pages/screen_loading.dart';
 import 'package:tcc/view/pages/screen_tables.dart';
@@ -62,6 +63,9 @@ import 'package:tcc/view/pages/screen_verify_email.dart';
 Route navigator([String? name, Object? arguments]) {
   Widget page;
   switch (name) {
+    case 'error' :
+      page = const ScreenError();
+      break;
     case 'presentation' :
       page = const ScreenPresentation();
       break;
@@ -259,7 +263,8 @@ Future<void> main() async {
           return 'home_employee';
         }
       }).catchError((onError) {
-        return 'presentation';
+        print(onError);
+        return 'error';
       });
     }
   } else {
@@ -285,6 +290,7 @@ Future<void> main() async {
       theme: ThemeData(scaffoldBackgroundColor: const Color.fromRGBO(252, 252, 252, 1)),
 
       routes: {
+        'error' :(context) => const ScreenError(),
         'presentation' :(context) => const ScreenPresentation(),
         'verify_email' :(context) => const ScreenVerifyEmail(),
         'login' :(context) => const ScreenLogin(),
