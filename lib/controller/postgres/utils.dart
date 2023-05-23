@@ -10,6 +10,8 @@ Future<PostgreSQLConnection> connectSupadatabase() async {
     password: Config.supabasePassword,
     
   );
-  await conn.open();
+  await conn.open().catchError((onError) {
+    print(onError);
+  });
   return conn;
 }

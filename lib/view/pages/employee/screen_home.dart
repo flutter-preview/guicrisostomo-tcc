@@ -26,6 +26,8 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
     });
   }
 
+  Timer? timer;
+
   num mediaStar = 3.50;
 
   @override
@@ -37,12 +39,21 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
         tablesCall = value;
       });
     });
+
+    timer = Timer.periodic(Duration(seconds: 15), (Timer t) async {
+      await getTablesCall().then((value) {
+        setState(() {
+          tablesCall = value;
+        });
+      });
+    });
+    
     super.initState();
   }
   
   @override
   Widget build(BuildContext context) {
-    
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(270),
@@ -177,86 +188,76 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-            StreamBuilder<List<int>>(
-              initialData: tablesCall,
-              stream: Stream.periodic(const Duration(seconds: 30)).asyncMap((event) async => await getTablesCall()),
-              builder: (context, snapshot) {
-                return (snapshot.hasData) ? Column(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
+            (tablesCall.isNotEmpty) ? Column(
+              mainAxisSize: MainAxisSize.max,
+              children: [
             
-                    Text(
-                      'Última atualização: ${DateTime.now().hour}:${DateTime.now().minute}:${DateTime.now().second}'
-                    ),
+                Text(
+                  'Última atualização: ${DateTime.now().hour}:${DateTime.now().minute}:${DateTime.now().second}'
+                ),
+                
+                ListView.builder(
+                  itemCount: tablesCall.length,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    int numberTable = tablesCall[index];
                     
-                    ListView.builder(
-                      itemCount: snapshot.data?.length ?? 0,
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemBuilder: (context, index) {
-                        int numberTable = snapshot.data![index];
+                    return Card(
+                      color: globals.primaryBlack,
+            
+                      child: ListTile(
+                        contentPadding: const EdgeInsets.all(10),
                         
-                        return Card(
-                          color: globals.primaryBlack,
-            
-                          child: ListTile(
-                            contentPadding: const EdgeInsets.all(10),
-                            
-                            title: Text(
-                              'Mesa $numberTable chamando',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-            
-                            trailing: SizedBox(
-                              height: 50,
-                              width: 100,
-                              child: Center(
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.green,
-                                    padding: const EdgeInsets.all(10),
-                                  ),
-                                  onPressed: () {
-                                    
-                                  },
-                                  
-                                  child: Row(
-                                    children: const [
-                                      Icon(Icons.check, size: 20, color: Colors.white,),
-                                      SizedBox(width: 5),
-                                      Text(
-                                        'Atender',
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                            leading: const Icon(Icons.table_bar, size: 40, color: Colors.white,),
-                            
-                            onTap: () => {
-                              Navigator.push(
-                                context,
-                                navigator('manager/products'),
-                              )
-                            },
+                        title: Text(
+                          'Mesa $numberTable chamando',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
                           ),
-                        );
-                      }
-                    ),
-                  ]) : (snapshot.hasError) ?
-                  Center(
-                    child: Text('Erro ao carregar dados: ${snapshot.error}')
-                  )
-                   : const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
+                        ),
+            
+                        trailing: SizedBox(
+                          height: 50,
+                          width: 100,
+                          child: Center(
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.green,
+                                padding: const EdgeInsets.all(10),
+                              ),
+                              onPressed: () {
+                                
+                              },
+                              
+                              child: Row(
+                                children: const [
+                                  Icon(Icons.check, size: 20, color: Colors.white,),
+                                  SizedBox(width: 5),
+                                  Text(
+                                    'Atender',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        leading: const Icon(Icons.table_bar, size: 40, color: Colors.white,),
+                        
+                        onTap: () => {
+                          Navigator.push(
+                            context,
+                            navigator('manager/products'),
+                          )
+                        },
+                      ),
+                    );
+                  }
+                ),
+              ]) : const Center(
+                child: CircularProgressIndicator(),
               ),
             
             Card(
