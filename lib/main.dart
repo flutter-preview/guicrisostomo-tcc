@@ -1,3 +1,4 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -5,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:tcc/controller/firebase/auth.dart';
+import 'package:tcc/controller/others/notification.dart';
 import 'package:tcc/controller/postgres/utils.dart';
 import 'package:tcc/firebase_options.dart';
 import 'package:tcc/model/Address.dart';
@@ -60,6 +62,7 @@ import 'package:tcc/view/pages/screen_register.dart';
 import 'package:tcc/view/pages/screen_terms.dart';
 import 'package:tcc/view/pages/screen_verification_table.dart';
 import 'package:tcc/view/pages/screen_verify_email.dart';
+import 'globals.dart' as globals;
 
 Route navigator([String? name, Object? arguments]) {
   Widget page;
@@ -246,6 +249,7 @@ Future<bool> isDataBaseRunning() async {
 
   return isRunning;
 }
+
 Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
@@ -257,6 +261,15 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  NotificationController.instance.init();
+
+  // AwesomeNotifications().setListeners(
+  //     onActionReceivedMethod:         NotificationController.onActionReceivedMethod,
+  //     onNotificationCreatedMethod:    NotificationController.onNotificationCreatedMethod,
+  //     onNotificationDisplayedMethod:  NotificationController.onNotificationDisplayedMethod,
+  //     onDismissActionReceivedMethod:  NotificationController.onDismissActionReceivedMethod
+  // );
   
   FirebaseAuth auth = FirebaseAuth.instance;
   User? user = auth.currentUser;
@@ -310,7 +323,7 @@ Future<void> main() async {
       initialRoute: route,
 
       theme: ThemeData(scaffoldBackgroundColor: const Color.fromRGBO(252, 252, 252, 1)),
-
+      
       routes: {
         'error' :(context) => const ScreenError(),
         'presentation' :(context) => const ScreenPresentation(),
