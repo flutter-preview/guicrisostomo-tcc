@@ -50,6 +50,12 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
     
     super.initState();
   }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
+  }
   
   @override
   Widget build(BuildContext context) {
