@@ -4,6 +4,12 @@ import 'package:tcc/globals.dart' as globals;
 import 'package:tcc/view/widget/snackBars.dart';
 
 class TablesController {
+  static TablesController? _instance;
+  static TablesController get instance {
+    if (_instance == null) _instance = TablesController();
+    return _instance!;
+  }
+
   Future<int> verifyCode(String code) async {
     return await connectSupadatabase().then((value) async {
       return await value.query('''
