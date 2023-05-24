@@ -1,14 +1,15 @@
 import 'dart:async';
 
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tcc/controller/firebase/auth.dart';
+import 'package:tcc/controller/others/notification.dart';
 import 'package:tcc/controller/postgres/Lists/table.dart';
 import 'package:tcc/main.dart';
 import 'package:tcc/view/widget/bottonNavigation.dart';
-import 'package:tcc/globals.dart' as globals
-;
+import 'package:tcc/globals.dart' as globals;
 import 'package:tcc/view/widget/sectionVisible.dart';
 class ScreenHomeEmployee extends StatefulWidget {
   const ScreenHomeEmployee({super.key});
@@ -21,7 +22,7 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
   List<int> tablesCall = [];
 
   Future<List<int>> getTablesCall() async {
-    return await TablesController().getAllTablesCallWaiter().then((value) {
+    return await TablesController.instance.getAllTablesCallWaiter().then((value) {
       return value;
     });
   }
@@ -40,12 +41,62 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
       });
     });
 
+    AwesomeNotifications().setListeners(
+      onActionReceivedMethod: (ReceivedAction receivedAction) async {
+        await NotificationController.onActionReceivedMethod(receivedAction, (receivedAction) {
+          
+          if (receivedAction.buttonKeyPressed == '0') {
+            print('Atender');
+          } else {
+            timer!.cancel();
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: Text('Mesa ${tablesCall[0]}'),
+                content: const Text('Deseja atender a mesa?'),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pop();
+                      Navigator.pushNamed(context, 'home_employee');
+                    },
+                    child: const Text('Não'),
+                  ),
+                  TextButton(
+                    onPressed: () async {
+                      showAboutDialog(context: context, applicationName: 'teste');
+                    },
+                    child: const Text('Sim'),
+                  ),
+                ],
+              ),
+            );
+          }
+        });
+      },
+      onNotificationCreatedMethod:    NotificationController.onNotificationCreatedMethod,
+      onNotificationDisplayedMethod:  NotificationController.onNotificationDisplayedMethod,
+      onDismissActionReceivedMethod:  NotificationController.onDismissActionReceivedMethod
+  );
+
     timer = Timer.periodic(Duration(seconds: 15), (Timer t) async {
       await getTablesCall().then((value) {
         setState(() {
           tablesCall = value;
         });
       });
+      
+      if (tablesCall.isNotEmpty) {
+        NotificationController.instance.showNotificationWithActions(
+          'Mesa ${tablesCall[0]} chamando',
+          'Clique para atender',
+          [
+            'Atender',
+          ],
+          true
+        );
+      }
     });
     
     super.initState();
@@ -59,7 +110,7 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
   
   @override
   Widget build(BuildContext context) {
-
+    // notifyCallTable();
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(270),
