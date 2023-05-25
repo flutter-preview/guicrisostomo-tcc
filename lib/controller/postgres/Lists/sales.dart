@@ -155,6 +155,7 @@ class SalesController {
           if (value == null) {
             return add().then((idSale) async {
               await addOrderEmployee(idSale);
+              await addRelationUserOrder(idSale);
 
               await updateStatus('Andamento', idSale);
 
@@ -478,7 +479,7 @@ class SalesController {
     });
   }
 
-  Future<List<Sales>> getSales(String cnpj, String dateStart, String dateEnd, String buttonStatusSelected) async {
+  Future<List<Sales>> getSales(String cnpj, String dateStart, String dateEnd, String buttonStatusSelected, bool isEmployee) async {
     String querySelect = '';
     DateTime date1 = DateTime.now();
     DateTime date2 = DateTime.now();
@@ -528,7 +529,7 @@ class SalesController {
     return await connectSupadatabase().then((conn) async {
       await BusinessInformationController().getInfoCalcValue().then((value) {
         if (value == true || value == null) {
-          querySelect = '''
+      dasfsf    querySelect = '''
             SELECT o.id, o.cnpj, o.datetime, uo.uid, o.status, o.payment, o.type, o.change, o.observation, coalesce(o.table_number, 0), o.address,
               (
                 SELECT SUM(MAX.MAX) FROM (
