@@ -529,7 +529,7 @@ class SalesController {
     return await connectSupadatabase().then((conn) async {
       await BusinessInformationController().getInfoCalcValue().then((value) {
         if (value == true || value == null) {
-      dasfsf    querySelect = '''
+          querySelect = '''
             SELECT o.id, o.cnpj, o.datetime, uo.uid, o.status, o.payment, o.type, o.change, o.observation, coalesce(o.table_number, 0), o.address,
               (
                 SELECT SUM(MAX.MAX) FROM (
@@ -548,7 +548,11 @@ class SalesController {
                     WHERE oa.id = o.id and ia.status <> 'Cancelado'
                     GROUP BY (ia.relation_id, ia.id_variation)
                   ) AS max
-              ) AS qtd
+              ) AS qtd,
+              (
+                SELECT oea.id_order = o.id as verify_employee
+                  FROM order_employee oea
+              )
               FROM orders o
               INNER JOIN business b ON b.cnpj = o.cnpj
               INNER JOIN user_order uo ON uo.id_order = o.id
@@ -575,7 +579,11 @@ class SalesController {
                     WHERE oa.id = o.id and ia.status <> 'Cancelado'
                     GROUP BY (ia.relation_id, ia.id_variation)
                   ) AS max
-              ) AS qtd
+              ) AS qtd,
+              (
+                SELECT oea.id_order = o.id as verify_employee
+                  FROM order_employee oea
+              )
               FROM orders o
               INNER JOIN business b ON b.cnpj = o.cnpj
               INNER JOIN user_order uo ON uo.id_order = o.id
@@ -601,23 +609,25 @@ class SalesController {
         }
 
         for (var element in value) {
-          sales.add(
-            Sales(
-              id: element[0],
-              cnpj: element[1],
-              date: element[2],
-              uid: element[3],
-              status: element[4],
-              payment: element[5],
-              type: element[6],
-              change: num.parse(element[7] ?? '0'),
-              observation: element[8],
-              table: element[9],
-              addressId: element[10],
-              total: element[11] ?? 0,
-              items: element[12],
-            ),
-          );
+          if (value[13] == isEmployee) {
+            sales.add(
+              Sales(
+                id: element[0],
+                cnpj: element[1],
+                date: element[2],
+                uid: element[3],
+                status: element[4],
+                payment: element[5],
+                type: element[6],
+                change: num.parse(element[7] ?? '0'),
+                observation: element[8],
+                table: element[9],
+                addressId: element[10],
+                total: element[11] ?? 0,
+                items: element[12],
+              ),
+            );
+          }
         }
 
         return sales;
