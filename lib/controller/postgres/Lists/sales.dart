@@ -41,6 +41,39 @@ class SalesController {
     });
   }
 
+  Future<void> addOrderEmployee(int idOrder) async {
+    await connectSupadatabase().then((conn) async {
+      await conn.query('insert into order_employee (uid, id_order) values (@uid, @idOrder)', substitutionValues: {
+        'uid': FirebaseAuth.instance.currentUser!.uid,
+        'idOrder': idOrder,
+      }).catchError((e) {
+        print(e);
+      });
+
+      conn.close();
+    });
+  }
+
+  Future<int?> getOrderEmployee() async {
+    return await connectSupadatabase().then((conn) async {
+      return await conn.query('select id_order from order_employee where uid = @uid', substitutionValues: {
+        'uid': FirebaseAuth.instance.currentUser!.uid,
+      }).then((value) {
+        conn.close();
+        List list = value;
+
+        if (list.isEmpty) {
+          return null;
+        }
+
+        return list.first[0];
+
+      }).catchError((e) {
+        print(e);
+      });
+    });
+  }
+
   Future<void> updateStatus(String status, int id) async {
     await connectSupadatabase().then((conn) async {
       await conn.query('update orders set status = @status where id = @id', substitutionValues: {
@@ -113,32 +146,25 @@ class SalesController {
     });
   }
 
-  // void update(id, status, context) {
-  //   FirebaseFirestore.instance.collection('sales').doc(id).update(
-  //     {
-  //       'status': status,
-  //       'date': DateTime.now(),
-  //     },
-  //   ).then((value) => {
-  //     success(context, 'Pedido Finalizado com sucesso')
-  //   }).catchError((e) {
-  //     error(context, 'Ocorreu um erro ao finalizar o pedido ${e.code.toString()}');
-  //   });
-  // }
-
-  // void updateTotal(id, total) {
-  //   connectSupadatabase().then((conn) async {
-  //     await conn.query('update orders set total = ? where id = ?',
-  //     [total, id]);
-  //     await conn.close();
-  //   });
-  // }
-
   Future<int> idSale() async {
     return (globals.numberTable == null) ?
     await connectSupadatabase().then((conn) async {
       
-      return await conn.query('''
+      return (globals.userType == 'employee' || globals.userType == 'manager') ?
+        getOrderEmployee().then((value) async {
+          if (value == null) {
+            return add().then((idSale) async {
+              await addOrderEmployee(idSale);
+
+              await updateStatus('Andamento', idSale);
+
+              return idSale;
+            });
+          } else {
+            return value;
+          }
+        })
+      : await conn.query('''
         SELECT orders.id 
           FROM orders 
           INNER JOIN user_order ON user_order.id_order = orders.id
