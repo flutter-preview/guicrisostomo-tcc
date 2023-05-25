@@ -30,7 +30,7 @@ class NotificationController {
     // );
 
     AwesomeNotifications().initialize(
-      'resource://mipmap/hungry',
+      'resource://mipmap/hungry_white',
       [
         NotificationChannel(
             channelGroupKey: channelGroup,
@@ -87,7 +87,7 @@ class NotificationController {
         displayOnForeground: true,
         displayOnBackground: true,
         notificationLayout: NotificationLayout.BigPicture,
-        largeIcon: 'resource://mipmap/hungry',
+        largeIcon: 'resource://mipmap/hungry_white',
         bigPicture: 'resource://mipmap/hungry',
         showWhen: true,
         payload: {'uuid': 'user-profile-uuid'},
