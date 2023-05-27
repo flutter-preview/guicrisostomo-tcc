@@ -84,7 +84,7 @@ class ProductsController {
     return await connectSupadatabase().then((conn) async {
       return await conn.query(
         '''
-        SELECT p.id, p.name, p.price, p.description, p.link_image, v.category, v.size, p.id_variation, COALESCE(
+        SELECT p.id, p.name, p.price, p.description, p.link_image, v.category, v.size, p.id_variation, v.limit_items, COALESCE(
           (SELECT f.id
             FROM favorites f 
             WHERE f.id_product = p.id AND f.uid = @uid
@@ -118,9 +118,10 @@ class ProductsController {
             variation: Variation(
               category: row[5],
               size: row[6],
-              id: row[7]
+              id: row[7],
+              limitItems: row[8]
             ),
-            isFavorite: row[8] != 0
+            isFavorite: row[9] != 0
           ));
         }
 
@@ -364,7 +365,7 @@ class ProductsController {
   Future<ProductItemList> getProduct(int id) async {
     return await connectSupadatabase().then((conn) async {
       return await conn.query('''
-        SELECT p.id, p.name, p.price, p.description, p.link_image, v.category, v.size, v.id, COALESCE(
+        SELECT p.id, p.name, p.price, p.description, p.link_image, v.category, v.size, v.id, v.limit_items, COALESCE(
           (SELECT f.id
             FROM favorites f 
             WHERE f.id_product = p.id AND f.uid = @uid
@@ -402,9 +403,10 @@ class ProductsController {
             variation: Variation(
               category: value.first[5],
               size: value.first[6],
-              id: value.first[7]
+              id: value.first[7],
+              limitItems: value.first[8]
             ),
-            isFavorite: value.first[8] != 0
+            isFavorite: value.first[9] != 0
           );
         }
 
