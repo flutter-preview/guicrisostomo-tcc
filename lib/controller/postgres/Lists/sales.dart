@@ -381,7 +381,7 @@ class SalesController {
                 status: 'Andamento',
                 table: value.first[4],
                 type: value.first[5],
-                total: value.first[6],
+                total: value.first[6] ?? 0,
                 nameUserCreatedSale: value.first[7],
               );
               

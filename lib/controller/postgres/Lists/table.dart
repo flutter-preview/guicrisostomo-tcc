@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tcc/controller/postgres/utils.dart';
 import 'package:tcc/globals.dart' as globals;
 import 'package:tcc/view/widget/snackBars.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class TablesController {
   static TablesController? _instance;
@@ -57,63 +58,41 @@ class TablesController {
     });
   }
 
-  Future<void> callWaiter(context) async {
-    await TablesController().isTableAlreadyCallWaiter(globals.numberTable).then((value) {
-      if (!value) {
-        connectSupadatabase().then((conn) async {
-          await conn.query('''
-            INSERT INTO call_waiter (table_number, business) VALUES (@tableNumber, @business);
-          ''', substitutionValues: {
-            'tableNumber': globals.numberTable,
-            'business': globals.businessId,
-          });
-        }).then((value) {
-          success(context, 'Garçom chamado com sucesso');
-        });
+  Future<void> callWaiter(context, int idSale) async {
+    await isTableAlreadyCallWaiter(idSale).then((value) {
+      if (value) {
+        error(context, 'Já existe um chamado para esta mesa!');
+      }
+    });
+    
+    await FirebaseFirestore.instance.collection('tables').add({
+      'idSale': idSale,
+      'table': globals.numberTable,
+      'cnpj': globals.businessId,
+    }).then((value) {
+      success(context, 'Chamado enviado com sucesso!');
+    }).catchError((e) {
+      error(context, 'Erro ao enviar chamado!');
+    });
+  }
+
+  Future<bool> isTableAlreadyCallWaiter(int? idSale) async {
+    return await FirebaseFirestore.instance.collection('tables').where('idSale', isEqualTo: idSale).get().then((value) {
+      if (value.docs.isNotEmpty) {
+        return true;
       } else {
-        error(context, 'Já foi chamado o garçom');
+        return false;
       }
     });
   }
 
-  Future<bool> isTableAlreadyCallWaiter(int? tableNumber) async {
-    if (tableNumber == null) return false;
-
-    return await connectSupadatabase().then((conn) async {
-      return await conn.query('''
-        SELECT table_number FROM call_waiter WHERE table_number = @tableNumber AND business = @business;
-      ''', substitutionValues: {
-        'tableNumber': tableNumber,
-        'business': globals.businessId,
-      }).then((value) {
-        if (value.isNotEmpty) {
-          return true;
-        } else {
-          return false;
-        }
-      });
-    });
-  }
-
   Future<List<int>> getAllTablesCallWaiter() async {
-    return await connectSupadatabase().then((conn) async {
-      return await conn.query('''
-        SELECT table_number FROM call_waiter WHERE business = @business ORDER BY id DESC;
-      ''', substitutionValues: {
-        'business': globals.businessId,
-      }).then((value) {
-        if (value.isNotEmpty) {
-          List<int> list = [];
-
-          for (var item in value) {
-            list.add(item[0]);
-          }
-
-          return list;
-        } else {
-          return [];
-        }
+    return await FirebaseFirestore.instance.collection('tables').get().then((value) {
+      List<int> tables = [];
+      value.docs.forEach((element) {
+        tables.add(element['idSale']);
       });
+      return tables;
     });
   }
 }

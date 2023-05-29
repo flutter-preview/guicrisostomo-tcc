@@ -94,7 +94,7 @@ class _ScreenCallWaiterState extends State<ScreenCallWaiter> {
             const SizedBox(height: 30),
 
             button('Chamar garçom', 300, 50, Icons.person, () {
-              TablesController().callWaiter(context);
+              TablesController().callWaiter(context, idSale);
             }),
 
             const SizedBox(height: 30),
