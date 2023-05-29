@@ -4,7 +4,7 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:tcc/controller/firebase/auth.dart';
+import 'package:tcc/controller/auth/auth.dart';
 import 'package:tcc/controller/others/notification.dart';
 import 'package:tcc/controller/postgres/Lists/table.dart';
 import 'package:tcc/main.dart';

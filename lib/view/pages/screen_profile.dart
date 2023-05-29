@@ -2,7 +2,7 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:tcc/controller/firebase/auth.dart';
+import 'package:tcc/controller/auth/auth.dart';
 import 'package:tcc/main.dart';
 import 'package:tcc/model/User.dart';
 import 'package:tcc/view/widget/appBar.dart';

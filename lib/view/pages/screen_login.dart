@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tcc/controller/firebase/auth.dart';
+import 'package:tcc/controller/auth/auth.dart';
 import 'package:tcc/main.dart';
 import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/button.dart';

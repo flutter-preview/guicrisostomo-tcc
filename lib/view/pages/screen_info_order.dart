@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:tcc/controller/firebase/auth.dart';
+import 'package:tcc/controller/auth/auth.dart';
 import 'package:tcc/controller/postgres/Lists/productsCart.dart';
 import 'package:tcc/model/Address.dart';
 import 'package:tcc/model/ProductsCart.dart';

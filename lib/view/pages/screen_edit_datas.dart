@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:tcc/controller/firebase/auth.dart';
+import 'package:tcc/controller/auth/auth.dart';
 import 'package:tcc/model/User.dart';
 import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/addressExistent.dart';
