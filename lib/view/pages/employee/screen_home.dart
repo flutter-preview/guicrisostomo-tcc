@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -21,9 +22,32 @@ class ScreenHomeEmployee extends StatefulWidget {
 class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
   List<int> tablesCall = [];
 
-  Future<List<int>> getTablesCall() async {
-    return await TablesController.instance.getAllTablesCallWaiter().then((value) {
-      return value;
+  void getTablesCall() {
+    TablesController.instance.getAllTablesCallWaiter().onData((data) {
+      
+      data.docChanges.forEach((element) {
+        if (element.type == DocumentChangeType.added) {
+          tablesCall.add(element.doc.data()!['table']);
+        } else if (element.type == DocumentChangeType.removed) {
+          tablesCall.remove(element.doc.data()!['table']);
+        } else if (element.type == DocumentChangeType.modified) {
+          tablesCall.remove(element.doc.data()!['table']);
+          tablesCall.add(element.doc.data()!['table']);
+        }
+
+        NotificationController.instance.showNotificationWithActions(
+          'Mesa ${tablesCall[0]} chamando',
+          'Clique para atender',
+          [
+            'Atender',
+          ],
+          true
+        );
+      });
+
+      setState(() {
+        tablesCall = tablesCall;
+      });
     });
   }
 
@@ -33,13 +57,13 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
 
   @override
   void initState() {
-    globals.userType = 'employee';
-    globals.businessId = '1';
-    getTablesCall().then((value) {
-      setState(() {
-        tablesCall = value;
-      });
+    super.initState();
+    setState(() {
+      globals.userType = 'employee';
+      globals.businessId = '1';
     });
+
+    getTablesCall();
 
     AwesomeNotifications().setListeners(
       onActionReceivedMethod: (ReceivedAction receivedAction) async {
@@ -52,7 +76,7 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
             showDialog(
               context: context,
               builder: (context) => AlertDialog(
-                title: Text('Mesa ${tablesCall[0]}'),
+                title: Text('Mesa ${receivedAction.payload!['table']} chamando'),
                 content: const Text('Deseja atender a mesa?'),
                 actions: [
                   TextButton(
@@ -79,27 +103,6 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
       onNotificationDisplayedMethod:  NotificationController.onNotificationDisplayedMethod,
       onDismissActionReceivedMethod:  NotificationController.onDismissActionReceivedMethod
   );
-
-    timer = Timer.periodic(Duration(seconds: 15), (Timer t) async {
-      await getTablesCall().then((value) {
-        setState(() {
-          tablesCall = value;
-        });
-      });
-      
-      if (tablesCall.isNotEmpty) {
-        NotificationController.instance.showNotificationWithActions(
-          'Mesa ${tablesCall[0]} chamando',
-          'Clique para atender',
-          [
-            'Atender',
-          ],
-          true
-        );
-      }
-    });
-    
-    super.initState();
   }
 
   @override
@@ -111,6 +114,7 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
   @override
   Widget build(BuildContext context) {
     // notifyCallTable();
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(270),
@@ -262,7 +266,7 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                     
                     return Card(
                       color: globals.primaryBlack,
-            
+                        
                       child: ListTile(
                         contentPadding: const EdgeInsets.all(10),
                         
@@ -274,7 +278,7 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-            
+                        
                         trailing: SizedBox(
                           height: 50,
                           width: 100,

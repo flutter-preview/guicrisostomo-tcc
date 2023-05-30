@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tcc/controller/postgres/utils.dart';
 import 'package:tcc/globals.dart' as globals;
@@ -86,13 +88,16 @@ class TablesController {
     });
   }
 
-  Future<List<int>> getAllTablesCallWaiter() async {
-    return await FirebaseFirestore.instance.collection('tables').get().then((value) {
-      List<int> tables = [];
-      value.docs.forEach((element) {
-        tables.add(element['idSale']);
+  StreamSubscription<QuerySnapshot<Map<String, dynamic>>> getAllTablesCallWaiter() {
+
+    return FirebaseFirestore.instance.collection('tables').snapshots().listen((event) {
+      event.docChanges.forEach((element) {
+        if (element.type == DocumentChangeType.added) {
+          FirebaseFirestore.instance.collection('tables').doc(element.doc.id).update({
+            'status': 'Aguardando',
+          });
+        }
       });
-      return tables;
     });
   }
 }
