@@ -343,8 +343,8 @@ class ScreenTerms extends StatelessWidget {
 
             const SizedBox(height: 20),
 
-            Row(
-              children: const [
+            const Row(
+              children: [
                 Icon(Icons.email),
                 SizedBox(width: 10),
                 Text(
@@ -358,8 +358,8 @@ class ScreenTerms extends StatelessWidget {
 
             const SizedBox(height: 20),
 
-            Row(
-              children: const [
+            const Row(
+              children: [
                 Icon(Icons.phone),
                 SizedBox(width: 10),
                 Text(
@@ -373,8 +373,8 @@ class ScreenTerms extends StatelessWidget {
 
             const SizedBox(height: 20),
 
-            Row(
-              children: const [
+            const Row(
+              children: [
                 Icon(Icons.location_city),
                 SizedBox(width: 10),
                 Text(

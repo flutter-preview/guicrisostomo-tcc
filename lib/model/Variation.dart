@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tcc/globals.dart';
 import 'package:tcc/model/ProductItemList.dart';
 
 class Variation {
@@ -80,7 +79,7 @@ class Variation {
 
   void setProductItemSelected([String product = '', bool? value, bool isBusinessHighValue = false]) {
     
-    productItemSelected.entries.forEach((element) {
+    for (var element in productItemSelected.entries) {
 
       if (product == 'Não quero ${category.toLowerCase()}' || product == '') {
         productItemSelected[element.key] = false;
@@ -93,7 +92,7 @@ class Variation {
           }
         }
       }
-    });
+    }
 
     price = getPriceTotal(isBusinessHighValue);
   }
@@ -110,19 +109,19 @@ class Variation {
     price = 0.0;
 
     if (isBusinessHighValue) {
-      productItemSelected.entries.forEach((element) {
+      for (var element in productItemSelected.entries) {
         if (element.value) {
           if (element.key.price > price) {
             price = element.key.price;
           }
         }
-      });
+      }
     } else {
-      productItemSelected.entries.forEach((element) {
+      for (var element in productItemSelected.entries) {
         if (element.value) {
           price += element.key.price;
         }
-      });
+      }
 
       price /= productItemSelected.length;
     }

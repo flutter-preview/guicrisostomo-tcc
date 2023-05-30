@@ -36,7 +36,7 @@ class _ScreenInfoSizeState extends State<ScreenInfoSize> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Categoria ${widget.id}', style: TextStyle(fontSize: 20)),
+                Text('Categoria ${widget.id}', style: const TextStyle(fontSize: 20)),
                 Icon(Icons.category, size: 20, color: globals.primary),
               ],
             ),

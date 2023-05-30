@@ -47,9 +47,9 @@ class _ScreenInfoCategoryState extends State<ScreenInfoCategory> {
               children: [
                 Icon(Icons.restaurant_menu, size: 30, color: globals.primary),
                 const SizedBox(width: 10),
-                Text(
+                const Text(
                   'Produtos cadastrados na categoria: 10',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16,
                   ),
                 ),

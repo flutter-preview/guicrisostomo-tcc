@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tcc/main.dart';
 import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigation.dart';
@@ -49,7 +48,7 @@ class _ScreenBusinessState extends State<ScreenBusiness> {
               label: 'Nome',
               variavel: txtName,
               validator: (value) {
-                validatorString(value!);
+                return validatorString(value!);
               },
               ico: Icons.business, 
               context: context,
@@ -62,7 +61,7 @@ class _ScreenBusinessState extends State<ScreenBusiness> {
               label: 'Descrição',
               variavel: txtDescription,
               validator: (value) {
-                validatorString(value!);
+                return validatorString(value!);
               },
               ico: Icons.description, 
               context: context,
@@ -75,7 +74,7 @@ class _ScreenBusinessState extends State<ScreenBusiness> {
               label: 'Telefone',
               variavel: txtPhone,
               validator: (value) {
-                validatorString(value!);
+                return validatorString(value!);
               },
               ico: Icons.phone, 
               context: context,
@@ -112,7 +111,7 @@ class _ScreenBusinessState extends State<ScreenBusiness> {
               label: 'CNPJ',
               variavel: txtCnpj,
               validator: (value) {
-                validatorString(value!);
+                return validatorString(value!);
               },
               ico: Icons.numbers, 
               context: context,
@@ -125,7 +124,7 @@ class _ScreenBusinessState extends State<ScreenBusiness> {
               label: 'Endereço',
               variavel: txtAddress,
               validator: (value) {
-                validatorString(value!);
+                return validatorString(value!);
               },
               ico: Icons.location_on, 
               context: context,
@@ -138,7 +137,7 @@ class _ScreenBusinessState extends State<ScreenBusiness> {
               label: 'Número',
               variavel: txtNumber,
               validator: (value) {
-                validatorString(value!);
+                return validatorString(value!);
               },
               ico: Icons.location_on, 
               context: context,
@@ -151,7 +150,7 @@ class _ScreenBusinessState extends State<ScreenBusiness> {
               label: 'Bairro',
               variavel: txtNeighborhood,
               validator: (value) {
-                validatorString(value!);
+                return validatorString(value!);
               },
               ico: Icons.location_on, 
               context: context,
@@ -164,7 +163,7 @@ class _ScreenBusinessState extends State<ScreenBusiness> {
               label: 'Cidade',
               variavel: txtCity,
               validator: (value) {
-                validatorString(value!);
+                return validatorString(value!);
               },
               ico: Icons.location_city, 
               context: context,
@@ -177,7 +176,7 @@ class _ScreenBusinessState extends State<ScreenBusiness> {
               label: 'Estado',
               variavel: txtState,
               validator: (value) {
-                validatorString(value!);
+                return validatorString(value!);
               },
               ico: Icons.location_city, 
               context: context,

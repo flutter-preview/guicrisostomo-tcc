@@ -73,7 +73,7 @@ class _ScreenRegisterEmployeeState extends State<ScreenRegisterEmployee> {
               context: context, 
               keyboardType: TextInputType.name,
               validator: (value) {
-                validatorString(value!);
+                return validatorString(value!);
               },
               ico: Icons.person,
             ),
@@ -109,7 +109,7 @@ class _ScreenRegisterEmployeeState extends State<ScreenRegisterEmployee> {
               context: context, 
               keyboardType: TextInputType.phone,
               validator: (value) {
-                validatorPhone(value!);
+                return validatorPhone(value!);
               },
               ico: Icons.phone,
             ),
@@ -122,7 +122,7 @@ class _ScreenRegisterEmployeeState extends State<ScreenRegisterEmployee> {
               context: context, 
               keyboardType: TextInputType.emailAddress,
               validator: (value) {
-                validatorEmail(value!);
+                return validatorEmail(value!);
               },
               ico: Icons.email,
             ),

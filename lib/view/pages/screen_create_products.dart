@@ -69,7 +69,7 @@ class _ScreenCreateProductsState extends State<ScreenCreateProducts> {
                 keyboardType: TextInputType.name,
                 ico: Icons.person,
                 validator: (value) {
-                  validatorString(value!);
+                  return validatorString(value!);
                 },
               ),
 
@@ -82,7 +82,7 @@ class _ScreenCreateProductsState extends State<ScreenCreateProducts> {
                 keyboardType: TextInputType.multiline,
                 ico: Icons.description_outlined,
                 validator: (value) {
-                  validatorString(value!);
+                  return validatorString(value!);
                 },
               ),
 
@@ -111,7 +111,7 @@ class _ScreenCreateProductsState extends State<ScreenCreateProducts> {
                 keyboardType: const TextInputType.numberWithOptions(decimal: true),
                 ico: Icons.attach_money,
                 validator: (value) {
-                  validatorNumber(value!);
+                  return validatorNumber(value!);
                 },
               ),
 
@@ -124,7 +124,7 @@ class _ScreenCreateProductsState extends State<ScreenCreateProducts> {
                 keyboardType: TextInputType.url,
                 ico: Icons.link_rounded,
                 validator: (value) {
-                  validatorString(value!);
+                  return validatorString(value!);
                 },
               ),
 

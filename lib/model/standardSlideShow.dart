@@ -45,11 +45,9 @@ class SlideShow {
         }
         return list;
       }).catchError((e) {
-        print(e);
         return list;
       });
     }).catchError((e) {
-      print(e);
       return list;
     });
     // await connectMySQL().then((conn) async {

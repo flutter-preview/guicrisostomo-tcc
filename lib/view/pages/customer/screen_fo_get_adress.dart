@@ -58,12 +58,12 @@ class _ScreenFOGetAddressState extends State<ScreenFOGetAddress> {
               ),
             ),
 
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 100, 20, 20),
+            child: const Padding(
+              padding: EdgeInsets.fromLTRB(20, 100, 20, 20),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: const [
+                children: [
                   Text(
                     'Endereço - Etapa 2/3',
                     style: TextStyle(
@@ -89,13 +89,13 @@ class _ScreenFOGetAddressState extends State<ScreenFOGetAddress> {
         ),
       ),
 
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
+      body: const SingleChildScrollView(
+        padding: EdgeInsets.all(20),
         child: Column(
           children: [
-            const PartFinalizeOrder(partUser: 2),
+            PartFinalizeOrder(partUser: 2),
 
-            const SizedBox(height: 20),
+            SizedBox(height: 20),
 
             AddressExistent(
             ),

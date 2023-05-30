@@ -70,12 +70,12 @@ class _ScreenFOPaymentState extends State<ScreenFOPayment> {
               ),
             ),
 
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 100, 20, 20),
+            child: const Padding(
+              padding: EdgeInsets.fromLTRB(20, 100, 20, 20),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: const [
+                children: [
                   Text(
                     'Pagamento - Etapa 3/3',
                     style: TextStyle(

@@ -29,14 +29,12 @@ class _ScreenCartState extends State<ScreenCart> {
       await ProductsCartController.instance.list(idSale).then((value) {
         list = value;
       }).catchError((onError) {
-        print(onError);
       });
     });
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getList().then((value) {
       setState(() {});
@@ -63,7 +61,7 @@ class _ScreenCartState extends State<ScreenCart> {
             fillOverscroll: true,
             child: (idSale != 0) ? (list.isNotEmpty) ?
               ProductsCart(product: list) :
-              Center(child: const Text('Carrinho vazio'))
+              const Center(child: Text('Carrinho vazio'))
             : const Center(child: CircularProgressIndicator()),
               
           ),

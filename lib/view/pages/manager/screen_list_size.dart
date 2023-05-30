@@ -96,7 +96,7 @@ class _ScreenListSizeState extends State<ScreenListSize> {
                           }
                         );
                       },
-                      child: Icon(Icons.delete, color: Colors.white, size: 20),
+                      child: const Icon(Icons.delete, color: Colors.white, size: 20),
                     ),
                     const SizedBox(width: 10),
 
@@ -139,7 +139,7 @@ class _ScreenListSizeState extends State<ScreenListSize> {
                           }
                         );
                       }, 
-                      child: Icon(Icons.edit, color: Colors.white, size: 20),
+                      child: const Icon(Icons.edit, color: Colors.white, size: 20),
                     ),
 
                     const SizedBox(width: 10),
@@ -202,8 +202,8 @@ class _ScreenListSizeState extends State<ScreenListSize> {
             }
           );
         }, 
-        child: const Icon(Icons.add), 
-        backgroundColor: globals.primary
+        backgroundColor: globals.primary, 
+        child: const Icon(Icons.add)
       ),
 
       bottomNavigationBar: const Bottom(),

@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -25,7 +23,7 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
   void getTablesCall() {
     TablesController.instance.getAllTablesCallWaiter().onData((data) {
       
-      data.docChanges.forEach((element) {
+      for (var element in data.docChanges) {
         if (element.type == DocumentChangeType.added) {
           tablesCall.add(element.doc.data()!['table']);
         } else if (element.type == DocumentChangeType.removed) {
@@ -43,7 +41,7 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
           ],
           true
         );
-      });
+      }
 
       setState(() {
         tablesCall = tablesCall;
@@ -68,7 +66,6 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
         await NotificationController.onActionReceivedMethod(receivedAction, (receivedAction) {
           
           if (receivedAction.buttonKeyPressed == '0') {
-            print('Atender');
           } else {
             showDialog(
               context: context,
@@ -142,7 +139,7 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                     Center(
                       child: Text(
                         'Olá, ${FirebaseAuth.instance.currentUser!.displayName}!',
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 24,
                           color: Colors.white,
                         ),
@@ -161,7 +158,7 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
 
                         const SizedBox(width: 10),
 
-                        Text(
+                        const Text(
                           'Seu desempenho: ',
                           style: TextStyle(
                             fontSize: 20,
@@ -175,7 +172,7 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                           children: [
                             Text(
                               mediaStar.toStringAsFixed(2).replaceAll('.00', ''),
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 20,
                                 color: Colors.white,
                               ),
@@ -263,7 +260,7 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                         
                         title: Text(
                           'Mesa $numberTable chamando',
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
@@ -283,8 +280,8 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                                 
                               },
                               
-                              child: Row(
-                                children: const [
+                              child: const Row(
+                                children: [
                                   Icon(Icons.check, size: 20, color: Colors.white,),
                                   SizedBox(width: 5),
                                   Text(

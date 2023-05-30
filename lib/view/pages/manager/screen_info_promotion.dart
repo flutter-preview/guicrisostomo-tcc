@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tcc/main.dart';
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigation.dart';
-import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/sectionVisible.dart';
-import 'package:tcc/view/widget/textFieldGeneral.dart';
 import 'package:tcc/globals.dart' as globals;
 
 class ScreenInfoPromotion extends StatefulWidget {
@@ -39,7 +37,7 @@ class _ScreenInfoPromotionState extends State<ScreenInfoPromotion> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Categoria ${widget.id}', style: TextStyle(fontSize: 20)),
+                Text('Categoria ${widget.id}', style: const TextStyle(fontSize: 20)),
                 Icon(Icons.category, size: 20, color: globals.primary),
               ],
             ),
@@ -65,7 +63,7 @@ class _ScreenInfoPromotionState extends State<ScreenInfoPromotion> {
                       contentPadding: const EdgeInsets.all(10),
                       leading: const Icon(Icons.fastfood, size: 40, color: Colors.green),
                       title: Text('Produto ${index + 1}'),
-                      subtitle: Text('R\$ 10,00'),
+                      subtitle: const Text('R\$ 10,00'),
                       trailing: const Icon(Icons.arrow_forward_ios, size: 20, color: Colors.green),
                     ),
                   );
@@ -97,7 +95,7 @@ class _ScreenInfoPromotionState extends State<ScreenInfoPromotion> {
                       contentPadding: const EdgeInsets.all(10),
                       leading: const Icon(Icons.fastfood, size: 40, color: Colors.green),
                       title: Text('Produto ${index + 1}'),
-                      subtitle: Text('R\$ 10,00'),
+                      subtitle: const Text('R\$ 10,00'),
                       trailing: Icon(Icons.arrow_forward_ios, size: 20, color: globals.primary),
                     ),
                   );
@@ -129,7 +127,7 @@ class _ScreenInfoPromotionState extends State<ScreenInfoPromotion> {
                       contentPadding: const EdgeInsets.all(10),
                       leading: const Icon(Icons.fastfood, size: 40, color: Colors.green),
                       title: Text('Produto ${index + 1}'),
-                      subtitle: Text('R\$ 10,00'),
+                      subtitle: const Text('R\$ 10,00'),
                       trailing: Icon(Icons.arrow_forward_ios, size: 20, color: globals.primary),
                     ),
                   );

@@ -134,16 +134,16 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
                       children: [
                         Text(
                           type == 'Entrega' ? 'Dados pessoais - Etapa 1/3' : 'Dados pessoais - Etapa 1/2',
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 20,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
                           
-                        SizedBox(height: 5),
+                        const SizedBox(height: 5),
                             
-                        Text(
+                        const Text(
                           'Informe seus dados pessoais para finalizar o pedido. Esses dados serão usados para identificar seu pedido e para que você possa acompanhar o status do mesmo.',
                           style: TextStyle(
                             color: Colors.white,
@@ -153,9 +153,9 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
                       ],
                     )
                   :
-                    Column(
+                    const Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
+                      children: [
                         Text(
                           'Finalizar pedido - Etapa 1/1',
                           style: TextStyle(
@@ -197,7 +197,7 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
                     Column(
                       children: [
                         const SizedBox(height: 20,),
-                        Text(
+                        const Text(
                           'Para finalizar o pedido é necessário estar logado. Caso não tenha uma conta, clique no botão abaixo para criar uma.',
                           style: TextStyle(
                             color: Colors.black,
@@ -233,7 +233,7 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
                     padding: const EdgeInsets.all(20),
                     child: Column(
                       children: [
-                        Text(
+                        const Text(
                           'Para finalizar o pedido é necessário informar um número de telefone.',
                           style: TextStyle(
                             color: Colors.black,

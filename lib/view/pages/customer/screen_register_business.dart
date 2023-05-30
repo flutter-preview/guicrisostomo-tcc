@@ -243,7 +243,7 @@ class _ScreenRegisterBusinessState extends State<ScreenRegisterBusiness> {
 
                   const SizedBox(height: 20,),
 
-                  Text(
+                  const Text(
                     'Selecione o tipo de empresa:',
                     textAlign: TextAlign.center,
                     style: TextStyle(
@@ -267,13 +267,13 @@ class _ScreenRegisterBusinessState extends State<ScreenRegisterBusiness> {
                             },
                           ),
 
-                          Row(
+                          const Row(
                             children: [
-                              const Icon(Icons.restaurant, size: 20, color: Colors.black,),
+                              Icon(Icons.restaurant, size: 20, color: Colors.black,),
 
-                              const SizedBox(width: 5,),
+                              SizedBox(width: 5,),
 
-                              const Text(
+                              Text(
                                 'Restaurante',
                               ),
                             ],
@@ -295,13 +295,13 @@ class _ScreenRegisterBusinessState extends State<ScreenRegisterBusiness> {
                             },
                           ),
 
-                          Row(
+                          const Row(
                             children: [
-                              const Icon(Icons.local_pizza, size: 20, color: Colors.black,),
+                              Icon(Icons.local_pizza, size: 20, color: Colors.black,),
 
-                              const SizedBox(width: 5,),
+                              SizedBox(width: 5,),
 
-                              const Text(
+                              Text(
                                 'Pizzaria',
                               ),
                             ],
@@ -323,13 +323,13 @@ class _ScreenRegisterBusinessState extends State<ScreenRegisterBusiness> {
                             },
                           ),
 
-                          Row(
+                          const Row(
                             children: [
-                              const Icon(Icons.local_bar, size: 20, color: Colors.black,),
+                              Icon(Icons.local_bar, size: 20, color: Colors.black,),
 
-                              const SizedBox(width: 5,),
+                              SizedBox(width: 5,),
 
-                              const Text(
+                              Text(
                                 'Bar',
                               ),
                             ],
@@ -351,13 +351,13 @@ class _ScreenRegisterBusinessState extends State<ScreenRegisterBusiness> {
                             },
                           ),
 
-                          Row(
+                          const Row(
                             children: [
-                              const Icon(Icons.local_dining, size: 20, color: Colors.black,),
+                              Icon(Icons.local_dining, size: 20, color: Colors.black,),
 
-                              const SizedBox(width: 5,),
+                              SizedBox(width: 5,),
 
-                              const Text(
+                              Text(
                                 'Lanchonete',
                               ),
                             ],
@@ -379,13 +379,13 @@ class _ScreenRegisterBusinessState extends State<ScreenRegisterBusiness> {
                             },
                           ),
 
-                          Row(
+                          const Row(
                             children: [
-                              const Icon(Icons.local_cafe, size: 20, color: Colors.black,),
+                              Icon(Icons.local_cafe, size: 20, color: Colors.black,),
 
-                              const SizedBox(width: 5,),
+                              SizedBox(width: 5,),
 
-                              const Text(
+                              Text(
                                 'Cafeteria',
                               ),
                             ],
@@ -407,13 +407,13 @@ class _ScreenRegisterBusinessState extends State<ScreenRegisterBusiness> {
                             },
                           ),
 
-                          Row(
+                          const Row(
                             children: [
-                              const Icon(Icons.icecream, size: 20, color: Colors.black,),
+                              Icon(Icons.icecream, size: 20, color: Colors.black,),
 
-                              const SizedBox(width: 5,),
+                              SizedBox(width: 5,),
 
-                              const Text(
+                              Text(
                                 'Sorveteria',
                               ),
                             ],
@@ -435,13 +435,13 @@ class _ScreenRegisterBusinessState extends State<ScreenRegisterBusiness> {
                             },
                           ),
 
-                          Row(
+                          const Row(
                             children: [
-                              const Icon(Icons.add, size: 20, color: Colors.black,),
+                              Icon(Icons.add, size: 20, color: Colors.black,),
 
-                              const SizedBox(width: 5,),
+                              SizedBox(width: 5,),
 
-                              const Text(
+                              Text(
                                 'Outro',
                               ),
                             ],
@@ -453,7 +453,7 @@ class _ScreenRegisterBusinessState extends State<ScreenRegisterBusiness> {
                   
                   const SizedBox(height: 40,),
 
-                  Text(
+                  const Text(
                     'Ao clicar em cadastrar, você concorda com os termos de uso.',
                     textAlign: TextAlign.center,
                     style: TextStyle(

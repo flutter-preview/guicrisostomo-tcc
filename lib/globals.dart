@@ -1,7 +1,6 @@
 library globals;
 
 import 'package:flutter/material.dart';
-import 'package:tcc/model/ProductItemList.dart';
 
 int globalSelectedIndexBotton = 0;
 int? numberTable;

@@ -57,7 +57,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
     name: '',
     price: 0,
     description: '',
-    link_image: '',
+    linkImage: '',
     variation: Variation(
       id: 0,
       category: '',
@@ -110,7 +110,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
     nameProduct = productSelect.name;
     priceProduct = productSelect.price;
     descriptionProduct = productSelect.description;
-    urlImageProduct = productSelect.link_image;
+    urlImageProduct = productSelect.linkImage;
     variation = productSelect.variation!;
     idVariation = variation.id ?? 0;
   }

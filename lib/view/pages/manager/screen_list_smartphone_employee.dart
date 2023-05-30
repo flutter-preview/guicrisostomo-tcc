@@ -65,13 +65,13 @@ class _ScreenSmartphoneEmployeeState extends State<ScreenSmartphoneEmployee> {
                     subtitle: const Text('Modelo: Samsung Galaxy S20\nIMEI: 123456789012345\nNúmero: (11) 99999-9999'),
                     leading: Icon(Icons.smartphone, size: 40, color: globals.primary),
                     trailing: ElevatedButton(
-                      child: Icon(Icons.delete, size: 20, color: Colors.white,),
-                      onPressed: () => null,
+                      onPressed: () {},
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.all(2),
                         backgroundColor: globals.primary,
                         shape: const CircleBorder(),
                       ),
+                      child: const Icon(Icons.delete, size: 20, color: Colors.white,),
                     ),
                     onTap: () => {
                       Navigator.push(
@@ -98,9 +98,9 @@ class _ScreenSmartphoneEmployeeState extends State<ScreenSmartphoneEmployee> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(
+                    const Text(
                       'Adicionar smartphone',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
@@ -145,8 +145,8 @@ class _ScreenSmartphoneEmployeeState extends State<ScreenSmartphoneEmployee> {
             )
           )
         },
-        child: const Icon(Icons.add),
         backgroundColor: globals.primary,
+        child: const Icon(Icons.add),
       ),
 
       bottomNavigationBar: const Bottom(),

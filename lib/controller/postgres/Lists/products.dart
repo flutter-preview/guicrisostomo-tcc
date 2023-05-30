@@ -8,7 +8,7 @@ import 'package:tcc/model/Variation.dart';
 class ProductsController {
   static ProductsController? _instance;
   static ProductsController get instance {
-    if (_instance == null) _instance = ProductsController();
+    _instance ??= ProductsController();
     return _instance!;
   }
 
@@ -90,7 +90,7 @@ class ProductsController {
     return await connectSupadatabase().then((conn) async {
       return await conn.query(
         '''
-        SELECT p.id, p.name, p.price, p.description, p.link_image, v.category, v.size, p.id_variation, v.limit_items, COALESCE(
+        SELECT p.id, p.name, p.price, p.description, p.linkImage, v.category, v.size, p.id_variation, v.limit_items, COALESCE(
           (SELECT f.id
             FROM favorites f 
             WHERE f.id_product = p.id AND f.uid = @uid
@@ -120,7 +120,7 @@ class ProductsController {
             name: row[1],
             price: row[2],
             description: row[3],
-            link_image: row[4],
+            linkImage: row[4],
             variation: Variation(
               category: row[5],
               size: row[6],
@@ -203,7 +203,7 @@ class ProductsController {
     return await connectSupadatabase().then((conn) async {
       
       return await conn.query('''
-          SELECT p.id, p.name, p.price, p.description, p.link_image, v.category, v.size, p.id_variation, v.limit_items, COALESCE(
+          SELECT p.id, p.name, p.price, p.description, p.linkImage, v.category, v.size, p.id_variation, v.limit_items, COALESCE(
           (SELECT f.id
             FROM favorites f 
             WHERE f.id_product = p.id AND f.uid = @uid
@@ -227,7 +227,7 @@ class ProductsController {
               name: row[1],
               price: row[2],
               description: row[3],
-              link_image: row[4],
+              linkImage: row[4],
               variation: Variation(
                 category: row[5],
                 size: row[6],
@@ -371,7 +371,7 @@ class ProductsController {
   Future<ProductItemList> getProduct(int id) async {
     return await connectSupadatabase().then((conn) async {
       return await conn.query('''
-        SELECT p.id, p.name, p.price, p.description, p.link_image, v.category, v.size, v.id, v.limit_items, COALESCE(
+        SELECT p.id, p.name, p.price, p.description, p.linkImage, v.category, v.size, v.id, v.limit_items, COALESCE(
           (SELECT f.id
             FROM favorites f 
             WHERE f.id_product = p.id AND f.uid = @uid
@@ -390,7 +390,7 @@ class ProductsController {
           name: '',
           price: 0,
           description: '',
-          link_image: '',
+          linkImage: '',
           variation: Variation(
             category: '',
             size: '',
@@ -405,7 +405,7 @@ class ProductsController {
             name: value.first[1],
             price: value.first[2],
             description: value.first[3],
-            link_image: value.first[4],
+            linkImage: value.first[4],
             variation: Variation(
               category: value.first[5],
               size: value.first[6],
@@ -428,7 +428,7 @@ class ProductsController {
         '''
           SELECT t.* FROM 
           (
-            SELECT distinct on (p.id) p.id, p.name, p.price, p.id_variation, v.category, v.size, p.description, p.link_image, COALESCE(
+            SELECT distinct on (p.id) p.id, p.name, p.price, p.id_variation, v.category, v.size, p.description, p.linkImage, COALESCE(
               (SELECT f.id
                 FROM favorites f 
                 WHERE f.id_product = p.id AND f.uid = @uid
@@ -474,7 +474,7 @@ class ProductsController {
                 size: element[5],
               ),
               description: '${element[9]} quantidades${element[6] == null ? '' : '\n${element[6]}'}',
-              link_image: element[7],
+              linkImage: element[7],
               isFavorite: element[8] != 0
             )
           );
@@ -513,7 +513,7 @@ class ProductsController {
   Future<List<ProductItemList>> getProductsFavorites() async {
     return await connectSupadatabase().then((conn) async {
       return await conn.query('''
-        SELECT p.id, p.name, p.price, p.id_variation, v.category, v.size, p.description, p.link_image, COALESCE(
+        SELECT p.id, p.name, p.price, p.id_variation, v.category, v.size, p.description, p.linkImage, COALESCE(
           (SELECT f.id
             FROM favorites f 
             WHERE f.id_product = p.id AND f.uid = @uid
@@ -547,7 +547,7 @@ class ProductsController {
                 size: element[5],
               ),
               description: element[6],
-              link_image: element[7],
+              linkImage: element[7],
               isFavorite: element[8] != 0
             )
           );

@@ -235,7 +235,6 @@ class ProductsCartController {
 
   Future<List<ProductsCartList>> listItemCurrent(int idSale, [int idVariation = 0]) async {
     List<ProductsCartList> list = [];
-    num total = 0;
     
     return await connectSupadatabase().then((conn) async {
 
@@ -641,7 +640,6 @@ class ProductsCartController {
 
   bool verifyItemEqual(BuildContext context, ProductItemList item, List<ProductsCartList> cartList) {
     for (var itemCart in cartList) {
-      print('itemCart.idProduct: ${itemCart.idProduct} - item.id: ${item.id}');
       if (itemCart.idProduct == item.id) {
         error(context, 'Este produto já foi adicionado');
         Navigator.pop(context);

@@ -114,7 +114,7 @@ class _ScreenHomeManagerState extends State<ScreenHomeManager> {
             children: [
 
               SwitchListTileWidget(
-                title: Text(
+                title: const Text(
                   'Aberto ?',
                 ),
                 value: valueOpen,
@@ -141,12 +141,12 @@ class _ScreenHomeManagerState extends State<ScreenHomeManager> {
                       child: ListTile(
                         leading: Icon(Icons.person, color: globals.primary, size: 30,),
                         title: const Text('Nome do funcionário'),
-                        subtitle: Column(
+                        subtitle: const Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text('Cargo'),
-                            const Text('Pedidos hoje: 0'),
-                            const Text('Avaliação: 0'),
+                            Text('Cargo'),
+                            Text('Pedidos hoje: 0'),
+                            Text('Avaliação: 0'),
                           ],
                         ),
                         trailing: Icon(Icons.arrow_forward_ios, color: globals.primary, size: 30,),
@@ -160,12 +160,12 @@ class _ScreenHomeManagerState extends State<ScreenHomeManager> {
                       child: ListTile(
                         leading: Icon(Icons.person, color: globals.primary, size: 30,),
                         title: const Text('Nome do funcionário'),
-                        subtitle: Column(
+                        subtitle: const Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text('Cargo'),
-                            const Text('Pedidos hoje: 0'),
-                            const Text('Avaliação: 0'),
+                            Text('Cargo'),
+                            Text('Pedidos hoje: 0'),
+                            Text('Avaliação: 0'),
                           ],
                         ),
                         trailing: Icon(Icons.arrow_forward_ios, color: globals.primary),

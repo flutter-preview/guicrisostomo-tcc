@@ -109,10 +109,10 @@ class _ScreenVerifyEmailState extends State<ScreenVerifyEmail> {
                 })
               ],
             ),
-          ) : Center(
+          ) : const Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
+              children: [
                 CircularProgressIndicator(),
       
                 SizedBox(height: 20,),

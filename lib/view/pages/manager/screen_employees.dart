@@ -51,7 +51,7 @@ class _ScreenEmployeesState extends State<ScreenEmployees> {
                     context: context, 
                     keyboardType: TextInputType.name,
                     validator: (value) {
-                      validatorString(value!);
+                      return validatorString(value!);
                     },
                     ico: Icons.person,
                   ),
@@ -64,7 +64,7 @@ class _ScreenEmployeesState extends State<ScreenEmployees> {
                     context: context, 
                     keyboardType: TextInputType.text,
                     validator: (value) {
-                      validatorString(value!);
+                      return validatorString(value!);
                     },
                     ico: Icons.work,
                   ),
@@ -77,7 +77,7 @@ class _ScreenEmployeesState extends State<ScreenEmployees> {
                     context: context, 
                     keyboardType: TextInputType.number,
                     validator: (value) {
-                      validatorNumber(value!);
+                      return validatorNumber(value!);
                     },
                     ico: Icons.star,
                   ),
@@ -121,12 +121,12 @@ class _ScreenEmployeesState extends State<ScreenEmployees> {
                     child: ListTile(
                       leading: Icon(Icons.person, color: globals.primary, size: 30,),
                       title: const Text('Nome do funcionário'),
-                      subtitle: Column(
+                      subtitle: const Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text('Cargo'),
-                          const Text('Pedidos hoje: 0'),
-                          const Text('Avaliação: 0'),
+                          Text('Cargo'),
+                          Text('Pedidos hoje: 0'),
+                          Text('Avaliação: 0'),
                         ],
                       ),
                       trailing: Icon(Icons.arrow_forward_ios, color: globals.primary, size: 30,),

@@ -7,9 +7,9 @@ import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/textFieldGeneral.dart';
 
 class ScreenCreateEditAddress extends StatefulWidget {
-  Address? addressSelected;
+  final Address? addressSelected;
 
-  ScreenCreateEditAddress({
+  const ScreenCreateEditAddress({
     super.key,
     this.addressSelected,
   });

@@ -60,7 +60,7 @@ Widget comments(context, List<CommentsProduct> list) {
       
                           Text(
                             '$dateFormatted às $hourFormatted',
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 14,
                               color: Colors.black54
                             ),
@@ -76,7 +76,7 @@ Widget comments(context, List<CommentsProduct> list) {
               
               Text(
                 list[index].comment,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 14,
                   color: Colors.black,
                 ),

@@ -9,7 +9,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class TablesController {
   static TablesController? _instance;
   static TablesController get instance {
-    if (_instance == null) _instance = TablesController();
+    _instance ??= TablesController();
     return _instance!;
   }
 
@@ -91,13 +91,13 @@ class TablesController {
   StreamSubscription<QuerySnapshot<Map<String, dynamic>>> getAllTablesCallWaiter() {
 
     return FirebaseFirestore.instance.collection('tables').snapshots().listen((event) {
-      event.docChanges.forEach((element) {
+      for (var element in event.docChanges) {
         if (element.type == DocumentChangeType.added) {
           FirebaseFirestore.instance.collection('tables').doc(element.doc.id).update({
             'status': 'Aguardando',
           });
         }
-      });
+      }
     });
   }
 }

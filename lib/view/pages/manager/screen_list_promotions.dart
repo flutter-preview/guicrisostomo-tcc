@@ -59,7 +59,7 @@ class _ScreenListPromotionsState extends State<ScreenListPromotions> {
           Navigator.push(context, navigator('promotion/create'));
         }, 
         backgroundColor: globals.primary,
-        child: Icon(Icons.add)
+        child: const Icon(Icons.add)
       ),
       bottomNavigationBar: const Bottom(),
     );

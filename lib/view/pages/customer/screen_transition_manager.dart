@@ -93,18 +93,18 @@ class _ScreenTransitionManagerUserState extends State<ScreenTransitionManagerUse
                   SectionVisible(
                     nameSection: 'Funcionalidades', 
                     isShowPart: true,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 20),
+                    child: const Padding(
+                      padding: EdgeInsets.only(left: 20),
                       child: Column(
                         children: [
                           Row(
                             mainAxisSize: MainAxisSize.max,
                             children: [
-                              const Icon(Icons.check_circle, color: Colors.green,),
+                              Icon(Icons.check_circle, color: Colors.green,),
                     
-                              const SizedBox(width: 20,),
+                              SizedBox(width: 20,),
                               
-                              const Flexible(
+                              Flexible(
                                 child: Text(
                                   'Você poderá cadastrar seus produtos e vender para os clientes que estão próximos ao seu restaurante.',
                                   style: TextStyle(
@@ -115,16 +115,16 @@ class _ScreenTransitionManagerUserState extends State<ScreenTransitionManagerUse
                             ],
                           ),
                     
-                          const SizedBox(height: 20,),
+                          SizedBox(height: 20,),
                     
                           Row(
                             mainAxisSize: MainAxisSize.max,
                             children: [
-                              const Icon(Icons.check_circle, color: Colors.green,),
+                              Icon(Icons.check_circle, color: Colors.green,),
                     
-                              const SizedBox(width: 20,),
+                              SizedBox(width: 20,),
                               
-                              const Flexible(
+                              Flexible(
                                 child: Text(
                                   'Você poderá cadastrar seus funcionários e gerenciar as vendas.',
                                   style: TextStyle(
@@ -135,16 +135,16 @@ class _ScreenTransitionManagerUserState extends State<ScreenTransitionManagerUse
                             ],
                           ),
 
-                          const SizedBox(height: 20,),
+                          SizedBox(height: 20,),
 
                           Row(
                             mainAxisSize: MainAxisSize.max,
                             children: [
-                              const Icon(Icons.check_circle, color: Colors.green,),
+                              Icon(Icons.check_circle, color: Colors.green,),
                     
-                              const SizedBox(width: 20,),
+                              SizedBox(width: 20,),
                               
-                              const Flexible(
+                              Flexible(
                                 child: Text(
                                   'Você poderá gerenciar o horário de trabalho de seus funcionários.',
                                   style: TextStyle(
@@ -155,16 +155,16 @@ class _ScreenTransitionManagerUserState extends State<ScreenTransitionManagerUse
                             ],
                           ),
 
-                          const SizedBox(height: 20,),
+                          SizedBox(height: 20,),
 
                           Row(
                             mainAxisSize: MainAxisSize.max,
                             children: [
-                              const Icon(Icons.check_circle, color: Colors.green,),
+                              Icon(Icons.check_circle, color: Colors.green,),
                     
-                              const SizedBox(width: 20,),
+                              SizedBox(width: 20,),
                               
-                              const Flexible(
+                              Flexible(
                                 child: Text(
                                   'Você poderá definir em quais aparelhos seus funcionários poderão acessar para realizar pedidos.',
                                   style: TextStyle(
@@ -175,16 +175,16 @@ class _ScreenTransitionManagerUserState extends State<ScreenTransitionManagerUse
                             ],
                           ),
                     
-                          const SizedBox(height: 20,),
+                          SizedBox(height: 20,),
                     
                           Row(
                             mainAxisSize: MainAxisSize.max,
                             children: [
-                              const Icon(Icons.check_circle, color: Colors.green,),
+                              Icon(Icons.check_circle, color: Colors.green,),
                     
-                              const SizedBox(width: 20,),
+                              SizedBox(width: 20,),
                               
-                              const Flexible(
+                              Flexible(
                                 child: Text(
                                   'Você poderá cadastrar promoções para seus produtos.',
                                   style: TextStyle(
@@ -195,16 +195,16 @@ class _ScreenTransitionManagerUserState extends State<ScreenTransitionManagerUse
                             ],
                           ),
                     
-                          const SizedBox(height: 20,),
+                          SizedBox(height: 20,),
                     
                           Row(
                             mainAxisSize: MainAxisSize.max,
                             children: [
-                              const Icon(Icons.check_circle, color: Colors.green,),
+                              Icon(Icons.check_circle, color: Colors.green,),
                     
-                              const SizedBox(width: 20,),
+                              SizedBox(width: 20,),
                               
-                              const Flexible(
+                              Flexible(
                                 child: Text(
                                   'Você poderá gerenciar o horário de funcionamento do seu restaurante.',
                                   style: TextStyle(
@@ -255,15 +255,15 @@ class _ScreenTransitionManagerUserState extends State<ScreenTransitionManagerUse
                   Size(MediaQuery.of(context).size.width * 0.8, 50),
                 ),
               ),
-              child: Row(
+              child: const Row(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const Icon(Icons.restaurant, color: Colors.white,),
+                  Icon(Icons.restaurant, color: Colors.white,),
 
-                  const SizedBox(width: 10,),
+                  SizedBox(width: 10,),
 
-                  const Text(
+                  Text(
                     'Cadastrar restaurante',
                     style: TextStyle(
                       fontSize: 16,

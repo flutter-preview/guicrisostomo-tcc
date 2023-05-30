@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigation.dart';
 import 'package:tcc/view/widget/sectionVisible.dart';
@@ -68,7 +66,7 @@ class _ScreenTimeWorkEmployeeState extends State<ScreenTimeWorkEmployee> {
                       return Column(
                         children: [
                           SwitchListTileWidget(
-                            title: Text(
+                            title: const Text(
                               'Domingo',
                               style: TextStyle(
                                 fontSize: 20,
@@ -119,7 +117,7 @@ class _ScreenTimeWorkEmployeeState extends State<ScreenTimeWorkEmployee> {
                       return Column(
                         children: [
                           SwitchListTileWidget(
-                            title: Text(
+                            title: const Text(
                               'Segunda-feira',
                               style: TextStyle(
                                 fontSize: 20,
@@ -170,7 +168,7 @@ class _ScreenTimeWorkEmployeeState extends State<ScreenTimeWorkEmployee> {
                       return Column(
                         children: [
                           SwitchListTileWidget(
-                            title: Text(
+                            title: const Text(
                               'Terça-feira',
                               style: TextStyle(
                                 fontSize: 20,
@@ -221,7 +219,7 @@ class _ScreenTimeWorkEmployeeState extends State<ScreenTimeWorkEmployee> {
                       return Column(
                         children: [
                           SwitchListTileWidget(
-                            title: Text(
+                            title: const Text(
                               'Quarta-feira',
                               style: TextStyle(
                                 fontSize: 20,
@@ -272,7 +270,7 @@ class _ScreenTimeWorkEmployeeState extends State<ScreenTimeWorkEmployee> {
                       return Column(
                         children: [
                           SwitchListTileWidget(
-                            title: Text(
+                            title: const Text(
                               'Quinta-feira',
                               style: TextStyle(
                                 fontSize: 20,
@@ -323,7 +321,7 @@ class _ScreenTimeWorkEmployeeState extends State<ScreenTimeWorkEmployee> {
                       return Column(
                         children: [
                           SwitchListTileWidget(
-                            title: Text(
+                            title: const Text(
                               'Sexta-feira',
                               style: TextStyle(
                                 fontSize: 20,
@@ -374,7 +372,7 @@ class _ScreenTimeWorkEmployeeState extends State<ScreenTimeWorkEmployee> {
                       return Column(
                         children: [
                           SwitchListTileWidget(
-                            title: Text(
+                            title: const Text(
                               'Sábado',
                               style: TextStyle(
                                 fontSize: 20,

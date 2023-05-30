@@ -3,7 +3,6 @@ import 'package:tcc/controller/auth/auth.dart';
 import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/button.dart';
-import 'package:tcc/globals.dart' as globals;
 import 'package:tcc/view/widget/textFieldGeneral.dart';
 
 class ScreenForgetPassword extends StatefulWidget {
@@ -62,7 +61,7 @@ class _ScreenForgetPasswordState extends State<ScreenForgetPassword> {
                 keyboardType: TextInputType.emailAddress,
                 ico: Icons.person,
                 validator: (value) {
-                  validatorEmail(value!);
+                  return validatorEmail(value!);
                 },
               ),
               

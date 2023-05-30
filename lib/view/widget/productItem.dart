@@ -65,7 +65,7 @@ class _ProductItemState extends State<ProductItem> {
                 num price = dados.price;
                 String description = dados.description ?? '';
                 Variation variation = dados.variation!;
-                String? linkImage = dados.link_image;
+                String? linkImage = dados.linkImage;
                 bool isFavorite = dados.isFavorite;    
             
                 return Card(

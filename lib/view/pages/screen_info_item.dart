@@ -37,9 +37,9 @@ class _ScreenInfoItemState extends State<ScreenInfoItem> {
 
       await ProductsCartController.instance.getProductsIdRelation(idRelative, idVariation).then((value) {
         if (variation.category == 'Pizzas') {
-          value.forEach((element) {
+          for (var element in value) {
             textPizzas += '${element.name!.toLowerCase()} meia ';
-          });
+          }
         }
 
         if (textPizzas != '') {

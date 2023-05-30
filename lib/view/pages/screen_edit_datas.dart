@@ -14,9 +14,9 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:tcc/globals.dart' as globals;
 
 class ScreenEditDatas extends StatefulWidget {
-  Object? arguments;
+  final Object? arguments;
 
-  ScreenEditDatas({super.key, this.arguments});
+  const ScreenEditDatas({super.key, this.arguments});
 
   @override
   State<ScreenEditDatas> createState() => _ScreenEditDatasState();

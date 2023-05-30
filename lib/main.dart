@@ -1,4 +1,3 @@
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -62,7 +61,6 @@ import 'package:tcc/view/pages/screen_register.dart';
 import 'package:tcc/view/pages/screen_terms.dart';
 import 'package:tcc/view/pages/screen_verification_table.dart';
 import 'package:tcc/view/pages/screen_verify_email.dart';
-import 'globals.dart' as globals;
 
 Route navigator([String? name, Object? arguments]) {
   Widget page;
@@ -273,7 +271,6 @@ Future<void> main() async {
   
   FirebaseAuth auth = FirebaseAuth.instance;
   User? user = auth.currentUser;
-  print(user?.uid);
   
   if (user != null) {
     if (user.emailVerified == false) {
@@ -293,7 +290,6 @@ Future<void> main() async {
           return 'home_employee';
         }
       }).catchError((onError) {
-        print(onError);
         return 'error';
       });
     }
@@ -346,13 +342,13 @@ Future<void> main() async {
         'products/add_product' :(context) => const ScreenAddItem(),
         'list_products' :(context) => const ScreenListProducts(),
         'profile' :(context) => const ScreenProfile(),
-        'profile/edit_datas' :(context) => ScreenEditDatas(),
+        'profile/edit_datas' :(context) => const ScreenEditDatas(),
         'order' :(context) => const ScreenOrder(),
-        'order/info' :(context) => ScreenInfoOrder(),
+        'order/info' :(context) => const ScreenInfoOrder(),
         'finalize_order_customer' :(context) => const ScreenFOMain(),
         'finalize_order_customer/address' :(context) => const ScreenFOGetAddress(typeSale: '',),
         'finalize_order_customer/payment' :(context) => ScreenFOPayment(sale: Sales(id: 0, uid: '0', cnpj: '0', status: 'a', date: DateTime.now()),),
-        'create_edit_address' :(context) => ScreenCreateEditAddress(),
+        'create_edit_address' :(context) => const ScreenCreateEditAddress(),
         'transition_manager_user' :(context) => const ScreenTransitionManagerUser(),
         'register_business' :(context) => const ScreenRegisterBusiness(),
         // 'notifications' :(context) => const ScreenNotifications(),

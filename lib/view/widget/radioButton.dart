@@ -1,15 +1,12 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:tcc/globals.dart' as globals;
 import 'package:tcc/model/standardRadioButton.dart';
-import 'package:tcc/view/widget/snackBars.dart';
 
 class RadioButon extends StatefulWidget {
-  List<RadioButtonList> list;
-  void Function(String?)? callback;
+  final List<RadioButtonList> list;
+  final void Function(String?)? callback;
 
-  RadioButon({
+  const RadioButon({
     super.key,
     required this.list,
     this.callback,

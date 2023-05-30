@@ -6,7 +6,6 @@ import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/imageMainScreens.dart';
 import 'package:tcc/view/widget/textFieldGeneral.dart';
-import 'package:tcc/globals.dart' as globals;
 
 class ScreenRegister extends StatefulWidget {
   const ScreenRegister({super.key});

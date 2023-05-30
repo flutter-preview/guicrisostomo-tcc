@@ -63,7 +63,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
                 keyboardType: TextInputType.emailAddress,
                 ico: Icons.person,
                 validator: (value) {
-                  validatorEmail(value!);
+                  return validatorEmail(value!);
                 },
               ),
               
@@ -77,7 +77,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
                 ico: Icons.lock,
 
                 validator: (value) {
-                  validatorPassword(value!);
+                  return validatorPassword(value!);
                 },
 
                 onFieldSubmitted: (value) => {

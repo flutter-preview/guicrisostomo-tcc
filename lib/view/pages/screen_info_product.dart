@@ -56,7 +56,7 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
       productSelect = value;
       nameProduct = value.name;
       descriptionProduct = value.description;
-      urlImageProduct = value.link_image;
+      urlImageProduct = value.linkImage;
       categoryProduct = value.variation!.category;
       isFavorite = value.isFavorite;
 
@@ -346,7 +346,7 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
                       icoSuffix: Icons.send_outlined,
                       textCapitalization: TextCapitalization.sentences,
                       validator: (value) {
-                        validatorString(value!);
+                        return validatorString(value!);
                       },
 
                       eventPressIconSuffix: () async {

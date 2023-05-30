@@ -42,7 +42,6 @@ class SalesController {
           return list[0][0];
         }
       }).catchError((e) {
-        print(e);
       });
     });
   }
@@ -53,7 +52,6 @@ class SalesController {
         'uid': FirebaseAuth.instance.currentUser!.uid,
         'idOrder': idOrder,
       }).catchError((e) {
-        print(e);
       });
 
       conn.close();
@@ -75,7 +73,6 @@ class SalesController {
         return list.first[0];
 
       }).catchError((e) {
-        print(e);
       });
     });
   }
@@ -86,7 +83,6 @@ class SalesController {
         'status': status,
         'id': id,
       }).catchError((e) {
-        print(e);
       });
 
       conn.close();
@@ -99,7 +95,6 @@ class SalesController {
         'id_user': FirebaseAuth.instance.currentUser!.uid,
         'id_order': idOrder,
       }).catchError((e) {
-        print(e);
       });
 
       conn.close();
@@ -112,7 +107,6 @@ class SalesController {
         'id_user': FirebaseAuth.instance.currentUser!.uid,
         'id_order': idOrder,
       }).catchError((e) {
-        print(e);
       });
 
       conn.close();
@@ -125,7 +119,6 @@ class SalesController {
         'id_user': FirebaseAuth.instance.currentUser!.uid,
         'id_order': idOrder,
       }).catchError((e) {
-        print(e);
       });
 
       conn.close();
@@ -147,7 +140,6 @@ class SalesController {
           activateRelationUserOrder(idOrder);
         }
       }).catchError((e) {
-        print(e);
       });
     });
   }
@@ -193,7 +185,6 @@ class SalesController {
           return list.first[0];
         }
       }).catchError((e) {
-        print(e);
       });
     })
     : await connectSupadatabase().then((conn) async {
@@ -639,7 +630,6 @@ class SalesController {
         return sales;
       }).onError((error, stackTrace) {
         conn.close();
-        print(error);
         return [];
       });
     });
@@ -667,7 +657,6 @@ class SalesController {
         'uid': FirebaseAuth.instance.currentUser!.uid,
         'table': globals.numberTable ?? 0,
       }).catchError((e) {
-        print(e);
       });
 
       if (hasCloseTable) {
@@ -688,7 +677,6 @@ class SalesController {
           'payment': typePayment,
           'change': change,
         }).catchError((e) {
-          print(e);
         });
       }
 

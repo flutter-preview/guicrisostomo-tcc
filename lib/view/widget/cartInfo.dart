@@ -6,7 +6,7 @@ import 'package:tcc/globals.dart' as globals;
 import 'package:tcc/main.dart';
 
 class CartInfo extends StatefulWidget {
-  CartInfo({super.key});
+  const CartInfo({super.key});
 
   @override
   State<CartInfo> createState() => _CartInfoState();
@@ -93,15 +93,15 @@ class _CartInfoState extends State<CartInfo> {
                     children: [
                       Text(
                         'R\$ ${total.toStringAsFixed(2).replaceAll('.', ',')}',
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 14,
                         ),
                       ),
           
-                      SizedBox(width: 5),
+                      const SizedBox(width: 5),
           
-                      Icon(
+                      const Icon(
                         Icons.arrow_forward_ios,
                         color: Colors.white,
                         size: 15,
@@ -136,9 +136,9 @@ class _CartInfoState extends State<CartInfo> {
                 ),
               ),
           
-              child: Row(
+              child: const Row(
                 mainAxisSize: MainAxisSize.max,
-                children: const [
+                children: [
                   Icon(
                     Icons.check,
                     color: Colors.white,

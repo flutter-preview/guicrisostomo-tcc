@@ -12,9 +12,9 @@ import 'package:tcc/view/widget/listCart.dart';
 import 'package:tcc/view/widget/sectionVisible.dart';
 
 class ScreenInfoOrder extends StatefulWidget {
-  Object? arguments;
+  final Object? arguments;
 
-  ScreenInfoOrder({
+  const ScreenInfoOrder({
     super.key,
     this.arguments,
   });
@@ -170,7 +170,7 @@ class _ScreenInfoOrderState extends State<ScreenInfoOrder> {
                               
                                     Text(
                                       'Referência: ${snapshot.data!.reference ?? 'vazio'}',
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         color: Colors.black54
                                       )
                                     ),
@@ -179,7 +179,7 @@ class _ScreenInfoOrderState extends State<ScreenInfoOrder> {
                               
                                     Text(
                                       'Complemento: ${snapshot.data!.complement ?? 'vazio'}',
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         color: Colors.black54
                                       )
                                     ),

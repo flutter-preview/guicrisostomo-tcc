@@ -3,8 +3,6 @@ import 'package:tcc/main.dart';
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigation.dart';
 import 'package:tcc/view/widget/button.dart';
-import 'package:tcc/view/widget/productItem.dart';
-import 'package:tcc/view/widget/sectionVisible.dart';
 
 class ScreenListProducts extends StatefulWidget {
   const ScreenListProducts({super.key});

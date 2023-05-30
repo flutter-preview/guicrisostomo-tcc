@@ -12,7 +12,7 @@ Widget button(
       bool isLeftIconButon = true,
       double fontSize = 24,
       Color? color,
-      String? pathImage = null,
+      String? pathImage,
     ]
 
   ) {
@@ -33,7 +33,7 @@ Widget button(
           style: ButtonStyle(
             minimumSize: MaterialStateProperty.all<Size>(Size(width, height)),
             backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),
-            padding: MaterialStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.all(10)),
+            padding: MaterialStateProperty.all<EdgeInsetsGeometry>(const EdgeInsets.all(10)),
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),

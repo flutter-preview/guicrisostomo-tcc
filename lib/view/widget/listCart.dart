@@ -84,17 +84,17 @@ class _ProductsCartState extends State<ProductsCart> {
                                       onPressed: () {
                                         Navigator.pop(context);
                                       },
-                                      child: Text(
-                                        'Não',
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          color: Colors.black,
-                                        ),
-                                      ),
                                       style: ElevatedButton.styleFrom(
                                         primary: Colors.white,
                                         elevation: 0,
                                         side: BorderSide(
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      child: Text(
+                                        'Não',
+                                        style: TextStyle(
+                                          fontSize: 18,
                                           color: Colors.black,
                                         ),
                                       ),
@@ -111,17 +111,17 @@ class _ProductsCartState extends State<ProductsCart> {
                                         });
                                         Navigator.pop(context);
                                       },
-                                      child: Text(
-                                        'Sim',
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          color: Colors.black,
-                                        ),
-                                      ),
                                       style: ElevatedButton.styleFrom(
                                         primary: Colors.white,
                                         elevation: 0,
                                         side: BorderSide(
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      child: Text(
+                                        'Sim',
+                                        style: TextStyle(
+                                          fontSize: 18,
                                           color: Colors.black,
                                         ),
                                       ),

@@ -32,11 +32,11 @@ class _ScreenInfoTableState extends State<ScreenInfoTable> {
         child: Column(
           children: [
             Padding(
-              padding: EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    Text(
+                    const Text(
                       'Informações importantes',
                       style: TextStyle(
                         fontSize: 20,
@@ -44,13 +44,13 @@ class _ScreenInfoTableState extends State<ScreenInfoTable> {
                       ),
                     ),
 
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
 
                     Row(
                       children: [
                         Icon(Icons.room_service, color: globals.primary),
-                        SizedBox(width: 10),
-                        Text(
+                        const SizedBox(width: 10),
+                        const Text(
                           'Garçom: ',
                           style: TextStyle(
                             fontSize: 16,
@@ -59,13 +59,13 @@ class _ScreenInfoTableState extends State<ScreenInfoTable> {
                       ],
                     ),
 
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
 
                     Row(
                       children: [
                         Icon(Icons.people, color: globals.primary),
-                        SizedBox(width: 10),
-                        Text(
+                        const SizedBox(width: 10),
+                        const Text(
                           'Clientes: ',
                           style: TextStyle(
                             fontSize: 16,
@@ -74,13 +74,13 @@ class _ScreenInfoTableState extends State<ScreenInfoTable> {
                       ],
                     ),
 
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
 
                     Row(
                       children: [
                         Icon(Icons.timer, color: globals.primary),
-                        SizedBox(width: 10),
-                        Text(
+                        const SizedBox(width: 10),
+                        const Text(
                           'Tempo de espera do pedido atual: ',
                           style: TextStyle(
                             fontSize: 16,
@@ -89,13 +89,13 @@ class _ScreenInfoTableState extends State<ScreenInfoTable> {
                       ],
                     ),
 
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
 
                     Row(
                       children: [
                         Icon(Icons.timer, color: globals.primary),
-                        SizedBox(width: 10),
-                        Text(
+                        const SizedBox(width: 10),
+                        const Text(
                           'Chegada: ',
                           style: TextStyle(
                             fontSize: 16,
@@ -104,14 +104,14 @@ class _ScreenInfoTableState extends State<ScreenInfoTable> {
                       ],
                     ),
 
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
 
                     (globals.userType == 'manager')
                         ? Row(
                             children: [
                               Icon(Icons.attach_money_outlined, color: globals.primary),
-                              SizedBox(width: 10),
-                              Text(
+                              const SizedBox(width: 10),
+                              const Text(
                                 'Valor: ',
                                 style: TextStyle(
                                   fontSize: 16,
@@ -124,7 +124,7 @@ class _ScreenInfoTableState extends State<ScreenInfoTable> {
                     SectionVisible(
                       nameSection: 'Itens pedidos',
                       isShowPart: true,
-                      child: Text('Itens pedidos'),
+                      child: const Text('Itens pedidos'),
                     )
                   ],
                 ),

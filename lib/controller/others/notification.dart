@@ -5,7 +5,7 @@ import 'package:tcc/globals.dart' as globals;
 class NotificationController {
   static NotificationController? _instance;
   static NotificationController get instance {
-    if (_instance == null) _instance = NotificationController();
+    _instance ??= NotificationController();
     return _instance!;
   }
 

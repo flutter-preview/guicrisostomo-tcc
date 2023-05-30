@@ -4,7 +4,7 @@ class ProductItemList {
   int id;
   String name;
   String? description;
-  String? link_image;
+  String? linkImage;
   num price;
   Variation? variation;
   bool isFavorite = false;
@@ -13,7 +13,7 @@ class ProductItemList {
     required this.id,
     required this.name,
     required this.description,
-    required this.link_image,
+    required this.linkImage,
     required this.price,
     required this.variation,
     required this.isFavorite,

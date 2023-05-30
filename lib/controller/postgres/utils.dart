@@ -11,7 +11,6 @@ Future<PostgreSQLConnection> connectSupadatabase() async {
     
   );
   await conn.open().catchError((onError) {
-    print(onError);
   });
   return conn;
 }
