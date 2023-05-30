@@ -99,7 +99,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
     txtQtd.text = "1";
 
     if (idProduct != 0) {
-      ProductsCartController().verifyItemSelected(context, productSelect).whenComplete(() {
+      ProductsCartController.instance.verifyItemSelected(context, productSelect).whenComplete(() {
         Navigator.pop(context);
       });
     }
@@ -263,7 +263,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
           )
         );
 
-        await ProductsController().list(element.category, element.size, '').then((List<ProductItemList> res) {
+        await ProductsController.instance.list(element.category, element.size, '').then((List<ProductItemList> res) {
           if (res.isNotEmpty) {
             for (final ProductItemList item in res) {
               element.addProductItem(item);
@@ -285,7 +285,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
             )
           );
 
-          await ProductsController().list(element.category, element.size, '').then((List<ProductItemList> res) {
+          await ProductsController.instance.list(element.category, element.size, '').then((List<ProductItemList> res) {
             if (res.isNotEmpty) {
               for (final ProductItemList item in res) {
                 element.addProductItem(item);
@@ -299,7 +299,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
             }
           });
         } else {
-          await ProductsController().list(element.category, element.size, '').then((List<ProductItemList> res) {
+          await ProductsController.instance.list(element.category, element.size, '').then((List<ProductItemList> res) {
             if (res.isNotEmpty) {
               for (final ProductItemList item in res) {
                 element.addProductItem(item);
@@ -322,7 +322,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
   }
 
   Future<Widget> putTextBoxVariation(Variation element) async {
-    return await ProductsController().list(element.category, element.size, '').then((List<ProductItemList> res) {
+    return await ProductsController.instance.list(element.category, element.size, '').then((List<ProductItemList> res) {
       List<Widget> listWidgetTextEditing = [];
 
       if (res.isNotEmpty) {
@@ -475,7 +475,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
     
     return Column(
       children: [
-        await ProductsController().listVariations(element.id!).then((List<Variation> res) async {
+        await ProductsController.instance.listVariations(element.id!).then((List<Variation> res) async {
           subVariations = [];
           List<DropDownList> subVariationDropDownButton = [
             DropDownList(
@@ -622,9 +622,9 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
   }
 
   Future<void> listItemsMain() async {
-    await BusinessInformationController().getInfoCalcValue().then((isHighValue) async {
-      await SalesController().idSale().then((idOrder) async {
-        await ProductsCartController().listItemCurrent(idOrder, idProduct == 0 ? idVariation = await ProductsCartController().getVariationItem(idOrder) : idVariation).then((List<ProductsCartList> res) {
+    await BusinessInformationController.instance.getInfoCalcValue().then((isHighValue) async {
+      await SalesController.instance.idSale().then((idOrder) async {
+        await ProductsCartController.instance.listItemCurrent(idOrder, idProduct == 0 ? idVariation = await ProductsCartController.instance.getVariationItem(idOrder) : idVariation).then((List<ProductsCartList> res) {
           isBusinessHighValue = isHighValue ?? false;
           
           subTotal = productSelect.price;
@@ -661,7 +661,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
     listWidgetVariation.clear();
     variations.clear();
 
-    return await ProductsController().listVariations(idVariation).then((List<Variation> res) {
+    return await ProductsController.instance.listVariations(idVariation).then((List<Variation> res) {
       print(res.length);
       if (res.isNotEmpty) {
         for (final Variation item in res) {
@@ -740,7 +740,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                 
                 bool verification = false;
 
-                await ProductsCartController().isLimitedItemVariationOrProduct(context, productSelect, int.parse(txtQtd.text)).then((value) {
+                await ProductsCartController.instance.isLimitedItemVariationOrProduct(context, productSelect, int.parse(txtQtd.text)).then((value) {
                   if (!value) {
                     Navigator.pop(context);
                     return;
@@ -760,26 +760,26 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
 
                 calcSubTotal();
 
-                await SalesController().idSale().then((res) async {
+                await SalesController.instance.idSale().then((res) async {
                   idSale = res;
 
                   if (idProduct != 0) {
-                    await ProductsCartController().add(idSale, idProduct, nameProduct, int.parse(txtQtd.text), idVariation, false);
-                    await ProductsController().updateStockProduct(idProduct, int.parse(txtQtd.text));
+                    await ProductsCartController.instance.add(idSale, idProduct, nameProduct, int.parse(txtQtd.text), idVariation, false);
+                    await ProductsController.instance.updateStockProduct(idProduct, int.parse(txtQtd.text));
                   }
 
                   (variations.map((e) async {
                     if (e.textController.isNotEmpty) {
                       e.textController.entries.forEach((element) async {
                         if (element.value.text != '') {
-                          await ProductsCartController().addVariation(idSale, element.key, int.parse(txtQtd.text), e.id!, element.value.text, false);
+                          await ProductsCartController.instance.addVariation(idSale, element.key, int.parse(txtQtd.text), e.id!, element.value.text, false);
                         }
                       });
                     }
 
                     e.productItemSelected.forEach((key, bool value) async {
                       if (value && e.price > 0) {
-                        await ProductsCartController().add(idSale, key.id, '', int.parse(txtQtd.text), e.id!, false);
+                        await ProductsCartController.instance.add(idSale, key.id, '', int.parse(txtQtd.text), e.id!, false);
                       }
                     });
 
@@ -787,14 +787,14 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                       if (e.value == sub.category && sub.productItemSelected.isNotEmpty) {
                         sub.textController.entries.forEach((element) async {
                           if (element.value.text != '') {
-                            await ProductsCartController().addVariation(idSale, element.key, int.parse(txtQtd.text), sub.id!, element.value.text, false);
+                            await ProductsCartController.instance.addVariation(idSale, element.key, int.parse(txtQtd.text), sub.id!, element.value.text, false);
                           }
                         });
                         
                         sub.productItemSelected.forEach((key, bool value) async {
                           
                           if (value && sub.price > 0) {
-                            await ProductsCartController().add(idSale, key.id, '', int.parse(txtQtd.text), sub.id!, false);
+                            await ProductsCartController.instance.add(idSale, key.id, '', int.parse(txtQtd.text), sub.id!, false);
                           }
 
                         });
@@ -802,10 +802,10 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                     }).toList();
                   }).toList());
 
-                  await ProductsCartController().updateInfoSale(idSale, txtObservation.text, int.parse(txtQtd.text));
+                  await ProductsCartController.instance.updateInfoSale(idSale, txtObservation.text, int.parse(txtQtd.text));
 
-                  await SalesController().getTotal().then((res){
-                    // SalesController().updateTotal(idSale, res + subTotal);
+                  await SalesController.instance.getTotal().then((res){
+                    // SalesControllerController.instance.updateTotal(idSale, res + subTotal);
                     globals.isSelectNewItem = false;
                     
                     Navigator.pop(context);
@@ -1028,9 +1028,9 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                               globals.isSelectNewItem = true;
                             });
 
-                            await SalesController().idSale().then((res) async {
-                              await ProductsCartController().add(res, idProduct, nameProduct, int.parse(txtQtd.text), idVariation);
-                              // await ProductsController().updateStockProduct(idProduct, int.parse(txtQtd.text));
+                            await SalesController.instance.idSale().then((res) async {
+                              await ProductsCartController.instance.add(res, idProduct, nameProduct, int.parse(txtQtd.text), idVariation);
+                              // await ProductsController.instance.updateStockProduct(idProduct, int.parse(txtQtd.text));
                             });
                           })
                     ],
@@ -1095,7 +1095,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                                                 items.removeAt(index);
                                               });
 
-                                              await ProductsCartController().deleteItem(items[index].id!, context);
+                                              await ProductsCartController.instance.deleteItem(items[index].id!, context);
                                               await getList();
                                             },
                                             icon: const Icon(

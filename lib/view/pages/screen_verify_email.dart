@@ -18,7 +18,7 @@ class _ScreenVerifyEmailState extends State<ScreenVerifyEmail> {
     FirebaseAuth.instance.currentUser!.reload();
 
     if (FirebaseAuth.instance.currentUser?.emailVerified == true) {
-      LoginController().redirectUser(context);
+      LoginController.instance.redirectUser(context);
       return true;
     }
 
@@ -105,7 +105,7 @@ class _ScreenVerifyEmailState extends State<ScreenVerifyEmail> {
                 const SizedBox(height: 20,),
       
                 button('Continuar', 0, 0, Icons.arrow_forward_ios, () {
-                  LoginController().redirectUser(context);
+                  LoginController.instance.redirectUser(context);
                 })
               ],
             ),

@@ -90,14 +90,14 @@ class _ScreenVerificationTableState extends State<ScreenVerificationTable> {
   }
 
   Future<void> verifyCodeTable(String code) async {
-    await TablesController().verifyCode(code).then((tableNumber) async {
+    await TablesController.instance.verifyCode(code).then((tableNumber) async {
       if (tableNumber != 0) {
 
         Navigator.pop(context);
         Navigator.push(context, navigator('waiter'));
 
-        await SalesController().idSale().then((idOrder) async {
-          await ProductsCartController().listItemCurrent(idOrder).then((value) async {
+        await SalesController.instance.idSale().then((idOrder) async {
+          await ProductsCartController.instance.listItemCurrent(idOrder).then((value) async {
             if (value.isNotEmpty) {
               showDialog(
                 context: context,
@@ -118,13 +118,13 @@ class _ScreenVerificationTableState extends State<ScreenVerificationTable> {
 
                         globals.numberTable = tableNumber;
 
-                        await SalesController().idSale().then((value) {
+                        await SalesController.instance.idSale().then((value) {
                           setState(() {
                             newIdOrder = value;
                           });
                         });
 
-                        await ProductsCartController().updateAllItemsIdOrder(idOrder, newIdOrder);
+                        await ProductsCartController.instance.updateAllItemsIdOrder(idOrder, newIdOrder);
                         
                       },
                       child: const Text('Sim'),
@@ -135,7 +135,7 @@ class _ScreenVerificationTableState extends State<ScreenVerificationTable> {
             }
           }).then((value) async {
             globals.numberTable = tableNumber;
-            await SalesController().idSale();
+            await SalesController.instance.idSale();
           });
         });
 

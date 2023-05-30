@@ -286,8 +286,8 @@ class _ScreenFOPaymentState extends State<ScreenFOPayment> {
                   txtMoney.text = '0';
                 }
 
-                await SalesController().finalizeSale(true, widget.sale.type!, widget.sale.addressId, methodSelected, num.parse(txtMoney.text));
-                LoginController().getTypeUser().then((typeUser) {
+                await SalesController.instance.finalizeSale(true, widget.sale.type!, widget.sale.addressId, methodSelected, num.parse(txtMoney.text));
+                LoginController.instance.getTypeUser().then((typeUser) {
                   setState(() {
                     globals.numberTable = null;
                     globals.totalSale = 0;

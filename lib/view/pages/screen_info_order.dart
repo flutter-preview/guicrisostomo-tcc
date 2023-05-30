@@ -55,7 +55,7 @@ class _ScreenInfoOrderState extends State<ScreenInfoOrder> {
   }
   
   Future<List<ProductsCartList>> getList() async {
-    return await ProductsCartController().list(orderSelect.id).then((value) {
+    return await ProductsCartController.instance.list(orderSelect.id).then((value) {
       return value;
     }).catchError((onError) {
       print(onError);
@@ -63,7 +63,7 @@ class _ScreenInfoOrderState extends State<ScreenInfoOrder> {
   }
 
   Future<Address> getAddress() async {
-    return await LoginController().getAddressId(orderSelect.addressId!).then((value) {
+    return await LoginController.instance.getAddressId(orderSelect.addressId!).then((value) {
       return value;
     }).catchError((onError) {
       print(onError);

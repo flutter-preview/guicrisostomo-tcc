@@ -78,7 +78,7 @@ class _BottomState extends State<Bottom> {
   }
 
   Future<bool> getListItemCurrent() async {
-    return await SalesController().idSale().then((value) async {
+    return await SalesController.instance.idSale().then((value) async {
       if (value != 0) {
         return await ProductsCartController().listItemCurrent(value).then((products) {
           return products.isNotEmpty;

@@ -23,7 +23,7 @@ class _ScreenProfileState extends State<ScreenProfile> {
   String? photoUser;
 
   Future<UserList> getUser() async {
-    return await LoginController().userLogin();
+    return await LoginController.instance.userLogin();
   }
 
   @override
@@ -162,7 +162,7 @@ class _ScreenProfileState extends State<ScreenProfile> {
                     trailing: Icon(Icons.arrow_right, size: 20, color: Colors.red,),
 
                     onTap: () => {
-                      LoginController().logout(context)
+                      LoginController.instance.logout(context)
                     },
                   ),
                 )

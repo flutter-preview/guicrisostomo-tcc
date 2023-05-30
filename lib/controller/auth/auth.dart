@@ -8,6 +8,9 @@ import 'package:tcc/model/User.dart';
 import 'package:tcc/view/widget/snackBars.dart';
       
 class LoginController {
+  static LoginController? _instance;
+  static LoginController get instance => _instance ?? LoginController();
+
   Future<String?> getTypeUser() async {
     final User? user = FirebaseAuth.instance.currentUser;
     

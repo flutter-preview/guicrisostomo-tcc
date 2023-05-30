@@ -11,6 +11,11 @@ import 'package:tcc/model/Variation.dart';
 import 'package:tcc/view/widget/snackBars.dart';
 
 class ProductsCartController {
+  static ProductsCartController? _instance;
+  static ProductsCartController get instance {
+    _instance ??= _instance = ProductsCartController();
+    return _instance!;
+  }
 
   Future<List<ProductsCartList>> list(int idSale) async {
     List<ProductsCartList> list = [];
@@ -20,7 +25,7 @@ class ProductsCartController {
 
       String querySelect = '';
 
-      await BusinessInformationController().getInfoCalcValue().then((value) {
+      await BusinessInformationController.instance.getInfoCalcValue().then((value) {
         value == false ?
           querySelect = '''
             SELECT i.id, i.id_product, p.name, i.qtd, p.id_variation, i.relation_id, i.text_variation, i.created_at, (
@@ -127,7 +132,7 @@ class ProductsCartController {
 
       String querySelect = '';
 
-      await BusinessInformationController().getInfoCalcValue().then((value) {
+      await BusinessInformationController.instance.getInfoCalcValue().then((value) {
         value == false ?
           querySelect = '''
             SELECT i.id, i.id_product, p.name, i.qtd, p.id_variation, i.relation_id, i.text_variation, i.created_at, (
@@ -622,7 +627,7 @@ class ProductsCartController {
   }
 
   Future<Map<bool, int>> getVariationItemPreSelected(BuildContext context, int itemVariationSelected, int idOrder) async {
-    return await ProductsCartController().getVariationItem(idOrder).then((value) {
+    return await ProductsCartController.instance.getVariationItem(idOrder).then((value) {
       if (itemVariationSelected != value && value != 0) {
         error(context, 'Não é possível adicionar produtos de variações diferentes no mesmo item');
         Navigator.pop(context);
@@ -653,7 +658,7 @@ class ProductsCartController {
     int limitVariation = -1;
     int limitProduct = -1;
     if (qtd == -1) {
-      await ProductsController().getLimitItemVariation(item.variation!.id!).then((limit) async {
+      await ProductsController.instance.getLimitItemVariation(item.variation!.id!).then((limit) async {
         limitVariation = limit;
 
         if (limitVariation == 0) {
@@ -662,11 +667,11 @@ class ProductsCartController {
       });
     }
 
-    await ProductsController().getLimitItemProduct(item.id).then((limit) async {
+    await ProductsController.instance.getLimitItemProduct(item.id).then((limit) async {
       limitProduct = limit;
     });
 
-    return await ProductsCartController().listItemCurrent(idOrder).then((value) {
+    return await ProductsCartController.instance.listItemCurrent(idOrder).then((value) {
       
       if (verifyItemEqual(context, item, value) == false) {
         return false;
@@ -697,7 +702,7 @@ class ProductsCartController {
   }
 
   Future<void> verifyItemSelected(BuildContext context, ProductItemList item) async {
-    await SalesController().idSale().then((idOrder) async {
+    await SalesController.instance.idSale().then((idOrder) async {
     
       int idItemVariationSelected = item.variation!.id!;
       await getVariationItemPreSelected(context, idItemVariationSelected, idOrder).then((value) async {

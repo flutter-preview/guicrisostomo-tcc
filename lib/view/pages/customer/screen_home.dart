@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tcc/controller/postgres/Lists/products.dart';
@@ -32,13 +31,13 @@ class _ScreenHomeState extends State<ScreenHome> {
   int idSale = 0;
 
   Future<List<ProductItemList>> getBestSellers() async {
-    return await ProductsController().productsBestSellesUser().then((value){
+    return await ProductsController.instance.productsBestSellesUser().then((value){
       return value;
     });
   }
 
   Future<Sales?> getSaleOnDemand() async {
-    return await SalesController().listSalesOnDemand().then((value){
+    return await SalesController.instance.listSalesOnDemand().then((value){
       
       if (value != null) {
         idSale = value.id;
@@ -182,7 +181,7 @@ class _ScreenHomeState extends State<ScreenHome> {
   }
 
   Future<List<ProductItemList>> getFavorities() async {
-    return await ProductsController().getProductsFavorites().then((value){
+    return await ProductsController.instance.getProductsFavorites().then((value){
       return value;
     });
   }

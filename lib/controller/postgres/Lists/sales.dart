@@ -6,6 +6,12 @@ import 'package:tcc/globals.dart' as globals;
 import 'package:tcc/model/Sales.dart';
 
 class SalesController {
+  static SalesController? _instance;
+  static SalesController get instance {
+    _instance ??= SalesController();
+    return _instance!;
+  }
+
   Future<int> add() async {
 
     return await connectSupadatabase().then((conn) async {
@@ -216,7 +222,7 @@ class SalesController {
   Future<List<num>> getTotal() async {
     return await connectSupadatabase().then((conn) async {
 
-      return await BusinessInformationController().getInfoCalcValue().then((value) async {
+      return await BusinessInformationController.instance.getInfoCalcValue().then((value) async {
         if (value == true || value == null) {
           return await conn.query('''
             SELECT SUM(MAX.MAX), COUNT(*) FROM (
@@ -237,7 +243,7 @@ class SalesController {
             if (value.isEmpty) {
               return [0, 0];
             } else {
-              if (value.first[0] == null) {
+              if (value.first[0] == null || value.first[1] == 0) {
                 return [0, 0];
               } else {
                 return [value.first[0], value.first[1]];
@@ -279,7 +285,7 @@ class SalesController {
   Future<List<num>> getTotalTable() async {
     return await connectSupadatabase().then((conn) async {
 
-      return await BusinessInformationController().getInfoCalcValue().then((value) async {
+      return await BusinessInformationController.instance.getInfoCalcValue().then((value) async {
         if (value == true || value == null) {
           return await conn.query('''
             SELECT SUM(MAX.MAX), COUNT(*) FROM (
@@ -340,7 +346,7 @@ class SalesController {
   Future<Sales?> listSalesOnDemand() async {
     return await connectSupadatabase().then((conn) async {
       return (globals.totalSale == 0) ?
-      await BusinessInformationController().getInfoCalcValue().then((value) async {
+      await BusinessInformationController.instance.getInfoCalcValue().then((value) async {
         if (value == true || value == null) {
           return await conn.query('''
             SELECT o.id, o.cnpj, o.datetime, uo.uid, coalesce(o.table_number, 0), o.type, (
@@ -527,7 +533,7 @@ class SalesController {
     }
     
     return await connectSupadatabase().then((conn) async {
-      await BusinessInformationController().getInfoCalcValue().then((value) {
+      await BusinessInformationController.instance.getInfoCalcValue().then((value) {
         if (value == true || value == null) {
           querySelect = '''
             SELECT o.id, o.cnpj, o.datetime, uo.uid, o.status, o.payment, o.type, o.change, o.observation, coalesce(o.table_number, 0), o.address,

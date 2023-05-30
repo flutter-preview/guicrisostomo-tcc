@@ -6,7 +6,6 @@ import 'package:tcc/main.dart';
 import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/button.dart';
-import 'package:tcc/view/widget/snackBars.dart';
 import 'package:tcc/view/widget/textFieldGeneral.dart';
 
 class ScreenRegisterBusiness extends StatefulWidget {
@@ -487,7 +486,7 @@ class _ScreenRegisterBusinessState extends State<ScreenRegisterBusiness> {
         child: button('Cadastrar', 0, 0, Icons.check, () async {
           if (formKey.currentState!.validate()) {
             Navigator.pushNamed(context, 'loading');
-            await LoginController().updateTypeUser('Gerente').then((value) async {
+            await LoginController.instance.updateTypeUser('Gerente').then((value) async {
 
               Navigator.pop(context);
               Navigator.pop(context);

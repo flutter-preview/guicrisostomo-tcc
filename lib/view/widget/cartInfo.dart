@@ -18,7 +18,7 @@ class _CartInfoState extends State<CartInfo> {
   num items = 0;
 
   Future<num> getInfo() async {
-    return await SalesController().getTotal().then((value) {
+    return await SalesController.instance.getTotal().then((value) {
       items = value[1];
       return value[0];
     });

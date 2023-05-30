@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:tcc/controller/postgres/Lists/sales.dart';
 import 'package:tcc/model/Sales.dart';
 import 'package:tcc/model/standardListDropDown.dart';
-import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigation.dart';
-import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/dropDownButton.dart';
 import 'package:tcc/globals.dart' as globals;
 import 'package:tcc/view/widget/listViewOrder.dart';
@@ -83,7 +81,7 @@ class _ScreenOrderState extends State<ScreenOrder> {
       dateStart = dateEnd = DateTime.now().toString();
     }
     
-    return await SalesController().getSales(cnpj, dateStart, dateEnd, buttonStatusSelected, globals.userType == 'employee').then((value) {
+    return await SalesController.instance.getSales(cnpj, dateStart, dateEnd, buttonStatusSelected, globals.userType == 'employee').then((value) {
       listSales = value;
       return value;
     });

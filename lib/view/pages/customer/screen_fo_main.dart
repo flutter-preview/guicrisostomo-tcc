@@ -32,7 +32,7 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
   );
 
   Future<String?> getTypeSale() async {
-    return await SalesController().listSalesOnDemand().then((value) {
+    return await SalesController.instance.listSalesOnDemand().then((value) {
       return value!.type;
     });
   }
@@ -74,7 +74,7 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
       FirebaseAuth.instance.currentUser!.isAnonymous ? isUserAnonymous = true : isUserAnonymous = false;
     });
 
-    LoginController().getPhoneNumberUser().then((value) {
+    LoginController.instance.getPhoneNumberUser().then((value) {
       if (value != null) {
         setState(() {
           hasPhoneNumber = true;
@@ -82,7 +82,7 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
       }
     });
 
-    LoginController().getPhoneNumberUser().then((value) {
+    LoginController.instance.getPhoneNumberUser().then((value) {
       if (value != null) {
         setState(() {
           hasPhoneNumber = true;
@@ -259,7 +259,7 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
                         button('Salvar', 170, 50, Icons.save, () {
                           if (txtPhone.text.isNotEmpty) {
                             int phone = int.parse(txtPhone.text.replaceAll('(', '').replaceAll(')', '').replaceAll('-', '').replaceAll(' ', ''));
-                            LoginController().savePhoneNumber(phone, context);
+                            LoginController.instance.savePhoneNumber(phone, context);
                           } else {
                             error(context, 'Informe um número de telefone válido.');
                           }
@@ -326,7 +326,7 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
                     setState(() {
                       globals.isSelectNewItem = false;
                     });
-                    await ProductsCartController().clearItemsOnDemand();
+                    await ProductsCartController.instance.clearItemsOnDemand();
                   },
                   child: const Text(
                     'Sim',
@@ -365,9 +365,9 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
               type != 'Mesa' ? Icons.arrow_forward : Icons.check,
               () {
                 if (type == 'Mesa') {
-                  SalesController().finalizeSale(hasCloseTable).whenComplete(() {
+                  SalesController.instance.finalizeSale(hasCloseTable).whenComplete(() {
 
-                    LoginController().getTypeUser().then((typeUser) {
+                    LoginController.instance.getTypeUser().then((typeUser) {
                       if (hasCloseTable) {
                         setState(() {
                           globals.numberTable = null;

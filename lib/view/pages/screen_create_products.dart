@@ -134,7 +134,7 @@ class _ScreenCreateProductsState extends State<ScreenCreateProducts> {
 
                 if (formKey.currentState!.validate()) {
         
-                  ProductsController().add(txtName.text, num.parse(txtPrice.text.replaceFirst(',', '.')), txtDescription.text, categorySelected, sizeSelected, txtUrlImage.text);
+                  ProductsController.instance.add(txtName.text, num.parse(txtPrice.text.replaceFirst(',', '.')), txtDescription.text, categorySelected, sizeSelected, txtUrlImage.text);
 
                 } else {
                   setState(() {

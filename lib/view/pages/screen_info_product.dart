@@ -77,7 +77,7 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
   Future<ProductItemList> getProduct([bool isNull = false]) async {
     if (argument.runtimeType == int || isNull) {
       int idProduct = argument as int;
-      return await ProductsController().getProduct(idProduct).then((value) {
+      return await ProductsController.instance.getProduct(idProduct).then((value) {
         return value;
       });
     } else {
@@ -86,7 +86,7 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
   }
 
   Future<List<ProductItemList>> getListVariations() async {
-    return await ProductsController().getAllProductsVariations(nameProduct, categoryProduct).then((value) {
+    return await ProductsController.instance.getAllProductsVariations(nameProduct, categoryProduct).then((value) {
       return value;
     });
   }
@@ -100,7 +100,7 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
       return commentsProduct;
     }
 
-    return await ProductsController().getCommentsProductUser(productSelect!.name, productSelect!.variation!.category);
+    return await ProductsController.instance.getCommentsProductUser(productSelect!.name, productSelect!.variation!.category);
   }
 
   Future<Widget> getListComments() async {
@@ -119,7 +119,7 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
       return '';
     }
 
-    return await ProductsController().getProductLastSale(productSelect!.name, productSelect!.variation!.category).then((value) {
+    return await ProductsController.instance.getProductLastSale(productSelect!.name, productSelect!.variation!.category).then((value) {
       if (value == null) {
         return 'nunca';
       }
@@ -204,7 +204,7 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
                       
                           IconButton(
                             onPressed: () async {
-                              await ProductsController().setProductFavorite(idProduct, isFavorite).then((value) {
+                              await ProductsController.instance.setProductFavorite(idProduct, isFavorite).then((value) {
                                 setState(() {
                                   isFavorite = !isFavorite;
                                 });
@@ -350,7 +350,7 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
                       },
 
                       eventPressIconSuffix: () async {
-                        await ProductsController().addCommentProductUser(productSelect!.id, FirebaseAuth.instance.currentUser!.uid, txtComment.text);
+                        await ProductsController.instance.addCommentProductUser(productSelect!.id, FirebaseAuth.instance.currentUser!.uid, txtComment.text);
                         setState(() {
                           getCommentsProductUser();
                         });

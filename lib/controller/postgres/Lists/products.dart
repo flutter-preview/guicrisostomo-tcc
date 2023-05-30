@@ -6,6 +6,12 @@ import 'package:tcc/globals.dart' as globals;
 import 'package:tcc/model/Variation.dart';
 
 class ProductsController {
+  static ProductsController? _instance;
+  static ProductsController get instance {
+    if (_instance == null) _instance = ProductsController();
+    return _instance!;
+  }
+
   Future<int> getIdVariation(String category, String size) async {
     return await connectSupadatabase().then((conn) async {
       

@@ -24,9 +24,9 @@ class _ScreenCartState extends State<ScreenCart> {
   
   double get largura => MediaQuery.of(context).size.width;
   Future<void> getList() async {
-    await SalesController().idSale().then((value) async {
+    await SalesController.instance.idSale().then((value) async {
       idSale = value;
-      await ProductsCartController().list(idSale).then((value) {
+      await ProductsCartController.instance.list(idSale).then((value) {
         list = value;
       }).catchError((onError) {
         print(onError);
@@ -121,7 +121,7 @@ class _ScreenCartState extends State<ScreenCart> {
                     ),
                     TextButton(
                       onPressed: () async => {
-                        await ProductsCartController().clearCart(idSale),
+                        await ProductsCartController.instance.clearCart(idSale),
                         Navigator.pop(context),
                         setState(() {}),
                       },

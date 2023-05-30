@@ -34,9 +34,9 @@ class _ScreenCallWaiterState extends State<ScreenCallWaiter> {
   int idSale = 0;
 
   Future<void> getInfoTable() async {
-    await SalesController().listSalesOnDemand().then((value) {
+    await SalesController.instance.listSalesOnDemand().then((value) {
       if (value == null) {
-        SalesController().add().then((value) => getInfoTable());
+        SalesController.instance.add().then((value) => getInfoTable());
       } else {
         setState(() {
           idSale = value.id;
@@ -44,7 +44,7 @@ class _ScreenCallWaiterState extends State<ScreenCallWaiter> {
         });
       }
     }).then((value) {
-      ProductsCartController().listTable(idSale).then((value) {
+      ProductsCartController.instance.listTable(idSale).then((value) {
         setState(() {
           list = value;
         });
@@ -53,7 +53,7 @@ class _ScreenCallWaiterState extends State<ScreenCallWaiter> {
   }
 
   Future<num> getTotalTable() async {
-    return await SalesController().getTotalTable().then((value) {
+    return await SalesController.instance.getTotalTable().then((value) {
       return value[0];
     });
   }
@@ -94,17 +94,17 @@ class _ScreenCallWaiterState extends State<ScreenCallWaiter> {
             const SizedBox(height: 30),
 
             button('Chamar garçom', 300, 50, Icons.person, () {
-              TablesController().callWaiter(context, idSale);
+              TablesController.instance.callWaiter(context, idSale);
             }),
 
             const SizedBox(height: 30),
 
             button('Desvincular da mesa', 300, 50, Icons.close, () async {
-              await SalesController().removeRelationUserOrder(idSale).then((value) async {
+              await SalesController.instance.removeRelationUserOrder(idSale).then((value) async {
                 setState(() {
                   globals.numberTable = null;
                 });
-                await SalesController().idSale().then((value) {
+                await SalesController.instance.idSale().then((value) {
                   setState(() {
                     idSale = value;
                   });
@@ -196,7 +196,7 @@ class _ScreenCallWaiterState extends State<ScreenCallWaiter> {
           [Padding(
             padding: const EdgeInsets.all(20),
             child: button('Fechar mesa', 300, 50, Icons.check, () {
-              SalesController().finalizeSale();
+              SalesController.instance.finalizeSale();
               Navigator.pop(context);
               Navigator.push(context, navigator('home'));
             }),

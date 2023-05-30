@@ -35,7 +35,7 @@ class _ScreenInfoItemState extends State<ScreenInfoItem> {
       List<Widget> list = [];
       String textPizzas = '';
 
-      await ProductsCartController().getProductsIdRelation(idRelative, idVariation).then((value) {
+      await ProductsCartController.instance.getProductsIdRelation(idRelative, idVariation).then((value) {
         if (variation.category == 'Pizzas') {
           value.forEach((element) {
             textPizzas += '${element.name!.toLowerCase()} meia ';
@@ -72,8 +72,8 @@ class _ScreenInfoItemState extends State<ScreenInfoItem> {
                 color: Colors.red,
                 onPressed: () async {
                   
-                    // ProductsCartController().deleteProduct(item.id!);
-                  await ProductsCartController().deleteItem(item.id!, context);
+                    // ProductsCartController.instance.deleteProduct(item.id!);
+                  await ProductsCartController.instance.deleteItem(item.id!, context);
                   setState(() {
                     value.removeAt(value.indexOf(item));
 
@@ -120,7 +120,7 @@ class _ScreenInfoItemState extends State<ScreenInfoItem> {
                     color: Colors.red,
                     onPressed: () {
                       setState(() {
-                        // ProductsCartController().deleteProduct(item.id!);
+                        // ProductsCartController.instance.deleteProduct(item.id!);
                       });
                     },
                   )
@@ -151,7 +151,7 @@ class _ScreenInfoItemState extends State<ScreenInfoItem> {
 
     Future<Widget> getItemsIdRelation() async {
       List<Widget> list = [];
-      await ProductsCartController().getVariationItemRelation(idRelative).then((value) {
+      await ProductsCartController.instance.getVariationItemRelation(idRelative).then((value) {
         for (var item in value) {
           list.add(
             item.idSubVariation == 0 ?

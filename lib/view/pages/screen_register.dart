@@ -46,7 +46,7 @@ class _ScreenRegisterState extends State<ScreenRegister> {
     void register() {
       if (formKey.currentState!.validate()) {
         
-        LoginController().createAccount(context, txtName.text, txtEmail.text, txtPhone.text, txtPassword.text);
+        LoginController.instance.createAccount(context, txtName.text, txtEmail.text, txtPhone.text, txtPassword.text);
 
       } else {
         setState(() {
@@ -168,7 +168,7 @@ class _ScreenRegisterState extends State<ScreenRegister> {
               const SizedBox(height: 20,),
 
               button('Entrar com Google', MediaQuery.of(context).size.width - 100, 0, null, () {
-                LoginController().signIn(context);
+                LoginController.instance.signIn(context);
               }, true, 24, null, 'lib/images/google_logo.png'),
 
               const SizedBox(height: 50,),

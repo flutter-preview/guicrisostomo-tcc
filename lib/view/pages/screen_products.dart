@@ -26,7 +26,7 @@ class _ScreenProductsState extends State<ScreenProducts> {
   var txtProd = TextEditingController();
 
   Future<List<ProductItemList>> getProduct(category, size) async {
-    return await ProductsController().list(category, size, txtProd.text).then((value) {
+    return await ProductsController.instance.list(category, size, txtProd.text).then((value) {
       return value;
     });
   } 
@@ -34,13 +34,13 @@ class _ScreenProductsState extends State<ScreenProducts> {
   Future<List<String>> getCategories() async {
     globals.sizesCategoryBusiness = [];
 
-    return await ProductsController().listCategories().then((value) {
+    return await ProductsController.instance.listCategories().then((value) {
       return value;
     });
   }
 
   Future<List<String>> getSize() async {
-    return await ProductsController().listSizes(globals.categorySelected).then((value) {
+    return await ProductsController.instance.listSizes(globals.categorySelected).then((value) {
       return value;
     });
   }

@@ -32,7 +32,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
 
   void logIn() {
     if (formKey.currentState!.validate()) {
-      LoginController().login(context, txtEmail.text, txtPassword.text);
+      LoginController.instance.login(context, txtEmail.text, txtPassword.text);
     } else {
       setState(() {
         autoValidation = true;
@@ -125,7 +125,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
               const SizedBox(height: 20,),
 
               button('Entrar com Google', MediaQuery.of(context).size.width - 100, 0, null, () {
-                LoginController().signIn(context);
+                LoginController.instance.signIn(context);
               }, true, 24, null, 'lib/images/google_logo.png'),
               
               const SizedBox(height: 50,),

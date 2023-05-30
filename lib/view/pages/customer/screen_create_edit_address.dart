@@ -148,7 +148,7 @@ class _ScreenCreateEditAddressState extends State<ScreenCreateEditAddress> {
             button(widget.addressSelected != null ? 'Salvar' : 'Cadastrar', 170, 70, Icons.save, () async => {
               if (formKeyAddress.currentState!.validate()) {
                 if (widget.addressSelected != null) {
-                  await LoginController().updateAddress(
+                  await LoginController.instance.updateAddress(
                     context,
                     widget.addressSelected!,
                     txtAddress.text,
@@ -164,7 +164,7 @@ class _ScreenCreateEditAddressState extends State<ScreenCreateEditAddress> {
                   
                   Navigator.pop(context),
                 } else {
-                  await LoginController().insertAddress(
+                  await LoginController.instance.insertAddress(
                     context,
                     txtAddress.text,
                     txtNeighborhood.text,

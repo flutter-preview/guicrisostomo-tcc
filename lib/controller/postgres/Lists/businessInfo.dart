@@ -3,6 +3,12 @@ import 'package:tcc/globals.dart' as globals;
 import 'package:tcc/model/Business.dart';
 
 class BusinessInformationController {
+  static BusinessInformationController? _instance;
+  static BusinessInformationController get instance {
+    if (_instance == null) _instance = BusinessInformationController();
+    return _instance!;
+  }
+  
   Future<bool?> getInfoCalcValue() async {
     return await connectSupadatabase().then((conn) async {
       
