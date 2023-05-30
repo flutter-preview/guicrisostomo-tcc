@@ -51,8 +51,6 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
     });
   }
 
-  Timer? timer;
-
   num mediaStar = 3.50;
 
   @override
@@ -72,7 +70,6 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
           if (receivedAction.buttonKeyPressed == '0') {
             print('Atender');
           } else {
-            timer!.cancel();
             showDialog(
               context: context,
               builder: (context) => AlertDialog(
@@ -102,13 +99,7 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
       onNotificationCreatedMethod:    NotificationController.onNotificationCreatedMethod,
       onNotificationDisplayedMethod:  NotificationController.onNotificationDisplayedMethod,
       onDismissActionReceivedMethod:  NotificationController.onDismissActionReceivedMethod
-  );
-  }
-
-  @override
-  void dispose() {
-    timer?.cancel();
-    super.dispose();
+    );
   }
   
   @override
