@@ -81,6 +81,9 @@ class _ScreenLoginState extends State<ScreenLogin> {
                 },
 
                 onFieldSubmitted: (value) => {
+                  setState(() {
+                    
+                  }),
                   logIn()
                 },
 
