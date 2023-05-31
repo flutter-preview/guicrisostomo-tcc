@@ -100,7 +100,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
 
     if (idProduct != 0) {
       ProductsCartController.instance.verifyItemSelected(context, productSelect).whenComplete(() {
-        
+        GoRouter.of(context).pop();
       });
     }
 
@@ -113,8 +113,6 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
     urlImageProduct = productSelect.linkImage;
     variation = productSelect.variation!;
     idVariation = variation.id ?? 0;
-
-    GoRouter.of(context).pop();
   }
 
   void resetSubTotal() {
