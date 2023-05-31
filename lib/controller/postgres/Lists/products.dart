@@ -90,7 +90,7 @@ class ProductsController {
     return await connectSupadatabase().then((conn) async {
       return await conn.query(
         '''
-        SELECT p.id, p.name, p.price, p.description, p.linkImage, v.category, v.size, p.id_variation, v.limit_items, COALESCE(
+        SELECT p.id, p.name, p.price, p.description, p.link_image, v.category, v.size, p.id_variation, v.limit_items, COALESCE(
           (SELECT f.id
             FROM favorites f 
             WHERE f.id_product = p.id AND f.uid = @uid
@@ -203,7 +203,7 @@ class ProductsController {
     return await connectSupadatabase().then((conn) async {
       
       return await conn.query('''
-          SELECT p.id, p.name, p.price, p.description, p.linkImage, v.category, v.size, p.id_variation, v.limit_items, COALESCE(
+          SELECT p.id, p.name, p.price, p.description, p.link_image, v.category, v.size, p.id_variation, v.limit_items, COALESCE(
           (SELECT f.id
             FROM favorites f 
             WHERE f.id_product = p.id AND f.uid = @uid
@@ -371,7 +371,7 @@ class ProductsController {
   Future<ProductItemList> getProduct(int id) async {
     return await connectSupadatabase().then((conn) async {
       return await conn.query('''
-        SELECT p.id, p.name, p.price, p.description, p.linkImage, v.category, v.size, v.id, v.limit_items, COALESCE(
+        SELECT p.id, p.name, p.price, p.description, p.link_image, v.category, v.size, v.id, v.limit_items, COALESCE(
           (SELECT f.id
             FROM favorites f 
             WHERE f.id_product = p.id AND f.uid = @uid
@@ -428,7 +428,7 @@ class ProductsController {
         '''
           SELECT t.* FROM 
           (
-            SELECT distinct on (p.id) p.id, p.name, p.price, p.id_variation, v.category, v.size, p.description, p.linkImage, COALESCE(
+            SELECT distinct on (p.id) p.id, p.name, p.price, p.id_variation, v.category, v.size, p.description, p.link_image, COALESCE(
               (SELECT f.id
                 FROM favorites f 
                 WHERE f.id_product = p.id AND f.uid = @uid
@@ -513,7 +513,7 @@ class ProductsController {
   Future<List<ProductItemList>> getProductsFavorites() async {
     return await connectSupadatabase().then((conn) async {
       return await conn.query('''
-        SELECT p.id, p.name, p.price, p.id_variation, v.category, v.size, p.description, p.linkImage, COALESCE(
+        SELECT p.id, p.name, p.price, p.id_variation, v.category, v.size, p.description, p.link_image, COALESCE(
           (SELECT f.id
             FROM favorites f 
             WHERE f.id_product = p.id AND f.uid = @uid
