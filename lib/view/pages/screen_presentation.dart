@@ -18,60 +18,6 @@ class ScreenPresentation extends StatefulWidget {
 class _ScreenPresentationState extends State<ScreenPresentation> {
   final String imgPresentation = 'lib/images/imgPresentation.svg';
 
-  Future<bool> isDataBaseRunning() async {
-    bool isRunning = false;
-
-    await connectSupadatabase().then((value) {
-      isRunning = true;
-    }).catchError((onError) {
-      isRunning = false;
-    });
-
-    return isRunning;
-  }
-
-  verifiyUserAuth(BuildContext context) {
-    FirebaseAuth auth = FirebaseAuth.instance;
-    User? user = auth.currentUser;
-    
-    if (user != null) {
-      if (user.emailVerified == false) {
-        GoRouter.of(context).go('/verify_email');
-        isDataBaseRunning().then((value) {
-          if (!value) {
-            GoRouter.of(context).go('/error');
-          }
-        });
-      } else {
-        LoginController().getTypeUser().then((value) {
-          if (value == 'Cliente') {
-            GoRouter.of(context).go('/home');
-          } else if (value == 'Gerente') {
-            GoRouter.of(context).go('/home_manager');
-          } else {
-            GoRouter.of(context).go('/home_employee');
-          }
-        }).catchError((onError) {
-          GoRouter.of(context).go('/error');
-        });
-      }
-    } else {
-      isDataBaseRunning().then((value) {
-        if (!value) {
-          GoRouter.of(context).go('/error');
-        }
-      });
-    }
-  }
-
-  @override
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      verifiyUserAuth(context);
-    });
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

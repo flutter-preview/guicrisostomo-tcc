@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tcc/controller/auth/auth.dart';
+import 'package:tcc/controller/postgres/utils.dart';
 import 'package:tcc/model/Address.dart';
 import 'package:tcc/model/Sales.dart';
 import 'package:tcc/model/standardSlideShow.dart';
@@ -54,8 +57,62 @@ import 'package:tcc/view/pages/screen_verification_table.dart';
 import 'package:tcc/view/pages/screen_verify_email.dart';
 
 class Routers {
-  static GoRouter returnRouter() {
+  
+  static Future<GoRouter> returnRouter() async {
+
+    Future<bool> isDataBaseRunning() async {
+      bool isRunning = false;
+
+      await connectSupadatabase().then((value) {
+        isRunning = true;
+      }).catchError((onError) {
+        isRunning = false;
+      });
+
+      return isRunning;
+    }
+
+    Future<String> verifiyUserAuth() async {
+      FirebaseAuth auth = FirebaseAuth.instance;
+      User? user = auth.currentUser;
+      
+      if (user != null) {
+        if (user.emailVerified == false) {
+
+          return await isDataBaseRunning().then((value) {
+            if (!value) {
+              return '/error';
+            } else {
+              return '/verify_email';
+            }
+          });
+
+        } else {
+          return await LoginController.instance.getTypeUser().then((value) {
+            if (value == 'Cliente') {
+              return '/home';
+            } else if (value == 'Gerente') {
+              return '/home_manager';
+            } else {
+              return '/home_employee';
+            }
+          }).catchError((onError) {
+            return '/error';
+          });
+        }
+      } else {
+        return await isDataBaseRunning().then((value) {
+          if (!value) {
+            return '/error';
+          } else {
+            return '/';
+          }
+        });
+      }
+    }
+    
     final GoRouter router = GoRouter(
+      initialLocation: await verifiyUserAuth(),
       routes: <RouteBase>[
         GoRoute(
           path: '/error',

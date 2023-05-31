@@ -38,7 +38,7 @@ Future<void> main() async {
 
       theme: ThemeData(scaffoldBackgroundColor: const Color.fromRGBO(252, 252, 252, 1)),
       
-      routerConfig: Routers.returnRouter(),
+      routerConfig: await Routers.returnRouter(),
     ),
   );
 
