@@ -736,7 +736,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
           child: ElevatedButton(
             onPressed: () async {
               if (formKey.currentState!.validate() && subTotal != 0) {
-                GoRouter.of(context).go('/loading');
+                GoRouter.of(context).push('/loading');
                 
                 bool verification = false;
 
