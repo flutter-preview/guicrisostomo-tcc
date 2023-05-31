@@ -170,7 +170,7 @@ class _ProductItemState extends State<ProductItem> {
                             setState(() {
                               item.isFavorite = !item.isFavorite;
                             });
-                            await ProductsController().setProductFavorite(idItem, isFavorite).then((value) {
+                            await ProductsController.instance.setProductFavorite(idItem, isFavorite).then((value) {
                               success(context, 'Produto ${item.isFavorite ? 'adicionado' : 'removido'} dos favoritos com sucesso!');
                             });
                           }, 

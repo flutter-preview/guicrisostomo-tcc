@@ -435,23 +435,27 @@ class LoginController {
           // insert.query('insert into user (uid, name, email, phone, type, image) values (?, ?, ?, ?, ?, ?)',
           //   [value.user?.uid, value.user?.displayName, value.user?.email, null, 1, value.user?.photoURL]);
         },);
-
+      
+        GoRouter.of(context).pop();
         GoRouter.of(context).go('/home');
 
         return;
       } else {
         if (isUserAlreajyExist == true) {
-          await LoginController().updateUser(FirebaseAuth.instance.currentUser?.uid, value.user?.displayName, value.user?.email, FirebaseAuth.instance.currentUser?.phoneNumber?.replaceAll('+55', ''), context);
+          await LoginController.instance.updateUser(FirebaseAuth.instance.currentUser?.uid, value.user?.displayName, value.user?.email, FirebaseAuth.instance.currentUser?.phoneNumber?.replaceAll('+55', ''), context);
         }
 
         switch (typeUser) {
           case 'Cliente':
+            GoRouter.of(context).pop();
             GoRouter.of(context).go('/home');
             break;
           case 'Gerente':
+            GoRouter.of(context).pop();
             GoRouter.of(context).go('/home_manager');
             break;
           default:
+            GoRouter.of(context).pop();
             GoRouter.of(context).go('/home_employee');
             break;
         }

@@ -38,7 +38,7 @@ class ScreenError extends StatelessWidget {
               button('Tentar novamente', 0, 0, Icons.refresh, () async {
                 GoRouter.of(context).go('/loading');
 
-                await LoginController().getTypeUser().then((value) {
+                await LoginController.instance.getTypeUser().then((value) {
                   if (value == 'Cliente') {
                     
                     GoRouter.of(context).go('/home');

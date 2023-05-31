@@ -80,7 +80,7 @@ class _BottomState extends State<Bottom> {
   Future<bool> getListItemCurrent() async {
     return await SalesController.instance.idSale().then((value) async {
       if (value != 0) {
-        return await ProductsCartController().listItemCurrent(value).then((products) {
+        return await ProductsCartController.instance.listItemCurrent(value).then((products) {
           return products.isNotEmpty;
         });
       } else {
@@ -99,7 +99,7 @@ class _BottomState extends State<Bottom> {
     });
 
     if (globals.numberTable == null) {
-      TablesController().userVinculatedToTable().then((value) {
+      TablesController.instance.userVinculatedToTable().then((value) {
         if (value != 0) {
           setState(() {
             globals.numberTable = value;

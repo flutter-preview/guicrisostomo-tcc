@@ -105,7 +105,7 @@ class _ScreenMoreOptionState extends State<ScreenMoreOption> {
                 trailing: const Icon(Icons.arrow_right, size: 20),
 
                 onTap: () => {
-                  LoginController().logout(context)
+                  LoginController.instance.logout(context)
                 },
               ),
             ),

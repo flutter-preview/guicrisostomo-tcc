@@ -102,7 +102,7 @@ class _ProductsCartState extends State<ProductsCart> {
                                     const SizedBox(width: 10,),
                                     ElevatedButton(
                                       onPressed: () {
-                                        ProductsCartController().deleteItem(
+                                        ProductsCartController.instance.deleteItem(
                                           idItem!, context, true
                                         );
 
@@ -255,12 +255,12 @@ class _ProductsCartState extends State<ProductsCart> {
                   //           //             if (txtQtd.text.isNotEmpty) {
                   //           //               int idSale = 0;
         
-                  //           //               await SalesController().idSale().then((res) async {
+                  //           //               await SalesController.instance.idSale().then((res) async {
                   //           //                 idSale = res;
         
-                  //           //                 await SalesController().getTotal().then((res){
-                  //           //                   // SalesController().updateTotal(idSale, (res - subTotal) + (num.parse(price.toString()) * int.parse(txtQtd.text)));
-                  //           //                   ProductsCartController().update(idItem!, int.parse(txtQtd.text),);
+                  //           //                 await SalesController.instance.getTotal().then((res){
+                  //           //                   // SalesController.instance.updateTotal(idSale, (res - subTotal) + (num.parse(price.toString()) * int.parse(txtQtd.text)));
+                  //           //                   ProductsCartController.instance.update(idItem!, int.parse(txtQtd.text),);
         
                   //           //                   
                                               
@@ -317,7 +317,7 @@ class _ProductsCartState extends State<ProductsCart> {
                             
                             
                   //           onPressed: () {
-                  //             ProductsCartController().deleteItem(
+                  //             ProductsCartController.instance.deleteItem(
                   //               // dados.docs[index].id,
                   //               idItem!, context, true
                   //             );

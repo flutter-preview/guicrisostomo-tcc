@@ -72,7 +72,7 @@ class _ScreenPresentationState extends State<ScreenPresentation> {
                 Center(
                   child: button('Continuar sem logar', MediaQuery.of(context).size.width - 100, 50, Icons.arrow_forward, () async {
                     await LoginController.instance.signInAnonymously(context).whenComplete(() {
-                      
+                      FirebaseAuth.instance.currentUser!.reload();
                       GoRouter.of(context).go('/home');
                     });
                   }, false),

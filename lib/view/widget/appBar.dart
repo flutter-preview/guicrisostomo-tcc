@@ -51,7 +51,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                   size: 30,
                 ),
               onPressed: () {
-                LoginController().logout(context);
+                LoginController.instance.logout(context);
               },
             ),
           ),

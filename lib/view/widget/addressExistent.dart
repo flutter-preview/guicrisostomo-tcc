@@ -23,7 +23,7 @@ class _AddressExistentState extends State<AddressExistent> {
   List<Address> listAddress = [];
 
   Future<List<Address>> getAddress() async {
-    return await LoginController().getAddress();
+    return await LoginController.instance.getAddress();
   }
 
   Widget newAddress() {
@@ -140,7 +140,7 @@ class _AddressExistentState extends State<AddressExistent> {
                                               IconButton(
                                                 onPressed: () {
                                                   setState(() {
-                                                    LoginController().deleteAddress(listAddress[i].id);
+                                                    LoginController.instance.deleteAddress(listAddress[i].id);
                                                     listAddress.removeAt(i);
                                                     groupLocals = listAddress[0].nickname;
                                                   });

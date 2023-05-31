@@ -121,7 +121,7 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                   IconButton(
                     icon: const Icon(Icons.logout),
                     onPressed: () => {
-                      LoginController().logout(context),
+                      LoginController.instance.logout(context),
                     },
                   )
                 ],
