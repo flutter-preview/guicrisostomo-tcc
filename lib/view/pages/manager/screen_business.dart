@@ -186,7 +186,7 @@ class _ScreenBusinessState extends State<ScreenBusiness> {
             const SizedBox(height: 20),
 
             button('Salvar', 170, 70, Icons.save, () {
-              Navigator.pop(context);
+              
             })
           ]
         ),

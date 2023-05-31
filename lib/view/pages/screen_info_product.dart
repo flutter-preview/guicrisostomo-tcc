@@ -194,7 +194,7 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
                           Flexible(
                             child: Text(
                               nameProduct,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 26,
                                 fontWeight: FontWeight.w700,

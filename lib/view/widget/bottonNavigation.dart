@@ -26,13 +26,13 @@ class _BottomState extends State<Bottom> {
       ),
 
       onPressed: () {
-        Navigator.pop(context);
+        
         GoRouter.of(context).go('/products/add_product', extra: ProductItemList(id: 0, name: '', description: '', linkImage: null, price: 0, variation: Variation(), isFavorite: false,));
       },
-      child: Row(
+      child: const Row(
         mainAxisSize: MainAxisSize.min,
         
-        children: const [
+        children: [
           Icon(
             Icons.close,
             size: 15,
@@ -74,7 +74,7 @@ class _BottomState extends State<Bottom> {
           cancelSelection(),
         ],
       )
-    ) : CartInfo();
+    ) : const CartInfo();
   }
 
   Future<bool> getListItemCurrent() async {
@@ -120,7 +120,7 @@ class _BottomState extends State<Bottom> {
         
         globals.globalSelectedIndexBotton == 2 ? 
           selectNewItem() 
-          : CartInfo(),
+          : const CartInfo(),
         
         Container(
           decoration: BoxDecoration(
@@ -186,7 +186,6 @@ class _BottomState extends State<Bottom> {
             onTap: (int index) {
               switch (index) {
                 case 0:
-                  Navigator.of(context).pop();
                   if (globals.userType == 'manager') {
                     GoRouter.of(context).go('/home_manager');
                     break;
@@ -198,12 +197,10 @@ class _BottomState extends State<Bottom> {
                     break;
                   }
                 case 1:
-                  Navigator.of(context).pop();
                   // Navigator.pushNamed(context, 'order');
                   GoRouter.of(context).go('/order');
                   break;
                 case 2:
-                  Navigator.of(context).pop();
                   if (globals.userType == 'manager') {
                     GoRouter.of(context).go('/list_products');
                     break;
@@ -215,25 +212,20 @@ class _BottomState extends State<Bottom> {
                 case 3:
                   globals.userType == 'customer' ?
                     globals.numberTable != null ? {
-                      Navigator.of(context).pop(),
                       GoRouter.of(context).go('/waiter')
                     } : {
-                    Navigator.of(context).pop(),
                     GoRouter.of(context).go('/table')
                   } : {
                   
                     if (globals.numberTable != null) {
-                      Navigator.of(context).pop(),
                       GoRouter.of(context).go('/waiter')
                     } else {
-                      Navigator.of(context).pop(),
                       GoRouter.of(context).go('/table_manager')
                     }
                   };
 
                   break;
                 case 4:
-                  Navigator.of(context).pop();
                   
                   if (globals.userType == 'manager') {
                     GoRouter.of(context).go('/more');

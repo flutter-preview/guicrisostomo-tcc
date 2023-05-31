@@ -48,7 +48,7 @@ class _ScreenSmartphoneEmployeeState extends State<ScreenSmartphoneEmployee> {
             const SizedBox(height: 20),
 
             button('Avançar', 150, 70, Icons.arrow_forward_ios, () {
-              Navigator.pop(context);
+              
               GoRouter.of(context).go('/employee/work_time', extra: widget.id);
             }, false),
             ListView.builder(
@@ -125,11 +125,11 @@ class _ScreenSmartphoneEmployeeState extends State<ScreenSmartphoneEmployee> {
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         button('Cancelar', 150, 70, Icons.cancel, () {
-                          Navigator.pop(context);
+                          
                         }),
                         const SizedBox(width: 20),
                         button('Adicionar', 150, 70, Icons.add, () {
-                          Navigator.pop(context);
+                          
                         }),
                       ],
                     )

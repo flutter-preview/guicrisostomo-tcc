@@ -110,7 +110,7 @@ class _ScreenCallWaiterState extends State<ScreenCallWaiter> {
                   });
                 });
 
-                Navigator.pop(context);
+                
                 success(context, 'Desvinculado com sucesso');
                 GoRouter.of(context).go('/table');
               });
@@ -119,7 +119,7 @@ class _ScreenCallWaiterState extends State<ScreenCallWaiter> {
             const SizedBox(height: 20),
 
             button('Fazer novo pedido', 300, 50, Icons.add_shopping_cart_rounded, () {
-              Navigator.pop(context);
+              
               GoRouter.of(context).go('/products');
             }),
 
@@ -197,7 +197,7 @@ class _ScreenCallWaiterState extends State<ScreenCallWaiter> {
             padding: const EdgeInsets.all(20),
             child: button('Fechar mesa', 300, 50, Icons.check, () {
               SalesController.instance.finalizeSale();
-              Navigator.pop(context);
+              
               GoRouter.of(context).go('/home');
             }),
           ),

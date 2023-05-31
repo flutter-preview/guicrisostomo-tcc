@@ -82,10 +82,10 @@ class _ProductsCartState extends State<ProductsCart> {
                                   children: [
                                     ElevatedButton(
                                       onPressed: () {
-                                        Navigator.pop(context);
+                                        
                                       },
                                       style: ElevatedButton.styleFrom(
-                                        primary: Colors.white,
+                                        backgroundColor: Colors.white,
                                         elevation: 0,
                                         side: BorderSide(
                                           color: Colors.black,
@@ -109,10 +109,10 @@ class _ProductsCartState extends State<ProductsCart> {
                                         setState(() {
                                           widget.product.removeAt(index);
                                         });
-                                        Navigator.pop(context);
+                                        
                                       },
                                       style: ElevatedButton.styleFrom(
-                                        primary: Colors.white,
+                                        backgroundColor: Colors.white,
                                         elevation: 0,
                                         side: BorderSide(
                                           color: Colors.black,
@@ -236,7 +236,7 @@ class _ProductsCartState extends State<ProductsCart> {
                   //           //             minimumSize: Size(120, 50),
                   //           //           ),
                   //           //           onPressed: () {
-                  //           //             Navigator.pop(context);
+                  //           //             
                   //           //           },
                   //           //           child: Text(
                   //           //             'Cancelar',
@@ -262,7 +262,7 @@ class _ProductsCartState extends State<ProductsCart> {
                   //           //                   // SalesController().updateTotal(idSale, (res - subTotal) + (num.parse(price.toString()) * int.parse(txtQtd.text)));
                   //           //                   ProductsCartController().update(idItem!, int.parse(txtQtd.text),);
         
-                  //           //                   Navigator.pop(context);
+                  //           //                   
                                               
                   //           //                   success(context, 'Quantidade atualizada com sucesso.');
                   //           //                 }).catchError((e){

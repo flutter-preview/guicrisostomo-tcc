@@ -81,13 +81,13 @@ class _ScreenListSizeState extends State<ScreenListSize> {
                               actions: [
                                 TextButton(
                                   onPressed: () {
-                                    Navigator.pop(context);
+                                    
                                   }, 
                                   child: const Text('Não')
                                 ),
                                 TextButton(
                                   onPressed: () {
-                                    Navigator.pop(context);
+                                    
                                   }, 
                                   child: const Text('Sim')
                                 ),

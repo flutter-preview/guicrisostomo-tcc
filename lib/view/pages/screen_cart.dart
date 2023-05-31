@@ -92,7 +92,7 @@ class _ScreenCartState extends State<ScreenCart> {
                 0,
                 Icons.arrow_forward_ios,
                 () {
-                  Navigator.pop(context);
+                  
                   GoRouter.of(context).go('/finalize_order_customer');
                 },
                 false,

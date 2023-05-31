@@ -228,7 +228,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                         return SectionVisible(
                           nameSection: 'Favoritos',
                           isShowPart: true,
-                          child: ProductItem(product: builder.data as List<ProductItemList>),
+                          child: ProductItem(product: builder.data ?? []),
                         );
                       } else if (builder.connectionState == ConnectionState.waiting) {
                         return const Center(

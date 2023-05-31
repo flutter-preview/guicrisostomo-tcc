@@ -267,13 +267,13 @@ class _ScreenFOPaymentState extends State<ScreenFOPayment> {
 
                   if (txtMoney.text.isEmpty) {
                     error(context, 'Informe o valor do troco');
-                    Navigator.pop(context);
+                    
                     return;
                   }
 
                   if (double.parse(txtMoney.text) < globals.totalSale) {
                     error(context, 'O valor do troco não pode ser menor que o valor total da compra');
-                    Navigator.pop(context);
+                    
                     return;
                   }
 
@@ -294,9 +294,9 @@ class _ScreenFOPaymentState extends State<ScreenFOPayment> {
                     globals.isSelectNewItem = false;
                   });
 
-                  Navigator.pop(context);
-                  Navigator.pop(context);
-                  Navigator.pop(context);
+                  
+                  
+                  
 
                   switch (typeUser) {
                     case 'Cliente':

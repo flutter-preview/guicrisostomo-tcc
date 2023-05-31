@@ -112,7 +112,7 @@ class _SlideShowWidgetState extends State<SlideShowWidget> {
         
         return  ElevatedButton(
             onPressed: () {
-              GoRouter.of(context).go('products', extra: widget.listSlideShow[index]);
+              GoRouter.of(context).go('/products', extra: widget.listSlideShow[index]);
               widget.listSlideShow[index].onTap;
             },
 
@@ -196,9 +196,9 @@ class _SlideShowWidgetState extends State<SlideShowWidget> {
                           ),
                         ),
     
-                        Row(
+                        const Row(
                           mainAxisSize: MainAxisSize.min,
-                          children: const [
+                          children: [
                             Text(
                               'Acessar item',
                               style: TextStyle(

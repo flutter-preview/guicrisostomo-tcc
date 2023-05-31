@@ -310,7 +310,7 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
               children: [
                 TextButton(
                   onPressed: () {
-                    Navigator.pop(context);
+                    
                   },
                   child: const Text(
                     'Não',
@@ -376,7 +376,7 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
                         });
                       }
 
-                      Navigator.pop(context);
+                      
 
                       switch (typeUser) {
                         case 'Cliente':

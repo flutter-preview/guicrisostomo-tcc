@@ -40,17 +40,17 @@ class ScreenError extends StatelessWidget {
 
                 await LoginController().getTypeUser().then((value) {
                   if (value == 'Cliente') {
-                    Navigator.pop(context);
+                    
                     GoRouter.of(context).go('/home');
                   } else if (value == 'Gerente') {
-                    Navigator.pop(context);
+                    
                     GoRouter.of(context).go('/home_manager');
                   } else {
-                    Navigator.pop(context);
+                    
                     GoRouter.of(context).go('/home_employee');
                   }
                 }).catchError((onError) {
-                  Navigator.pop(context);
+                  
                 });
               })
             ],

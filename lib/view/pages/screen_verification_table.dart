@@ -91,7 +91,7 @@ class _ScreenVerificationTableState extends State<ScreenVerificationTable> {
     await TablesController.instance.verifyCode(code).then((tableNumber) async {
       if (tableNumber != 0) {
 
-        Navigator.pop(context);
+        
         GoRouter.of(context).go('/waiter');
 
         await SalesController.instance.idSale().then((idOrder) async {
@@ -105,13 +105,13 @@ class _ScreenVerificationTableState extends State<ScreenVerificationTable> {
                   actions: [
                     TextButton(
                       onPressed: () {
-                        Navigator.pop(context);
+                        
                       },
                       child: const Text('Não'),
                     ),
                     TextButton(
                       onPressed: () async {
-                        Navigator.pop(context);
+                        
                         int newIdOrder = 0;
 
                         globals.numberTable = tableNumber;

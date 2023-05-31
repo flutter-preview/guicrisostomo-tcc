@@ -78,11 +78,11 @@ class _ScreenInfoItemState extends State<ScreenInfoItem> {
                     value.removeAt(value.indexOf(item));
 
                     if (value.isEmpty) {
-                      Navigator.pop(context);
+                      
                       success(context, 'Não há mais itens!');
                     }
 
-                    Navigator.pop(context);
+                    
                     GoRouter.of(context).go('/cart');
 
                   });

@@ -131,8 +131,8 @@ class _ProductItemState extends State<ProductItem> {
                             //   arguments: dados.docs[index],
                             // );
 
-                            GoRouter.of(context).go('products/add_product', extra: item);
-                            GoRouter.of(context).go('loading');
+                            GoRouter.of(context).go('/products/add_product', extra: item);
+                            GoRouter.of(context).go('/loading');
                           },
                           
                           style: ElevatedButton.styleFrom(
@@ -182,7 +182,7 @@ class _ProductItemState extends State<ProductItem> {
                     ),
                     
                     onTap: () {
-                      GoRouter.of(context).go('products', extra: item);
+                      GoRouter.of(context).go('/products', extra: item);
                     },
                   )
                 );

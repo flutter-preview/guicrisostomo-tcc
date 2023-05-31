@@ -137,7 +137,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
               const SizedBox(height: 5,),
 
               button('Registrar agora', 280, 50, Icons.person_add, () {
-                Navigator.pop(context);
+                // 
                 GoRouter.of(context).go('/register');
               })
           ],),
@@ -163,7 +163,6 @@ class _ScreenLoginState extends State<ScreenLogin> {
             TextButton(
               onPressed: () {
                 //fechar caixa de dialogo
-                Navigator.of(context).pop();
               },
 
               child: const Text('Fechar'),

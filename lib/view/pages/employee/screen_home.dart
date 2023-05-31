@@ -1,4 +1,4 @@
-import 'package:awesome_notifications/awesome_notifications.dart';
+// import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -61,42 +61,42 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
 
     getTablesCall();
 
-    AwesomeNotifications().setListeners(
-      onActionReceivedMethod: (ReceivedAction receivedAction) async {
-        await NotificationController.onActionReceivedMethod(receivedAction, (receivedAction) {
+    // AwesomeNotifications().setListeners(
+    //   onActionReceivedMethod: (ReceivedAction receivedAction) async {
+    //     await NotificationController.onActionReceivedMethod(receivedAction, (receivedAction) {
           
-          if (receivedAction.buttonKeyPressed == '0') {
-          } else {
-            showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                title: Text('Mesa ${receivedAction.payload!['table']} chamando'),
-                content: const Text('Deseja atender a mesa?'),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      Navigator.of(context).pop();
-                      Navigator.pushNamed(context, 'home_employee');
-                    },
-                    child: const Text('Não'),
-                  ),
-                  TextButton(
-                    onPressed: () async {
-                      showAboutDialog(context: context, applicationName: 'teste');
-                    },
-                    child: const Text('Sim'),
-                  ),
-                ],
-              ),
-            );
-          }
-        });
-      },
-      onNotificationCreatedMethod:    NotificationController.onNotificationCreatedMethod,
-      onNotificationDisplayedMethod:  NotificationController.onNotificationDisplayedMethod,
-      onDismissActionReceivedMethod:  NotificationController.onDismissActionReceivedMethod
-    );
+    //       if (receivedAction.buttonKeyPressed == '0') {
+    //       } else {
+    //         showDialog(
+    //           context: context,
+    //           builder: (context) => AlertDialog(
+    //             title: Text('Mesa ${receivedAction.payload!['table']} chamando'),
+    //             content: const Text('Deseja atender a mesa?'),
+    //             actions: [
+    //               TextButton(
+    //                 onPressed: () {
+    //                   ;
+    //                   ;
+    //                   Navigator.pushNamed(context, 'home_employee');
+    //                 },
+    //                 child: const Text('Não'),
+    //               ),
+    //               TextButton(
+    //                 onPressed: () async {
+    //                   showAboutDialog(context: context, applicationName: 'teste');
+    //                 },
+    //                 child: const Text('Sim'),
+    //               ),
+    //             ],
+    //           ),
+    //         );
+    //       }
+    //     });
+    //   },
+    //   onNotificationCreatedMethod:    NotificationController.onNotificationCreatedMethod,
+    //   onNotificationDisplayedMethod:  NotificationController.onNotificationDisplayedMethod,
+    //   onDismissActionReceivedMethod:  NotificationController.onDismissActionReceivedMethod
+    // );
   }
   
   @override

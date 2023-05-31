@@ -28,7 +28,7 @@ Widget listSize(List<ProductItemList> list) {
             trailing: ElevatedButton(
                 
               onPressed: () {
-                GoRouter.of(context).pop();
+                // GoRouter.of(context).pop();
                 GoRouter.of(context).go('products/add_product', extra: list[index]);
                 GoRouter.of(context).go('loading');
               },

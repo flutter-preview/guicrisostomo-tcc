@@ -488,11 +488,11 @@ class _ScreenRegisterBusinessState extends State<ScreenRegisterBusiness> {
             Navigator.pushNamed(context, 'loading');
             await LoginController.instance.updateTypeUser('Gerente').then((value) async {
 
-              Navigator.pop(context);
-              Navigator.pop(context);
               
-              Navigator.pop(context);
-              Navigator.pop(context);
+              
+              
+              
+              
 
               GoRouter.of(context).go('/home_manager');
               

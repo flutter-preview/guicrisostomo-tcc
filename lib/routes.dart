@@ -54,8 +54,8 @@ import 'package:tcc/view/pages/screen_verification_table.dart';
 import 'package:tcc/view/pages/screen_verify_email.dart';
 
 class Routers {
-  static GoRouter returnRouter(Object? arguments) {
-    final GoRouter _router = GoRouter(
+  static GoRouter returnRouter() {
+    final GoRouter router = GoRouter(
       routes: <RouteBase>[
         GoRoute(
           path: '/error',
@@ -303,14 +303,9 @@ class Routers {
           path: '/size/info',
           builder: (context, state) => ScreenInfoSize(id: state.extra.toString()),
         ),
-
-        GoRoute(
-          path: '*',
-          builder: (context, state) => const ScreenPresentation(),
-        ),
       ],
     );
 
-    return _router;
+    return router;
   }
 }

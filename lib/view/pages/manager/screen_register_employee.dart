@@ -136,7 +136,7 @@ class _ScreenRegisterEmployeeState extends State<ScreenRegisterEmployee> {
                 70, 
                 Icons.add, 
                 () {
-                  Navigator.pop(context);
+                  
                   GoRouter.of(context).go('/manager/employees', extra: '1');
                 }
               ),

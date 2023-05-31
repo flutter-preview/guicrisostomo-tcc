@@ -100,7 +100,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
 
     if (idProduct != 0) {
       ProductsCartController.instance.verifyItemSelected(context, productSelect).whenComplete(() {
-        Navigator.pop(context);
+        
       });
     }
 
@@ -689,7 +689,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
       children: [
         IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            
           },
           icon: const Icon(Icons.arrow_back_ios_rounded),
           color: globals.primary,
@@ -742,7 +742,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
 
                 await ProductsCartController.instance.isLimitedItemVariationOrProduct(context, productSelect, int.parse(txtQtd.text)).then((value) {
                   if (!value) {
-                    Navigator.pop(context);
+                    
                     return;
                   }
 
@@ -750,7 +750,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                 });
 
                 if (!verification) {
-                  Navigator.pop(context);
+                  
                   return;
                 }
 
@@ -808,8 +808,8 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                     // SalesControllerController.instance.updateTotal(idSale, res + subTotal);
                     globals.isSelectNewItem = false;
                     
-                    Navigator.pop(context);
-                    Navigator.pop(context);
+                    
+                    
                     GoRouter.of(context).go('/products');  
                     success(context, 'Produto adicionado com sucesso');
                   }).catchError((e){
@@ -1021,7 +1021,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                           0, 
                           Icons.add, 
                           () async {
-                            Navigator.pop(context);
+                            
                             GoRouter.of(context).go('/products');
                             
                             setState(() {

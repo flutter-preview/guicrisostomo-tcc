@@ -182,7 +182,7 @@ class _ScreenRegisterState extends State<ScreenRegister> {
               const SizedBox(height: 5,),
 
               button('Entrar agora', 280, 50, Icons.input_outlined, () {
-                Navigator.pop(context);
+                
                 GoRouter.of(context).go('/login');
               })
           ],),
@@ -208,7 +208,6 @@ class _ScreenRegisterState extends State<ScreenRegister> {
             TextButton(
               onPressed: () {
                 //fechar caixa de dialogo
-                Navigator.of(context).pop();
               },
 
               child: const Text('Fechar'),

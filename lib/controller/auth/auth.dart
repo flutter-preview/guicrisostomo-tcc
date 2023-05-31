@@ -45,15 +45,13 @@ class LoginController {
   }
 
   Future<void> signInAnonymously(context) async {
-    GoRouter.of(context).go('loading');
+    GoRouter.of(context).go('/loading');
     
     (FirebaseAuth.instance.currentUser?.uid != null) ? {
-      Navigator.pop(context),
       success(context, 'Usuário autenticado com sucesso.'),
     } : {
       await FirebaseAuth.instance.signInAnonymously().then((value) async {
         await saveDatasUser(value.user?.uid, 'Visitante', 'visitante@hungry.com', null, 1, context);
-        Navigator.pop(context);
       }).catchError((e) {
         error(context, 'Ocorreu um erro ao fazer login: ${e.code.toString()}');
       })
@@ -115,12 +113,10 @@ class LoginController {
           error(context, 'Ocorreu um erro ao verificar o número de telefone: ${e.code.toString()}');
         }
 
-        Navigator.pop(context);
       },
       codeSent: (String verificationId, int? resendToken) async {
         // Update the UI - wait for the user to enter the SMS code
         String smsCode = '';
-        Navigator.pop(context);
 
         await showDialog(
           context: context, 
@@ -136,7 +132,7 @@ class LoginController {
             actions: [
               TextButton(
                 onPressed: () {
-                  // Navigator.pop(context);
+                  // ;
                   // Create a PhoneAuthCredential with the code
                   PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: smsCode);
 
@@ -147,7 +143,6 @@ class LoginController {
                     success(context, 'Número de telefone verificado com sucesso.');
                     
                     await savePhoneDataBase(phoneNumber);
-                    Navigator.pop(context);
                   }).onError((e, stackTrace) {
                     error(context, 'Ocorreu um erro ao verificar o número de telefone: ${e.toString()}');
                   });
@@ -163,7 +158,7 @@ class LoginController {
   }
 
   Future<void> savePhoneNumber(int phoneNumber, context) async {
-    GoRouter.of(context).go('loading');
+    GoRouter.of(context).go('/loading');
     await syncPhoneNumberFirebase(phoneNumber, context);
     
   }
@@ -203,7 +198,7 @@ class LoginController {
   }
 
   Future<void> createAccount(context, String name, String email, String phone, String password) async {
-    GoRouter.of(context).go('loading');
+    GoRouter.of(context).go('/loading');
 
     (FirebaseAuth.instance.currentUser == null) ?
       await FirebaseAuth.instance
@@ -247,17 +242,16 @@ class LoginController {
         }
       });
 
-    Navigator.pop(context);
   }
 
   Future<void> login(context, String email, String senha) async {
-    GoRouter.of(context).go('loading');
+    GoRouter.of(context).go('/loading');
 
     await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: senha)
         .then((res) async {
       success(context, 'Usuário autenticado com sucesso.');
-      // Navigator.pop(context);
+      // ;
       redirectUser(context);
 
     }).catchError((e) {
@@ -276,7 +270,6 @@ class LoginController {
       }
     });
 
-    Navigator.pop(context);
   }
 
   Future<void> forgetPassword(String email, context) async {
@@ -286,7 +279,6 @@ class LoginController {
       error(context, 'Ocorreu um erro ao enviar seu e-mail de recuperação de senha: ${e.code.toString()}');
     });
 
-    Navigator.pop(context);
     Navigator.pushNamed(
       context,
       'presentation',
@@ -303,7 +295,7 @@ class LoginController {
   }
 
   Future<void> logout(context) async {
-    GoRouter.of(context).go('loading');
+    GoRouter.of(context).go('/loading');
 
     final GoogleSignIn googleSignIn = GoogleSignIn();
 
@@ -317,8 +309,6 @@ class LoginController {
     }
     
     await FirebaseAuth.instance.signOut();
-    Navigator.pop(context);
-    Navigator.pop(context);
     Navigator.pushNamed(
       context,
       'presentation',
@@ -395,31 +385,30 @@ class LoginController {
   }
 
   Future<void> signIn(context) async {
-    GoRouter.of(context).go('loading');
+    GoRouter.of(context).go('/loading');
 
     bool isUserAlreajyExist = FirebaseAuth.instance.currentUser != null;
     await signInGoogle(context).then((value) async {
       success(context, 'Usuário autenticado com sucesso');
 
-      Navigator.pop(context);
       redirectUser(context, value, isUserAlreajyExist);
     }).catchError((onError) {
-      error(context, "Ocorreu um erro ao entrar: $onError");
+      // error(context, "Ocorreu um erro ao entrar: $onError");
+      print(onError);
     });
 
     
   }
 
   Future<void> redirectUser(context, [value, bool isUserAlreajyExist = false]) async {
-    // Navigator.pop(context);
+    // ;
       // var t = await getTypeUser() ?? 'Cliente';
       // success(context, t);
       // return;
 
     if (FirebaseAuth.instance.currentUser?.emailVerified == false) {
       return await FirebaseAuth.instance.currentUser?.sendEmailVerification().then((value) {
-        Navigator.pop(context);
-        GoRouter.of(context).go('verify_email');
+        GoRouter.of(context).go('/verify_email');
         success(context, 'E-mail de verificação enviado com sucesso.');
       }).catchError((e) {
         error(context, 'Ocorreu um erro ao enviar o e-mail de verificação: ${e.code.toString()}');
@@ -452,8 +441,7 @@ class LoginController {
           //   [value.user?.uid, value.user?.displayName, value.user?.email, null, 1, value.user?.photoURL]);
         },);
 
-        Navigator.pop(context);
-        GoRouter.of(context).go('home');
+        GoRouter.of(context).go('/home');
 
         return;
       } else {
@@ -463,16 +451,13 @@ class LoginController {
 
         switch (typeUser) {
           case 'Cliente':
-            Navigator.pop(context);
-            GoRouter.of(context).go('home');
+            GoRouter.of(context).go('/home');
             break;
           case 'Gerente':
-            Navigator.pop(context);
-            GoRouter.of(context).go('home_manager');
+            GoRouter.of(context).go('/home_manager');
             break;
           default:
-            Navigator.pop(context);
-            GoRouter.of(context).go('home_employee');
+            GoRouter.of(context).go('/home_employee');
             break;
         }
       }

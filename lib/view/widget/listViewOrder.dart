@@ -71,7 +71,7 @@ Widget listViewOrder(List<Sales> dados) {
           //EVENTO DE CLIQUE
           onTap: ()  {
             // print('Clicou no item ${dados.docs[index]}');
-            GoRouter.of(context).go('order/info', extra: item);
+            GoRouter.of(context).go('/order/info', extra: item);
           },
         )
       );

@@ -629,7 +629,6 @@ class ProductsCartController {
     return await ProductsCartController.instance.getVariationItem(idOrder).then((value) {
       if (itemVariationSelected != value && value != 0) {
         error(context, 'Não é possível adicionar produtos de variações diferentes no mesmo item');
-        Navigator.pop(context);
         
         return {false: 0};
       } else {
@@ -642,7 +641,6 @@ class ProductsCartController {
     for (var itemCart in cartList) {
       if (itemCart.idProduct == item.id) {
         error(context, 'Este produto já foi adicionado');
-        Navigator.pop(context);
         
         return false;
       }
@@ -676,7 +674,6 @@ class ProductsCartController {
       }
       
       if (value.length >= limitVariation && limitVariation != -1) {
-        Navigator.pop(context);
 
         error(context, 'Limite atingido na categoria ${item.variation!.category.toLowerCase()} e tamanho ${item.variation!.size.toLowerCase()}!');
         return false;
@@ -687,7 +684,6 @@ class ProductsCartController {
       }
 
       if (qtd > limitProduct && limitProduct != -1) {
-        Navigator.pop(context);
         
         limitProduct > 0
             ? error(context, 'Há apenas $limitProduct disponível em estoque!')
