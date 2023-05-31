@@ -83,7 +83,7 @@ class _ScreenInfoCategoryState extends State<ScreenInfoCategory> {
                     title: Text('Tamanho $index'),
                     trailing: const Icon(Icons.arrow_forward_ios),
                     onTap: () {
-                      GoRouter.of(context).pushNamed('/size/info', extra: index + 1);
+                      GoRouter.of(context).push('/size/info', extra: index + 1);
                     },
                   ),
                 );

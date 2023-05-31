@@ -113,6 +113,8 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
     urlImageProduct = productSelect.linkImage;
     variation = productSelect.variation!;
     idVariation = variation.id ?? 0;
+
+    GoRouter.of(context).pop();
   }
 
   void resetSubTotal() {
@@ -809,7 +811,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                     globals.isSelectNewItem = false;
                     
                     
-                    
+                    GoRouter.of(context).pop();
                     GoRouter.of(context).go('/products');  
                     success(context, 'Produto adicionado com sucesso');
                   }).catchError((e){

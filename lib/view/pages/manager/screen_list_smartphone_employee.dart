@@ -49,7 +49,7 @@ class _ScreenSmartphoneEmployeeState extends State<ScreenSmartphoneEmployee> {
 
             button('Avançar', 150, 70, Icons.arrow_forward_ios, () {
               
-              GoRouter.of(context).go('/employee/work_time', extra: widget.id);
+              GoRouter.of(context).push('/employee/work_time', extra: widget.id);
             }, false),
             ListView.builder(
               shrinkWrap: true,
@@ -71,7 +71,7 @@ class _ScreenSmartphoneEmployeeState extends State<ScreenSmartphoneEmployee> {
                       child: const Icon(Icons.delete, size: 20, color: Colors.white,),
                     ),
                     onTap: () => {
-                      GoRouter.of(context).go('/smartphone'),
+                      GoRouter.of(context).push('/smartphone'),
                     },
                   ),
                 );

@@ -151,7 +151,7 @@ class _ScreenHomeManagerState extends State<ScreenHomeManager> {
                         ),
                         trailing: Icon(Icons.arrow_forward_ios, color: globals.primary, size: 30,),
                         onTap: () {
-                          GoRouter.of(context).pushNamed('/employee/info', extra: 1);
+                          GoRouter.of(context).push('/employee/info', extra: 1);
                         },
                       ),
                     ),

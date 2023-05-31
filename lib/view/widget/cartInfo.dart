@@ -34,7 +34,7 @@ class _CartInfoState extends State<CartInfo> {
         children: [
           ElevatedButton(
             onPressed: () {
-              GoRouter.of(context).go('/cart');
+              GoRouter.of(context).push('/cart');
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.transparent,
@@ -115,7 +115,7 @@ class _CartInfoState extends State<CartInfo> {
       
           ElevatedButton(
             onPressed: () {
-              GoRouter.of(context).go('/finalize_order_customer');
+              GoRouter.of(context).push('/finalize_order_customer');
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.transparent,

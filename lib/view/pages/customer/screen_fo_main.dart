@@ -212,7 +212,10 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
                           0, 
                           0, 
                           Icons.person_add, 
-                          () => Navigator.pushNamed(context, 'register')
+                          () => {
+                            GoRouter.of(context).push('/register'),
+                            // Navigator.pushNamed(context, 'register')
+                          }
                         ),
                       ],
                     ) : (hasPhoneNumber) ?
@@ -355,7 +358,10 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
               180,
               50,
               Icons.arrow_back,
-              () => Navigator.pop(context)
+              () => {
+                GoRouter.of(context).pop(),
+                // Navigator.pop(context)
+              }
             ),
       
             button(
@@ -380,15 +386,15 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
 
                       switch (typeUser) {
                         case 'Cliente':
-                          GoRouter.of(context).pop();
+                          // GoRouter.of(context).pop();
                           GoRouter.of(context).go('/home');
                           break;
                         case 'Gerente':
-                          GoRouter.of(context).pop();
+                          // GoRouter.of(context).pop();
                           GoRouter.of(context).go('/home_manager');
                           break;
                         default:
-                          GoRouter.of(context).pop();
+                          // GoRouter.of(context).pop();
                           GoRouter.of(context).go('/home_employee');
                           break;
                       }
@@ -396,9 +402,9 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
 
                   });
                 } else if (type == 'Entrega') {
-                  GoRouter.of(context).go('/finalize_order_customer/address', extra: type);
+                  GoRouter.of(context).push('/finalize_order_customer/address', extra: type);
                 } else {
-                  GoRouter.of(context).go('/finalize_order_customer/payment', extra: Sales(id: 0, uid: FirebaseAuth.instance.currentUser!.uid, cnpj: globals.businessId, status: 'Andamento', date: DateTime.now(), type: type, total: globals.totalSale, table: globals.numberTable));
+                  GoRouter.of(context).push('/finalize_order_customer/payment', extra: Sales(id: 0, uid: FirebaseAuth.instance.currentUser!.uid, cnpj: globals.businessId, status: 'Andamento', date: DateTime.now(), type: type, total: globals.totalSale, table: globals.numberTable));
                 }
               },
               false

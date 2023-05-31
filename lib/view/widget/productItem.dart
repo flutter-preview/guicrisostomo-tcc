@@ -131,8 +131,8 @@ class _ProductItemState extends State<ProductItem> {
                             //   arguments: dados.docs[index],
                             // );
 
-                            GoRouter.of(context).go('/products/add_product', extra: item);
-                            GoRouter.of(context).go('/loading');
+                            GoRouter.of(context).push('/products/add_product', extra: item);
+                            GoRouter.of(context).push('/loading');
                           },
                           
                           style: ElevatedButton.styleFrom(

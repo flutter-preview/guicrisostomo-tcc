@@ -43,7 +43,7 @@ class _ScreenCategoriesState extends State<ScreenCategories> {
                     title: Text('Categoria $index'),
                     trailing: const Icon(Icons.arrow_forward_ios),
                     onTap: () {
-                      GoRouter.of(context).go('/categories/category');
+                      GoRouter.of(context).push('/categories/category');
                     },
                   ),
                 );
@@ -75,11 +75,15 @@ class _ScreenCategoriesState extends State<ScreenCategories> {
                 ),
                 actions: [
                   TextButton(
-                    onPressed: () => Navigator.pop(context), 
+                    onPressed: () => {
+                      // Navigator.pop(context)
+                    }, 
                     child: const Text('Cancelar')
                   ),
                   TextButton(
-                    onPressed: () => Navigator.pop(context), 
+                    onPressed: () => {
+                      // Navigator.pop(context)
+                    }, 
                     child: const Text('Adicionar')
                   ),
                 ],

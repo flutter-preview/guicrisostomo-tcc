@@ -153,7 +153,7 @@ class _ScreenInfoPromotionState extends State<ScreenInfoPromotion> {
 
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          GoRouter.of(context).go('/promotion/create', extra: widget.id);
+          GoRouter.of(context).push('/promotion/create', extra: widget.id);
         },
         backgroundColor: globals.primary,
         child: const Icon(Icons.edit),

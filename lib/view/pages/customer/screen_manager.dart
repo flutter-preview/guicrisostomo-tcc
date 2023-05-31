@@ -25,7 +25,7 @@ class _ScreenManagerState extends State<ScreenManager> {
                 trailing: const Icon(Icons.arrow_right, size: 20),
 
                 onTap: () => {
-                  GoRouter.of(context).pushNamed('/manager/products')
+                  GoRouter.of(context).push('/manager/products')
                 },
               ),
             ),

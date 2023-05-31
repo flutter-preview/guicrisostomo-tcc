@@ -50,7 +50,7 @@ class ScreenError extends StatelessWidget {
                     GoRouter.of(context).go('/home_employee');
                   }
                 }).catchError((onError) {
-                  
+                  GoRouter.of(context).go('/error');
                 });
               })
             ],

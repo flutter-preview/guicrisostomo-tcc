@@ -464,7 +464,8 @@ class _ScreenRegisterBusinessState extends State<ScreenRegisterBusiness> {
 
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, 'terms');
+                      GoRouter.of(context).push('/terms');
+                      // Navigator.pushNamed(context, 'terms');
                     }, 
                     child: const Text(
                       'Nossos termos de uso',
@@ -485,12 +486,13 @@ class _ScreenRegisterBusinessState extends State<ScreenRegisterBusiness> {
         padding: const EdgeInsets.all(20),
         child: button('Cadastrar', 0, 0, Icons.check, () async {
           if (formKey.currentState!.validate()) {
-            Navigator.pushNamed(context, 'loading');
+            GoRouter.of(context).push('/loading');
             await LoginController.instance.updateTypeUser('Gerente').then((value) async {
 
               
               
-              
+              GoRouter.of(context).pop();
+              GoRouter.of(context).pop();
               
               
 

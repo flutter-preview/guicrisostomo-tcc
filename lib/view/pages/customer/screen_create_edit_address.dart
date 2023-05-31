@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tcc/controller/auth/auth.dart';
 import 'package:tcc/model/Address.dart';
 import 'package:tcc/utils.dart';
@@ -143,7 +144,8 @@ class _ScreenCreateEditAddressState extends State<ScreenCreateEditAddress> {
           mainAxisSize: MainAxisSize.max,
           children: [
             button('Cancelar', 170, 70, Icons.cancel, () => {
-              Navigator.pop(context),
+              GoRouter.of(context).pop(),
+              // Navigator.pop(context),
             }),
             button(widget.addressSelected != null ? 'Salvar' : 'Cadastrar', 170, 70, Icons.save, () async => {
               if (formKeyAddress.currentState!.validate()) {
@@ -162,7 +164,8 @@ class _ScreenCreateEditAddressState extends State<ScreenCreateEditAddress> {
                     txtReference.text == '' ? null : txtReference.text,
                   ),
                   
-                  Navigator.pop(context),
+                  GoRouter.of(context).pop(),
+                  // Navigator.pop(context),
                 } else {
                   await LoginController.instance.insertAddress(
                     context,
@@ -176,8 +179,9 @@ class _ScreenCreateEditAddressState extends State<ScreenCreateEditAddress> {
                     txtComplement.text == '' ? null : txtComplement.text,
                     txtReference.text == '' ? null : txtReference.text,
                   ),
-        
-                  Navigator.pop(context),
+
+                  GoRouter.of(context).pop(),
+                  // Navigator.pop(context),
                 }
               }
             }, false),

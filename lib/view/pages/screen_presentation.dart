@@ -91,7 +91,7 @@ class _ScreenPresentationState extends State<ScreenPresentation> {
                     ),
                     TextButton(
                       onPressed: () {
-                        GoRouter.of(context).go('/terms');
+                        GoRouter.of(context).push('/terms');
                       },
                       child: Text(
                         'Termos de Uso',

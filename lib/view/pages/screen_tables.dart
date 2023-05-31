@@ -120,7 +120,7 @@ class _ScreenTablesState extends State<ScreenTables> {
                     title: Text('Mesa ${index + 1}'),
                     trailing: const Icon(Icons.arrow_right, size: 20),
                     onTap: () => {
-                      GoRouter.of(context).go(
+                      GoRouter.of(context).push(
                         '/table/info',
                         extra: index + 1
                       ),
