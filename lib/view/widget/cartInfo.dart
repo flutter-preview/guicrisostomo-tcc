@@ -177,6 +177,8 @@ class _CartInfoState extends State<CartInfo> {
     getInfo().then((value) {
       total = value;
       globals.totalSale = value;
+
+      setState(() {});
     });
   }
 
