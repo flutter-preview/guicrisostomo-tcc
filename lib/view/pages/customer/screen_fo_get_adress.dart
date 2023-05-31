@@ -113,7 +113,10 @@ class _ScreenFOGetAddressState extends State<ScreenFOGetAddress> {
               180,
               50,
               Icons.arrow_back,
-              () => Navigator.pop(context)
+              () => {
+                GoRouter.of(context).pop()
+                // Navigator.pop(context)
+              }
             ),
       
             button(
@@ -125,7 +128,7 @@ class _ScreenFOGetAddressState extends State<ScreenFOGetAddress> {
                 if (globals.idAddressSelected == null) {
                   return error(context, 'Selecione um endereço para entrega.');
                 } else {
-                  GoRouter.of(context).go('/finalize_order_customer/payment');
+                  GoRouter.of(context).push('/finalize_order_customer/payment');
                 }
               },
               false

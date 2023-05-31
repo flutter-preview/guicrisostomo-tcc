@@ -53,7 +53,7 @@ class _ScreenListProductsState extends State<ScreenListProducts> {
               70,
               Icons.add,
               () => {
-                GoRouter.of(context).go('/manager/products')
+                GoRouter.of(context).push('/manager/products')
               }
             ),
 

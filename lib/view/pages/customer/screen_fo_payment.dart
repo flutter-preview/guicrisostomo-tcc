@@ -249,7 +249,9 @@ class _ScreenFOPaymentState extends State<ScreenFOPayment> {
               180,
               50,
               Icons.arrow_back,
-              () => Navigator.pop(context)
+              () => {
+                // Navigator.pop(context)
+              }
             ),
       
             button(
@@ -258,7 +260,7 @@ class _ScreenFOPaymentState extends State<ScreenFOPayment> {
               50,
               Icons.check,
               () async {
-                GoRouter.of(context).go('/loading');
+                GoRouter.of(context).push('/loading');
 
                 if (methodSelected == 'Dinheiro') {
                   if (!hasMoney) {
@@ -267,13 +269,13 @@ class _ScreenFOPaymentState extends State<ScreenFOPayment> {
 
                   if (txtMoney.text.isEmpty) {
                     error(context, 'Informe o valor do troco');
-                    
+                    GoRouter.of(context).pop();
                     return;
                   }
 
                   if (double.parse(txtMoney.text) < globals.totalSale) {
                     error(context, 'O valor do troco não pode ser menor que o valor total da compra');
-                    
+                    GoRouter.of(context).pop();
                     return;
                   }
 
@@ -300,27 +302,43 @@ class _ScreenFOPaymentState extends State<ScreenFOPayment> {
 
                   switch (typeUser) {
                     case 'Cliente':
-                      try {
-                        Navigator.pushReplacementNamed(context, 'home');
-                      } catch (e) {
-                        Navigator.pushNamed(context, 'home');
+                      GoRouter.of(context).pop();
+
+                      if (widget.sale.type == 'Entrega') {
+                        GoRouter.of(context).pop();
+                        GoRouter.of(context).pop();
+                      } else {
+                        GoRouter.of(context).pop();
                       }
+
+                      GoRouter.of(context).go('/home');
 
                       
                       break;
                     case 'Gerente':
-                      try {
-                        Navigator.pushReplacementNamed(context, 'home_manager');
-                      } catch (e) {
-                        Navigator.pushNamed(context, 'home_manager');
+                      GoRouter.of(context).pop();
+
+                      if (widget.sale.type == 'Entrega') {
+                        GoRouter.of(context).pop();
+                        GoRouter.of(context).pop();
+                      } else {
+                        GoRouter.of(context).pop();
                       }
+
+                      GoRouter.of(context).go('/home_manager');
+
                       break;
                     default:
-                      try {
-                        Navigator.pushReplacementNamed(context, 'home_employee');
-                      } catch (e) {
-                        Navigator.pushNamed(context, 'home_employee');
+                      GoRouter.of(context).pop();
+
+                      if (widget.sale.type == 'Entrega') {
+                        GoRouter.of(context).pop();
+                        GoRouter.of(context).pop();
+                      } else {
+                        GoRouter.of(context).pop();
                       }
+
+                      GoRouter.of(context).go('/home_employee');
                       break;
                   }
                 });

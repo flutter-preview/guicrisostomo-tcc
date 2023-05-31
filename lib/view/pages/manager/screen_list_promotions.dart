@@ -43,7 +43,7 @@ class _ScreenListPromotionsState extends State<ScreenListPromotions> {
                       subtitle: Text('Descrição da promoção $index'),
                       trailing: Icon(Icons.arrow_forward_ios, color: globals.primary),
                       onTap: () {
-                        GoRouter.of(context).go('/promotions/info', extra: index);
+                        GoRouter.of(context).push('/promotions/info', extra: index);
                       },
                     ),
                   );
@@ -56,7 +56,7 @@ class _ScreenListPromotionsState extends State<ScreenListPromotions> {
 
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          GoRouter.of(context).go('/promotions/create');
+          GoRouter.of(context).push('/promotions/create');
         }, 
         backgroundColor: globals.primary,
         child: const Icon(Icons.add)

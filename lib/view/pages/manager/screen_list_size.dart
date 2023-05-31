@@ -127,11 +127,15 @@ class _ScreenListSizeState extends State<ScreenListSize> {
                               ),
                               actions: [
                                 TextButton(
-                                  onPressed: () => Navigator.pop(context), 
+                                  onPressed: () => {
+                                    // Navigator.pop(context)
+                                  }, 
                                   child: const Text('Cancelar')
                                 ),
                                 TextButton(
-                                  onPressed: () => Navigator.pop(context), 
+                                  onPressed: () => {
+                                    // Navigator.pop(context)
+                                  }, 
                                   child: const Text('Adicionar')
                                 ),
                               ],
@@ -147,7 +151,7 @@ class _ScreenListSizeState extends State<ScreenListSize> {
                   ],
                 ),
                 onTap: () {
-                  GoRouter.of(context).go('/size/info', extra: index+1);
+                  GoRouter.of(context).push('/size/info', extra: index+1);
                 },
               ),
             );
@@ -187,11 +191,15 @@ class _ScreenListSizeState extends State<ScreenListSize> {
                 ),
                 actions: [
                   TextButton(
-                    onPressed: () => Navigator.pop(context), 
+                    onPressed: () => {
+                      // Navigator.pop(context)
+                    }, 
                     child: const Text('Cancelar')
                   ),
                   TextButton(
-                    onPressed: () => Navigator.pop(context), 
+                    onPressed: () => {
+                      // Navigator.pop(context)
+                    }, 
                     child: const Text('Adicionar')
                   ),
                 ],

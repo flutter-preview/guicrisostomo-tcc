@@ -27,7 +27,7 @@ class _ScreenMoreOptionState extends State<ScreenMoreOption> {
                 trailing: const Icon(Icons.arrow_right, size: 20),
 
                 onTap: () => {
-                  GoRouter.of(context).go('/employees'),
+                  GoRouter.of(context).push('/employees'),
                 },
               ),
             ),
@@ -40,7 +40,7 @@ class _ScreenMoreOptionState extends State<ScreenMoreOption> {
                 trailing: const Icon(Icons.arrow_right, size: 20),
 
                 onTap: () => {
-                  GoRouter.of(context).go('/categories'),
+                  GoRouter.of(context).push('/categories'),
                 },
               ),
             ),
@@ -53,7 +53,7 @@ class _ScreenMoreOptionState extends State<ScreenMoreOption> {
                 trailing: const Icon(Icons.arrow_right, size: 20),
 
                 onTap: () => {
-                  GoRouter.of(context).go('/size'),
+                  GoRouter.of(context).push('/size'),
                 },
               ),
             ),
@@ -66,7 +66,7 @@ class _ScreenMoreOptionState extends State<ScreenMoreOption> {
                 trailing: const Icon(Icons.arrow_right, size: 20),
 
                 onTap: () => {
-                  GoRouter.of(context).go('/business'),
+                  GoRouter.of(context).push('/business'),
                 },
               ),
             ),
@@ -79,7 +79,7 @@ class _ScreenMoreOptionState extends State<ScreenMoreOption> {
                 trailing: const Icon(Icons.arrow_right, size: 20),
 
                 onTap: () => {
-                  GoRouter.of(context).go('/profile/edit_datas', extra: {}),
+                  GoRouter.of(context).push('/profile/edit_datas', extra: {}),
                 },
               ),
             ),
@@ -92,7 +92,7 @@ class _ScreenMoreOptionState extends State<ScreenMoreOption> {
                 trailing: const Icon(Icons.arrow_right, size: 20),
 
                 onTap: () => {
-                  GoRouter.of(context).go('/profile/about'),
+                  GoRouter.of(context).push('/profile/about'),
                 },
               ),
             ),

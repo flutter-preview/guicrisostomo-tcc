@@ -99,19 +99,19 @@ class _ScreenInfoEmployeeState extends State<ScreenInfoEmployee> {
               child: Column(
                 children: [
                   button('Editar permissões', MediaQuery.of(context).size.width * 0.8, 70, Icons.local_police, () => {
-                    GoRouter.of(context).go('/permissions', extra: widget.id),
+                    GoRouter.of(context).push('/permissions', extra: widget.id),
                   }),
 
                   const SizedBox(height: 10),
 
                   button('Editar smartphones autorizados', MediaQuery.of(context).size.width * 0.8, 70, Icons.smartphone, () => {
-                    GoRouter.of(context).go('/employee/smartphone', extra: widget.id),
+                    GoRouter.of(context).push('/employee/smartphone', extra: widget.id),
                   }),
                   
                   const SizedBox(height: 10),
                   
                   button('Editar horário de trabalho', MediaQuery.of(context).size.width * 0.8, 70, Icons.work, () => {
-                    GoRouter.of(context).go('/employee/work_time', extra: widget.id),
+                    GoRouter.of(context).push('/employee/work_time', extra: widget.id),
                   }),
                 ],
               )
@@ -291,7 +291,7 @@ class _ScreenInfoEmployeeState extends State<ScreenInfoEmployee> {
                 children: [
 
                   button('Cadastrar novo smartphone', MediaQuery.of(context).size.width - 100, 50, Icons.add, () {
-                    GoRouter.of(context).go('/employee/phone');
+                    GoRouter.of(context).push('/employee/phone');
                   }),
 
                   const SizedBox(height: 20),

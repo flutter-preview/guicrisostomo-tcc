@@ -39,17 +39,6 @@ class _ScreenProfileState extends State<ScreenProfile> {
     });
   }
 
-  listenGoRouter() {
-    GoRouter.of(context).addListener(() {
-      if (!GoRouter.of(context).location.contains("/profile/edit_datas")) {  // Here you check for some changes in your route that indicate you are no longer on the page you have pushed before
-        // do something
-        getUser();
-        GoRouter.of(context).removeListener(listenGoRouter); // remove listener
-      }
-      
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
 
@@ -137,8 +126,16 @@ class _ScreenProfileState extends State<ScreenProfile> {
                     trailing: Icon(Icons.arrow_right, size: 20, color: globals.primary,),
 
                     onTap: () async => {
-                      GoRouter.of(context).go('/profile/edit_datas'),
-                      GoRouter.of(context).addListener(listenGoRouter),
+                      GoRouter.of(context).push('/profile/edit_datas').then((value) {
+                        getUser().then((value) {
+                          setState(() {
+                            user = value;
+                            nameUser = value.name;
+                            phoneUser = value.phone;
+                            photoUser = value.image;
+                          });
+                        });
+                      }),
                     },
                   ),
                 ),
@@ -154,7 +151,7 @@ class _ScreenProfileState extends State<ScreenProfile> {
                     trailing: Icon(Icons.arrow_right, size: 20, color: globals.primary,),
 
                     onTap: () {
-                      Navigator.pushNamed(context, 'transition_manager_user');
+                      GoRouter.of(context).push('/transition_manager_user');
                     },
                   ),
                 ),

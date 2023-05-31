@@ -342,7 +342,7 @@ class _ProductsCartState extends State<ProductsCart> {
 
                   trailing: IconButton(
                     onPressed: () {
-                      GoRouter.of(context).go('/cart/info_item', extra: {
+                      GoRouter.of(context).push('/cart/info_item', extra: {
                         'dados': dados,
                         'isShowButtonDelete': widget.isShowButtonDelete,
                       });
@@ -351,7 +351,7 @@ class _ProductsCartState extends State<ProductsCart> {
                   ),
                 
                   onTap: () {
-                    GoRouter.of(context).go('/cart/info_item', extra: {
+                    GoRouter.of(context).push('/cart/info_item', extra: {
                       'dados': dados,
                       'isShowButtonDelete': widget.isShowButtonDelete,
                     });

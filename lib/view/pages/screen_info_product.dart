@@ -164,7 +164,9 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
                     children: [
                       
                       IconButton(
-                        onPressed: () => Navigator.pop(context),
+                        onPressed: () => {
+                          
+                        },
                         icon: const Icon(Icons.arrow_back, color: Colors.white),
                       ),
                 

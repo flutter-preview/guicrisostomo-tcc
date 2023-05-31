@@ -22,43 +22,26 @@ class _AddressExistentState extends State<AddressExistent> {
   String groupLocals = '';
   List<Address> listAddress = [];
 
-  listenerGoRouter() async {
-    if (GoRouter.of(context).location != '/create_edit_address') {
-      await getAddress().then((value) {
-        setState(() {
-          listAddress = value;
-          
-          if (listAddress.isEmpty) {
-            groupLocals = 'New address';
-          } else {
-            groupLocals = listAddress[0].nickname;
-            globals.idAddressSelected = listAddress[0].id;
-          }
-        });
-      });
-    }
-  }
-
-  listenerGoRouterEdit() async {
-    if (GoRouter.of(context).location != '/create_edit_address') {
-      await getAddress().then((value) {
-        setState(() {
-          listAddress = value;
-          groupLocals = 'Edit-${listAddress[0].nickname}';
-          globals.idAddressSelected = listAddress[0].id;
-        });
-      });
-    }
-  }
-
   Future<List<Address>> getAddress() async {
     return await LoginController().getAddress();
   }
 
   Widget newAddress() {
     return button('Novo endereço', 0, 0, Icons.location_on_outlined, () {
-      GoRouter.of(context).go('/create_edit_address');
-      GoRouter.of(context).addListener(listenerGoRouter);
+      GoRouter.of(context).push('/create_edit_address').then((value) async {
+        await getAddress().then((value) {
+          setState(() {
+            listAddress = value;
+            
+            if (listAddress.isEmpty) {
+              groupLocals = 'New address';
+            } else {
+              groupLocals = listAddress[0].nickname;
+              globals.idAddressSelected = listAddress[0].id;
+            }
+          });
+        });
+      });
     });
   }
 
@@ -169,8 +152,15 @@ class _AddressExistentState extends State<AddressExistent> {
                                               IconButton(
                                                 onPressed: () {
                                                   setState(() {
-                                                    GoRouter.of(context).go('/create_edit_address');
-                                                    GoRouter.of(context).addListener(listenerGoRouterEdit);
+                                                    GoRouter.of(context).push('/create_edit_address').then((value) async {
+                                                      await getAddress().then((value) {
+                                                        setState(() {
+                                                          listAddress = value;
+                                                          groupLocals = 'Edit-${listAddress[0].nickname}';
+                                                          globals.idAddressSelected = listAddress[0].id;
+                                                        });
+                                                      });
+                                                    });
                                                   });
                                                 },
                                                 icon: const Icon(Icons.edit),

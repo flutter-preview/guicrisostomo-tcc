@@ -172,6 +172,7 @@ class _ScreenProductsState extends State<ScreenProducts> {
         );
       }
     } catch (e) {
+      print(e);
       return const Text(
         'Produto não encontrado',
         style: TextStyle(

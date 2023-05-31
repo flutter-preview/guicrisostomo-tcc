@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:tcc/controller/postgres/Lists/products.dart';
 import 'package:tcc/controller/postgres/Lists/sales.dart';
@@ -162,7 +163,8 @@ class _ScreenHomeState extends State<ScreenHome> {
                   0,
                   Icons.shopping_cart_outlined,
                   () {
-                    Navigator.pushNamed(context, 'cart');
+                    GoRouter.of(context).push('/cart');
+                    // Navigator.pushNamed(context, 'cart');
                   },
                   true,
                   18

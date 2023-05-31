@@ -279,10 +279,7 @@ class LoginController {
       error(context, 'Ocorreu um erro ao enviar seu e-mail de recuperação de senha: ${e.code.toString()}');
     });
 
-    Navigator.pushNamed(
-      context,
-      'presentation',
-    );
+    GoRouter.of(context).go('/presentation');
   }
 
   Future<void> deleteUser(String uid) async {
@@ -309,10 +306,8 @@ class LoginController {
     }
     
     await FirebaseAuth.instance.signOut();
-    Navigator.pushNamed(
-      context,
-      'presentation',
-    );
+
+    GoRouter.of(context).go('/presentation');
   }
 
   Future<void> updateUser(id, name, email, phone, context, [bool hasRedirect = true]) async {

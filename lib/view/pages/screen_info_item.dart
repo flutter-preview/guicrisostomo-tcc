@@ -134,7 +134,7 @@ class _ScreenInfoItemState extends State<ScreenInfoItem> {
               ),
 
               onTap: () {
-                GoRouter.of(context).go('/products/info_product');
+                GoRouter.of(context).push('/products/info_product', extra: item.idProduct);
               },
             )
           );

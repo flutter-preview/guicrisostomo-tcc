@@ -131,7 +131,7 @@ class _ScreenEmployeesState extends State<ScreenEmployees> {
                       ),
                       trailing: Icon(Icons.arrow_forward_ios, color: globals.primary, size: 30,),
                       onTap: () {
-                        GoRouter.of(context).go('/employee/info', extra: '1');
+                        GoRouter.of(context).push('/employee/info', extra: '1');
                       },
                     ),
                   );
@@ -144,7 +144,7 @@ class _ScreenEmployeesState extends State<ScreenEmployees> {
 
       floatingActionButton: FloatingActionButton(
         onPressed: () => {
-          GoRouter.of(context).go('/employee/register')
+          GoRouter.of(context).push('/employee/register')
         }, 
         backgroundColor: globals.primary,
         child: const Icon(

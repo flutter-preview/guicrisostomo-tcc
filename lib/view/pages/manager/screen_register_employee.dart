@@ -137,7 +137,7 @@ class _ScreenRegisterEmployeeState extends State<ScreenRegisterEmployee> {
                 Icons.add, 
                 () {
                   
-                  GoRouter.of(context).go('/manager/employees', extra: '1');
+                  GoRouter.of(context).push('/manager/employees', extra: '1');
                 }
               ),
             ),

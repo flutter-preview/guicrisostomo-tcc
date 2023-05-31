@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/sectionVisible.dart';
 import 'package:tcc/globals.dart' as globals;
@@ -242,7 +243,7 @@ class _ScreenTransitionManagerUserState extends State<ScreenTransitionManagerUse
             padding: const EdgeInsets.all(10),
             child: ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, 'register_business');
+                GoRouter.of(context).push('/register_business');
               }, 
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all<Color>(globals.primary),

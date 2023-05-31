@@ -93,7 +93,7 @@ class _ScreenCartState extends State<ScreenCart> {
                 Icons.arrow_forward_ios,
                 () {
                   
-                  GoRouter.of(context).go('/finalize_order_customer');
+                  GoRouter.of(context).push('/finalize_order_customer');
                 },
                 false,
               )
@@ -113,14 +113,16 @@ class _ScreenCartState extends State<ScreenCart> {
                   actions: [
                     TextButton(
                       onPressed: () => {
-                        Navigator.pop(context)
+                        // Navigator.pop(context)
+                        GoRouter.of(context).pop()
                       },
                       child: const Text('Não'),
                     ),
                     TextButton(
                       onPressed: () async => {
                         await ProductsCartController.instance.clearCart(idSale),
-                        Navigator.pop(context),
+                        // Navigator.pop(context),
+                        GoRouter.of(context).pop(),
                         setState(() {}),
                       },
                       child: const Text('Sim'),
