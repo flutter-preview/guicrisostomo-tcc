@@ -57,7 +57,7 @@ import 'package:tcc/view/pages/screen_verification_table.dart';
 import 'package:tcc/view/pages/screen_verify_email.dart';
 
 class Routers {
-  
+
   static Future<GoRouter> returnRouter() async {
 
     Future<bool> isDataBaseRunning() async {
@@ -77,7 +77,7 @@ class Routers {
       User? user = auth.currentUser;
       
       if (user != null) {
-        if (user.emailVerified == false) {
+        if (user.emailVerified == false && !user.isAnonymous) {
 
           return await isDataBaseRunning().then((value) {
             if (!value) {
