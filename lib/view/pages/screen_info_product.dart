@@ -134,8 +134,6 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
   @override
   Widget build(BuildContext context) {
 
-    print('object');
-
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(150),
@@ -165,7 +163,7 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
                       
                       IconButton(
                         onPressed: () => {
-                          
+                          Navigator.pop(context),
                         },
                         icon: const Icon(Icons.arrow_back, color: Colors.white),
                       ),
@@ -174,7 +172,7 @@ class _ScreenInfoProductState extends State<ScreenInfoProduct> {
                         'Informações',
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 32,
+                          fontSize: 28,
                         ),
                       ),
                     ],
