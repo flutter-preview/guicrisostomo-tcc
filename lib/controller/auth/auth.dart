@@ -45,7 +45,7 @@ class LoginController {
   }
 
   Future<void> signInAnonymously(context) async {
-    GoRouter.of(context).go('/loading');
+    GoRouter.of(context).push('/loading');
     
     (FirebaseAuth.instance.currentUser?.uid != null) ? {
       success(context, 'Usuário autenticado com sucesso.'),
@@ -245,7 +245,7 @@ class LoginController {
   }
 
   Future<void> login(context, String email, String senha) async {
-    GoRouter.of(context).go('/loading');
+    GoRouter.of(context).push('/loading');
 
     await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: senha)
@@ -292,7 +292,7 @@ class LoginController {
   }
 
   Future<void> logout(context) async {
-    GoRouter.of(context).go('/loading');
+    GoRouter.of(context).push('/loading');
 
     final GoogleSignIn googleSignIn = GoogleSignIn();
 
@@ -307,6 +307,7 @@ class LoginController {
     
     await FirebaseAuth.instance.signOut();
 
+    GoRouter.of(context).pop();
     GoRouter.of(context).go('/');
   }
 
@@ -380,7 +381,7 @@ class LoginController {
   }
 
   Future<void> signIn(context) async {
-    GoRouter.of(context).go('/loading');
+    GoRouter.of(context).push('/loading');
 
     bool isUserAlreajyExist = FirebaseAuth.instance.currentUser != null;
     await signInGoogle(context).then((value) async {
@@ -401,7 +402,7 @@ class LoginController {
       // success(context, t);
       // return;
 
-    if (FirebaseAuth.instance.currentUser?.emailVerified == false) {
+    if (FirebaseAuth.instance.currentUser?.emailVerified == false && FirebaseAuth.instance.currentUser?.isAnonymous == false) {
       return await FirebaseAuth.instance.currentUser?.sendEmailVerification().then((value) {
         GoRouter.of(context).go('/verify_email');
         success(context, 'E-mail de verificação enviado com sucesso.');
