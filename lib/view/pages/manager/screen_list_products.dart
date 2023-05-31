@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tcc/main.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigation.dart';
 import 'package:tcc/view/widget/button.dart';
@@ -52,7 +52,9 @@ class _ScreenListProductsState extends State<ScreenListProducts> {
               MediaQuery.of(context).size.width - 100,
               70,
               Icons.add,
-              () => Navigator.push(context, navigator('manager/products'))
+              () => {
+                GoRouter.of(context).go('/manager/products')
+              }
             ),
 
             const SizedBox(height: 20),

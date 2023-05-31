@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tcc/controller/postgres/Lists/productsCart.dart';
 import 'package:tcc/controller/postgres/Lists/sales.dart';
 import 'package:tcc/controller/postgres/Lists/table.dart';
-import 'package:tcc/main.dart';
 import 'package:tcc/model/ProductsCart.dart';
 import 'package:tcc/model/Sales.dart';
 import 'package:tcc/view/widget/appBar.dart';
@@ -112,7 +112,7 @@ class _ScreenCallWaiterState extends State<ScreenCallWaiter> {
 
                 Navigator.pop(context);
                 success(context, 'Desvinculado com sucesso');
-                Navigator.push(context, navigator('table'));
+                GoRouter.of(context).go('/table');
               });
             }),
 
@@ -120,7 +120,7 @@ class _ScreenCallWaiterState extends State<ScreenCallWaiter> {
 
             button('Fazer novo pedido', 300, 50, Icons.add_shopping_cart_rounded, () {
               Navigator.pop(context);
-              Navigator.push(context, navigator('products'));
+              GoRouter.of(context).go('/products');
             }),
 
             const SizedBox(height: 30),
@@ -198,7 +198,7 @@ class _ScreenCallWaiterState extends State<ScreenCallWaiter> {
             child: button('Fechar mesa', 300, 50, Icons.check, () {
               SalesController.instance.finalizeSale();
               Navigator.pop(context);
-              Navigator.push(context, navigator('home'));
+              GoRouter.of(context).go('/home');
             }),
           ),
         ],

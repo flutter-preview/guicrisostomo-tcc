@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tcc/main.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigation.dart';
 import 'package:tcc/globals.dart' as globals;
@@ -83,10 +83,7 @@ class _ScreenInfoCategoryState extends State<ScreenInfoCategory> {
                     title: Text('Tamanho $index'),
                     trailing: const Icon(Icons.arrow_forward_ios),
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        navigator('size/info', index+1)
-                      );
+                      GoRouter.of(context).pushNamed('/size/info', extra: index + 1);
                     },
                   ),
                 );

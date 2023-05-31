@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:tcc/controller/postgres/utils.dart';
-import 'package:tcc/main.dart';
 import 'package:tcc/model/Address.dart';
 import 'package:tcc/model/User.dart';
 import 'package:tcc/view/widget/snackBars.dart';
@@ -45,8 +45,7 @@ class LoginController {
   }
 
   Future<void> signInAnonymously(context) async {
-    
-    Navigator.push(context, navigator('loading'));
+    GoRouter.of(context).go('loading');
     
     (FirebaseAuth.instance.currentUser?.uid != null) ? {
       Navigator.pop(context),
@@ -164,7 +163,7 @@ class LoginController {
   }
 
   Future<void> savePhoneNumber(int phoneNumber, context) async {
-    Navigator.push(context, navigator('loading'));
+    GoRouter.of(context).go('loading');
     await syncPhoneNumberFirebase(phoneNumber, context);
     
   }
@@ -204,7 +203,7 @@ class LoginController {
   }
 
   Future<void> createAccount(context, String name, String email, String phone, String password) async {
-    Navigator.push(context, navigator('loading'));
+    GoRouter.of(context).go('loading');
 
     (FirebaseAuth.instance.currentUser == null) ?
       await FirebaseAuth.instance
@@ -252,7 +251,7 @@ class LoginController {
   }
 
   Future<void> login(context, String email, String senha) async {
-    Navigator.push(context, navigator('loading'));
+    GoRouter.of(context).go('loading');
 
     await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: senha)
@@ -304,7 +303,7 @@ class LoginController {
   }
 
   Future<void> logout(context) async {
-    Navigator.push(context, navigator('loading'));
+    GoRouter.of(context).go('loading');
 
     final GoogleSignIn googleSignIn = GoogleSignIn();
 
@@ -396,7 +395,8 @@ class LoginController {
   }
 
   Future<void> signIn(context) async {
-    Navigator.push(context, navigator('loading'));
+    GoRouter.of(context).go('loading');
+
     bool isUserAlreajyExist = FirebaseAuth.instance.currentUser != null;
     await signInGoogle(context).then((value) async {
       success(context, 'Usuário autenticado com sucesso');
@@ -419,7 +419,7 @@ class LoginController {
     if (FirebaseAuth.instance.currentUser?.emailVerified == false) {
       return await FirebaseAuth.instance.currentUser?.sendEmailVerification().then((value) {
         Navigator.pop(context);
-        Navigator.push(context, navigator('verify_email'));
+        GoRouter.of(context).go('verify_email');
         success(context, 'E-mail de verificação enviado com sucesso.');
       }).catchError((e) {
         error(context, 'Ocorreu um erro ao enviar o e-mail de verificação: ${e.code.toString()}');
@@ -453,10 +453,7 @@ class LoginController {
         },);
 
         Navigator.pop(context);
-        Navigator.push(
-          context,
-          navigator('home'),
-        );
+        GoRouter.of(context).go('home');
 
         return;
       } else {
@@ -467,24 +464,15 @@ class LoginController {
         switch (typeUser) {
           case 'Cliente':
             Navigator.pop(context);
-            Navigator.push(
-              context,
-              navigator('home'),
-            );
+            GoRouter.of(context).go('home');
             break;
           case 'Gerente':
             Navigator.pop(context);
-            Navigator.push(
-              context,
-              navigator('home_manager'),
-            );
+            GoRouter.of(context).go('home_manager');
             break;
           default:
             Navigator.pop(context);
-            Navigator.push(
-              context,
-              navigator('home_employee'),
-            );
+            GoRouter.of(context).go('home_employee');
             break;
         }
       }

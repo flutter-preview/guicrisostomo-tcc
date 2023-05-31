@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tcc/controller/auth/auth.dart';
-import 'package:tcc/main.dart';
 import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/imageMainScreens.dart';
@@ -96,10 +96,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
                   children: [
                     TextButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          navigator('login/forget_password'),
-                        );
+                        GoRouter.of(context).go('/login/forget_password');
                       }, 
                       child: Text(
                         'Esqueceu a senha ?',
@@ -141,7 +138,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
 
               button('Registrar agora', 280, 50, Icons.person_add, () {
                 Navigator.pop(context);
-                Navigator.push(context, navigator('register'));
+                GoRouter.of(context).go('/register');
               })
           ],),
         )

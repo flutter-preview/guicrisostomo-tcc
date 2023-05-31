@@ -1,10 +1,10 @@
 // ignore_for_file: file_names
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tcc/controller/postgres/Lists/productsCart.dart';
 import 'package:tcc/controller/postgres/Lists/sales.dart';
 import 'package:tcc/controller/postgres/Lists/table.dart';
-import 'package:tcc/main.dart';
 import 'package:tcc/model/ProductItemList.dart';
 import 'package:tcc/model/Variation.dart';
 import 'package:tcc/view/widget/cartInfo.dart';
@@ -27,7 +27,7 @@ class _BottomState extends State<Bottom> {
 
       onPressed: () {
         Navigator.pop(context);
-        Navigator.push(context, navigator('products/add_product', ProductItemList(id: 0, name: '', description: '', linkImage: null, price: 0, variation: Variation(), isFavorite: false,)));
+        GoRouter.of(context).go('/products/add_product', extra: ProductItemList(id: 0, name: '', description: '', linkImage: null, price: 0, variation: Variation(), isFavorite: false,));
       },
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -188,27 +188,27 @@ class _BottomState extends State<Bottom> {
                 case 0:
                   Navigator.of(context).pop();
                   if (globals.userType == 'manager') {
-                    Navigator.push(context, navigator('home_manager'));
+                    GoRouter.of(context).go('/home_manager');
                     break;
                   } else if (globals.userType == 'employee') {
-                    Navigator.push(context, navigator('home_employee'));
+                    GoRouter.of(context).go('/home_employee');
                     break;
                   } else {
-                    Navigator.push(context, navigator('home'));
+                    GoRouter.of(context).go('/home');
                     break;
                   }
                 case 1:
                   Navigator.of(context).pop();
                   // Navigator.pushNamed(context, 'order');
-                  Navigator.push(context, navigator('order'));
+                  GoRouter.of(context).go('/order');
                   break;
                 case 2:
                   Navigator.of(context).pop();
                   if (globals.userType == 'manager') {
-                    Navigator.push(context, navigator('list_products'));
+                    GoRouter.of(context).go('/list_products');
                     break;
                   } else {
-                    Navigator.push(context, navigator('products'));
+                    GoRouter.of(context).go('/products');
                     break;
                   }
 
@@ -216,18 +216,18 @@ class _BottomState extends State<Bottom> {
                   globals.userType == 'customer' ?
                     globals.numberTable != null ? {
                       Navigator.of(context).pop(),
-                      Navigator.push(context, navigator('waiter'))
+                      GoRouter.of(context).go('/waiter')
                     } : {
                     Navigator.of(context).pop(),
-                    Navigator.push(context, navigator('table'))
+                    GoRouter.of(context).go('/table')
                   } : {
                   
                     if (globals.numberTable != null) {
                       Navigator.of(context).pop(),
-                      Navigator.push(context, navigator('waiter'))
+                      GoRouter.of(context).go('/waiter')
                     } else {
                       Navigator.of(context).pop(),
-                      Navigator.push(context, navigator('table_manager'))
+                      GoRouter.of(context).go('/table_manager')
                     }
                   };
 
@@ -236,13 +236,13 @@ class _BottomState extends State<Bottom> {
                   Navigator.of(context).pop();
                   
                   if (globals.userType == 'manager') {
-                    Navigator.push(context, navigator('more'));
+                    GoRouter.of(context).go('/more');
                     break;
                   } else if (globals.userType == 'employee') {
-                    Navigator.push(context, navigator('profile/edit_datas'));
+                    GoRouter.of(context).go('/profile/edit_datas');
                     break;
                   } else {
-                    Navigator.push(context, navigator('profile'));
+                    GoRouter.of(context).go('/profile');
                     break;
                   }
               }

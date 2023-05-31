@@ -1,9 +1,9 @@
 // ignore_for_file: prefer_const_constructors, unused_local_variable, prefer_typing_uninitialized_variables, file_names
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tcc/controller/postgres/Lists/products.dart';
 import 'package:tcc/globals.dart' as globals;
-import 'package:tcc/main.dart';
 import 'package:tcc/model/ProductItemList.dart';
 import 'package:tcc/model/Variation.dart';
 import 'package:tcc/view/widget/snackBars.dart';
@@ -130,9 +130,9 @@ class _ProductItemState extends State<ProductItem> {
                             //   'products/add_product',
                             //   arguments: dados.docs[index],
                             // );
-                            
-                            Navigator.push(context, navigator('products/add_product', item));
-                            Navigator.push(context, navigator('loading'));
+
+                            GoRouter.of(context).go('products/add_product', extra: item);
+                            GoRouter.of(context).go('loading');
                           },
                           
                           style: ElevatedButton.styleFrom(
@@ -182,10 +182,7 @@ class _ProductItemState extends State<ProductItem> {
                     ),
                     
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        navigator('products/info_product', item),
-                      );
+                      GoRouter.of(context).go('products', extra: item);
                     },
                   )
                 );

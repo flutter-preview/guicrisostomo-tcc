@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tcc/main.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tcc/model/standardListDropDown.dart';
 import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/appBar.dart';
@@ -137,7 +137,7 @@ class _ScreenRegisterEmployeeState extends State<ScreenRegisterEmployee> {
                 Icons.add, 
                 () {
                   Navigator.pop(context);
-                  Navigator.push(context, navigator('employee/smartphone', '1'));
+                  GoRouter.of(context).go('/manager/employees', extra: '1');
                 }
               ),
             ),

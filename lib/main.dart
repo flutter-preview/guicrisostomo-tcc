@@ -4,12 +4,10 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:go_router/go_router.dart';
 import 'package:tcc/controller/auth/auth.dart';
 import 'package:tcc/controller/others/notification.dart';
 import 'package:tcc/controller/postgres/utils.dart';
 import 'package:tcc/firebase_options.dart';
-import 'package:tcc/model/Sales.dart';
 import 'package:tcc/routes.dart';
 
   // return PageRouteBuilder(
@@ -43,13 +41,6 @@ Future<void> main() async {
   );
 
   NotificationController.instance.init();
-
-  // AwesomeNotifications().setListeners(
-  //     onActionReceivedMethod:         NotificationController.onActionReceivedMethod,
-  //     onNotificationCreatedMethod:    NotificationController.onNotificationCreatedMethod,
-  //     onNotificationDisplayedMethod:  NotificationController.onNotificationDisplayedMethod,
-  //     onDismissActionReceivedMethod:  NotificationController.onDismissActionReceivedMethod
-  // );
   
   FirebaseAuth auth = FirebaseAuth.instance;
   User? user = auth.currentUser;
@@ -101,8 +92,7 @@ Future<void> main() async {
 
       theme: ThemeData(scaffoldBackgroundColor: const Color.fromRGBO(252, 252, 252, 1)),
       
-      routeInformationParser: Routers.returnRouter(false).routeInformationParser,
-      routerDelegate: Routers.returnRouter(false).routerDelegate,
+      routerConfig: Routers.returnRouter(route),
     ),
   );
 

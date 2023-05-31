@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tcc/model/Address.dart';
 import 'package:tcc/model/Sales.dart';
@@ -120,7 +119,7 @@ class Routers {
 
         GoRoute(
           path: '/table/info',
-          builder: (context, state) => ScreenInfoTable(arguments: arguments),
+          builder: (context, state) => ScreenInfoTable(arguments: state.extra),
         ),
 
         GoRoute(
@@ -135,22 +134,22 @@ class Routers {
 
         GoRoute(
           path: '/cart/info_item',
-          builder: (context, state) => ScreenInfoItem(arguments: state),
+          builder: (context, state) => ScreenInfoItem(arguments: state.extra),
         ),
 
         GoRoute(
           path: '/products',
-          builder: (context, state) => ScreenProducts(arguments: state as SlideShow?),
+          builder: (context, state) => ScreenProducts(arguments: state.extra as SlideShow?),
         ),
 
         GoRoute(
           path: '/products/info_product',
-          builder: (context, state) => ScreenInfoProduct(arguments: state),
+          builder: (context, state) => ScreenInfoProduct(arguments: state.extra),
         ),
 
         GoRoute(
           path: '/products/add_product',
-          builder: (context, state) => ScreenAddItem(arguments: state),
+          builder: (context, state) => ScreenAddItem(arguments: state.extra),
         ),
 
         GoRoute(
@@ -160,7 +159,7 @@ class Routers {
 
         GoRoute(
           path: '/profile/edit_datas',
-          builder: (context, state) => ScreenEditDatas(arguments: state),
+          builder: (context, state) => ScreenEditDatas(arguments: state.extra),
         ),
 
         GoRoute(
@@ -170,7 +169,7 @@ class Routers {
 
         GoRoute(
           path: '/order/info',
-          builder: (context, state) => ScreenInfoOrder(arguments: state),
+          builder: (context, state) => ScreenInfoOrder(arguments: state.extra),
         ),
 
         GoRoute(
@@ -180,17 +179,17 @@ class Routers {
 
         GoRoute(
           path: '/finalize_order_customer/address',
-          builder: (context, state) => ScreenFOGetAddress(typeSale: state.toString()),
+          builder: (context, state) => ScreenFOGetAddress(typeSale: state.extra.toString()),
         ),
 
         GoRoute(
           path: '/finalize_order_customer/payment',
-          builder: (context, state) => ScreenFOPayment(sale: state as Sales),
+          builder: (context, state) => ScreenFOPayment(sale: state.extra as Sales),
         ),
 
         GoRoute(
           path: '/create_edit_address',
-          builder: (context, state) => ScreenCreateEditAddress(addressSelected: state as Address?),
+          builder: (context, state) => ScreenCreateEditAddress(addressSelected: state.extra as Address?),
         ),
 
         GoRoute(
@@ -210,7 +209,7 @@ class Routers {
 
         GoRoute(
           path: '/employee/evaluation',
-          builder: (context, state) => ScreenRatingEmployee(idEmployee: state.toString()),
+          builder: (context, state) => ScreenRatingEmployee(idEmployee: state.extra.toString()),
         ),
 
         GoRoute(
@@ -232,7 +231,7 @@ class Routers {
 
         GoRoute(
           path: '/categories/category',
-          builder: (context, state) => ScreenInfoCategory(id: state.toString()),
+          builder: (context, state) => ScreenInfoCategory(id: state.extra.toString()),
         ),
 
         GoRoute(
@@ -242,7 +241,7 @@ class Routers {
         
         GoRoute(
           path: '/employee/info',
-          builder: (context, state) => ScreenInfoEmployee(id: state.toString()),
+          builder: (context, state) => ScreenInfoEmployee(id: state.extra.toString()),
         ),
 
         GoRoute(
@@ -252,17 +251,17 @@ class Routers {
 
         GoRoute(
           path: '/employee/smartphone',
-          builder: (context, state) => ScreenSmartphoneEmployee(id: state.toString()),
+          builder: (context, state) => ScreenSmartphoneEmployee(id: state.extra.toString()),
         ),
 
         GoRoute(
           path: '/employee/work_time',
-          builder: (context, state) => ScreenTimeWorkEmployee(id: state.toString()),
+          builder: (context, state) => ScreenTimeWorkEmployee(id: state.extra.toString()),
         ),
 
         GoRoute(
           path: '/permissions',
-          builder: (context, state) => ScreenPermissions(id: state.toString()),
+          builder: (context, state) => ScreenPermissions(id: state.extra.toString()),
         ),
 
         GoRoute(
@@ -287,12 +286,12 @@ class Routers {
 
         GoRoute(
           path: '/promotion/info',
-          builder: (context, state) => ScreenInfoPromotion(id: state.toString()),
+          builder: (context, state) => ScreenInfoPromotion(id: state.extra.toString()),
         ),
 
         GoRoute(
           path: '/promotion/create',
-          builder: (context, state) => ScreenCreateEditPromotion(id: state.toString()),
+          builder: (context, state) => ScreenCreateEditPromotion(id: state.extra.toString()),
         ),
 
         GoRoute(
@@ -302,7 +301,7 @@ class Routers {
 
         GoRoute(
           path: '/size/info',
-          builder: (context, state) => ScreenInfoSize(id: state.toString()),
+          builder: (context, state) => ScreenInfoSize(id: state.extra.toString()),
         ),
 
         GoRoute(

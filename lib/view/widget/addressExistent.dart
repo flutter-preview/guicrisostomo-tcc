@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tcc/controller/auth/auth.dart';
 import 'package:tcc/globals.dart' as globals;
-import 'package:tcc/main.dart';
 import 'package:tcc/model/Address.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/sectionVisible.dart';
@@ -22,26 +22,43 @@ class _AddressExistentState extends State<AddressExistent> {
   String groupLocals = '';
   List<Address> listAddress = [];
 
+  listenerGoRouter() async {
+    if (GoRouter.of(context).location != '/create_edit_address') {
+      await getAddress().then((value) {
+        setState(() {
+          listAddress = value;
+          
+          if (listAddress.isEmpty) {
+            groupLocals = 'New address';
+          } else {
+            groupLocals = listAddress[0].nickname;
+            globals.idAddressSelected = listAddress[0].id;
+          }
+        });
+      });
+    }
+  }
+
+  listenerGoRouterEdit() async {
+    if (GoRouter.of(context).location != '/create_edit_address') {
+      await getAddress().then((value) {
+        setState(() {
+          listAddress = value;
+          groupLocals = 'Edit-${listAddress[0].nickname}';
+          globals.idAddressSelected = listAddress[0].id;
+        });
+      });
+    }
+  }
+
   Future<List<Address>> getAddress() async {
     return await LoginController().getAddress();
   }
 
   Widget newAddress() {
     return button('Novo endereço', 0, 0, Icons.location_on_outlined, () {
-      Navigator.push(context, navigator('create_edit_address')).then((value) async {
-        await getAddress().then((value) {
-          setState(() {
-            listAddress = value;
-            
-            if (listAddress.isEmpty) {
-              groupLocals = 'New address';
-            } else {
-              groupLocals = listAddress[0].nickname;
-              globals.idAddressSelected = listAddress[0].id;
-            }
-          });
-        });
-      });
+      GoRouter.of(context).go('/create_edit_address');
+      GoRouter.of(context).addListener(listenerGoRouter);
     });
   }
 
@@ -152,16 +169,8 @@ class _AddressExistentState extends State<AddressExistent> {
                                               IconButton(
                                                 onPressed: () {
                                                   setState(() {
-                                                    Navigator.push(context, navigator('create_edit_address', listAddress[i])).then((value) async {
-                                                      await getAddress().then((value) {
-
-                                                        setState(() {
-                                                          listAddress = value;
-                                                          groupLocals = listAddress[i].nickname;
-                                                        });
-
-                                                      });
-                                                    });
+                                                    GoRouter.of(context).go('/create_edit_address');
+                                                    GoRouter.of(context).addListener(listenerGoRouterEdit);
                                                   });
                                                 },
                                                 icon: const Icon(Icons.edit),

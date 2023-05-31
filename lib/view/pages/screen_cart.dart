@@ -1,9 +1,9 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tcc/controller/postgres/Lists/productsCart.dart';
 import 'package:tcc/controller/postgres/Lists/sales.dart';
-import 'package:tcc/main.dart';
 import 'package:tcc/model/ProductsCart.dart';
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/button.dart';
@@ -93,7 +93,7 @@ class _ScreenCartState extends State<ScreenCart> {
                 Icons.arrow_forward_ios,
                 () {
                   Navigator.pop(context);
-                  Navigator.push(context, navigator('finalize_order_customer'));
+                  GoRouter.of(context).go('/finalize_order_customer');
                 },
                 false,
               )

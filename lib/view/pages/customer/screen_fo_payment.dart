@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:tcc/controller/auth/auth.dart';
 import 'package:tcc/controller/postgres/Lists/sales.dart';
-import 'package:tcc/main.dart';
 import 'package:tcc/model/Sales.dart';
 import 'package:tcc/model/standardListDropDown.dart';
 import 'package:tcc/utils.dart';
@@ -258,7 +258,7 @@ class _ScreenFOPaymentState extends State<ScreenFOPayment> {
               50,
               Icons.check,
               () async {
-                Navigator.push(context, navigator('loading'));
+                GoRouter.of(context).go('/loading');
 
                 if (methodSelected == 'Dinheiro') {
                   if (!hasMoney) {

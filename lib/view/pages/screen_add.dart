@@ -1,11 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tcc/controller/postgres/Lists/businessInfo.dart';
 import 'package:tcc/controller/postgres/Lists/products.dart';
 import 'package:tcc/controller/postgres/Lists/productsCart.dart';
 import 'package:tcc/controller/postgres/Lists/sales.dart';
-import 'package:tcc/main.dart';
 import 'package:tcc/model/ProductItemList.dart';
 import 'package:tcc/model/ProductsCart.dart';
 import 'package:tcc/model/StandardCheckBox.dart';
@@ -736,7 +736,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
           child: ElevatedButton(
             onPressed: () async {
               if (formKey.currentState!.validate() && subTotal != 0) {
-                Navigator.push(context, navigator('loading'));
+                GoRouter.of(context).go('/loading');
                 
                 bool verification = false;
 
@@ -810,7 +810,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                     
                     Navigator.pop(context);
                     Navigator.pop(context);
-                    Navigator.push(context, navigator('products'));    
+                    GoRouter.of(context).go('/products');  
                     success(context, 'Produto adicionado com sucesso');
                   }).catchError((e){
                     error(context, 'Ocorreu um erro ao adicionar o produto: $e');
@@ -1022,7 +1022,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                           Icons.add, 
                           () async {
                             Navigator.pop(context);
-                            Navigator.push(context, navigator('products'));
+                            GoRouter.of(context).go('/products');
                             
                             setState(() {
                               globals.isSelectNewItem = true;

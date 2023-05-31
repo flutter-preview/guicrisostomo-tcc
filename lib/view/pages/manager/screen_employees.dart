@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tcc/main.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigation.dart';
@@ -131,7 +131,7 @@ class _ScreenEmployeesState extends State<ScreenEmployees> {
                       ),
                       trailing: Icon(Icons.arrow_forward_ios, color: globals.primary, size: 30,),
                       onTap: () {
-                        Navigator.push(context, navigator('employee/info', '1'));
+                        GoRouter.of(context).go('/employee/info', extra: '1');
                       },
                     ),
                   );
@@ -143,7 +143,9 @@ class _ScreenEmployeesState extends State<ScreenEmployees> {
       ),
 
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.push(context, navigator('employee/register')), 
+        onPressed: () => {
+          GoRouter.of(context).go('/employee/register')
+        }, 
         backgroundColor: globals.primary,
         child: const Icon(
           Icons.add,

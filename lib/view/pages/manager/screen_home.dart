@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tcc/globals.dart' as globals;
-import 'package:tcc/main.dart';
 import 'package:tcc/model/standardListDropDown.dart';
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigation.dart';
@@ -151,7 +151,7 @@ class _ScreenHomeManagerState extends State<ScreenHomeManager> {
                         ),
                         trailing: Icon(Icons.arrow_forward_ios, color: globals.primary, size: 30,),
                         onTap: () {
-                          Navigator.push(context, navigator('employee/info', '1'));
+                          GoRouter.of(context).pushNamed('/employee/info', extra: 1);
                         },
                       ),
                     ),

@@ -1,7 +1,7 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:tcc/main.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigation.dart';
 import 'package:tcc/globals.dart' as globals;
@@ -43,10 +43,7 @@ class _ScreenCategoriesState extends State<ScreenCategories> {
                     title: Text('Categoria $index'),
                     trailing: const Icon(Icons.arrow_forward_ios),
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        navigator('categories/category', index+1)
-                      );
+                      GoRouter.of(context).go('/categories/category');
                     },
                   ),
                 );

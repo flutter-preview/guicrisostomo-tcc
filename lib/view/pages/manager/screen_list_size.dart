@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tcc/main.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tcc/model/standardListDropDown.dart';
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigation.dart';
@@ -147,10 +147,7 @@ class _ScreenListSizeState extends State<ScreenListSize> {
                   ],
                 ),
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    navigator('size/info', index+1)
-                  );
+                  GoRouter.of(context).go('/size/info', extra: index+1);
                 },
               ),
             );

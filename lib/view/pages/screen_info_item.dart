@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/cli_commands.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tcc/controller/postgres/Lists/productsCart.dart';
-import 'package:tcc/main.dart';
 import 'package:tcc/model/ProductsCart.dart';
 import 'package:tcc/model/Variation.dart';
 import 'package:tcc/view/widget/appBar.dart';
@@ -83,7 +83,7 @@ class _ScreenInfoItemState extends State<ScreenInfoItem> {
                     }
 
                     Navigator.pop(context);
-                    Navigator.push(context, navigator('cart'));
+                    GoRouter.of(context).go('/cart');
 
                   });
                 },
@@ -134,10 +134,7 @@ class _ScreenInfoItemState extends State<ScreenInfoItem> {
               ),
 
               onTap: () {
-                Navigator.push(context, navigator(
-                  'products/info_product',
-                  item.idProduct
-                ));
+                GoRouter.of(context).go('/products/info_product');
               },
             )
           );

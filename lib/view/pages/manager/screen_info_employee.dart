@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tcc/main.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tcc/model/standardListDropDown.dart';
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigation.dart';
@@ -98,15 +98,21 @@ class _ScreenInfoEmployeeState extends State<ScreenInfoEmployee> {
               nameSection: 'Mais configurações do funcionário', 
               child: Column(
                 children: [
-                  button('Editar permissões', MediaQuery.of(context).size.width * 0.8, 70, Icons.local_police, () => Navigator.push(context, navigator('permissions', widget.id))),
+                  button('Editar permissões', MediaQuery.of(context).size.width * 0.8, 70, Icons.local_police, () => {
+                    GoRouter.of(context).go('/permissions', extra: widget.id),
+                  }),
 
                   const SizedBox(height: 10),
 
-                  button('Editar smartphones autorizados', MediaQuery.of(context).size.width * 0.8, 70, Icons.smartphone, () => Navigator.push(context, navigator('employee/smartphone', widget.id))),
+                  button('Editar smartphones autorizados', MediaQuery.of(context).size.width * 0.8, 70, Icons.smartphone, () => {
+                    GoRouter.of(context).go('/employee/smartphone', extra: widget.id),
+                  }),
                   
                   const SizedBox(height: 10),
                   
-                  button('Editar horário de trabalho', MediaQuery.of(context).size.width * 0.8, 70, Icons.work, () => Navigator.push(context, navigator('employee/work_time', widget.id))),
+                  button('Editar horário de trabalho', MediaQuery.of(context).size.width * 0.8, 70, Icons.work, () => {
+                    GoRouter.of(context).go('/employee/work_time', extra: widget.id),
+                  }),
                 ],
               )
             ),
@@ -285,10 +291,7 @@ class _ScreenInfoEmployeeState extends State<ScreenInfoEmployee> {
                 children: [
 
                   button('Cadastrar novo smartphone', MediaQuery.of(context).size.width - 100, 50, Icons.add, () {
-                    Navigator.push(
-                      context,
-                      navigator('/employee/phone', context)
-                    );
+                    GoRouter.of(context).go('/employee/phone');
                   }),
 
                   const SizedBox(height: 20),

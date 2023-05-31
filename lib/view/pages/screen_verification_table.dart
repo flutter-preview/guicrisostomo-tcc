@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tcc/controller/postgres/Lists/productsCart.dart';
 import 'package:tcc/controller/postgres/Lists/sales.dart';
-import 'package:tcc/main.dart';
 import 'package:tcc/utils.dart';
 import 'package:tcc/controller/postgres/Lists/table.dart';
 import 'package:tcc/view/widget/appBar.dart';
@@ -92,7 +92,7 @@ class _ScreenVerificationTableState extends State<ScreenVerificationTable> {
       if (tableNumber != 0) {
 
         Navigator.pop(context);
-        Navigator.push(context, navigator('waiter'));
+        GoRouter.of(context).go('/waiter');
 
         await SalesController.instance.idSale().then((idOrder) async {
           await ProductsCartController.instance.listItemCurrent(idOrder).then((value) async {

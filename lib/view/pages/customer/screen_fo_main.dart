@@ -1,11 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:tcc/controller/auth/auth.dart';
 import 'package:tcc/controller/postgres/Lists/productsCart.dart';
 import 'package:tcc/controller/postgres/Lists/sales.dart';
 import 'package:tcc/globals.dart' as globals;
-import 'package:tcc/main.dart';
 import 'package:tcc/model/Sales.dart';
 import 'package:tcc/model/standardRadioButton.dart';
 import 'package:tcc/utils.dart';
@@ -380,22 +380,25 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
 
                       switch (typeUser) {
                         case 'Cliente':
-                          Navigator.pushReplacementNamed(context, 'home');
+                          GoRouter.of(context).pop();
+                          GoRouter.of(context).go('/home');
                           break;
                         case 'Gerente':
-                          Navigator.pushReplacementNamed(context, 'home_manager');
+                          GoRouter.of(context).pop();
+                          GoRouter.of(context).go('/home_manager');
                           break;
                         default:
-                          Navigator.pushReplacementNamed(context, 'home_employee');
+                          GoRouter.of(context).pop();
+                          GoRouter.of(context).go('/home_employee');
                           break;
                       }
                     });
 
                   });
                 } else if (type == 'Entrega') {
-                  Navigator.push(context, navigator('finalize_order_customer/address', type));
+                  GoRouter.of(context).go('/finalize_order_customer/address', extra: type);
                 } else {
-                  Navigator.push(context, navigator('finalize_order_customer/payment', Sales(id: 0, uid: FirebaseAuth.instance.currentUser!.uid, cnpj: globals.businessId, status: 'Andamento', date: DateTime.now(), type: type, total: globals.totalSale, table: globals.numberTable)));
+                  GoRouter.of(context).go('/finalize_order_customer/payment', extra: Sales(id: 0, uid: FirebaseAuth.instance.currentUser!.uid, cnpj: globals.businessId, status: 'Andamento', date: DateTime.now(), type: type, total: globals.totalSale, table: globals.numberTable));
                 }
               },
               false

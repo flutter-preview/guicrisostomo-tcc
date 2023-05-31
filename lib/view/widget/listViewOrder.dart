@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:tcc/main.dart';
 import 'package:tcc/model/Sales.dart';
 import 'package:tcc/globals.dart' as globals;
 
@@ -71,15 +71,7 @@ Widget listViewOrder(List<Sales> dados) {
           //EVENTO DE CLIQUE
           onTap: ()  {
             // print('Clicou no item ${dados.docs[index]}');
-            Navigator.push(
-              context,
-              // 'order/info',
-              navigator('order/info', item)
-
-            //   //Passagem de parâmetro
-              // arguments: dados.docs[index],
-
-            );
+            GoRouter.of(context).go('order/info', extra: item);
           },
         )
       );

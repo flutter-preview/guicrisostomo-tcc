@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tcc/main.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigation.dart';
 import 'package:tcc/view/widget/sectionVisible.dart';
@@ -43,7 +43,7 @@ class _ScreenListPromotionsState extends State<ScreenListPromotions> {
                       subtitle: Text('Descrição da promoção $index'),
                       trailing: Icon(Icons.arrow_forward_ios, color: globals.primary),
                       onTap: () {
-                        Navigator.push(context, navigator('promotion/info', index));
+                        GoRouter.of(context).go('/promotions/info', extra: index);
                       },
                     ),
                   );
@@ -56,7 +56,7 @@ class _ScreenListPromotionsState extends State<ScreenListPromotions> {
 
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(context, navigator('promotion/create'));
+          GoRouter.of(context).go('/promotions/create');
         }, 
         backgroundColor: globals.primary,
         child: const Icon(Icons.add)

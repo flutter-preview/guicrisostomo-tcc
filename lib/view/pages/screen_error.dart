@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tcc/controller/auth/auth.dart';
-import 'package:tcc/main.dart';
 import 'package:tcc/view/widget/button.dart';
 
 class ScreenError extends StatelessWidget {
@@ -36,17 +36,18 @@ class ScreenError extends StatelessWidget {
               const SizedBox(height: 20),
               const SizedBox(width: 20),
               button('Tentar novamente', 0, 0, Icons.refresh, () async {
-                Navigator.push(context, navigator('loading'));
+                GoRouter.of(context).go('/loading');
+
                 await LoginController().getTypeUser().then((value) {
                   if (value == 'Cliente') {
                     Navigator.pop(context);
-                    Navigator.push(context, navigator('home'));
+                    GoRouter.of(context).go('/home');
                   } else if (value == 'Gerente') {
                     Navigator.pop(context);
-                    Navigator.push(context, navigator('home_manager'));
+                    GoRouter.of(context).go('/home_manager');
                   } else {
                     Navigator.pop(context);
-                    Navigator.push(context, navigator('home_employee'));
+                    GoRouter.of(context).go('/home_employee');
                   }
                 }).catchError((onError) {
                   Navigator.pop(context);

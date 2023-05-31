@@ -1,9 +1,9 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tcc/controller/postgres/Lists/sales.dart';
 import 'package:tcc/globals.dart' as globals;
-import 'package:tcc/main.dart';
 
 class CartInfo extends StatefulWidget {
   const CartInfo({super.key});
@@ -34,7 +34,7 @@ class _CartInfoState extends State<CartInfo> {
         children: [
           ElevatedButton(
             onPressed: () {
-              Navigator.push(context, navigator('cart'));
+              GoRouter.of(context).go('/cart');
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.transparent,
@@ -115,7 +115,7 @@ class _CartInfoState extends State<CartInfo> {
       
           ElevatedButton(
             onPressed: () {
-              Navigator.push(context, navigator('finalize_order_customer'));
+              GoRouter.of(context).go('/finalize_order_customer');
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.transparent,

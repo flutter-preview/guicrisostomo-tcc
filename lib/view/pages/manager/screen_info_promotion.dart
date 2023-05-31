@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tcc/main.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigation.dart';
 import 'package:tcc/view/widget/sectionVisible.dart';
@@ -153,7 +153,7 @@ class _ScreenInfoPromotionState extends State<ScreenInfoPromotion> {
 
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(context, navigator('promotion/create', widget.id));
+          GoRouter.of(context).go('/promotion/create', extra: widget.id);
         },
         backgroundColor: globals.primary,
         child: const Icon(Icons.edit),

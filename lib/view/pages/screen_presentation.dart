@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tcc/controller/auth/auth.dart';
-import 'package:tcc/main.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/imageMainScreens.dart';
 
@@ -48,12 +48,12 @@ class ScreenPresentation extends StatelessWidget {
                     
                     button('Entrar', MediaQuery.of(context).size.width * 0.4, 70, Icons.input, () {
                       Navigator.pop(context);
-                      Navigator.push(context, navigator('login'));
+                      GoRouter.of(context).go('/login');
                     }, false),
 
                     button('Cadastrar', MediaQuery.of(context).size.width * 0.4, 70, Icons.person_add_outlined, () {
                       Navigator.pop(context);
-                      Navigator.push(context, navigator('register'));
+                      GoRouter.of(context).go('/register');
                     }),
                   ],
                 ),
@@ -66,7 +66,7 @@ class ScreenPresentation extends StatelessWidget {
                   child: button('Continuar sem logar', MediaQuery.of(context).size.width - 100, 50, Icons.arrow_forward, () async {
                     await LoginController.instance.signInAnonymously(context).whenComplete(() {
                       Navigator.pop(context);
-                      Navigator.push(context, navigator('home'));
+                      GoRouter.of(context).go('/home');
                     });
                   }, false),
                 ),
@@ -84,7 +84,7 @@ class ScreenPresentation extends StatelessWidget {
                     ),
                     TextButton(
                       onPressed: () {
-                        Navigator.push(context, navigator('terms'));
+                        GoRouter.of(context).go('/terms');
                       },
                       child: Text(
                         'Termos de Uso',

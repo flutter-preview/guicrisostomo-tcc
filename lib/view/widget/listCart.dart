@@ -1,9 +1,9 @@
 // ignore_for_file: prefer_const_constructors, unused_local_variable, prefer_typing_uninitialized_variables, file_names
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:tcc/controller/postgres/Lists/productsCart.dart';
-import 'package:tcc/main.dart';
 import 'package:tcc/model/ProductsCart.dart';
 import 'package:tcc/globals.dart' as globals;
 
@@ -342,31 +342,19 @@ class _ProductsCartState extends State<ProductsCart> {
 
                   trailing: IconButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        navigator(
-                          'cart/info_item',
-                          {
-                            'dados': dados,
-                            'isShowButtonDelete': widget.isShowButtonDelete,
-                          }
-                        )
-                      );
+                      GoRouter.of(context).go('/cart/info_item', extra: {
+                        'dados': dados,
+                        'isShowButtonDelete': widget.isShowButtonDelete,
+                      });
                     },
                     icon: Icon(Icons.info, color: Colors.red,),
                   ),
                 
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      navigator(
-                        'cart/info_item',
-                        {
-                          'dados': dados,
-                          'isShowButtonDelete': widget.isShowButtonDelete,
-                        }
-                      )
-                    );
+                    GoRouter.of(context).go('/cart/info_item', extra: {
+                      'dados': dados,
+                      'isShowButtonDelete': widget.isShowButtonDelete,
+                    });
                   },
                 ),
               )

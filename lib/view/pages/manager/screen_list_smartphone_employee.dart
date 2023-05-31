@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tcc/main.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigation.dart';
 import 'package:tcc/globals.dart' as globals;
@@ -49,10 +49,7 @@ class _ScreenSmartphoneEmployeeState extends State<ScreenSmartphoneEmployee> {
 
             button('Avançar', 150, 70, Icons.arrow_forward_ios, () {
               Navigator.pop(context);
-              Navigator.push(
-                context,
-                navigator('employee/work_time', widget.id),
-              );
+              GoRouter.of(context).go('/employee/work_time', extra: widget.id);
             }, false),
             ListView.builder(
               shrinkWrap: true,
@@ -74,10 +71,7 @@ class _ScreenSmartphoneEmployeeState extends State<ScreenSmartphoneEmployee> {
                       child: const Icon(Icons.delete, size: 20, color: Colors.white,),
                     ),
                     onTap: () => {
-                      Navigator.push(
-                        context,
-                        navigator('smartphone'),
-                      )
+                      GoRouter.of(context).go('/smartphone'),
                     },
                   ),
                 );

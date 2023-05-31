@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tcc/controller/auth/auth.dart';
-import 'package:tcc/main.dart';
 import 'package:tcc/view/widget/bottonNavigation.dart';
 
 class ScreenMoreOption extends StatefulWidget {
@@ -27,10 +27,7 @@ class _ScreenMoreOptionState extends State<ScreenMoreOption> {
                 trailing: const Icon(Icons.arrow_right, size: 20),
 
                 onTap: () => {
-                  Navigator.push(
-                    context,
-                    navigator('employees'),
-                  )
+                  GoRouter.of(context).go('/employees'),
                 },
               ),
             ),
@@ -43,10 +40,7 @@ class _ScreenMoreOptionState extends State<ScreenMoreOption> {
                 trailing: const Icon(Icons.arrow_right, size: 20),
 
                 onTap: () => {
-                  Navigator.push(
-                    context,
-                    navigator('categories'),
-                  )
+                  GoRouter.of(context).go('/categories'),
                 },
               ),
             ),
@@ -59,10 +53,7 @@ class _ScreenMoreOptionState extends State<ScreenMoreOption> {
                 trailing: const Icon(Icons.arrow_right, size: 20),
 
                 onTap: () => {
-                  Navigator.push(
-                    context,
-                    navigator('size'),
-                  )
+                  GoRouter.of(context).go('/size'),
                 },
               ),
             ),
@@ -75,10 +66,7 @@ class _ScreenMoreOptionState extends State<ScreenMoreOption> {
                 trailing: const Icon(Icons.arrow_right, size: 20),
 
                 onTap: () => {
-                  Navigator.push(
-                    context,
-                    navigator('business'),
-                  )
+                  GoRouter.of(context).go('/business'),
                 },
               ),
             ),
@@ -91,10 +79,7 @@ class _ScreenMoreOptionState extends State<ScreenMoreOption> {
                 trailing: const Icon(Icons.arrow_right, size: 20),
 
                 onTap: () => {
-                  Navigator.push(
-                    context,
-                    navigator('profile/edit_datas', {}),
-                  )
+                  GoRouter.of(context).go('/profile/edit_datas', extra: {}),
                 },
               ),
             ),
@@ -107,10 +92,7 @@ class _ScreenMoreOptionState extends State<ScreenMoreOption> {
                 trailing: const Icon(Icons.arrow_right, size: 20),
 
                 onTap: () => {
-                  Navigator.push(
-                    context,
-                    navigator('profile/about'),
-                  )
+                  GoRouter.of(context).go('/profile/about'),
                 },
               ),
             ),

@@ -1,7 +1,7 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:tcc/main.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigation.dart';
 import 'package:tcc/view/widget/switchListTile.dart';
@@ -120,10 +120,10 @@ class _ScreenTablesState extends State<ScreenTables> {
                     title: Text('Mesa ${index + 1}'),
                     trailing: const Icon(Icons.arrow_right, size: 20),
                     onTap: () => {
-                      Navigator.push(
-                        context,
-                        navigator('table/info', index + 1),
-                      )
+                      GoRouter.of(context).go(
+                        '/table/info',
+                        extra: index + 1
+                      ),
                     },
                   ),
                 );

@@ -2,8 +2,8 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tcc/controller/auth/auth.dart';
-import 'package:tcc/main.dart';
 import 'package:tcc/model/User.dart';
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigation.dart';
@@ -36,6 +36,17 @@ class _ScreenProfileState extends State<ScreenProfile> {
         phoneUser = value.phone;
         photoUser = value.image;
       });
+    });
+  }
+
+  listenGoRouter() {
+    GoRouter.of(context).addListener(() {
+      if (!GoRouter.of(context).location.contains("/profile/edit_datas")) {  // Here you check for some changes in your route that indicate you are no longer on the page you have pushed before
+        // do something
+        getUser();
+        GoRouter.of(context).removeListener(listenGoRouter); // remove listener
+      }
+      
     });
   }
 
@@ -126,12 +137,8 @@ class _ScreenProfileState extends State<ScreenProfile> {
                     trailing: Icon(Icons.arrow_right, size: 20, color: globals.primary,),
 
                     onTap: () async => {
-                      Navigator.push(
-                        context,
-                        navigator('profile/edit_datas', user),
-                      ).then((value) {
-                        getUser();
-                      })
+                      GoRouter.of(context).go('/profile/edit_datas'),
+                      GoRouter.of(context).addListener(listenGoRouter),
                     },
                   ),
                 ),

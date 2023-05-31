@@ -3,10 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tcc/controller/auth/auth.dart';
 import 'package:tcc/controller/others/notification.dart';
 import 'package:tcc/controller/postgres/Lists/table.dart';
-import 'package:tcc/main.dart';
 import 'package:tcc/view/widget/bottonNavigation.dart';
 import 'package:tcc/globals.dart' as globals;
 import 'package:tcc/view/widget/sectionVisible.dart';
@@ -296,10 +296,7 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                         leading: const Icon(Icons.table_bar, size: 40, color: Colors.white,),
                         
                         onTap: () => {
-                          Navigator.push(
-                            context,
-                            navigator('manager/products'),
-                          )
+                          GoRouter.of(context).go('/manager/products')
                         },
                       ),
                     );
@@ -349,10 +346,7 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                       leading: const Icon(Icons.shopping_cart, size: 20, color: Colors.white,),
                       
                       onTap: () => {
-                        Navigator.push(
-                          context,
-                          navigator('manager/products'),
-                        )
+                        GoRouter.of(context).go('/manager/products')
                       },
                     ),
                   ),
@@ -370,10 +364,7 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                       leading: const Icon(Icons.shopping_cart, size: 20, color: Colors.white,),
                       
                       onTap: () => {
-                        Navigator.push(
-                          context,
-                          navigator('manager/products'),
-                        )
+                        GoRouter.of(context).go('/manager/products')
                       },
                     ),
                   ),
@@ -391,10 +382,7 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                       leading: SvgPicture.asset('lib/images/iconMenu.svg', height: 25, fit: BoxFit.fill,),
                       
                       onTap: () => {
-                        Navigator.push(
-                          context,
-                          navigator('manager/products'),
-                        )
+                        GoRouter.of(context).go('/manager/products')
                       },
                     ),
                   ),
@@ -412,10 +400,7 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                       leading: const Icon(Icons.add, size: 20, color: Colors.white,),
     
                       onTap: () => {
-                        Navigator.push(
-                          context,
-                          navigator('manager/products'),
-                        )
+                        GoRouter.of(context).go('/manager/products')
                       },
                     ),
                   ),
@@ -433,7 +418,7 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                       leading: const Icon(Icons.star, size: 20, color: Colors.white,),
                       
                       onTap: () => {
-                        Navigator.push(context, navigator('employee/evaluation', '1'))
+                        GoRouter.of(context).go('/employee/evaluation', extra: '1')
                       },
                     ),
                   ),
@@ -451,10 +436,7 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                       leading: const Icon(Icons.delivery_dining, size: 20, color: Colors.white,),
                       
                       onTap: () => {
-                        Navigator.push(
-                          context,
-                          navigator('manager/products'),
-                        )
+                        GoRouter.of(context).go('/manager/products')
                       },
                     ),
                   ),
@@ -472,10 +454,7 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                       leading: const Icon(Icons.business, size: 20, color: Colors.white,),
                       
                       onTap: () => {
-                        Navigator.push(
-                          context,
-                          navigator('manager/products'),
-                        )
+                        GoRouter.of(context).go('/manager/products')
                       },
                     ),
                   ),
@@ -493,10 +472,7 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                       leading: const Icon(Icons.person, size: 20, color: Colors.white,),
                       
                       onTap: () => {
-                        Navigator.push(
-                          context,
-                          navigator('manager/products'),
-                        )
+                        GoRouter.of(context).go('/manager/products')
                       },
                     ),
                   ),
@@ -533,10 +509,7 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                           padding: MaterialStateProperty.all<EdgeInsets>(const EdgeInsets.all(5)),
                         ),
                         onPressed: () => {
-                          Navigator.push(
-                            context,
-                            navigator('table/info', index + 1),
-                          )
+                          GoRouter.of(context).go('/table/info')
                         },
                         child: Row(
                           children: [

@@ -1,7 +1,7 @@
 // ignore_for_file: file_names
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tcc/globals.dart' as globals;
-import 'package:tcc/main.dart';
 import 'package:tcc/model/ProductItemList.dart';
 
 Widget listSize(List<ProductItemList> list) {
@@ -28,15 +28,9 @@ Widget listSize(List<ProductItemList> list) {
             trailing: ElevatedButton(
                 
               onPressed: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  navigator(
-                    'products/add_product',
-                    list[index],
-                  ),
-                );
-                Navigator.push(context, navigator('loading'));
+                GoRouter.of(context).pop();
+                GoRouter.of(context).go('products/add_product', extra: list[index]);
+                GoRouter.of(context).go('loading');
               },
               
               style: ElevatedButton.styleFrom(
