@@ -182,7 +182,7 @@ class _ProductItemState extends State<ProductItem> {
                     ),
                     
                     onTap: () {
-                      GoRouter.of(context).go('/products', extra: item);
+                      GoRouter.of(context).push('/products/info_product', extra: item);
                     },
                   )
                 );
