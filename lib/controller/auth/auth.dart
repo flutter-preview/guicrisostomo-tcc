@@ -132,6 +132,7 @@ class LoginController {
             actions: [
               TextButton(
                 onPressed: () {
+                  Navigator.pop(context);
                   // ;
                   // Create a PhoneAuthCredential with the code
                   PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: smsCode);
@@ -142,7 +143,7 @@ class LoginController {
                     
                     success(context, 'Número de telefone verificado com sucesso.');
                     
-                    await savePhoneDataBase(phoneNumber);
+                    await savePhoneDataBase(phoneNumber, context);
                   }).onError((e, stackTrace) {
                     error(context, 'Ocorreu um erro ao verificar o número de telefone: ${e.toString()}');
                   });
@@ -158,12 +159,12 @@ class LoginController {
   }
 
   Future<void> savePhoneNumber(int phoneNumber, context) async {
-    GoRouter.of(context).go('/loading');
+    GoRouter.of(context).push('/loading');
     await syncPhoneNumberFirebase(phoneNumber, context);
     
   }
 
-  Future<void> savePhoneDataBase(int phoneNumber) async {
+  Future<void> savePhoneDataBase(int phoneNumber, BuildContext context) async {
     await connectSupadatabase().then((conn) async {
       await conn.query('update tb_user set phone=@phone where uid=@uid', substitutionValues: {
         'phone': phoneNumber,
@@ -171,6 +172,8 @@ class LoginController {
       });
       conn.close();
     });
+
+    GoRouter.of(context).pop();
   }
 
   Future<void> saveDatasUser(String? uid, String name, String email, String? phone, int type, BuildContext context) async {
@@ -198,7 +201,7 @@ class LoginController {
   }
 
   Future<void> createAccount(context, String name, String email, String phone, String password) async {
-    GoRouter.of(context).go('/loading');
+    GoRouter.of(context).push('/loading');
 
     (FirebaseAuth.instance.currentUser == null) ?
       await FirebaseAuth.instance
