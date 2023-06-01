@@ -351,10 +351,14 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                             element.isTextEmpty[item.id] = false;
                           }
 
-                          element.price = (value.split(',').length - 1) * item.price;
+                          element.price = (value.split(',').length) * item.price;
                           // if (value.endsWith(',')) {
                           //   element.price += item.price;
                           // }
+
+                          if (value == "") {
+                            element.price = 0;
+                          }
 
                           resetSubTotal();
                           
