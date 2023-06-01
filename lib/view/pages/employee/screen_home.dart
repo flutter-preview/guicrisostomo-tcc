@@ -33,13 +33,12 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
           tablesCall.add(element.doc.data()!['table']);
         }
 
-        NotificationController.instance.showNotificationWithActions(
+        NotificationController.instance.showNotification(
           'Mesa ${tablesCall[0]} chamando',
           'Clique para atender',
           [
             'Atender',
           ],
-          true
         );
       }
 
