@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 IconData? getIconCategory(String category) {
-    
-  switch (category) {
+  
+  switch (category.toUpperCase()) {
     case 'PIZZA': case 'PIZZAS':
       return Icons.local_pizza;
     case 'SALGADO': case 'SALGADOS':
