@@ -1,6 +1,7 @@
 // ignore_for_file: file_names, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tcc/controller/postgres/Lists/businessInfo.dart';
 import 'package:tcc/controller/postgres/Lists/products.dart';
 import 'package:tcc/controller/postgres/Lists/sales.dart';
@@ -701,7 +702,13 @@ class ProductsCartController {
       int idItemVariationSelected = item.variation!.id!;
       await getVariationItemPreSelected(context, idItemVariationSelected, idOrder).then((value) async {
         if (value.keys.first) {
-          await isLimitedItemVariationOrProduct(context, item, idOrder);
+          await isLimitedItemVariationOrProduct(context, item, idOrder).then((value) {
+            if (!value) {
+              GoRouter.of(context).pop();
+            }
+          });
+        } else {
+          GoRouter.of(context).pop();
         }
       });
 
