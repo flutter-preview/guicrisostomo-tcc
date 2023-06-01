@@ -383,12 +383,6 @@ class _ScreenProductsState extends State<ScreenProducts> {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            getSize().then((value) {
-                              setState(() {
-                                globals.sizesCategoryBusiness = value;
-                              });
-                            });
-        
                             _key.currentState!.closeDrawer();
                           },
                           child: Container(
