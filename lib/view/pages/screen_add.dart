@@ -12,6 +12,7 @@ import 'package:tcc/model/StandardCheckBox.dart';
 import 'package:tcc/model/Variation.dart';
 import 'package:tcc/model/standardListDropDown.dart';
 import 'package:tcc/model/standardRadioButton.dart';
+import 'package:tcc/utils.dart';
 import 'package:tcc/validators.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/checkBox.dart';
@@ -962,8 +963,6 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                 idProduct != 0 ?
                   Column(
                     children: [
-                      
-
 
                       Container(
                         decoration: BoxDecoration(
@@ -974,39 +973,88 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                           ],
                         ),
 
-                        padding: const EdgeInsets.all(10),
-
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
 
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.info,
-                                  color: globals.primary,
-                                  size: 30,
-                                ),
-
-                                const SizedBox(width: 10),
-
-                                const Text(
-                                  'Descrição',
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w700,
+                            Container(
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(
+                                    color: globals.primary.withOpacity(0.5),
+                                    width: 1,
                                   ),
                                 ),
-                              ],
+                              ),
+
+                              padding: const EdgeInsets.all(10),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.info,
+                                        color: globals.primary,
+                                        size: 30,
+                                      ),
+
+                                      const SizedBox(width: 5),
+
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+
+                                          SizedBox(
+                                            width: MediaQuery.of(context).size.width * 0.6,
+                                            child: Text(
+                                              productSelect.name,
+                                              style: const TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                
+                                          (productSelect.variation!.size != 'UNICO') ?
+                                            Text(
+                                              '${productSelect.variation!.category} - ${productSelect.variation!.size.toLowerCase()}',
+                                              style: const TextStyle(
+                                                fontSize: 16,
+                                              ),
+                                            )
+                                          :
+                                            Text(
+                                              productSelect.variation!.category,
+                                              style: const TextStyle(
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+
+                                  Icon(
+                                    getIconCategory(productSelect.variation!.category),
+                                    color: globals.primary,
+                                    size: 30,
+                                  ),
+                                ],
+                              ),
                             ),
 
-                            const SizedBox(height: 10),
-
-                            Text(
-                              descriptionProduct ?? 'Sem descrição',
-                              style: const TextStyle(
-                                fontSize: 20,
-                                color: Colors.black87,
+                            Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Text(
+                                descriptionProduct ?? 'Sem descrição',
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.black87,
+                                ),
                               ),
                             ),
                           ],
