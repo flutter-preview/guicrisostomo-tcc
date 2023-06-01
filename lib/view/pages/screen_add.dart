@@ -355,6 +355,8 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                           // if (value.endsWith(',')) {
                           //   element.price += item.price;
                           // }
+
+                          resetSubTotal();
                           
                           // element.checkTextEmpty(item.id);
                         });
@@ -663,7 +665,6 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
     variations.clear();
 
     return await ProductsController.instance.listVariations(idVariation).then((List<Variation> res) {
-      print(res.length);
       if (res.isNotEmpty) {
         for (final Variation item in res) {
           variations.add(item);
