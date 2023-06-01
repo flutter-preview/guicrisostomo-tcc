@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:tcc/controller/postgres/Lists/products.dart';
 import 'package:tcc/model/ProductItemList.dart';
@@ -24,6 +25,8 @@ class ScreenProducts extends StatefulWidget {
 class _ScreenProductsState extends State<ScreenProducts> {
 
   var txtProd = TextEditingController();
+
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
 
   Future<List<ProductItemList>> getProduct(category, size) async {
     return await ProductsController.instance.list(category, size, txtProd.text).then((value) {
@@ -214,6 +217,7 @@ class _ScreenProductsState extends State<ScreenProducts> {
   Widget build(BuildContext context) {
 
     return Scaffold(
+      key: _key,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
         child: AppBarWidget(
@@ -259,6 +263,16 @@ class _ScreenProductsState extends State<ScreenProducts> {
                           globals.categorySelected = globals.categoriesBusiness[i];
                           globals.sizesCategoryBusiness = [];
                         });
+
+                        getSize().then((value) {
+                          setState(() {
+                            globals.sizesCategoryBusiness = value;
+                          });
+
+                          if (globals.sizesCategoryBusiness.length > 1) {
+                            _key.currentState!.openDrawer();
+                          }
+                        });
                       },
                       child: Container(
                         margin: const EdgeInsets.all(5),
@@ -278,11 +292,26 @@ class _ScreenProductsState extends State<ScreenProducts> {
                                 getIconCategory(globals.categoriesBusiness[i].toUpperCase()),
                                 color: globals.categorySelected == globals.categoriesBusiness[i] ? Colors.white : globals.primary,
                               ),
-                              Text(
-                                globals.categoriesBusiness[i],
-                                style: TextStyle(
-                                  color: globals.categorySelected == globals.categoriesBusiness[i] ? Colors.white : Colors.black45,
-                                ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.max,
+
+                                children: [
+                                  Text(
+                                    globals.categoriesBusiness[i],
+                                    style: TextStyle(
+                                      color: globals.categorySelected == globals.categoriesBusiness[i] ? Colors.white : Colors.black45,
+                                    ),
+                                  ),
+
+                                  const SizedBox(width: 5,),
+
+                                  Icon(
+                                    Icons.arrow_forward_ios_rounded,
+                                    size: 15,
+                                    color: globals.categorySelected == globals.categoriesBusiness[i] ? Colors.white : Colors.black45,
+                                  )
+                                ],
                               ),
                             ],
                           ),
@@ -335,6 +364,130 @@ class _ScreenProductsState extends State<ScreenProducts> {
 
       bottomNavigationBar: const Bottom(),
       
+      drawer: Drawer(
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            
+            children: [
+              const Text(
+                'Tamanho',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+
+              const SizedBox(height: 10),
+        
+              FutureBuilder(
+                future: Future.value(globals.sizesCategoryBusiness),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData && snapshot.connectionState == ConnectionState.done) {
+                    if (snapshot.data == null) {
+                      return const SizedBox(
+                        height: 50,
+                        child: Text(
+                          'Produto não encontrado',
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.black45,
+                          ),
+                        ),
+                      );
+                    }
+                    
+                    return GridView.count(
+                      crossAxisCount: 2,
+                      childAspectRatio: 1.5,
+                      shrinkWrap: true,
+                      padding: EdgeInsets.zero,
+        
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            getSize().then((value) {
+                              setState(() {
+                                globals.sizesCategoryBusiness = value;
+                              });
+                            });
+        
+                            _key.currentState!.closeDrawer();
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                              color: globals.sizesCategoryBusiness.isEmpty ? globals.primary : Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(
+                                color: globals.sizesCategoryBusiness.isEmpty ? globals.primary : globals.primary.withOpacity(0.5),
+                                width: 1,
+                              ),
+                            ),
+                            child: Center(
+                              child: Text(
+                                'Todos',
+                                style: TextStyle(
+                                  color: globals.sizesCategoryBusiness.isEmpty ? Colors.white : globals.primary,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+        
+                        for (int i = 0; i < snapshot.data!.length; i++)
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                globals.sizesCategoryBusiness = [snapshot.data![i]];
+                              });
+        
+                              _key.currentState!.closeDrawer();
+                            },
+                            child: Container(
+                              margin: const EdgeInsets.all(5),
+                              decoration: BoxDecoration(
+                                color: globals.sizesCategoryBusiness.contains(snapshot.data![i]) ? globals.primary : Colors.white,
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                  color: globals.sizesCategoryBusiness.contains(snapshot.data![i]) ? globals.primary : Colors.black45,
+                                  width: 1,
+                                ),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  snapshot.data![i],
+                                  style: TextStyle(
+                                    color: globals.sizesCategoryBusiness.contains(snapshot.data![i]) ? Colors.white : Colors.black45,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                      ]
+                    );
+                  } else if (snapshot.hasError) {
+                    return const Text('Erro ao carregar os produtos');
+                  } else if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else {
+                    return const SizedBox(
+                      height: 200,
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
+                  }
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
