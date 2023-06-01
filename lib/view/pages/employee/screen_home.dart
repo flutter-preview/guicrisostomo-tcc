@@ -33,13 +33,12 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
           tablesCall.add(element.doc.data()!['table']);
         }
 
-        NotificationController.instance.showNotificationWithActions(
+        NotificationController.instance.showNotification(
           'Mesa ${tablesCall[0]} chamando',
           'Clique para atender',
           [
             'Atender',
           ],
-          true
         );
       }
 
@@ -61,42 +60,34 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
 
     getTablesCall();
 
-    // AwesomeNotifications().setListeners(
-    //   onActionReceivedMethod: (ReceivedAction receivedAction) async {
-    //     await NotificationController.onActionReceivedMethod(receivedAction, (receivedAction) {
-          
-    //       if (receivedAction.buttonKeyPressed == '0') {
-    //       } else {
-    //         showDialog(
-    //           context: context,
-    //           builder: (context) => AlertDialog(
-    //             title: Text('Mesa ${receivedAction.payload!['table']} chamando'),
-    //             content: const Text('Deseja atender a mesa?'),
-    //             actions: [
-    //               TextButton(
-    //                 onPressed: () {
-    //                   ;
-    //                   ;
-    //                   Navigator.pushNamed(context, 'home_employee');
-    //                 },
-    //                 child: const Text('Não'),
-    //               ),
-    //               TextButton(
-    //                 onPressed: () async {
-    //                   showAboutDialog(context: context, applicationName: 'teste');
-    //                 },
-    //                 child: const Text('Sim'),
-    //               ),
-    //             ],
-    //           ),
-    //         );
-    //       }
-    //     });
-    //   },
-    //   onNotificationCreatedMethod:    NotificationController.onNotificationCreatedMethod,
-    //   onNotificationDisplayedMethod:  NotificationController.onNotificationDisplayedMethod,
-    //   onDismissActionReceivedMethod:  NotificationController.onDismissActionReceivedMethod
-    // );
+    NotificationController.instance.stream.listen((event) {
+      if (event[1] != null) {
+        
+      } else {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Mesa ${tablesCall[0]} chamando'),
+            content: const Text('Deseja atender a mesa?'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  // Navigator.pushNamed(context, 'home_employee');
+                },
+                child: const Text('Não'),
+              ),
+              TextButton(
+                onPressed: () async {
+                  showAboutDialog(context: context, applicationName: 'teste');
+                },
+                child: const Text('Sim'),
+              ),
+            ],
+          ),
+        );
+      }
+    });
   }
   
   @override

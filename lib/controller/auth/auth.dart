@@ -310,7 +310,12 @@ class LoginController {
     
     await FirebaseAuth.instance.signOut();
 
-    GoRouter.of(context).pop();
+    try {
+      GoRouter.of(context).pop();
+    } catch (e) {
+      print(e);
+    }
+    
     GoRouter.of(context).go('/');
   }
 
