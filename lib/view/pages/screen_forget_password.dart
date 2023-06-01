@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tcc/controller/auth/auth.dart';
-import 'package:tcc/utils.dart';
+import 'package:tcc/validators.dart';
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/textFieldGeneral.dart';

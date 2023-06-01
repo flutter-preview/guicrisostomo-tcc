@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:tcc/controller/postgres/Lists/products.dart';
 import 'package:tcc/model/Comments.dart';
 import 'package:tcc/model/ProductItemList.dart';
-import 'package:tcc/utils.dart';
+import 'package:tcc/validators.dart';
 import 'package:tcc/view/widget/bottonNavigation.dart';
 import 'package:tcc/view/widget/comments.dart';
 import 'package:tcc/view/widget/listSizeAvailable.dart';

@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:tcc/controller/auth/auth.dart';
-import 'package:tcc/utils.dart';
+import 'package:tcc/validators.dart';
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/textFieldGeneral.dart';

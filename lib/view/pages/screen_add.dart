@@ -12,7 +12,7 @@ import 'package:tcc/model/StandardCheckBox.dart';
 import 'package:tcc/model/Variation.dart';
 import 'package:tcc/model/standardListDropDown.dart';
 import 'package:tcc/model/standardRadioButton.dart';
-import 'package:tcc/utils.dart';
+import 'package:tcc/validators.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/checkBox.dart';
 import 'package:tcc/view/widget/dropDownButton.dart';
@@ -880,8 +880,6 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
       calcSubTotal();
     }
 
-    print('object');
-
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(180),
@@ -964,6 +962,9 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                 idProduct != 0 ?
                   Column(
                     children: [
+                      
+
+
                       Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),

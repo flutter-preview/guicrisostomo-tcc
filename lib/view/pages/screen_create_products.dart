@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tcc/controller/postgres/Lists/products.dart';
-import 'package:tcc/utils.dart';
+import 'package:tcc/validators.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/textFieldGeneral.dart';
 import 'package:tcc/globals.dart' as globals;

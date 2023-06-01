@@ -5,7 +5,7 @@ import 'package:tcc/controller/auth/auth.dart';
 import 'package:tcc/controller/postgres/Lists/sales.dart';
 import 'package:tcc/model/Sales.dart';
 import 'package:tcc/model/standardListDropDown.dart';
-import 'package:tcc/utils.dart';
+import 'package:tcc/validators.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/customer/partFinalizeOrder.dart';
 import 'package:tcc/globals.dart' as globals;
