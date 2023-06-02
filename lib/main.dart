@@ -18,7 +18,7 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  NotificationController.instance.init();
+  NotificationController.init();
   
   runApp(
     MaterialApp.router(

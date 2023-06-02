@@ -15,7 +15,7 @@ class NotificationController {
 
   static final StreamController<List<String?>> _streamController = StreamController<List<String?>>.broadcast();
 
-  void init() async {
+  static void init() async {
     if (!_initialized) {
       _initialized = true;
 
