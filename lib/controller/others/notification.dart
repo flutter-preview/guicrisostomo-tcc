@@ -1,10 +1,6 @@
 // import 'package:awesome_notifications/awesome_notifications.dart';
 import 'dart:async';
-import 'dart:convert';
-
-import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:tcc/globals.dart' as globals;
 
 class NotificationController {
   static NotificationController? _instance;
