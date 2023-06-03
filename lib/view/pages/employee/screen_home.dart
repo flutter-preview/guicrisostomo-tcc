@@ -52,10 +52,12 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
 
   @override
   void initState() {
-    super.initState();
+    
     setState(() {
       globals.userType = 'employee';
       globals.businessId = '1';
+      globals.numberTable = null;
+      globals.totalSale = 0;
     });
 
     getTablesCall();
@@ -88,6 +90,8 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
         );
       }
     });
+
+    super.initState();
   }
   
   @override
@@ -111,8 +115,8 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                 actions: [
                   IconButton(
                     icon: const Icon(Icons.logout),
-                    onPressed: () => {
-                      LoginController.instance.logout(context),
+                    onPressed: () async => {
+                      await LoginController.instance.logout(context),
                     },
                   )
                 ],
