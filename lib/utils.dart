@@ -1,4 +1,8 @@
+import 'dart:async';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 IconData? getIconCategory(String category) {
   
@@ -24,4 +28,18 @@ IconData? getIconCategory(String category) {
     default:
       return Icons.fastfood;
   }
+}
+
+Future<bool> checkConnectionToInternet() async {
+  ConnectivityResult connectionStatus = ConnectivityResult.none;
+  final Connectivity connectivity = Connectivity();
+    // Platform messages may fail, so we use a try/catch PlatformException.
+  await connectivity.checkConnectivity().then((value) {
+    connectionStatus = value;
+  }).catchError((onError) {
+    connectionStatus = ConnectivityResult.none;
+    print(onError);
+  });
+  
+  return connectionStatus != ConnectivityResult.none;
 }

@@ -5,7 +5,12 @@ import 'package:tcc/controller/auth/auth.dart';
 import 'package:tcc/view/widget/button.dart';
 
 class ScreenError extends StatelessWidget {
-  const ScreenError({super.key});
+  final String? msg;
+
+  const ScreenError({
+    super.key,
+    required this.msg,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +30,8 @@ class ScreenError extends StatelessWidget {
                 size: 100,
                 color: Colors.red,
               ),
-              const Text(
-                'Estamos com problemas para conectar ao servidor :(',
+              Text(
+                msg ?? 'Erro desconhecido',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,

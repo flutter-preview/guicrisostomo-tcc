@@ -5,6 +5,7 @@ import 'package:tcc/controller/postgres/utils.dart';
 import 'package:tcc/model/Address.dart';
 import 'package:tcc/model/Sales.dart';
 import 'package:tcc/model/standardSlideShow.dart';
+import 'package:tcc/utils.dart';
 import 'package:tcc/view/pages/customer/screen_call_waiter.dart';
 import 'package:tcc/view/pages/customer/screen_create_edit_address.dart';
 import 'package:tcc/view/pages/customer/screen_fo_get_adress.dart';
@@ -72,51 +73,54 @@ class Routers {
       return isRunning;
     }
 
-    Future<String> verifiyUserAuth() async {
+    Future<List<String>> verifiyUserAuth() async {
       FirebaseAuth auth = FirebaseAuth.instance;
       User? user = auth.currentUser;
-      
-      if (user != null) {
-        if (user.emailVerified == false && !user.isAnonymous) {
 
-          return await isDataBaseRunning().then((value) {
-            if (!value) {
-              return '/error';
-            } else {
-              return '/verify_email';
-            }
-          });
-
+      return await checkConnectionToInternet().then((value) async {
+        if (!value) {
+          return ['/error', 'Para utilizar o aplicativo, por favor, se conecte à internet'];
         } else {
-          return await LoginController.instance.getTypeUser().then((value) {
-            if (value == 'Cliente') {
-              return '/home';
-            } else if (value == 'Gerente') {
-              return '/home_manager';
+          return await isDataBaseRunning().then((value) async {
+            if (!value) {
+              return ['/error', 'Estamos com problemas para conectar ao servidor :('];
             } else {
-              return '/home_employee';
+              if (user != null) {
+                if (user.emailVerified == false && !user.isAnonymous) {
+
+                  return ['/verify_email', ''];
+
+                } else {
+                  return await LoginController.instance.getTypeUser().then((value) {
+                    if (value == 'Cliente') {
+                      return ['/home', ''];
+                    } else if (value == 'Gerente') {
+                      return ['/home_manager', ''];
+                    } else {
+                      return ['/home_employee', ''];
+                    }
+                  }).catchError((onError) {
+                    return ['/error', 'Estamos com problemas para conectar ao servidor :('];
+                  });
+                }
+              } else {
+                return ['/', ''];
+              }
             }
-          }).catchError((onError) {
-            return '/error';
           });
         }
-      } else {
-        return await isDataBaseRunning().then((value) {
-          if (!value) {
-            return '/error';
-          } else {
-            return '/';
-          }
-        });
-      }
+      });
     }
+
+    List<String> arguments = await verifiyUserAuth();
     
     final GoRouter router = GoRouter(
-      initialLocation: await verifiyUserAuth(),
+      initialLocation: arguments[0],
+      initialExtra: arguments[1],
       routes: <RouteBase>[
         GoRoute(
           path: '/error',
-          builder: (context, state) => const ScreenError(),
+          builder: (context, state) => ScreenError(msg: state.extra.toString(),),
         ),
 
         GoRoute(
