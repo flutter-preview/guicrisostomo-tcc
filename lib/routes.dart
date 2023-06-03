@@ -5,6 +5,7 @@ import 'package:tcc/controller/postgres/utils.dart';
 import 'package:tcc/model/Address.dart';
 import 'package:tcc/model/Sales.dart';
 import 'package:tcc/model/standardSlideShow.dart';
+import 'package:tcc/shared/config.dart';
 import 'package:tcc/utils.dart';
 import 'package:tcc/view/pages/customer/screen_call_waiter.dart';
 import 'package:tcc/view/pages/customer/screen_create_edit_address.dart';
@@ -117,6 +118,7 @@ class Routers {
     final GoRouter router = GoRouter(
       initialLocation: arguments[0],
       initialExtra: arguments[1],
+      navigatorKey: Config.navigatorKey,
       routes: <RouteBase>[
         GoRoute(
           path: '/error',

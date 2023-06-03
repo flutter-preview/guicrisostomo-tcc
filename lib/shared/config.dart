@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class Config {
@@ -19,4 +20,6 @@ class Config {
   static String get supabaseDatabase => _get('SUPABASEDATABASE');
 
   static String _get(String name) => dotenv.env[name] ?? '';
+
+  static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 }

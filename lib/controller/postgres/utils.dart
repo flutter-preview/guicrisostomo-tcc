@@ -1,3 +1,4 @@
+import 'package:go_router/go_router.dart';
 import 'package:postgres/postgres.dart';
 import 'package:tcc/shared/config.dart';
 
@@ -11,6 +12,8 @@ Future<PostgreSQLConnection> connectSupadatabase() async {
     
   );
   await conn.open().catchError((onError) {
+    print(onError);
+    GoRouter.of(Config.navigatorKey.currentContext!).go('/error');
   });
   return conn;
 }
