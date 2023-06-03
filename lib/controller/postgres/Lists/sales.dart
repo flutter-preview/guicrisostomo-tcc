@@ -145,8 +145,7 @@ class SalesController {
   }
 
   Future<int> idSale() async {
-    return (globals.numberTable == null) ?
-    await connectSupadatabase().then((conn) async {
+    return await connectSupadatabase().then((conn) async {
       
       return (globals.userType == 'employee' || globals.userType == 'manager') ?
         getOrderEmployee().then((value) async {
@@ -167,12 +166,15 @@ class SalesController {
         SELECT orders.id 
           FROM orders 
           INNER JOIN user_order ON user_order.id_order = orders.id
-          WHERE user_order.uid = @uid and orders.status = @status and user_order.fg_ativo = true
+          INNER JOIN order_employee ON order_employee.id_order <> orders.id
+          WHERE user_order.uid = @uid and orders.status = @status and user_order.fg_ativo = true and coalesce(o.table_number, 0) = @table
       ''', substitutionValues: {
         'uid': FirebaseAuth.instance.currentUser?.uid,
         'status': 'Andamento',
+        'table': globals.numberTable
       }).then((List? value) async {
         conn.close();
+
         List list = value ?? [];
 
         if (list.isEmpty) {
@@ -182,30 +184,10 @@ class SalesController {
           });
           return await idSale();
         } else {
+          
           return list.first[0];
         }
       }).catchError((e) {
-      });
-    })
-    : await connectSupadatabase().then((conn) async {
-      return await conn.query('SELECT id FROM orders WHERE table_number = @table and status = @status and cnpj = @cnpj', substitutionValues: {
-        'table': globals.numberTable ?? 0,
-        'status': 'Andamento',
-        'cnpj': globals.businessId,
-      }).then((List value) async {
-        conn.close();
-        List list = value;
-
-        if (list.isEmpty) {
-          await add().then((value) async {
-            await verifyRelationUserOrder(value);
-            await updateStatus('Andamento', value);
-          });
-          return await idSale();
-        } else {
-          await verifyRelationUserOrder(list.first[0]);
-          return list.first[0];
-        }
       });
     });
   }
@@ -213,62 +195,64 @@ class SalesController {
   Future<List<num>> getTotal() async {
     return await connectSupadatabase().then((conn) async {
 
-      return await BusinessInformationController.instance.getInfoCalcValue().then((value) async {
-        if (value == true || value == null) {
-          return await conn.query('''
-            SELECT SUM(MAX.MAX), COUNT(*) FROM (
-              SELECT MAX(p.price * i.qtd) from items i 
-                INNER JOIN products p ON p.id = i.id_product 
-                INNER JOIN orders o ON o.id = i.id_order 
-                INNER JOIN user_order u ON u.id_order = o.id
-                where u.uid = @uid and o.status = @status and i.status = 'Ativo' and coalesce(o.table_number, 0) = @table and u.fg_ativo = true
-                GROUP BY (i.relation_id, i.id_variation)
-              ) AS max
-            ''', substitutionValues: {
-            'uid': FirebaseAuth.instance.currentUser!.uid,
-            'status': 'Andamento',
-            'table': globals.numberTable ?? 0,
-          }).then((List value) {
-            conn.close();
+      return idSale().then((idSale) async {
+        return await BusinessInformationController.instance.getInfoCalcValue().then((value) async {
+          if (value == true || value == null) {
+            return await conn.query('''
+              SELECT SUM(MAX.MAX), COUNT(*) FROM (
+                SELECT MAX(p.price * i.qtd) from items i 
+                  INNER JOIN products p ON p.id = i.id_product 
+                  INNER JOIN orders o ON o.id = i.id_order 
+                  INNER JOIN user_order u ON u.id_order = o.id
+                  where u.uid = @uid and o.status = @status and i.status = 'Ativo' and o.id = @idSale and u.fg_ativo = true
+                  GROUP BY (i.relation_id, i.id_variation)
+                ) AS max
+              ''', substitutionValues: {
+              'uid': FirebaseAuth.instance.currentUser!.uid,
+              'status': 'Andamento',
+              'idSale': idSale,
+            }).then((List value) {
+              conn.close();
 
-            if (value.isEmpty) {
-              return [0, 0];
-            } else {
-              if (value.first[0] == null || value.first[1] == 0) {
+              if (value.isEmpty) {
                 return [0, 0];
               } else {
-                return [value.first[0], value.first[1]];
+                if (value.first[0] == null || value.first[1] == 0) {
+                  return [0, 0];
+                } else {
+                  return [value.first[0], value.first[1]];
+                }
               }
-            }
-          });
-        } else {
-          return await conn.query('''
-            SELECT SUM(avg.AVG), COUNT(*) FROM (
-              SELECT AVG(p.price * i.qtd) from items i 
-                INNER JOIN products p ON p.id = i.id_product 
-                INNER JOIN orders o ON o.id = i.id_order 
-                INNER JOIN user_order u ON u.id_order = o.id
-                where u.uid = @uid and o.status = @status and i.status = 'Ativo' and coalesce(o.table_number, 0) = @table and u.fg_ativo = true
-                GROUP BY (i.relation_id, i.id_variation)
-              ) AS avg
-            ''', substitutionValues: {
-            'uid': FirebaseAuth.instance.currentUser!.uid,
-            'status': 'Andamento',
-            'table': globals.numberTable ?? 0,
-          }).then((List value) {
-            conn.close();
+            });
+          } else {
+            return await conn.query('''
+              SELECT SUM(avg.AVG), COUNT(*) FROM (
+                SELECT AVG(p.price * i.qtd) from items i 
+                  INNER JOIN products p ON p.id = i.id_product 
+                  INNER JOIN orders o ON o.id = i.id_order 
+                  INNER JOIN user_order u ON u.id_order = o.id
+                  where u.uid = @uid and o.status = @status and i.status = 'Ativo' and o.id = @idSale and u.fg_ativo = true
+                  GROUP BY (i.relation_id, i.id_variation)
+                ) AS avg
+              ''', substitutionValues: {
+              'uid': FirebaseAuth.instance.currentUser!.uid,
+              'status': 'Andamento',
+              'idSale': idSale,
+            }).then((List value) {
+              conn.close();
 
-            if (value.isEmpty) {
-              return [0, 0];
-            } else {
-              if (value.first[0] == null) {
+              if (value.isEmpty) {
                 return [0, 0];
               } else {
-                return [value.first[0], value.first[1]];
+                if (value.first[0] == null) {
+                  return [0, 0];
+                } else {
+                  return [value.first[0], value.first[1]];
+                }
               }
-            }
-          });
-        }
+            });
+          }
+        });
       });
     });
   }
@@ -283,13 +267,14 @@ class SalesController {
               SELECT MAX(p.price * i.qtd) from items i 
                 INNER JOIN products p ON p.id = i.id_product 
                 INNER JOIN orders o ON o.id = i.id_order
-                where coalesce(o.table_number, 0) = @table and o.status = @status and o.cnpj = @cnpj
+                where coalesce(o.table_number, 0) = @table and o.status = @status and o.cnpj = @cnpj and o.id = @idSale
                 GROUP BY (i.relation_id, i.id_variation)
               ) AS max
             ''', substitutionValues: {
             'table': globals.numberTable ?? 0,
             'status': 'Andamento',
             'cnpj': globals.businessId,
+            'idSale': await idSale(),
           }).then((List value) {
             conn.close();
 
@@ -309,13 +294,14 @@ class SalesController {
               SELECT AVG(p.price * i.qtd) from items i 
                 INNER JOIN products p ON p.id = i.id_product 
                 INNER JOIN orders o ON o.id = i.id_order 
-                where coalesce(o.table_number, 0) = @table and o.status = @status and o.cnpj = @cnpj
+                where coalesce(o.table_number, 0) = @table and o.status = @status and o.cnpj = @cnpj and o.id = @idSale
                 GROUP BY (i.relation_id, i.id_variation)
               ) AS avg
             ''', substitutionValues: {
             'table': globals.numberTable ?? 0,
             'status': 'Andamento',
             'cnpj': globals.businessId,
+            'idSale': await idSale(),
           }).then((List value) {
             conn.close();
 
@@ -359,11 +345,12 @@ class SalesController {
             )
               FROM orders o
               INNER JOIN user_order uo ON uo.id_order = o.id
-              WHERE uo.uid = @uid and o.status = @status and coalesce(o.table_number, 0) = @table and uo.fg_ativo = true
+              WHERE uo.uid = @uid and o.status = @status and coalesce(o.table_number, 0) = @table and uo.fg_ativo = true and o.id = @idSale
             ''', substitutionValues: {
             'uid': FirebaseAuth.instance.currentUser!.uid,
             'status': 'Andamento',
             'table': globals.numberTable ?? 0,
+            'idSale': await idSale(),
           }).then((List value) {
             conn.close();
         
@@ -406,11 +393,12 @@ class SalesController {
             )
               FROM orders o
               INNER JOIN user_order uo ON uo.id_order = o.id
-              WHERE uo.uid = @uid and o.status = @status and coalesce(o.table_number, 0) = @table and uo.fg_ativo = true
+              WHERE uo.uid = @uid and o.status = @status and coalesce(o.table_number, 0) = @table and uo.fg_ativo = true and o.id = @idSale
             ''', substitutionValues: {
             'uid': FirebaseAuth.instance.currentUser!.uid,
             'status': 'Andamento',
             'table': globals.numberTable ?? 0,
+            'idSale': await idSale(),
           }).then((List value) {
             conn.close();
         
@@ -447,11 +435,12 @@ class SalesController {
           )
           FROM orders o
           INNER JOIN user_order uo ON uo.id_order = o.id
-          WHERE uo.uid = @uid and o.status = @status and coalesce(o.table_number, 0) = @table and uo.fg_ativo = true
+          WHERE uo.uid = @uid and o.status = @status and coalesce(o.table_number, 0) = @table and uo.fg_ativo = true and o.id = @idSale
         ''', substitutionValues: {
         'uid': FirebaseAuth.instance.currentUser!.uid,
         'status': 'Andamento',
         'table': globals.numberTable ?? 0,
+        'idSale': await idSale(),
       }).then((List value) {
         conn.close();
     
@@ -650,12 +639,13 @@ class SalesController {
             SELECT o.id 
               FROM orders o
               INNER JOIN user_order uo ON uo.id_order = o.id
-              WHERE o.cnpj = @cnpj AND uo.uid = @uid AND o.status = 'Andamento' AND coalesce(o.table_number, 0) = @table and uo.fg_ativo = true LIMIT 1
+              WHERE o.cnpj = @cnpj AND uo.uid = @uid AND o.status = 'Andamento' AND coalesce(o.table_number, 0) = @table and uo.fg_ativo = true and o.id = @idSale LIMIT 1
           ) AND status = 'Ativo'
       ''', substitutionValues: {
         'cnpj': globals.businessId,
         'uid': FirebaseAuth.instance.currentUser!.uid,
         'table': globals.numberTable ?? 0,
+        'idSale': await idSale(),
       }).catchError((e) {
       });
 
@@ -666,7 +656,7 @@ class SalesController {
               SELECT o.id 
                 FROM orders o
                 INNER JOIN user_order uo ON uo.id_order = o.id
-                WHERE o.cnpj = @cnpj AND uo.uid = @uid AND o.status = 'Andamento' AND coalesce(o.table_number, 0) = @table and uo.fg_ativo = true LIMIT 1
+                WHERE o.cnpj = @cnpj AND uo.uid = @uid AND o.status = 'Andamento' AND coalesce(o.table_number, 0) = @table and uo.fg_ativo = true and o.id = @idSale LIMIT 1
             ) AND status = 'Andamento'
         ''', substitutionValues: {
           'cnpj': globals.businessId,
@@ -676,6 +666,7 @@ class SalesController {
           'address': idAddressSelected,
           'payment': typePayment,
           'change': change,
+          'idSale': await idSale(),
         }).catchError((e) {
         });
       }
