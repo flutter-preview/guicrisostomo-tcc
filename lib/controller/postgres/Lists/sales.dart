@@ -148,7 +148,7 @@ class SalesController {
     return await connectSupadatabase().then((conn) async {
       
       return (globals.userType == 'employee' || globals.userType == 'manager') ?
-        getOrderEmployee().then((value) async {
+        await getOrderEmployee().then((value) async {
           if (value == null) {
             return add().then((idSale) async {
               await addOrderEmployee(idSale);
@@ -167,11 +167,11 @@ class SalesController {
           FROM orders 
           INNER JOIN user_order ON user_order.id_order = orders.id
           INNER JOIN order_employee ON order_employee.id_order <> orders.id
-          WHERE user_order.uid = @uid and orders.status = @status and user_order.fg_ativo = true and coalesce(o.table_number, 0) = @table
+          WHERE user_order.uid = @uid and orders.status = @status and user_order.fg_ativo = true and coalesce(orders.table_number, 0) = @table
       ''', substitutionValues: {
         'uid': FirebaseAuth.instance.currentUser?.uid,
         'status': 'Andamento',
-        'table': globals.numberTable
+        'table': globals.numberTable ?? 0,
       }).then((List? value) async {
         conn.close();
 
