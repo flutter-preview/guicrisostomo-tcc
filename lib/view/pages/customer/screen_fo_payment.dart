@@ -250,7 +250,7 @@ class _ScreenFOPaymentState extends State<ScreenFOPayment> {
               50,
               Icons.arrow_back,
               () => {
-                // Navigator.pop(context)
+                GoRouter.of(context).pop()
               }
             ),
       
