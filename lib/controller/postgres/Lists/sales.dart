@@ -465,10 +465,11 @@ class SalesController {
     });
   }
 
-  Future<List<Sales>> getSales(String cnpj, String dateStart, String dateEnd, String buttonStatusSelected, bool isEmployee) async {
+  Future<List<Sales>> getSales(String cnpj, String dateStart, String dateEnd, String buttonStatusSelected) async {
     String querySelect = '';
     DateTime date1 = DateTime.now();
     DateTime date2 = DateTime.now();
+    bool isEmployee = globals.userType == 'employee' || globals.userType == 'manager';
 
     if (buttonStatusSelected == '') {
       buttonStatusSelected = '%%';
@@ -536,9 +537,9 @@ class SalesController {
                   ) AS max
               ) AS qtd,
               (
-                SELECT oea.id_order = o.id as verify_employee
+                SELECT oea.id_order = o.id
                   FROM order_employee oea
-              )
+              ) as verify_employee
               FROM orders o
               INNER JOIN business b ON b.cnpj = o.cnpj
               INNER JOIN user_order uo ON uo.id_order = o.id
@@ -567,9 +568,9 @@ class SalesController {
                   ) AS max
               ) AS qtd,
               (
-                SELECT oea.id_order = o.id as verify_employee
+                SELECT oea.id_order = o.id
                   FROM order_employee oea
-              )
+              ) as verify_employee
               FROM orders o
               INNER JOIN business b ON b.cnpj = o.cnpj
               INNER JOIN user_order uo ON uo.id_order = o.id
@@ -595,7 +596,7 @@ class SalesController {
         }
 
         for (var element in value) {
-          if (value[13] == isEmployee) {
+          if (element[13] == isEmployee) {
             sales.add(
               Sales(
                 id: element[0],
@@ -619,6 +620,7 @@ class SalesController {
         return sales;
       }).onError((error, stackTrace) {
         conn.close();
+        print(error);
         return [];
       });
     });

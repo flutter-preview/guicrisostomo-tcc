@@ -26,6 +26,20 @@ class _ScreenProfileState extends State<ScreenProfile> {
     return await LoginController.instance.userLogin();
   }
 
+  Widget returnPhotoUser() {
+    if (phoneUser != null) {
+      return Text(
+        phoneUser!,
+        style: TextStyle(
+          fontFamily: 'Roboto',
+          fontSize: 14,
+        ),
+      );
+    } else {
+      return SizedBox(height: 5,);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -41,20 +55,6 @@ class _ScreenProfileState extends State<ScreenProfile> {
 
   @override
   Widget build(BuildContext context) {
-
-    Widget returnPhotoUser() {
-      if (phoneUser != null) {
-        return Text(
-          phoneUser!,
-          style: TextStyle(
-            fontFamily: 'Roboto',
-            fontSize: 14,
-          ),
-        );
-      } else {
-        return SizedBox(height: 5,);
-      }
-    }
 
     return Scaffold(
       appBar: PreferredSize(
@@ -165,8 +165,8 @@ class _ScreenProfileState extends State<ScreenProfile> {
                     leading: Icon(Icons.logout, size: 30, color: Colors.red,),
                     trailing: Icon(Icons.arrow_right, size: 20, color: Colors.red,),
 
-                    onTap: () => {
-                      LoginController.instance.logout(context)
+                    onTap: () async {
+                      await LoginController.instance.logout(context);
                     },
                   ),
                 )
