@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tcc/model/Address.dart';
+import 'package:tcc/model/Sales.dart';
 import 'package:tcc/view/widget/addressExistent.dart';
 import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/customer/partFinalizeOrder.dart';
@@ -128,7 +130,17 @@ class _ScreenFOGetAddressState extends State<ScreenFOGetAddress> {
                 if (globals.idAddressSelected == null) {
                   return error(context, 'Selecione um endereço para entrega.');
                 } else {
-                  GoRouter.of(context).push('/finalize_order_customer/payment');
+                  GoRouter.of(context).push('/finalize_order_customer/payment', extra: Sales(
+                    id: 0, 
+                    uid: FirebaseAuth.instance.currentUser!.uid, 
+                    cnpj: globals.businessId, 
+                    status: 'Andamento', 
+                    date: DateTime.now(), 
+                    type: widget.typeSale, 
+                    total: globals.totalSale, 
+                    table: globals.numberTable,
+                    addressId: globals.idAddressSelected,
+                  ));
                 }
               },
               false
