@@ -15,3 +15,5 @@ List<String> categoriesBusiness = [];
 List<String> sizesCategoryBusiness = [];
 String categorySelected = '';
 int? idAddressSelected;
+int? idSaleSelected;
+String? uidCustomerSelected;

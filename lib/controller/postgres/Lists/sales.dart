@@ -145,51 +145,56 @@ class SalesController {
   }
 
   Future<int> idSale() async {
-    return await connectSupadatabase().then((conn) async {
+    if (globals.idSaleSelected == null) {
+      return await connectSupadatabase().then((conn) async {
       
-      return (globals.userType == 'employee' || globals.userType == 'manager') ?
-        await getOrderEmployee().then((value) async {
-          if (value == null) {
-            return add().then((idSale) async {
-              await addOrderEmployee(idSale);
-              await addRelationUserOrder(idSale);
+        return (globals.userType == 'employee' || globals.userType == 'manager') ?
+          await getOrderEmployee().then((value) async {
+            if (value == null) {
+              return add().then((idSale) async {
+                await addOrderEmployee(idSale);
+                await addRelationUserOrder(idSale);
 
-              await updateStatus('Andamento', idSale);
+                await updateStatus('Andamento', idSale);
 
-              return idSale;
+                return idSale;
+              });
+            } else {
+              globals.idSaleSelected = value;
+              return value;
+            }
+          })
+        : await conn.query('''
+          SELECT orders.id 
+            FROM orders 
+            INNER JOIN user_order ON user_order.id_order = orders.id
+            INNER JOIN order_employee ON order_employee.id_order <> orders.id
+            WHERE user_order.uid = @uid and orders.status = @status and user_order.fg_ativo = true and coalesce(orders.table_number, 0) = @table
+        ''', substitutionValues: {
+          'uid': FirebaseAuth.instance.currentUser?.uid,
+          'status': 'Andamento',
+          'table': globals.numberTable ?? 0,
+        }).then((List? value) async {
+          conn.close();
+
+          List list = value ?? [];
+
+          if (list.isEmpty) {
+            await add().then((value) async {
+              await addRelationUserOrder(value);
+              await updateStatus('Andamento', value);
             });
+            return await idSale();
           } else {
-            return value;
+            globals.idSaleSelected = list.first[0];
+            return list.first[0];
           }
-        })
-      : await conn.query('''
-        SELECT orders.id 
-          FROM orders 
-          INNER JOIN user_order ON user_order.id_order = orders.id
-          INNER JOIN order_employee ON order_employee.id_order <> orders.id
-          WHERE user_order.uid = @uid and orders.status = @status and user_order.fg_ativo = true and coalesce(orders.table_number, 0) = @table
-      ''', substitutionValues: {
-        'uid': FirebaseAuth.instance.currentUser?.uid,
-        'status': 'Andamento',
-        'table': globals.numberTable ?? 0,
-      }).then((List? value) async {
-        conn.close();
-
-        List list = value ?? [];
-
-        if (list.isEmpty) {
-          await add().then((value) async {
-            await addRelationUserOrder(value);
-            await updateStatus('Andamento', value);
-          });
-          return await idSale();
-        } else {
-          
-          return list.first[0];
-        }
-      }).catchError((e) {
+        }).catchError((e) {
+        });
       });
-    });
+    } else {
+      return globals.idSaleSelected!;
+    }
   }
 
   Future<List<num>> getTotal() async {
@@ -671,6 +676,8 @@ class SalesController {
           'idSale': await idSale(),
         }).catchError((e) {
         });
+
+        globals.idSaleSelected = null;
       }
 
       conn.close();
