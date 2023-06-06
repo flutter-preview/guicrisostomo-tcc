@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:tcc/globals.dart' as globals;
 
 IconData? getIconCategory(String category) {
   
@@ -42,4 +42,18 @@ Future<bool> checkConnectionToInternet() async {
   });
   
   return connectionStatus != ConnectivityResult.none;
+}
+
+clearGlobalVariables() {
+  globals.numberTable = null;
+  globals.isSelectNewItem = false;
+  globals.userType = '';
+  globals.businessId = '0';
+  globals.totalSale = 0;
+  globals.categoriesBusiness = [];
+  globals.sizesCategoryBusiness = [];
+  globals.categorySelected = '';
+  globals.idAddressSelected = null;
+  globals.idSaleSelected = null;
+  globals.uidCustomerSelected = null;
 }

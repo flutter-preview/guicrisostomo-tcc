@@ -5,6 +5,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:tcc/controller/postgres/utils.dart';
 import 'package:tcc/model/Address.dart';
 import 'package:tcc/model/User.dart';
+import 'package:tcc/utils.dart';
 import 'package:tcc/view/widget/snackBars.dart';
       
 class LoginController {
@@ -315,6 +316,8 @@ class LoginController {
     } catch (e) {
       print(e);
     }
+
+    clearGlobalVariables();
     
     GoRouter.of(context).go('/');
   }
