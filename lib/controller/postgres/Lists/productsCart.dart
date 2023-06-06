@@ -245,6 +245,10 @@ class ProductsCartController {
         }).then((List<List<dynamic>> value) {
           conn.close();
 
+          if (value.isEmpty) {
+            return [];
+          }
+
           for(var row in value) {
             list.add(
               ProductsCartList(
@@ -268,6 +272,10 @@ class ProductsCartController {
           'idVariation': idVariation
         }).then((List<List<dynamic>> value) {
           conn.close();
+
+          if (value.isEmpty) {
+            return [];
+          }
 
           for(var row in value) {
             list.add(
