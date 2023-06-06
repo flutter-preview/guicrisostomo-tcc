@@ -78,6 +78,23 @@ class TablesController {
     });
   }
 
+  Future<void> cancelCallWaiter(context, int numberTable) async {
+
+    await FirebaseFirestore.instance.collection('tables').where('table', isEqualTo: numberTable).get().then((value) {
+      if (value.docs.isNotEmpty) {
+        value.docs.forEach((element) {
+          FirebaseFirestore.instance.collection('tables').doc(element.id).delete().then((value) {
+            success(context, 'Chamado cancelado com sucesso!');
+          }).catchError((e) {
+            error(context, 'Erro ao cancelar chamado!');
+          });
+        });
+      } else {
+        error(context, 'Não existe chamado para esta mesa!');
+      }
+    });
+  }
+
   Future<bool> isTableAlreadyCallWaiter(int? idSale) async {
     return await FirebaseFirestore.instance.collection('tables').where('idSale', isEqualTo: idSale).get().then((value) {
       if (value.docs.isNotEmpty) {
