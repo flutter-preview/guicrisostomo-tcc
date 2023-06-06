@@ -81,7 +81,7 @@ class _ScreenOrderState extends State<ScreenOrder> {
       dateStart = dateEnd = DateTime.now().toString();
     }
     
-    return await SalesController.instance.getSales(cnpj, dateStart, dateEnd, buttonStatusSelected, globals.userType == 'employee').then((value) {
+    return await SalesController.instance.getSales(cnpj, dateStart, dateEnd, buttonStatusSelected).then((value) {
       listSales = value;
       return value;
     });
