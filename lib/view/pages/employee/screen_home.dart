@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tcc/controller/auth/auth.dart';
 import 'package:tcc/controller/others/notification.dart';
+import 'package:tcc/controller/postgres/Lists/sales.dart';
 import 'package:tcc/controller/postgres/Lists/table.dart';
 import 'package:tcc/view/widget/bottonNavigation.dart';
 import 'package:tcc/globals.dart' as globals;
@@ -62,34 +63,44 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
 
     getTablesCall();
 
-    NotificationController.instance.stream.listen((event) {
-      if (event[1] != null) {
-        
-      } else {
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text('Mesa ${tablesCall[0]} chamando'),
-            content: const Text('Deseja atender a mesa?'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  // Navigator.pushNamed(context, 'home_employee');
-                },
-                child: const Text('Não'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  showAboutDialog(context: context, applicationName: 'teste');
-                },
-                child: const Text('Sim'),
-              ),
-            ],
-          ),
-        );
-      }
-    });
+    if (globals.numberTable == null && globals.uidCustomerSelected == null) {
+      NotificationController.instance.stream.listen((event) {
+        if (event[1] != null) {
+          setState(() async {
+            await TablesController.instance.cancelCallWaiter(context, tablesCall[0]);
+            globals.numberTable = tablesCall[0];
+
+            tablesCall.remove(tablesCall[0]);
+
+            GoRouter.of(context).go('/table/info');
+            globals.idSaleSelected = null;
+          });
+        } else {
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text('Mesa ${tablesCall[0]} chamando'),
+              content: const Text('Deseja atender a mesa?'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    // Navigator.pushNamed(context, 'home_employee');
+                  },
+                  child: const Text('Não'),
+                ),
+                TextButton(
+                  onPressed: () async {
+                    showAboutDialog(context: context, applicationName: 'teste');
+                  },
+                  child: const Text('Sim'),
+                ),
+              ],
+            ),
+          );
+        }
+      });
+    }
 
     super.initState();
   }
