@@ -1,4 +1,6 @@
 // import 'package:awesome_notifications/awesome_notifications.dart';
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -8,8 +10,10 @@ import 'package:tcc/controller/auth/auth.dart';
 import 'package:tcc/controller/others/notification.dart';
 import 'package:tcc/controller/postgres/Lists/sales.dart';
 import 'package:tcc/controller/postgres/Lists/table.dart';
+import 'package:tcc/model/standardListDropDown.dart';
 import 'package:tcc/view/widget/bottonNavigation.dart';
 import 'package:tcc/globals.dart' as globals;
+import 'package:tcc/view/widget/dropDownButton.dart';
 import 'package:tcc/view/widget/sectionVisible.dart';
 class ScreenHomeEmployee extends StatefulWidget {
   const ScreenHomeEmployee({super.key});
@@ -50,6 +54,12 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
   }
 
   num mediaStar = 3.50;
+
+  List<int> tablesActivated = [];
+
+  StreamSubscription? subscription;
+  String dropDownTable = 'Todas';
+
 
   @override
   void initState() {
@@ -102,7 +112,31 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
       });
     }
 
+    subscription = SalesController.instance.getListTablesOnDemand().listen((event) {
+      setState(() {
+        tablesActivated = event;
+      });
+    });
+
+    subscription?.resume();
+
+    // SalesController.instance.initializeTablesActivated();
+
+    SalesController.instance.tablesActivated.listen((event) { 
+      setState(() {
+        tablesActivated = event;
+      });
+    });
+
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    subscription?.cancel();
+    subscription = null;
+
+    super.dispose();
   }
   
   @override
@@ -239,303 +273,416 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
         ),
       ),
 
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            (tablesCall.isNotEmpty) ? Column(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-            
-                Text(
-                  'Última atualização: ${DateTime.now().hour}:${DateTime.now().minute}:${DateTime.now().second}'
-                ),
-                
-                ListView.builder(
-                  itemCount: tablesCall.length,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    int numberTable = tablesCall[index];
-                    
-                    return Card(
-                      color: globals.primaryBlack,
-                        
-                      child: ListTile(
-                        contentPadding: const EdgeInsets.all(10),
-                        
-                        title: Text(
-                          'Mesa $numberTable chamando',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        
-                        trailing: SizedBox(
-                          height: 50,
-                          width: 100,
-                          child: Center(
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.green,
-                                padding: const EdgeInsets.all(10),
-                              ),
-                              onPressed: () {
-                                
-                              },
-                              
-                              child: const Row(
-                                children: [
-                                  Icon(Icons.check, size: 20, color: Colors.white,),
-                                  SizedBox(width: 5),
-                                  Text(
-                                    'Atender',
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        leading: const Icon(Icons.table_bar, size: 40, color: Colors.white,),
-                        
-                        onTap: () => {
-                          GoRouter.of(context).push('/manager/products')
-                        },
-                      ),
-                    );
-                  }
-                ),
-              ]) : const Center(
-                child: CircularProgressIndicator(),
-              ),
-            
-            Card(
-              color: globals.primaryBlack,
-    
-              child: const ListTile(
-                contentPadding: EdgeInsets.all(10),
-    
-                leading: Icon(Icons.add, size: 40, color: Colors.white,),
-    
-                title: Text(
-                  'Fazer novo pedido',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-    
-                trailing: Icon(Icons.arrow_right, size: 30, color: Colors.white,),
-              ),
-            ),
-    
-            const SizedBox(height: 20),
-    
-            SectionVisible(
-              nameSection: 'Acesso rápido',
+      body: CustomScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        slivers: [
+          SliverFillRemaining(
+            fillOverscroll: true,
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(20),
               child: Column(
                 children: [
-                  Card(
-                    color: globals.primaryBlack,
-                    child: ListTile(
-                      contentPadding: const EdgeInsets.all(10),
-                      title: const Text(
-                        'Acessar pedidos',
-                        style: TextStyle(color: Colors.white),
-                      ),
-    
-                      trailing: const Icon(Icons.arrow_right, size: 20, color: Colors.white,),
-                      leading: const Icon(Icons.shopping_cart, size: 20, color: Colors.white,),
-                      
-                      onTap: () => {
-                        GoRouter.of(context).push('/manager/products')
-                      },
-                    ),
-                  ),
+                  (tablesCall.isNotEmpty) ? Column(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
                   
-                  Card(
-                    color: globals.primaryBlack,
-                    child: ListTile(
-                      contentPadding: const EdgeInsets.all(10),
-                      title: const Text(
-                        'Fazer novo pedido',
-                        style: TextStyle(color: Colors.white),
+                      Text(
+                        'Última atualização: ${DateTime.now().hour}:${DateTime.now().minute}:${DateTime.now().second}'
                       ),
-    
-                      trailing: const Icon(Icons.arrow_right, size: 20, color: Colors.white,),
-                      leading: const Icon(Icons.shopping_cart, size: 20, color: Colors.white,),
                       
-                      onTap: () => {
-                        GoRouter.of(context).push('/manager/products')
-                      },
-                    ),
-                  ),
-    
-                  Card(
-                    color: globals.primaryBlack,
-                    child: ListTile(
-                      contentPadding: const EdgeInsets.all(10),
-                      title: const Text(
-                        'Acessar cardápio',
-                        style: TextStyle(color: Colors.white),
-                      ),
-    
-                      trailing: const Icon(Icons.arrow_right, size: 20, color: Colors.white,),
-                      leading: SvgPicture.asset('lib/images/iconMenu.svg', height: 25, fit: BoxFit.fill,),
-                      
-                      onTap: () => {
-                        GoRouter.of(context).push('/manager/products')
-                      },
-                    ),
-                  ),
-    
-                  Card(
-                    color: globals.primaryBlack,
-                    child: ListTile(
-                      contentPadding: const EdgeInsets.all(10),
-                      title: const Text(
-                        'Cadastrar novo produto',
-                        style: TextStyle(color: Colors.white),
-                      ),
-    
-                      trailing: const Icon(Icons.arrow_right, size: 20, color: Colors.white,),
-                      leading: const Icon(Icons.add, size: 20, color: Colors.white,),
-    
-                      onTap: () => {
-                        GoRouter.of(context).push('/manager/products')
-                      },
-                    ),
-                  ),
-    
-                  Card(
-                    color: globals.primaryBlack,
-                    child: ListTile(
-                      contentPadding: const EdgeInsets.all(10),
-                      title: const Text(
-                        'Acessar avaliações',
-                        style: TextStyle(color: Colors.white),
-                      ),
-    
-                      trailing: const Icon(Icons.arrow_right, size: 20, color: Colors.white,),
-                      leading: const Icon(Icons.star, size: 20, color: Colors.white,),
-                      
-                      onTap: () => {
-                        GoRouter.of(context).push('/employee/evaluation', extra: '1')
-                      },
-                    ),
-                  ),
-    
-                  Card(
-                    color: globals.primaryBlack,
-                    child: ListTile(
-                      contentPadding: const EdgeInsets.all(10),
-                      title: const Text(
-                        'Rotas de entrega',
-                        style: TextStyle(color: Colors.white),
-                      ),
-    
-                      trailing: const Icon(Icons.arrow_right, size: 20, color: Colors.white,),
-                      leading: const Icon(Icons.delivery_dining, size: 20, color: Colors.white,),
-                      
-                      onTap: () => {
-                        GoRouter.of(context).push('/manager/products')
-                      },
-                    ),
-                  ),
-    
-                  Card(
-                    color: globals.primaryBlack,
-                    child: ListTile(
-                      contentPadding: const EdgeInsets.all(10),
-                      title: const Text(
-                        'Acessar dados da empresa',
-                        style: TextStyle(color: Colors.white),
-                      ),
-    
-                      trailing: const Icon(Icons.arrow_right, size: 20, color: Colors.white,),
-                      leading: const Icon(Icons.business, size: 20, color: Colors.white,),
-                      
-                      onTap: () => {
-                        GoRouter.of(context).push('/manager/products')
-                      },
-                    ),
-                  ),
-    
-                  Card(
-                    color: globals.primaryBlack,
-                    child: ListTile(
-                      contentPadding: const EdgeInsets.all(10),
-                      title: const Text(
-                        'Acessar dados do usuário',
-                        style: TextStyle(color: Colors.white),
-                      ),
-    
-                      trailing: const Icon(Icons.arrow_right, size: 20, color: Colors.white,),
-                      leading: const Icon(Icons.person, size: 20, color: Colors.white,),
-                      
-                      onTap: () => {
-                        GoRouter.of(context).push('/manager/products')
-                      },
-                    ),
-                  ),
-                ],
-              )
-            ),
-    
-            const SizedBox(height: 20),
-    
-            SectionVisible(
-              nameSection: 'Mesas ativas',
-              isShowPart: true,
-              child: SizedBox(
-                height: 50,
-                width: double.infinity,
-                
-                child: ListView.builder(
-                  itemCount: 10,
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  
-                  itemBuilder: (context, index) {
-                    return Container(
-                      margin: const EdgeInsets.only(right: 10),
-                      child: ElevatedButton(
-                        
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(globals.primaryBlack),
-                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                            )
-                          ),
-                          padding: MaterialStateProperty.all<EdgeInsets>(const EdgeInsets.all(5)),
-                        ),
-                        onPressed: () => {
-                          GoRouter.of(context).push('/table/info')
-                        },
-                        child: Row(
-                          children: [
-                            const Icon(Icons.table_bar, size: 20, color: Colors.white,),
-                            const SizedBox(width: 5),
-                            Text(
-                              '${index + 1}',
-                              style: const TextStyle(color: Colors.white, fontSize: 20),
+                      ListView.builder(
+                        itemCount: tablesCall.length,
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          int numberTable = tablesCall[index];
+                          
+                          return Card(
+                            color: globals.primaryBlack,
+                              
+                            child: ListTile(
+                              contentPadding: const EdgeInsets.all(10),
+                              
+                              title: Text(
+                                'Mesa $numberTable chamando',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              
+                              trailing: SizedBox(
+                                height: 50,
+                                width: 100,
+                                child: Center(
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.green,
+                                      padding: const EdgeInsets.all(10),
+                                    ),
+                                    onPressed: () {
+                                      
+                                    },
+                                    
+                                    child: const Row(
+                                      children: [
+                                        Icon(Icons.check, size: 20, color: Colors.white,),
+                                        SizedBox(width: 5),
+                                        Text(
+                                          'Atender',
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              leading: const Icon(Icons.table_bar, size: 40, color: Colors.white,),
+                              
+                              onTap: () => {
+                                GoRouter.of(context).push('/manager/products')
+                              },
                             ),
-                          ],
+                          );
+                        }
+                      ),
+                    ]) : const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  
+                  Card(
+                    color: globals.primaryBlack,
+              
+                    child: const ListTile(
+                      contentPadding: EdgeInsets.all(10),
+              
+                      leading: Icon(Icons.add, size: 40, color: Colors.white,),
+              
+                      title: Text(
+                        'Fazer novo pedido',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                    );
-                  }
-                )
+              
+                      trailing: Icon(Icons.arrow_right, size: 30, color: Colors.white,),
+                    ),
+                  ),
+              
+                  const SizedBox(height: 20),
+              
+                  SectionVisible(
+                    nameSection: 'Acesso rápido',
+                    child: Column(
+                      children: [
+                        Card(
+                          color: globals.primaryBlack,
+                          child: ListTile(
+                            contentPadding: const EdgeInsets.all(10),
+                            title: const Text(
+                              'Acessar pedidos',
+                              style: TextStyle(color: Colors.white),
+                            ),
+              
+                            trailing: const Icon(Icons.arrow_right, size: 20, color: Colors.white,),
+                            leading: const Icon(Icons.shopping_cart, size: 20, color: Colors.white,),
+                            
+                            onTap: () => {
+                              GoRouter.of(context).push('/manager/products')
+                            },
+                          ),
+                        ),
+                        
+                        Card(
+                          color: globals.primaryBlack,
+                          child: ListTile(
+                            contentPadding: const EdgeInsets.all(10),
+                            title: const Text(
+                              'Fazer novo pedido',
+                              style: TextStyle(color: Colors.white),
+                            ),
+              
+                            trailing: const Icon(Icons.arrow_right, size: 20, color: Colors.white,),
+                            leading: const Icon(Icons.shopping_cart, size: 20, color: Colors.white,),
+                            
+                            onTap: () => {
+                              GoRouter.of(context).push('/manager/products')
+                            },
+                          ),
+                        ),
+              
+                        Card(
+                          color: globals.primaryBlack,
+                          child: ListTile(
+                            contentPadding: const EdgeInsets.all(10),
+                            title: const Text(
+                              'Acessar cardápio',
+                              style: TextStyle(color: Colors.white),
+                            ),
+              
+                            trailing: const Icon(Icons.arrow_right, size: 20, color: Colors.white,),
+                            leading: SvgPicture.asset('lib/images/iconMenu.svg', height: 25, fit: BoxFit.fill,),
+                            
+                            onTap: () => {
+                              GoRouter.of(context).push('/manager/products')
+                            },
+                          ),
+                        ),
+              
+                        Card(
+                          color: globals.primaryBlack,
+                          child: ListTile(
+                            contentPadding: const EdgeInsets.all(10),
+                            title: const Text(
+                              'Cadastrar novo produto',
+                              style: TextStyle(color: Colors.white),
+                            ),
+              
+                            trailing: const Icon(Icons.arrow_right, size: 20, color: Colors.white,),
+                            leading: const Icon(Icons.add, size: 20, color: Colors.white,),
+              
+                            onTap: () => {
+                              GoRouter.of(context).push('/manager/products')
+                            },
+                          ),
+                        ),
+              
+                        Card(
+                          color: globals.primaryBlack,
+                          child: ListTile(
+                            contentPadding: const EdgeInsets.all(10),
+                            title: const Text(
+                              'Acessar avaliações',
+                              style: TextStyle(color: Colors.white),
+                            ),
+              
+                            trailing: const Icon(Icons.arrow_right, size: 20, color: Colors.white,),
+                            leading: const Icon(Icons.star, size: 20, color: Colors.white,),
+                            
+                            onTap: () => {
+                              GoRouter.of(context).push('/employee/evaluation', extra: '1')
+                            },
+                          ),
+                        ),
+              
+                        Card(
+                          color: globals.primaryBlack,
+                          child: ListTile(
+                            contentPadding: const EdgeInsets.all(10),
+                            title: const Text(
+                              'Rotas de entrega',
+                              style: TextStyle(color: Colors.white),
+                            ),
+              
+                            trailing: const Icon(Icons.arrow_right, size: 20, color: Colors.white,),
+                            leading: const Icon(Icons.delivery_dining, size: 20, color: Colors.white,),
+                            
+                            onTap: () => {
+                              GoRouter.of(context).push('/manager/products')
+                            },
+                          ),
+                        ),
+              
+                        Card(
+                          color: globals.primaryBlack,
+                          child: ListTile(
+                            contentPadding: const EdgeInsets.all(10),
+                            title: const Text(
+                              'Acessar dados da empresa',
+                              style: TextStyle(color: Colors.white),
+                            ),
+              
+                            trailing: const Icon(Icons.arrow_right, size: 20, color: Colors.white,),
+                            leading: const Icon(Icons.business, size: 20, color: Colors.white,),
+                            
+                            onTap: () => {
+                              GoRouter.of(context).push('/manager/products')
+                            },
+                          ),
+                        ),
+              
+                        Card(
+                          color: globals.primaryBlack,
+                          child: ListTile(
+                            contentPadding: const EdgeInsets.all(10),
+                            title: const Text(
+                              'Acessar dados do usuário',
+                              style: TextStyle(color: Colors.white),
+                            ),
+              
+                            trailing: const Icon(Icons.arrow_right, size: 20, color: Colors.white,),
+                            leading: const Icon(Icons.person, size: 20, color: Colors.white,),
+                            
+                            onTap: () => {
+                              GoRouter.of(context).push('/manager/products')
+                            },
+                          ),
+                        ),
+                      ],
+                    )
+                  ),
+              
+                  const SizedBox(height: 20),
+              
+                  SectionVisible(
+                    nameSection: 'Mesas: ${dropDownTable.toLowerCase()}',
+                    isShowPart: true,
+                    child: Column(
+                      children: [
+                        DropDown(
+                          text: 'Mesas',
+                          itemsDropDownButton: [
+                            DropDownList(name: 'Todas', icon: Icons.select_all),
+                            DropDownList(name: 'Ativas', icon: Icons.check),
+                            DropDownList(name: 'Inativas', icon: Icons.close),
+                          ],
+                          variavel: dropDownTable,
+                          callback: (value) {
+                            setState(() {
+                              dropDownTable = value!;
+                            });
+                          },
+                        ),
+          
+                        const SizedBox(height: 20),
+              
+                        if (dropDownTable == 'Todas')
+                          GridView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: 40,
+                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 5,
+                              mainAxisSpacing: 5,
+                              crossAxisSpacing: 5,
+                            ),
+                            itemBuilder: (context, index) {
+                              int numberTable = index + 1;
+                              bool isActivated = tablesActivated.contains(numberTable);
+                              
+                              return InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    globals.numberTable = numberTable;
+                                  });
+                                  
+                                  GoRouter.of(context).push('/table/info');
+                                },
+                                child: Card(
+                                  color: isActivated ? globals.primary : globals.primaryBlack,
+                                  child: Center(
+                                    child: Text(
+                                      numberTable.toString(),
+                                      style: TextStyle(
+                                        color: isActivated ? Colors.white : Colors.white,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+          
+                        if (dropDownTable == 'Ativas')
+                          GridView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: tablesActivated.length,
+                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 5,
+                              mainAxisSpacing: 5,
+                              crossAxisSpacing: 5,
+                            ),
+                            itemBuilder: (context, index) {
+                              int numberTable = tablesActivated[index];
+                              
+                              return InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    globals.numberTable = numberTable;
+                                  });
+                                  
+                                  GoRouter.of(context).push('/table/info');
+                                },
+                                child: Card(
+                                  color: globals.primary,
+                                  child: Center(
+                                    child: Text(
+                                      numberTable.toString(),
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+          
+                        if (dropDownTable == 'Inativas')
+                          Builder(
+                            builder: (context) {
+                              int numberTable = 0;
+                              return GridView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: 40 - tablesActivated.length,
+                                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 5,
+                                  mainAxisSpacing: 5,
+                                  crossAxisSpacing: 5,
+                                ),
+                                itemBuilder: (context, index) {
+                                  numberTable++;
+                                  bool isActivated = tablesActivated.contains(numberTable);
+                                  
+                                  while (isActivated) {
+                                    numberTable++;
+                                    isActivated = tablesActivated.contains(numberTable);
+                                  }
+
+                                  return InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        globals.numberTable = numberTable;
+                                      });
+                                      
+                                      GoRouter.of(context).push('/table/info');
+                                    },
+                                    child: Card(
+                                      color: globals.primaryBlack,
+                                      child: Center(
+                                        child: Text(
+                                          numberTable.toString(),
+                                          style: TextStyle(
+                                            color: isActivated ? Colors.white : Colors.white,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            }
+                          ),
+                      ],
+                    )
+                  ),
+                  
+                ]
               )
             ),
-            
-          ]
-        )
+          )
+        ]
       ),
 
       bottomNavigationBar: const Bottom(),

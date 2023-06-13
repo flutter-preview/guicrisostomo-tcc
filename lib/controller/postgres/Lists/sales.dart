@@ -1,4 +1,6 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tcc/controller/postgres/Lists/businessInfo.dart';
 import 'package:tcc/controller/postgres/utils.dart';
@@ -11,6 +13,13 @@ class SalesController {
     _instance ??= SalesController();
     return _instance!;
   }
+
+  static final StreamController<List<int>> _tablesActivated = StreamController<List<int>>.broadcast(
+    
+  );
+
+  
+  Stream<List<int>> get tablesActivated => _tablesActivated.stream;
 
   Future<int> add() async {
 
@@ -682,5 +691,38 @@ class SalesController {
 
       conn.close();
     });
+  }
+
+  Stream<List<int>> getListTablesOnDemand() async* {
+    List<int> list = [];
+    
+    while (!_tablesActivated.isClosed) {
+      list = [];
+
+      await connectSupadatabase().then((conn) async {
+        await conn.query('''
+          SELECT o.table_number
+            FROM orders o
+            INNER JOIN user_order uo ON uo.id_order = o.id
+            WHERE o.cnpj = @cnpj AND (o.status = 'Andamento' OR o.status = 'Ativo') AND o.table_number IS NOT NULL
+            GROUP BY o.table_number
+        ''', substitutionValues: {
+          'cnpj': globals.businessId,
+        }).then((List value) {
+          conn.close();
+
+          for (var element in value) {
+            list.add(element[0]);
+          }
+
+        }).catchError((e) async {
+          conn.close();
+          return;
+        });
+      });
+
+      yield list;
+
+    }
   }
 }
