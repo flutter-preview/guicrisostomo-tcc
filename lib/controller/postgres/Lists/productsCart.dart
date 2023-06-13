@@ -125,7 +125,7 @@ class ProductsCartController {
     });
   }
 
-  Future<List<ProductsCartList>> listTable(int idSale) async {
+  Future<List<ProductsCartList>> listTable(int tableNumber) async {
     List<ProductsCartList> list = [];
     num total = 0;
     
@@ -140,41 +140,41 @@ class ProductsCartController {
               SELECT SUM(maxa.max) FROM (
                   SELECT AVG(pa.price * ia.qtd) FROM products pa
                   INNER JOIN items ia ON ia.id_product = pa.id
-                  WHERE ia.id_order = @idOrder AND ia.relation_id = i.relation_id
+                  WHERE ia.id_order = @idOrder AND ia.status <> 'Andamento' AND ia.relation_id = i.relation_id
                   GROUP BY (ia.relation_id, ia.id_variation)
                 ) AS maxa
               ), (
                 SELECT COUNT(*) - 1 as count FROM products pb
                   INNER JOIN items ib ON ib.id_product = pb.id
-                  WHERE ib.id_order = @idOrder AND ib.relation_id = i.relation_id
+                  WHERE ib.id_order = @idOrder AND ib.status <> 'Andamento' AND ib.relation_id = i.relation_id
               )
             FROM items i
             INNER JOIN products p ON p.id = i.id_product
-            WHERE i.id_order = @idOrder AND i.relation_id = i.id
-            ORDER BY i.id DESC;
+            INNER JOIN orders o ON o.id = i.id_order
+            WHERE o.table_number = @tableNumber AND i.status <> 'Andamento' AND i.relation_id = i.id;
           '''
         : querySelect = '''
             SELECT i.id, i.id_product, p.name, i.qtd, i.id_variation, i.relation_id, i.text_variation, i.created_at, (
               SELECT SUM(maxa.max) FROM (
                   SELECT MAX(pa.price * ia.qtd) FROM products pa
                   INNER JOIN items ia ON ia.id_product = pa.id
-                  WHERE ia.id_order = @idOrder AND ia.relation_id = i.relation_id
+                  WHERE ia.id_order = @idOrder AND ia.status <> 'Andamento' AND ia.relation_id = i.relation_id
                   GROUP BY (ia.relation_id, ia.id_variation)
                 ) AS maxa
               ), (
                 SELECT COUNT(*) - 1 as count FROM products pb
                   INNER JOIN items ib ON ib.id_product = pb.id
-                  WHERE ib.id_order = @idOrder AND ib.relation_id = i.relation_id
+                  WHERE ib.id_order = @idOrder AND ib.status <> 'Andamento' AND ib.relation_id = i.relation_id
               )
             FROM items i
             INNER JOIN products p ON p.id = i.id_product
-            WHERE i.id_order = @idOrder AND i.relation_id = i.id
-            ORDER BY i.id DESC;
+            INNER JOIN orders o ON o.id = i.id_order
+            WHERE o.table_number = @tableNumber AND i.status <> 'Andamento' AND i.relation_id = i.id;
           ''';
       });
 
       return await conn.query(querySelect, substitutionValues: {
-        'idOrder': idSale
+        'tableNumber': tableNumber
       }).then((List value) {
         conn.close();
 

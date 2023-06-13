@@ -44,7 +44,7 @@ class _ScreenCallWaiterState extends State<ScreenCallWaiter> {
         });
       }
     }).then((value) {
-      ProductsCartController.instance.listTable(idSale).then((value) {
+      ProductsCartController.instance.listTable(globals.numberTable ?? 0).then((value) {
         setState(() {
           list = value;
         });
