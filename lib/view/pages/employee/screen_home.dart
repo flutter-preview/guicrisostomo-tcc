@@ -569,7 +569,10 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                                     globals.numberTable = numberTable;
                                   });
                                   
-                                  GoRouter.of(context).push('/table/info');
+                                  GoRouter.of(context).push(
+                                    '/table/info',
+                                    extra: numberTable,
+                                  );
                                 },
                                 child: Card(
                                   color: isActivated ? globals.primary : globals.primaryBlack,
@@ -607,7 +610,10 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                                     globals.numberTable = numberTable;
                                   });
                                   
-                                  GoRouter.of(context).push('/table/info');
+                                  GoRouter.of(context).push(
+                                    '/table/info',
+                                    extra: numberTable,
+                                  );
                                 },
                                 child: Card(
                                   color: globals.primary,
@@ -654,7 +660,10 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                                         globals.numberTable = numberTable;
                                       });
                                       
-                                      GoRouter.of(context).push('/table/info');
+                                      GoRouter.of(context).push(
+                                        '/table/info',
+                                        extra: numberTable,
+                                      );
                                     },
                                     child: Card(
                                       color: globals.primaryBlack,
