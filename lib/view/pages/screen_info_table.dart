@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:tcc/controller/postgres/Lists/productsCart.dart';
-import 'package:tcc/controller/postgres/Lists/sales.dart';
-import 'package:tcc/model/ProductItemList.dart';
 import 'package:tcc/model/ProductsCart.dart';
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigation.dart';
 import 'package:tcc/globals.dart' as globals;
 import 'package:tcc/view/widget/listCart.dart';
-import 'package:tcc/view/widget/productItem.dart';
 import 'package:tcc/view/widget/sectionVisible.dart';
 
 class ScreenInfoTable extends StatefulWidget {
@@ -27,7 +24,9 @@ class _ScreenInfoTableState extends State<ScreenInfoTable> {
   // }
 
   Future<List<ProductsCartList>> getItemsProduct() async {
-    return await ProductsCartController.instance.listTable(widget.arguments as int);
+    return await ProductsCartController.instance.listTable(widget.arguments as int).catchError((onError) {
+      print(onError);
+    });
   }
   
   @override
@@ -141,7 +140,10 @@ class _ScreenInfoTableState extends State<ScreenInfoTable> {
                         future: getItemsProduct(),
                         builder: (context, snapshot) {
                           if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
-                            return ProductsCart(product: snapshot.data!);
+                            return ProductsCart(
+                              product: snapshot.data!,
+                              isShowButtonDelete: false,
+                            );
                           } else if (snapshot.connectionState == ConnectionState.waiting) {
                             return const Center(
                               child: CircularProgressIndicator(),

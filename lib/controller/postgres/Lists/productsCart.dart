@@ -140,13 +140,13 @@ class ProductsCartController {
               SELECT SUM(maxa.max) FROM (
                   SELECT AVG(pa.price * ia.qtd) FROM products pa
                   INNER JOIN items ia ON ia.id_product = pa.id
-                  WHERE ia.id_order = @idOrder AND ia.relation_id = i.relation_id
+                  WHERE ia.id_order = o.id AND ia.relation_id = i.relation_id
                   GROUP BY (ia.relation_id, ia.id_variation)
                 ) AS maxa
               ), (
                 SELECT COUNT(*) - 1 as count FROM products pb
                   INNER JOIN items ib ON ib.id_product = pb.id
-                  WHERE ib.id_order = @idOrder AND ib.relation_id = i.relation_id
+                  WHERE ib.id_order = o.id AND ib.relation_id = i.relation_id
               )
             FROM items i
             INNER JOIN products p ON p.id = i.id_product
@@ -158,13 +158,13 @@ class ProductsCartController {
               SELECT SUM(maxa.max) FROM (
                   SELECT MAX(pa.price * ia.qtd) FROM products pa
                   INNER JOIN items ia ON ia.id_product = pa.id
-                  WHERE ia.id_order = @idOrder AND ia.relation_id = i.relation_id
+                  WHERE ia.id_order = o.id AND ia.relation_id = i.relation_id
                   GROUP BY (ia.relation_id, ia.id_variation)
                 ) AS maxa
               ), (
                 SELECT COUNT(*) - 1 as count FROM products pb
                   INNER JOIN items ib ON ib.id_product = pb.id
-                  WHERE ib.id_order = @idOrder AND ib.relation_id = i.relation_id
+                  WHERE ib.id_order = o.id AND ib.relation_id = i.relation_id
               )
             FROM items i
             INNER JOIN products p ON p.id = i.id_product
