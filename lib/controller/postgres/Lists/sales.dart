@@ -725,4 +725,10 @@ class SalesController {
       await Future.delayed(const Duration(seconds: 5));
     }
   }
+
+  Future<List<Sales>> getInfoTable(int numberTable) async {
+    return connectSupadatabase().then((conn) {
+      return 
+    });
+  }
 }
