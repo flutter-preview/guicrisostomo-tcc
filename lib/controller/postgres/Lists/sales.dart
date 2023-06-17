@@ -21,7 +21,8 @@ class SalesController {
 
   
   Stream<List<int>> get tablesActivated => _tablesActivated.stream;
-
+  StreamSubscription? _subscriptionTablesActivated;
+  
   Future<int> add() async {
 
     return await connectSupadatabase().then((conn) async {
@@ -694,10 +695,27 @@ class SalesController {
     });
   }
 
+  void initSearchForTablesActivated() {
+
+    if (_subscriptionTablesActivated != null) {
+      _subscriptionTablesActivated!.pause();
+    }
+    
+    _subscriptionTablesActivated = getListTablesOnDemand().listen((event) {
+      _tablesActivated.add(event);
+    });
+
+    _subscriptionTablesActivated!.resume();
+  }
+
+  void disposeTablesActivated() {
+    _subscriptionTablesActivated?.cancel();
+  }
+
   Stream<List<int>> getListTablesOnDemand() async* {
     List<int> list = [];
     
-    while (!_tablesActivated.isClosed) {
+    while (!_subscriptionTablesActivated!.isPaused || _subscriptionTablesActivated != null) {
       list = [];
 
       await connectSupadatabase().then((conn) async {

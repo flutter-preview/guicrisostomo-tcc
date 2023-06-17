@@ -55,9 +55,6 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
 
   num mediaStar = 3.50;
 
-  List<int> tablesActivated = [];
-
-  StreamSubscription? subscription;
   String dropDownTable = 'Todas';
 
 
@@ -112,29 +109,14 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
       });
     }
 
-    subscription = SalesController.instance.getListTablesOnDemand().listen((event) {
-      setState(() {
-        tablesActivated = event;
-      });
-    });
-
-    subscription?.resume();
-
-    // SalesController.instance.initializeTablesActivated();
-
-    SalesController.instance.tablesActivated.listen((event) { 
-      setState(() {
-        tablesActivated = event;
-      });
-    });
+    SalesController.instance.initSearchForTablesActivated();
 
     super.initState();
   }
 
   @override
   void dispose() {
-    subscription?.cancel();
-    subscription = null;
+    SalesController.instance.disposeTablesActivated();
 
     super.dispose();
   }
@@ -528,163 +510,174 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                   const SizedBox(height: 20),
               
                   SectionVisible(
-                    nameSection: 'Mesas: ${dropDownTable.toLowerCase()}',
+                    nameSection: 'Mesas',
                     isShowPart: true,
-                    child: Column(
-                      children: [
-                        DropDown(
-                          text: 'Mesas',
-                          itemsDropDownButton: [
-                            DropDownList(name: 'Todas', icon: Icons.select_all),
-                            DropDownList(name: 'Ativas', icon: Icons.check),
-                            DropDownList(name: 'Inativas', icon: Icons.close),
-                          ],
-                          variavel: dropDownTable,
-                          callback: (value) {
-                            setState(() {
-                              dropDownTable = value!;
-                            });
-                          },
-                        ),
-          
-                        const SizedBox(height: 20),
-              
-                        if (dropDownTable == 'Todas')
-                          GridView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: 40,
-                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 5,
-                              mainAxisSpacing: 5,
-                              crossAxisSpacing: 5,
-                            ),
-                            itemBuilder: (context, index) {
-                              int numberTable = index + 1;
-                              bool isActivated = tablesActivated.contains(numberTable);
-                              
-                              return InkWell(
-                                onTap: () {
+                    child: StreamBuilder<List<int>>(
+                      stream: SalesController.instance.tablesActivated,
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.done || snapshot.connectionState == ConnectionState.active) {
+                          return Column(
+                            children: [
+                              DropDown(
+                                text: 'Mesas',
+                                itemsDropDownButton: [
+                                  DropDownList(name: 'Todas', icon: Icons.select_all),
+                                  DropDownList(name: 'Ativas', icon: Icons.check),
+                                  DropDownList(name: 'Inativas', icon: Icons.close),
+                                ],
+                                variavel: dropDownTable,
+                                callback: (value) {
                                   setState(() {
-                                    globals.numberTable = numberTable;
+                                    dropDownTable = value!;
                                   });
-                                  
-                                  GoRouter.of(context).push(
-                                    '/table/info',
-                                    extra: numberTable,
-                                  );
                                 },
-                                child: Card(
-                                  color: isActivated ? globals.primary : globals.primaryBlack,
-                                  child: Center(
-                                    child: Text(
-                                      numberTable.toString(),
-                                      style: TextStyle(
-                                        color: isActivated ? Colors.white : Colors.white,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-          
-                        if (dropDownTable == 'Ativas')
-                          GridView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: tablesActivated.length,
-                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 5,
-                              mainAxisSpacing: 5,
-                              crossAxisSpacing: 5,
-                            ),
-                            itemBuilder: (context, index) {
-                              int numberTable = tablesActivated[index];
+                              ),
                               
-                              return InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    globals.numberTable = numberTable;
-                                  });
+                              const SizedBox(height: 20),
                                   
-                                  GoRouter.of(context).push(
-                                    '/table/info',
-                                    extra: numberTable,
-                                  );
-                                },
-                                child: Card(
-                                  color: globals.primary,
-                                  child: Center(
-                                    child: Text(
-                                      numberTable.toString(),
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
+                              if (dropDownTable == 'Todas')
+                                GridView.builder(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: 40,
+                                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 5,
+                                    mainAxisSpacing: 5,
+                                    crossAxisSpacing: 5,
                                   ),
-                                ),
-                              );
-                            },
-                          ),
-          
-                        if (dropDownTable == 'Inativas')
-                          Builder(
-                            builder: (context) {
-                              int numberTable = 0;
-                              return GridView.builder(
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemCount: 40 - tablesActivated.length,
-                                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 5,
-                                  mainAxisSpacing: 5,
-                                  crossAxisSpacing: 5,
-                                ),
-                                itemBuilder: (context, index) {
-                                  numberTable++;
-                                  bool isActivated = tablesActivated.contains(numberTable);
-                                  
-                                  while (isActivated) {
-                                    numberTable++;
-                                    isActivated = tablesActivated.contains(numberTable);
-                                  }
-
-                                  return InkWell(
-                                    onTap: () {
-                                      setState(() {
-                                        globals.numberTable = numberTable;
-                                      });
-                                      
-                                      GoRouter.of(context).push(
-                                        '/table/info',
-                                        extra: numberTable,
-                                      );
-                                    },
-                                    child: Card(
-                                      color: globals.primaryBlack,
-                                      child: Center(
-                                        child: Text(
-                                          numberTable.toString(),
-                                          style: TextStyle(
-                                            color: isActivated ? Colors.white : Colors.white,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
+                                  itemBuilder: (context, index) {
+                                    int numberTable = index + 1;
+                                    bool isActivated = snapshot.data!.contains(numberTable);
+                                    
+                                    return InkWell(
+                                      onTap: () {
+                                        setState(() {
+                                          globals.numberTable = numberTable;
+                                        });
+                                        
+                                        GoRouter.of(context).push(
+                                          '/table/info',
+                                          extra: numberTable,
+                                        );
+                                      },
+                                      child: Card(
+                                        color: isActivated ? globals.primary : globals.primaryBlack,
+                                        child: Center(
+                                          child: Text(
+                                            numberTable.toString(),
+                                            style: TextStyle(
+                                              color: isActivated ? Colors.white : Colors.white,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                  );
-                                },
-                              );
-                            }
-                          ),
-                      ],
-                    )
+                                    );
+                                  },
+                                ),
+                              
+                              if (dropDownTable == 'Ativas')
+                                GridView.builder(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: snapshot.data!.length,
+                                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 5,
+                                    mainAxisSpacing: 5,
+                                    crossAxisSpacing: 5,
+                                  ),
+                                  itemBuilder: (context, index) {
+                                    int numberTable = snapshot.data![index];
+                                    
+                                    return InkWell(
+                                      onTap: () {
+                                        setState(() {
+                                          globals.numberTable = numberTable;
+                                        });
+                                        
+                                        GoRouter.of(context).push(
+                                          '/table/info',
+                                          extra: numberTable,
+                                        );
+                                      },
+                                      child: Card(
+                                        color: globals.primary,
+                                        child: Center(
+                                          child: Text(
+                                            numberTable.toString(),
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              
+                              if (dropDownTable == 'Inativas')
+                                Builder(
+                                  builder: (context) {
+                                    int numberTable = 0;
+                                    return GridView.builder(
+                                      shrinkWrap: true,
+                                      physics: const NeverScrollableScrollPhysics(),
+                                      itemCount: 40 - snapshot.data!.length,
+                                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 5,
+                                        mainAxisSpacing: 5,
+                                        crossAxisSpacing: 5,
+                                      ),
+                                      itemBuilder: (context, index) {
+                                        numberTable++;
+                                        bool isActivated = snapshot.data!.contains(numberTable);
+                                        
+                                        while (isActivated) {
+                                          numberTable++;
+                                          isActivated = snapshot.data!.contains(numberTable);
+                                        }
+                      
+                                        return InkWell(
+                                          onTap: () {
+                                            setState(() {
+                                              globals.numberTable = numberTable;
+                                            });
+                                            
+                                            GoRouter.of(context).push(
+                                              '/table/info',
+                                              extra: numberTable,
+                                            );
+                                          },
+                                          child: Card(
+                                            color: globals.primaryBlack,
+                                            child: Center(
+                                              child: Text(
+                                                numberTable.toString(),
+                                                style: TextStyle(
+                                                  color: isActivated ? Colors.white : Colors.white,
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  }
+                                ),
+                            ],
+                          );
+                        } else {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                      }
+                    ),
                   ),
                   
                 ]
