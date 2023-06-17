@@ -13,6 +13,7 @@ class Sales {
   String nameUserCreatedSale = '';
   num change;
   int items;
+  bool isEmployee = false;
 
   Sales({
     required this.id,
@@ -29,6 +30,7 @@ class Sales {
     this.nameUserCreatedSale = '',
     this.change = 0.0,
     this.items = 0,
+    this.isEmployee = false,
   });
 
   num getTotal() {

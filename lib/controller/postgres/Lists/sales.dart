@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
 import 'dart:async';
+import 'dart:math';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tcc/controller/postgres/Lists/businessInfo.dart';
@@ -728,7 +729,64 @@ class SalesController {
 
   Future<List<Sales>> getInfoTable(int numberTable) async {
     return connectSupadatabase().then((conn) {
-      return 
+      return conn.query('''
+        
+        SELECT DISTINCT ON (u.name) o.id, o.datetime, u.name, info.price,
+          (
+            SELECT oea.id_order = o.id
+              FROM order_employee oea
+          ) as verify_employee,
+          o.cnpj, o.status, u.uid
+          FROM orders o
+          INNER JOIN user_order uo ON uo.id_order = o.id
+          INNER JOIN tb_user u ON u.uid = uo.uid
+          INNER JOIN business b ON b.cnpj = o.cnpj
+          LEFT JOIN LATERAL (
+            SELECT SUM(max.priceA) as price FROM (
+              SELECT CASE b.highvalue 
+                WHEN true THEN MAX(pa.price * ia.qtd)
+                ELSE AVG(pa.price * ia.qtd)
+              END priceA from items ia 
+                INNER JOIN products pa ON pa.id = ia.id_product 
+                INNER JOIN orders oa ON oa.id = ia.id_order 
+                WHERE coalesce(oa.table_number, 0) = @table AND (ia.status = 'Ativo' OR ia.status = 'Andamento')
+                GROUP BY (ia.relation_id, ia.id_variation)
+            ) AS max
+          ) info on true
+          WHERE o.cnpj = @cnpj and (o.status = 'Ativo' OR o.status = 'Andamento') and coalesce(o.table_number, 0) = @table;
+        ''', substitutionValues: {
+        'cnpj': globals.businessId,
+        'table': numberTable,
+      }).then((List value) {
+        conn.close();
+        List<Sales> sales = [];
+
+        if (value.isEmpty) {
+          return sales;
+        }
+
+        for (var element in value) {
+          sales.add(
+            Sales(
+              id: element[0],
+              date: element[1],
+              nameUserCreatedSale: element[2],
+              total: element[3] ?? 0,
+              isEmployee: element[4],
+              cnpj: element[5],
+              status: element[6],
+              uid: element[7],
+            ),
+          );
+        }
+
+        sales.sort((a, b) => a.date.compareTo(b.date));
+
+        return sales;
+      }).catchError((e) {
+        conn.close();
+        return [];
+      });
     });
   }
 }

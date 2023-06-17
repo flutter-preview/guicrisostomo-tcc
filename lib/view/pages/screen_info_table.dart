@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tcc/controller/postgres/Lists/productsCart.dart';
+import 'package:tcc/controller/postgres/Lists/sales.dart';
 import 'package:tcc/model/ProductsCart.dart';
+import 'package:tcc/model/Sales.dart';
 import 'package:tcc/view/widget/appBar.dart';
 import 'package:tcc/view/widget/bottonNavigation.dart';
 import 'package:tcc/globals.dart' as globals;
@@ -19,9 +21,14 @@ class ScreenInfoTable extends StatefulWidget {
 }
 
 class _ScreenInfoTableState extends State<ScreenInfoTable> {
-  // Future<void> getInfoTable() async {
-  //   SalesController.instance.(widget.arguments);
-  // }
+
+  Future<List<Sales>> getInfoTable() async {
+    return SalesController.instance.getInfoTable(widget.arguments as int).then((value) {
+      return value;
+    }).catchError((onError) {
+      print(onError);
+    });
+  }
 
   Future<List<ProductsCartList>> getItemsProduct() async {
     return await ProductsCartController.instance.listTable(widget.arguments as int).catchError((onError) {
@@ -60,77 +67,147 @@ class _ScreenInfoTableState extends State<ScreenInfoTable> {
 
                     const SizedBox(height: 20),
 
-                    Row(
-                      children: [
-                        Icon(Icons.room_service, color: globals.primary),
-                        const SizedBox(width: 10),
-                        const Text(
-                          'Garçom: ',
-                          style: TextStyle(
-                            fontSize: 16,
-                          ),
-                        )
-                      ],
-                    ),
+                    FutureBuilder(
+                      future: getInfoTable(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.done) {
+                          return Column(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(Icons.room_service, color: globals.primary),
+                                  const SizedBox(width: 10),
+                                  Flexible(
+                                    child: Text(
+                                      'Garçom: ${snapshot.data!.toList().map((e) {
+                                        if (e.isEmployee) {
+                                          return e.nameUserCreatedSale;
+                                        }
+                                      }).join(', ').replaceAll(', null', '').replaceAll('null, ', '')}',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                      ),
 
-                    const SizedBox(height: 20),
+                                      overflow: TextOverflow.fade,
+                                    ),
+                                  )
+                                ],
+                              ),
 
-                    Row(
-                      children: [
-                        Icon(Icons.people, color: globals.primary),
-                        const SizedBox(width: 10),
-                        const Text(
-                          'Clientes: ',
-                          style: TextStyle(
-                            fontSize: 16,
-                          ),
-                        )
-                      ],
-                    ),
+                              const SizedBox(height: 20),
 
-                    const SizedBox(height: 20),
+                              Row(
+                                children: [
+                                  Icon(Icons.people, color: globals.primary),
+                                  const SizedBox(width: 10),
+                                  Flexible(
+                                    child: Text(
+                                      'Clientes: ${snapshot.data!.toList().map((e) {
+                                        if (!e.isEmployee) {
+                                          return e.nameUserCreatedSale;
+                                        }
+                                      }).join(', ').replaceAll(', null', '').replaceAll('null, ', '')}',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                      ),
+                                      overflow: TextOverflow.fade,
+                                    ),
+                                  )
+                                ],
+                              ),
 
-                    Row(
-                      children: [
-                        Icon(Icons.timer, color: globals.primary),
-                        const SizedBox(width: 10),
-                        const Text(
-                          'Tempo de espera do pedido atual: ',
-                          style: TextStyle(
-                            fontSize: 16,
-                          ),
-                        )
-                      ],
-                    ),
+                              const SizedBox(height: 20),
 
-                    const SizedBox(height: 20),
+                              Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Icon(Icons.timer, color: globals.primary),
+                                  const SizedBox(width: 10),
+                                  StreamBuilder(
+                                    stream: Stream.periodic(const Duration(seconds: 1)),
+                                    builder: (context, now) {
+                                      int indexLastSaleActive = snapshot.data!.toList().lastIndexWhere((element) {
+                                        if (element.status == 'Ativo') {
+                                          return true;
+                                        } else {
+                                          return false;
+                                        }
+                                      });
 
-                    Row(
-                      children: [
-                        Icon(Icons.timer, color: globals.primary),
-                        const SizedBox(width: 10),
-                        const Text(
-                          'Chegada: ',
-                          style: TextStyle(
-                            fontSize: 16,
-                          ),
-                        )
-                      ],
-                    ),
+                                      if (indexLastSaleActive == -1) {
+                                        return const Flexible(
+                                          child: Text(
+                                            'Tempo de espera do pedido atual: 0 minutos',
+                                            overflow: TextOverflow.fade,
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                            ),
+                                          ),
+                                        );
+                                      }
 
-                    const SizedBox(height: 20),
+                                      return Flexible(
+                                        child: Text(
+                                          'Tempo de espera do pedido atual: ${DateTime.now().difference(snapshot.data![indexLastSaleActive].date).inMinutes} minutos',
+                                          overflow: TextOverflow.fade,
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                  )
+                                ],
+                              ),
 
-                    Row(
-                      children: [
-                        Icon(Icons.attach_money_outlined, color: globals.primary),
-                        const SizedBox(width: 10),
-                        const Text(
-                          'Valor: ',
-                          style: TextStyle(
-                            fontSize: 16,
-                          ),
-                        )
-                      ],
+                              const SizedBox(height: 20),
+
+                              Builder(
+                                builder: (context) {
+                                  DateTime date = snapshot.data![0].date;
+
+                                  return Row(
+                                    children: [
+                                      Icon(Icons.timer, color: globals.primary),
+                                      const SizedBox(width: 10),
+                                      Text(
+                                        'Chegada: ${date.day}/${date.month}/${date.year} ${date.hour}:${date.minute}',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                        ),
+                                      )
+                                    ],
+                                  );
+                                }
+                              ),
+
+                              const SizedBox(height: 20),
+
+                              Row(
+                                children: [
+                                  Icon(Icons.attach_money_outlined, color: globals.primary),
+                                  const SizedBox(width: 10),
+                                  Text(
+                                    'Valor: R\$ ${snapshot.data![0].total.toStringAsFixed(2).replaceAll('.', ',')}',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ],
+                          );
+                        } else if (snapshot.connectionState == ConnectionState.waiting) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        } else {
+                          return const Center(
+                            child: Text('Erro ao carregar as informações'),
+                          );
+                        }
+                      }
                     ),
 
                     SectionVisible(
