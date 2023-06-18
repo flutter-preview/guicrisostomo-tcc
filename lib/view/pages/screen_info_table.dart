@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:tcc/controller/postgres/Lists/productsCart.dart';
 import 'package:tcc/controller/postgres/Lists/sales.dart';
 import 'package:tcc/model/ProductsCart.dart';
@@ -160,6 +161,7 @@ class _ScreenInfoTableState extends State<ScreenInfoTable> {
 
                                     Builder(
                                       builder: (context) {
+                                        DateFormat formatter = DateFormat("dd/MM/yyyy 'às' HH:mm");
                                         DateTime date = snapshot.data![0].date;
 
                                         return Row(
@@ -167,7 +169,7 @@ class _ScreenInfoTableState extends State<ScreenInfoTable> {
                                             Icon(Icons.timer, color: globals.primary),
                                             const SizedBox(width: 10),
                                             Text(
-                                              'Chegada: ${date.day}/${date.month}/${date.year} ${date.hour}:${date.minute}',
+                                              'Chegada: ${formatter.format(date)}',
                                               style: TextStyle(
                                                 fontSize: 16,
                                               ),
