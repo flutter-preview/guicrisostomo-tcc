@@ -44,6 +44,7 @@ class _ProductsCartState extends State<ProductsCart> {
             DateTime? dateData = dados.date;
             NumberFormat formatter = NumberFormat("00");
             String date = '${formatter.format(dateData!.day)}/${formatter.format(dateData.month)}/${dateData.year} às ${formatter.format(dateData.hour)}:${formatter.format(dateData.minute)}';
+            String statusItem = dados.statusOrder ?? '';
         
             return Card(
               color: Colors.white,
@@ -177,12 +178,22 @@ class _ProductsCartState extends State<ProductsCart> {
                           color: Colors.black54,
                         ),
                       ),
+
+                      (statusItem.isNotEmpty) ?
+                        Text(
+                          "Status: $statusItem",
+                          style: TextStyle(
+                            color: globals.primary,
+                            fontWeight: (statusItem == 'Andamento') ? FontWeight.bold : FontWeight.normal,
+                          ),
+                        ) : Container(),
               
                       (dados.agregateItems > 0) ?
                         Text(
                           "Itens agregados: +${dados.agregateItems}",
                           style: TextStyle(
                             color: globals.primary,
+                            fontWeight: FontWeight.bold,
                           ),
                         )
                       : Container(),

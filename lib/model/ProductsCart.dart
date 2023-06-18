@@ -1,9 +1,11 @@
+import 'package:tcc/model/Sales.dart';
 import 'package:tcc/model/Variation.dart';
 
 class ProductsCartList {
   int? id;
   int? idRelative;
   int? idProduct;
+  String? statusOrder;
   String? name;
   num? price;
   int? qtd;
@@ -24,6 +26,7 @@ class ProductsCartList {
     this.date,
     this.textVariation = '',
     this.agregateItems = 0,
+    this.statusOrder,
   });
 
   num getTotal() {

@@ -147,7 +147,8 @@ class ProductsCartController {
                 SELECT COUNT(*) - 1 as count FROM products pb
                   INNER JOIN items ib ON ib.id_product = pb.id
                   WHERE ib.id_order = o.id AND ib.relation_id = i.relation_id
-              )
+              ),
+              o.status
             FROM items i
             INNER JOIN products p ON p.id = i.id_product
             INNER JOIN orders o ON o.id = i.id_order
@@ -165,7 +166,8 @@ class ProductsCartController {
                 SELECT COUNT(*) - 1 as count FROM products pb
                   INNER JOIN items ib ON ib.id_product = pb.id
                   WHERE ib.id_order = o.id AND ib.relation_id = i.relation_id
-              )
+              ),
+              o.status
             FROM items i
             INNER JOIN products p ON p.id = i.id_product
             INNER JOIN orders o ON o.id = i.id_order
@@ -197,6 +199,7 @@ class ProductsCartController {
               date: row[7],
               price: row[8],
               agregateItems: row[9],
+              statusOrder: row[10],
             )
           );
 
