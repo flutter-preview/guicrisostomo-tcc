@@ -12,8 +12,10 @@ Future<PostgreSQLConnection> connectSupadatabase() async {
     
   );
   await conn.open().catchError((onError) {
-    print(onError);
-    GoRouter.of(Config.navigatorKey.currentContext!).go('/error');
+    GoRouter.of(Config.navigatorKey.currentContext!).go(
+      '/error',
+      extra: 'Erro ao conectar com o banco de dados.'
+    );
   });
   return conn;
 }
