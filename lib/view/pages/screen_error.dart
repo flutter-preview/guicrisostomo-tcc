@@ -41,17 +41,17 @@ class ScreenError extends StatelessWidget {
               const SizedBox(height: 20),
               const SizedBox(width: 20),
               button('Tentar novamente', 0, 0, Icons.refresh, () async {
-                GoRouter.of(context).go('/loading');
+                GoRouter.of(context).push('/loading');
 
                 await LoginController.instance.getTypeUser().then((value) {
                   if (value == 'Cliente') {
-                    
+                    GoRouter.of(context).pop();
                     GoRouter.of(context).go('/home');
                   } else if (value == 'Gerente') {
-                    
+                    GoRouter.of(context).pop();
                     GoRouter.of(context).go('/home_manager');
                   } else {
-                    
+                    GoRouter.of(context).pop();
                     GoRouter.of(context).go('/home_employee');
                   }
                 }).catchError((onError) {
