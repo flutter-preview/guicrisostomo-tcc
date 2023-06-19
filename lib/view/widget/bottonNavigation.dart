@@ -162,7 +162,7 @@ class _BottomState extends State<Bottom> {
                   label: 'Produtos',
                 ),
 
-              globals.numberTable != null && globals.userType == 'customer' ?
+              globals.numberTable != null && globals.userType != 'manager' ?
                 const BottomNavigationBarItem(
                   icon: Icon(Icons.room_service_outlined, color: Colors.white),
                   label: 'Sua mesa',
