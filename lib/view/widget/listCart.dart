@@ -10,11 +10,13 @@ import 'package:tcc/globals.dart' as globals;
 class ProductsCart extends StatefulWidget {
   final List<ProductsCartList> product;
   final bool isShowButtonDelete;
+  final int? numberTable;
 
   const ProductsCart({
     super.key, 
     required this.product,
     this.isShowButtonDelete = true,
+    this.numberTable,
   });
 
   @override
@@ -44,7 +46,7 @@ class _ProductsCartState extends State<ProductsCart> {
             DateTime? dateData = dados.date;
             NumberFormat formatter = NumberFormat("00");
             String date = '${formatter.format(dateData!.day)}/${formatter.format(dateData.month)}/${dateData.year} às ${formatter.format(dateData.hour)}:${formatter.format(dateData.minute)}';
-            String statusItem = dados.statusOrder ?? '';
+            String statusItem = dados.status ?? '';
         
             return Card(
               color: Colors.white,
@@ -184,7 +186,7 @@ class _ProductsCartState extends State<ProductsCart> {
                           "Status: $statusItem",
                           style: TextStyle(
                             color: globals.primary,
-                            fontWeight: (statusItem == 'Andamento') ? FontWeight.bold : FontWeight.normal,
+                            fontWeight: (statusItem == 'Ativo') ? FontWeight.bold : FontWeight.normal,
                           ),
                         ) : Container(),
               
@@ -356,6 +358,7 @@ class _ProductsCartState extends State<ProductsCart> {
                       GoRouter.of(context).push('/cart/info_item', extra: {
                         'dados': dados,
                         'isShowButtonDelete': widget.isShowButtonDelete,
+                        'numberTable': widget.numberTable,
                       });
                     },
                     icon: Icon(Icons.info, color: Colors.red,),
@@ -365,6 +368,7 @@ class _ProductsCartState extends State<ProductsCart> {
                     GoRouter.of(context).push('/cart/info_item', extra: {
                       'dados': dados,
                       'isShowButtonDelete': widget.isShowButtonDelete,
+                      'numberTable': widget.numberTable,
                     });
                   },
                 ),

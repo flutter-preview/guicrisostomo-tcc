@@ -124,7 +124,7 @@ class _ScreenInfoTableState extends State<ScreenInfoTable> {
                                           stream: Stream.periodic(const Duration(seconds: 1)),
                                           builder: (context, now) {
                                             int indexLastSaleActive = snapshot.data!.toList().lastIndexWhere((element) {
-                                              if (element.status == 'Ativo') {
+                                              if (element.status == 'Ativo' || element.status == 'Para impressão') {
                                                 return true;
                                               } else {
                                                 return false;
@@ -220,6 +220,7 @@ class _ScreenInfoTableState extends State<ScreenInfoTable> {
                             return ProductsCart(
                               product: snapshot.data!,
                               isShowButtonDelete: false,
+                              numberTable: widget.arguments as int,
                             );
                           } else if (snapshot.connectionState == ConnectionState.waiting) {
                             return const Center(

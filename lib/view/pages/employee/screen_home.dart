@@ -122,6 +122,18 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
   }
   
   @override
+  void deactivate() {
+    SalesController.instance.disposeTablesActivated();
+    super.deactivate();
+  }
+
+  @override
+  void didChangeDependencies() {
+    SalesController.instance.initSearchForTablesActivated();
+    super.didChangeDependencies();
+  }
+  
+  @override
   Widget build(BuildContext context) {
     // notifyCallTable();
 
@@ -554,10 +566,51 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                                         setState(() {
                                           globals.numberTable = numberTable;
                                         });
-                                        
-                                        GoRouter.of(context).push(
-                                          '/table/info',
-                                          extra: numberTable,
+                                        (isActivated) ?
+                                          GoRouter.of(context).push(
+                                            '/table/info',
+                                            extra: numberTable,
+                                          )
+                                        : showDialog(
+                                            context: context,
+                                            builder: (context) { 
+                                              return AlertDialog(
+                                              title: Text('Mesa $numberTable'),
+                                              content: const Text('Deseja ativar a mesa?'),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+
+                                                    globals.idSaleSelected = null;
+                                                     
+                                                    // Navigator.pushNamed(context, 'home_employee');
+                                                  },
+                                                  child: const Text('Não'),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () {
+                                                    // await TablesController.instance.activateTable(context, numberTable);
+                                                    setState(() {
+                                                      globals.numberTable = numberTable;
+                                                    });
+
+                                                    globals.idSaleSelected = null;
+
+                                                    SalesController.instance.idSale().whenComplete(() {
+                                                      Navigator.pop(context);
+                                                      GoRouter.of(context).go(
+                                                        '/products',
+                                                      );
+                                                    });
+                                                    
+                                                    
+                                                  },
+                                                  child: const Text('Sim'),
+                                                ),
+                                              ],
+                                            );
+                                          },
                                         );
                                       },
                                       child: Card(
@@ -646,9 +699,43 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                                               globals.numberTable = numberTable;
                                             });
                                             
-                                            GoRouter.of(context).push(
-                                              '/table/info',
-                                              extra: numberTable,
+                                            // GoRouter.of(context).push(
+                                            //   '/table/info',
+                                            //   extra: numberTable,
+                                            // );
+
+                                            showDialog(
+                                              context: context,
+                                              builder: (context) => AlertDialog(
+                                                title: Text('Mesa $numberTable'),
+                                                content: const Text('Deseja ativar a mesa?'),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                      // Navigator.pushNamed(context, 'home_employee');
+                                                    },
+                                                    child: const Text('Não'),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      // await TablesController.instance.activateTable(context, numberTable);
+                                                      
+                                                      setState(() {
+                                                        globals.numberTable = numberTable;
+                                                      });
+
+                                                      SalesController.instance.idSale().whenComplete(() {
+                                                        Navigator.pop(context);
+                                                        GoRouter.of(context).go(
+                                                          '/products',
+                                                        );
+                                                      });
+                                                    },
+                                                    child: const Text('Sim'),
+                                                  ),
+                                                ],
+                                              ),
                                             );
                                           },
                                           child: Card(

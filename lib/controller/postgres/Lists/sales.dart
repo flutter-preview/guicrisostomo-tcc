@@ -71,8 +71,16 @@ class SalesController {
 
   Future<int?> getOrderEmployee() async {
     return await connectSupadatabase().then((conn) async {
-      return await conn.query('select id_order from order_employee where uid = @uid', substitutionValues: {
+      return await conn.query('''
+        select oe.id_order 
+          from order_employee oe
+          inner join orders o on o.id = oe.id_order
+          where oe.uid = @uid and o.status = @status and o.cnpj = @cnpj and coalesce(o.table_number, 0) = @table
+      ''', substitutionValues: {
         'uid': FirebaseAuth.instance.currentUser!.uid,
+        'status': 'Andamento',
+        'cnpj': globals.businessId,
+        'table': globals.numberTable ?? 0,
       }).then((value) {
         conn.close();
         List list = value;
@@ -642,7 +650,15 @@ class SalesController {
     });
   }
 
-  Future<void> finalizeSale([bool hasCloseTable = true, String type = '', int? idAddressSelected, String typePayment = '', num change = 0]) async {
+  Future<void> finalizeSale({
+    bool hasFinishSale = true, 
+    String type = '', 
+    int? idAddressSelected, 
+    String typePayment = '', 
+    num change = 0, 
+    int? idOrder,
+    int? numberTable
+  }) async {
     if (typePayment != 'Dinheiro') {
       change = 0;
     }
@@ -653,40 +669,35 @@ class SalesController {
 
       await conn.query('''
         UPDATE items SET status = 'Para impressão' 
-          WHERE id_order = (
-            SELECT o.id 
-              FROM orders o
-              INNER JOIN user_order uo ON uo.id_order = o.id
-              WHERE o.cnpj = @cnpj AND uo.uid = @uid AND o.status = 'Andamento' AND coalesce(o.table_number, 0) = @table and uo.fg_ativo = true and o.id = @idSale LIMIT 1
-          ) AND status = 'Ativo'
+          WHERE id_order = @idSale AND status = 'Ativo'
       ''', substitutionValues: {
-        'cnpj': globals.businessId,
-        'uid': FirebaseAuth.instance.currentUser!.uid,
-        'table': globals.numberTable ?? 0,
-        'idSale': await idSale(),
+        'idSale': idOrder ?? await idSale(),
       }).catchError((e) {
       });
 
-      if (hasCloseTable) {
+      if (hasFinishSale) {
         await conn.query('''
           UPDATE orders SET status = 'Ativo', type = @type, address = @address, payment = @payment, change = @change
-            WHERE id = (
-              SELECT o.id 
-                FROM orders o
-                INNER JOIN user_order uo ON uo.id_order = o.id
-                WHERE o.cnpj = @cnpj AND uo.uid = @uid AND o.status = 'Andamento' AND coalesce(o.table_number, 0) = @table and uo.fg_ativo = true and o.id = @idSale LIMIT 1
-            ) AND status = 'Andamento'
+            WHERE id = @idSale AND status = 'Andamento'
         ''', substitutionValues: {
           'cnpj': globals.businessId,
-          'uid': FirebaseAuth.instance.currentUser!.uid,
-          'table': globals.numberTable ?? 0,
           'type': type,
           'address': idAddressSelected,
           'payment': typePayment,
           'change': change,
-          'idSale': await idSale(),
+          'idSale': idOrder ?? await idSale(),
         }).catchError((e) {
         });
+
+        if (globals.numberTable != null || numberTable != null) {
+          await conn.query('''
+          UPDATE orders SET status = 'Cancelado'
+              WHERE table_number = @table AND status = 'Andamento'
+          ''', substitutionValues: {
+            'table': numberTable ?? globals.numberTable,
+          }).catchError((e) {
+          });
+        }
 
         globals.idSaleSelected = null;
       }
@@ -767,7 +778,7 @@ class SalesController {
               END priceA from items ia 
                 INNER JOIN products pa ON pa.id = ia.id_product 
                 INNER JOIN orders oa ON oa.id = ia.id_order 
-                WHERE coalesce(oa.table_number, 0) = @table AND (ia.status = 'Ativo' OR ia.status = 'Andamento')
+                WHERE coalesce(oa.table_number, 0) = @table AND (ia.status = 'Ativo' OR ia.status = 'Andamento' OR ia.status = 'Para impressão')
                 GROUP BY (ia.relation_id, ia.id_variation)
             ) AS max
           ) info on true

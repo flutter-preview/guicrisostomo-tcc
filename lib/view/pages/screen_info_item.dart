@@ -5,8 +5,10 @@ import 'package:tcc/controller/postgres/Lists/productsCart.dart';
 import 'package:tcc/model/ProductsCart.dart';
 import 'package:tcc/model/Variation.dart';
 import 'package:tcc/view/widget/appBar.dart';
+import 'package:tcc/view/widget/button.dart';
 import 'package:tcc/view/widget/sectionVisible.dart';
 import 'package:tcc/view/widget/snackBars.dart';
+import 'package:tcc/globals.dart' as globals;
 
 class ScreenInfoItem extends StatefulWidget {
   final Object? arguments;
@@ -28,6 +30,8 @@ class _ScreenInfoItemState extends State<ScreenInfoItem> {
     
     ProductsCartList? productsCartList = arguments!['dados'] as ProductsCartList;
     bool userCanDelete = arguments['isShowButtonDelete'] as bool? ?? true;
+    int numberTable = arguments['numberTable'] as int? ?? globals.numberTable ?? 0;
+
     int idRelative = productsCartList.idRelative!;
 
     Future<Widget> getItems(Variation variation) async {
@@ -222,7 +226,20 @@ class _ScreenInfoItemState extends State<ScreenInfoItem> {
             )
           ],
         ),
-      )
+      ),
+
+      bottomNavigationBar: (productsCartList.status == 'Ativo') ?
+        button('Finalizar venda', 0, 0, Icons.check, () {
+          GoRouter.of(context).push(
+            '/finalize_order_customer', 
+            extra: {
+              'type': 'Mesa',
+              'idOrder': productsCartList.idSale,
+              'numberTable': numberTable,
+            }
+          );
+        })
+      : null,
     );
   }
 }

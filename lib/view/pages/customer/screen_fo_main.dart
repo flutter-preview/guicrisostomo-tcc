@@ -17,7 +17,12 @@ import 'package:tcc/view/widget/switchListTile.dart';
 import 'package:tcc/view/widget/textFieldGeneral.dart';
 
 class ScreenFOMain extends StatefulWidget {
-  const ScreenFOMain({super.key});
+  final Object? arguments;
+
+  const ScreenFOMain({
+    super.key,
+    this.arguments,
+  });
 
   @override
   State<ScreenFOMain> createState() => _ScreenFOMainState();
@@ -38,6 +43,8 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
   }
 
   String? type = '';
+  int? idOrder;
+  int? numberTable;
 
   bool hasCloseTable = false;
   bool isUserAnonymous = false;
@@ -59,36 +66,59 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
   void initState() {
     super.initState();
     RadioButtonList.setGroup('Entrega');
-    getTypeSale().then((value) {
-      if (value == 'Mesa') {
-        setState(() {
-          type = 'Mesa';
-        });
-      } else {
-        setState(() {
-          type = RadioButtonList.getGroup();
-        });
-      }
-    });
+
+    if (widget.arguments != null) {
+      Map<String, dynamic> arguments = widget.arguments! as Map<String, dynamic>;
+      setState(() {
+        type = arguments['type'] as String?;
+        idOrder = arguments['idOrder'] as int?;
+        numberTable = arguments['numberTable'] as int?;
+      });
+
+      print('idOrder: $idOrder');
+    } else {
+      getTypeSale().then((value) {
+        if (value == 'Mesa') {
+          setState(() {
+            type = 'Mesa';
+          });
+        } else {
+          setState(() {
+            type = RadioButtonList.getGroup();
+          });
+        }
+      });
+    }
+    
     setState(() {
       FirebaseAuth.instance.currentUser!.isAnonymous ? isUserAnonymous = true : isUserAnonymous = false;
     });
 
-    LoginController.instance.getPhoneNumberUser().then((value) {
-      if (value != null) {
-        setState(() {
-          hasPhoneNumber = true;
-        });
-      }
-    });
+    if (globals.userType == 'customer') {
 
-    LoginController.instance.getPhoneNumberUser().then((value) {
-      if (value != null) {
-        setState(() {
-          hasPhoneNumber = true;
-        });
-      }
-    });
+      LoginController.instance.getPhoneNumberUser().then((value) {
+        if (value != null) {
+          setState(() {
+            hasPhoneNumber = true;
+          });
+        }
+      });
+
+      LoginController.instance.getPhoneNumberUser().then((value) {
+        if (value != null) {
+          setState(() {
+            hasPhoneNumber = true;
+          });
+        }
+      });
+
+    } else {
+      setState(() {
+        hasPhoneNumber = true;
+      });
+    }
+
+    print('type: $type');
   }
 
   @override
@@ -371,7 +401,11 @@ class _ScreenFOMainState extends State<ScreenFOMain> {
               type != 'Mesa' ? Icons.arrow_forward : Icons.check,
               () {
                 if (type == 'Mesa') {
-                  SalesController.instance.finalizeSale(hasCloseTable).whenComplete(() {
+                  SalesController.instance.finalizeSale(
+                    hasFinishSale: hasCloseTable,
+                    idOrder: idOrder,
+                    numberTable: numberTable,
+                  ).whenComplete(() {
 
                     LoginController.instance.getTypeUser().then((typeUser) {
                       if (hasCloseTable) {

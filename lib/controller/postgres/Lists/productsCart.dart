@@ -148,7 +148,7 @@ class ProductsCartController {
                   INNER JOIN items ib ON ib.id_product = pb.id
                   WHERE ib.id_order = o.id AND ib.relation_id = i.relation_id
               ),
-              o.status
+              i.status, o.id
             FROM items i
             INNER JOIN products p ON p.id = i.id_product
             INNER JOIN orders o ON o.id = i.id_order
@@ -167,7 +167,7 @@ class ProductsCartController {
                   INNER JOIN items ib ON ib.id_product = pb.id
                   WHERE ib.id_order = o.id AND ib.relation_id = i.relation_id
               ),
-              o.status
+              i.status, o.id
             FROM items i
             INNER JOIN products p ON p.id = i.id_product
             INNER JOIN orders o ON o.id = i.id_order
@@ -199,7 +199,8 @@ class ProductsCartController {
               date: row[7],
               price: row[8],
               agregateItems: row[9],
-              statusOrder: row[10],
+              status: row[10],
+              idSale: row[11],
             )
           );
 
