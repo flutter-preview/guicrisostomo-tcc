@@ -222,15 +222,25 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                                       Icons.star_border,
                                       size: 20,
                                       color: Colors.white,
-                                    )
+                                    ),
                               ],
-                            )
+                            ),
                           ],
                         )
                       ],
                     ),
 
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 10),
+
+                    Text(
+                      globals.numberTable != null ? 'Atendendo à mesa ${globals.numberTable}' : 'Não está atendendo nenhuma mesa',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                      ),
+                    ),
+
+                    const SizedBox(height: 10),
                     
                     const Text(
                       'Pedidos efetuados: 10',
