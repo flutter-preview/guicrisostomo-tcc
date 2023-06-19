@@ -759,11 +759,11 @@ class SalesController {
   Future<List<Sales>> getInfoTable(int numberTable) async {
     return connectSupadatabase().then((conn) {
       return conn.query('''
-        
-        SELECT DISTINCT ON (u.name) o.id, o.datetime, u.name, info.price,
+        SELECT DISTINCT ON (u.name) o.id, o.datetime, u.name, coalesce(info.price, 0),
           (
-            SELECT oea.id_order = o.id
+            SELECT true
               FROM order_employee oea
+              where oea.uid = u.uid and oea.id_order = o.id
           ) as verify_employee,
           o.cnpj, o.status, u.uid
           FROM orders o
@@ -801,7 +801,7 @@ class SalesController {
               date: element[1],
               nameUserCreatedSale: element[2],
               total: element[3] ?? 0,
-              isEmployee: element[4],
+              isEmployee: element[4] ?? false,
               cnpj: element[5],
               status: element[6],
               uid: element[7],
