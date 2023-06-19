@@ -184,14 +184,6 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
 
                     Row(
                       children: [
-                        const Icon(
-                          Icons.star,
-                          size: 30,
-                          color: Colors.white,
-                        ),
-
-                        const SizedBox(width: 10),
-
                         const Text(
                           'Seu desempenho: ',
                           style: TextStyle(
@@ -242,16 +234,6 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                     
                     const Text(
                       'Pedidos efetuados: 10',
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                      ),
-                    ),
-
-                    const SizedBox(width: 10),
-
-                    const Text(
-                      'Avaliação média: 4.5',
                       style: TextStyle(
                         fontSize: 20,
                         color: Colors.white,
