@@ -23,7 +23,7 @@ class SalesController {
   Stream<List<int>> get tablesActivated => _tablesActivated.stream;
   StreamSubscription? _subscriptionTablesActivated;
   
-  Future<int> add() async {
+  static Future<int> add() async {
 
     return await connectSupadatabase().then((conn) async {
       DateTime now = DateTime.now();
@@ -38,12 +38,12 @@ class SalesController {
 
       return await conn.query(
         '''
-          select id from orders where datetime = @datetime and cnpj = @cnpj and status = @status and coalesce(type, '') = @type
+          select id from orders where datetime = @datetime and cnpj = @cnpj and status = @status and coalesce(type, 'Vazio') = @type
         ''', substitutionValues: {
           'datetime': now,
           'cnpj': globals.businessId,
           'status': 'Aguardando usuário',
-          'type': globals.numberTable != null ? 'Mesa' : '',
+          'type': globals.numberTable != null ? 'Mesa' : 'Vazio',
         },
       ).then((List value) {
         conn.close();
@@ -170,13 +170,13 @@ class SalesController {
         return (globals.userType == 'employee' || globals.userType == 'manager') ?
           await getOrderEmployee().then((value) async {
             if (value == null) {
-              return add().then((idSale) async {
-                await addOrderEmployee(idSale);
-                await addRelationUserOrder(idSale);
+              return await add().then((idSaleVar) async {
+                await addOrderEmployee(idSaleVar);
+                await addRelationUserOrder(idSaleVar);
 
-                await updateStatus('Andamento', idSale);
+                await updateStatus('Andamento', idSaleVar);
 
-                return idSale;
+                return idSaleVar;
               });
             } else {
               globals.idSaleSelected = value;

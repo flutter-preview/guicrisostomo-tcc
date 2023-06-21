@@ -77,24 +77,35 @@ class _BottomState extends State<Bottom> {
     ) : const CartInfo();
   }
 
+  Future<int> getIdSale() async {
+    return await SalesController.instance.idSale().then((value) {
+      return value;
+    });
+  }
+
   Future<bool> getListItemCurrent() async {
-    return await SalesController.instance.idSale().then((value) async {
-      if (value != 0) {
-        return await ProductsCartController.instance.listItemCurrent(value).then((products) {
+    if (globals.idSaleSelected != 0 && globals.idSaleSelected != null) {
+        return await ProductsCartController.instance.listItemCurrent(globals.idSaleSelected!).then((products) {
           return products.isNotEmpty;
         });
-      } else {
-        return false;
-      }
-    });
+    } else {
+      return false;
+    }
   }
 
   @override
   void initState() {
     super.initState();
-    getListItemCurrent().then((value) {
+
+    getIdSale().then((value) {
       setState(() {
-        globals.isSelectNewItem = value;
+        globals.idSaleSelected = value;
+      });
+
+      getListItemCurrent().then((value) {
+        setState(() {
+          globals.isSelectNewItem = value;
+        });
       });
     });
 
