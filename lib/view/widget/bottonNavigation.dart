@@ -125,141 +125,157 @@ class _BottomState extends State<Bottom> {
 
     const String iconMenu = 'lib/images/iconMenu.svg';
 
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        
-        globals.globalSelectedIndexBotton == 2 ? 
-          selectNewItem() 
-          : const CartInfo(),
-        
-        Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                globals.primaryBlack,
-                globals.primary.withOpacity(0.9),
-              ]
-            ),
-          ),
-          child: BottomNavigationBar(
-            type: BottomNavigationBarType.fixed,
-            unselectedItemColor: Colors.white,
-            selectedItemColor: Colors.white,
-            backgroundColor: Colors.transparent,
-            selectedLabelStyle: const TextStyle(
-              fontSize: 14,
-            ),
-
-            items: <BottomNavigationBarItem>[
-              const BottomNavigationBarItem(
-                icon: Icon(Icons.home, color: Colors.white),
-                label: 'Inicio',
-              ),
-
-              const BottomNavigationBarItem(
-                icon: Icon(Icons.shopping_cart_outlined, color: Colors.white),
-                label: 'Pedidos',
-              ),
-
-              globals.userType != 'manager' ?
-                BottomNavigationBarItem(
-                  icon: SvgPicture.asset(iconMenu, height: 25, fit: BoxFit.fill,),
-                  label: 'Cardápio',
-                ) : BottomNavigationBarItem(
-                  icon: SvgPicture.asset(iconMenu, height: 25, fit: BoxFit.fill,),
-                  label: 'Produtos',
-                ),
-
-              globals.numberTable != null && globals.userType != 'manager' ?
-                const BottomNavigationBarItem(
-                  icon: Icon(Icons.room_service_outlined, color: Colors.white),
-                  label: 'Sua mesa',
-                ) :
-                const BottomNavigationBarItem(
-                  icon: Icon(Icons.table_restaurant, color: Colors.white),
-                  label: 'Mesa',
-                ),
-      
-              globals.userType != 'manager' ?
-                const BottomNavigationBarItem(
-                  icon: Icon(Icons.perm_identity, color: Colors.white),
-                  label: 'Perfil',
-                ) : const BottomNavigationBarItem(
-                  icon: Icon(Icons.more_vert_rounded, color: Colors.white),
-                  label: 'Mais',
-                )
-            ],
-        
-            currentIndex: globals.globalSelectedIndexBotton,
-            onTap: (int index) {
-              switch (index) {
-                case 0:
-                  if (globals.userType == 'manager') {
-                    GoRouter.of(context).go('/home_manager');
-                    break;
-                  } else if (globals.userType == 'employee') {
-                    GoRouter.of(context).go('/home_employee');
-                    break;
-                  } else {
-                    GoRouter.of(context).go('/home');
-                    break;
-                  }
-                case 1:
-                  // Navigator.pushNamed(context, 'order');
-                  GoRouter.of(context).go('/order');
-                  break;
-                case 2:
-                  if (globals.userType == 'manager') {
-                    GoRouter.of(context).go('/list_products');
-                    break;
-                  } else {
-                    GoRouter.of(context).go('/products');
-                    break;
-                  }
-
-                case 3:
-                  globals.userType == 'customer' ?
-                    globals.numberTable != null ? {
-                      GoRouter.of(context).go('/waiter')
-                    } : {
-                    GoRouter.of(context).go('/table')
-                  } : {
-                  
-                    if (globals.numberTable != null) {
-                      GoRouter.of(context).go('/waiter')
-                    } else {
-                      GoRouter.of(context).go('/table_manager')
-                    }
-                  };
-
-                  break;
-                case 4:
-                  
-                  if (globals.userType == 'manager') {
-                    GoRouter.of(context).go('/more');
-                    break;
-                  } else if (globals.userType == 'employee') {
-                    GoRouter.of(context).go('/profile/edit_datas');
-                    break;
-                  } else {
-                    GoRouter.of(context).go('/profile');
-                    break;
-                  }
-              }
-        
-              setState(
-                () {
-                  globals.globalSelectedIndexBotton = index;
-                },
-              );
+    return FutureBuilder(
+      future: getIdSale(),
+      initialData: globals.idSaleSelected,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
               
-            },
-          ),
-        ),
-      ],
+              globals.globalSelectedIndexBotton == 2 ? 
+                selectNewItem() 
+                : const CartInfo(),
+              
+              Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      globals.primaryBlack,
+                      globals.primary.withOpacity(0.9),
+                    ]
+                  ),
+                ),
+                child: BottomNavigationBar(
+                  type: BottomNavigationBarType.fixed,
+                  unselectedItemColor: Colors.white,
+                  selectedItemColor: Colors.white,
+                  backgroundColor: Colors.transparent,
+                  selectedLabelStyle: const TextStyle(
+                    fontSize: 14,
+                  ),
+
+                  items: <BottomNavigationBarItem>[
+                    const BottomNavigationBarItem(
+                      icon: Icon(Icons.home, color: Colors.white),
+                      label: 'Inicio',
+                    ),
+
+                    const BottomNavigationBarItem(
+                      icon: Icon(Icons.shopping_cart_outlined, color: Colors.white),
+                      label: 'Pedidos',
+                    ),
+
+                    globals.userType != 'manager' ?
+                      BottomNavigationBarItem(
+                        icon: SvgPicture.asset(iconMenu, height: 25, fit: BoxFit.fill,),
+                        label: 'Cardápio',
+                      ) : BottomNavigationBarItem(
+                        icon: SvgPicture.asset(iconMenu, height: 25, fit: BoxFit.fill,),
+                        label: 'Produtos',
+                      ),
+
+                    globals.numberTable != null && globals.userType != 'manager' ?
+                      const BottomNavigationBarItem(
+                        icon: Icon(Icons.room_service_outlined, color: Colors.white),
+                        label: 'Sua mesa',
+                      ) :
+                      const BottomNavigationBarItem(
+                        icon: Icon(Icons.table_restaurant, color: Colors.white),
+                        label: 'Mesa',
+                      ),
+            
+                    globals.userType != 'manager' ?
+                      const BottomNavigationBarItem(
+                        icon: Icon(Icons.perm_identity, color: Colors.white),
+                        label: 'Perfil',
+                      ) : const BottomNavigationBarItem(
+                        icon: Icon(Icons.more_vert_rounded, color: Colors.white),
+                        label: 'Mais',
+                      )
+                  ],
+              
+                  currentIndex: globals.globalSelectedIndexBotton,
+                  onTap: (int index) {
+                    switch (index) {
+                      case 0:
+                        if (globals.userType == 'manager') {
+                          GoRouter.of(context).go('/home_manager');
+                          break;
+                        } else if (globals.userType == 'employee') {
+                          GoRouter.of(context).go('/home_employee');
+                          break;
+                        } else {
+                          GoRouter.of(context).go('/home');
+                          break;
+                        }
+                      case 1:
+                        // Navigator.pushNamed(context, 'order');
+                        GoRouter.of(context).go('/order');
+                        break;
+                      case 2:
+                        if (globals.userType == 'manager') {
+                          GoRouter.of(context).go('/list_products');
+                          break;
+                        } else {
+                          GoRouter.of(context).go('/products');
+                          break;
+                        }
+
+                      case 3:
+                        globals.userType == 'customer' ?
+                          globals.numberTable != null ? {
+                            GoRouter.of(context).go('/waiter')
+                          } : {
+                          GoRouter.of(context).go('/table')
+                        } : {
+                        
+                          if (globals.numberTable != null) {
+                            GoRouter.of(context).go('/waiter')
+                          } else {
+                            GoRouter.of(context).go('/table_manager')
+                          }
+                        };
+
+                        break;
+                      case 4:
+                        
+                        if (globals.userType == 'manager') {
+                          GoRouter.of(context).go('/more');
+                          break;
+                        } else if (globals.userType == 'employee') {
+                          GoRouter.of(context).go('/profile/edit_datas');
+                          break;
+                        } else {
+                          GoRouter.of(context).go('/profile');
+                          break;
+                        }
+                    }
+              
+                    setState(
+                      () {
+                        globals.globalSelectedIndexBotton = index;
+                      },
+                    );
+                    
+                  },
+                ),
+              ),
+            ],
+          );
+        } else if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+            child: CircularProgressIndicator(
+              color: globals.primary,
+            ),
+          );
+        } else {
+          return const SizedBox();
+        }
+      }
     );
   }
 }

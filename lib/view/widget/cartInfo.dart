@@ -14,13 +14,13 @@ class CartInfo extends StatefulWidget {
 
 class _CartInfoState extends State<CartInfo> {
   num total = 0;
-
   num items = 0;
 
   Future<num> getInfo() async {
     if (globals.idSaleSelected != null && globals.idSaleSelected != 0) {
       return await SalesController.instance.getTotal().then((value) {
         items = value[1];
+        total = value[0];
         return value[0];
       });
     } else {
@@ -28,7 +28,7 @@ class _CartInfoState extends State<CartInfo> {
     }
   }
 
-  Future<Widget> cartInfo(context) async {
+  Widget cartInfo(context) {
     return globals.userType != 'manager' && total != 0 ? Container(
       margin: const EdgeInsets.fromLTRB(0, 0, 10, 10),
       padding: const EdgeInsets.only(top: 10),
@@ -179,32 +179,35 @@ class _CartInfoState extends State<CartInfo> {
   void initState() {
     super.initState();
     getInfo().then((value) {
-      total = value;
-      globals.totalSale = value;
-
-      setState(() {});
+      setState(() {
+        total = value;
+        globals.totalSale = value;
+      });
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     
-
     return FutureBuilder(
-      future: cartInfo(context),
+      initialData: globals.totalSale,
+      future: getInfo(),
       builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          return snapshot.data as Widget;
-        } else if (snapshot.hasError) {
-          return const Text(
-            'Erro ao carregar informações do carrinho',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 16,
+        if (snapshot.connectionState == ConnectionState.done || snapshot.data != 0) {
+          return cartInfo(context);
+        } else if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+            child: CircularProgressIndicator(
+              color: globals.primary,
             ),
           );
         } else {
-          return const CircularProgressIndicator();
+          return const SizedBox();
         }
       },
     );
