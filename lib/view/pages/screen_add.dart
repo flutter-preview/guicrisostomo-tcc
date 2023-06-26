@@ -971,7 +971,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
 
                       Container(
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(10),
                           color: Colors.white,
                           boxShadow: [
                             BoxShadow(color: globals.primary, spreadRadius: 1),
@@ -1032,12 +1032,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                                               ),
                                             )
                                           :
-                                            Text(
-                                              productSelect.variation!.category,
-                                              style: const TextStyle(
-                                                fontSize: 16,
-                                              ),
-                                            ),
+                                            Container(),
                                         ],
                                       ),
                                     ],
