@@ -136,6 +136,49 @@ class ProductsController {
     });
   }
 
+  Future<List<ProductItemList>> getSizesAndDifferencePriceProducts(num price, String nameProduct) async {
+    return await connectSupadatabase().then((conn) async {
+      return await conn.query(
+        '''
+          SELECT DISTINCT ON (v.size) v.size, ROUND(p.price::numeric - @price, 2), p.id
+            FROM products p
+            INNER JOIN variations v ON v.id = p.id_variation
+            WHERE p.fg_ativo = true AND v.fg_ativo = true AND v.is_show_home = true AND p.name = @name_product
+        ''', 
+        substitutionValues: {
+          'business': globals.businessId,
+          'price': price,
+          'name_product': nameProduct
+        }
+      ).then((List value) {
+        conn.close();
+        List<ProductItemList> list = [];
+
+        if (value.isEmpty) {
+          return list;
+        }
+
+        for (final row in value) {
+          list.add(
+            ProductItemList(
+              id: row[2],
+              name: nameProduct,
+              price: num.parse(row[1]),
+              variation: Variation(
+                size: row[0]
+              ),
+              isFavorite: false,
+              description: null,
+              linkImage: null
+            )
+          );
+        }
+        
+        return list;
+      });
+    });
+  }
+
   Future<List<String>> listCategories() async {
     List<String> listCategories = [];
 

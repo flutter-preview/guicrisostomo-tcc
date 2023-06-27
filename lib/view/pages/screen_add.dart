@@ -114,6 +114,8 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
     urlImageProduct = productSelect.linkImage;
     variation = productSelect.variation!;
     idVariation = variation.id ?? 0;
+
+    ProductsController.instance.getSizesAndDifferencePriceProducts(priceProduct, nameProduct);
   }
 
   void resetSubTotal() {
@@ -1024,12 +1026,67 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                                             ),
                                           ),
                                 
+                                          
                                           (productSelect.variation!.size != 'UNICO') ?
-                                            Text(
-                                              '${productSelect.variation!.category} - ${productSelect.variation!.size.toLowerCase()}',
-                                              style: const TextStyle(
-                                                fontSize: 16,
-                                              ),
+                                            FutureBuilder(
+                                              future: ProductsController.instance.getSizesAndDifferencePriceProducts(priceProduct, nameProduct),
+                                              builder: (context, snapshot) {
+                                                if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
+                                                  return DropDown(
+                                                    itemsDropDownButton: [
+                                                      for (final ProductItemList item in snapshot.data as List<ProductItemList>)
+                                                        DropDownList(
+                                                          name: item.variation!.size,
+                                                          icon: snapshot.data![snapshot.data!.indexOf(item)].price == 0 ? Icons.check : null,
+                                                          widget: snapshot.data![snapshot.data!.indexOf(item)].price != 0 ? Text(
+                                                            snapshot.data![snapshot.data!.indexOf(item)].price.toString(),
+                                                            style: TextStyle(
+                                                              color: !snapshot.data![snapshot.data!.indexOf(item)].price.isNegative ? Colors.green : Colors.red,
+                                                              fontSize: 14,
+                                                            ),
+                                                          ) : null,
+                                                        )
+                                                    ],
+
+                                                    variavel: productSelect.variation!.size,
+
+                                                    callback: (value) async {
+                                                      setState(() {
+                                                        productSelect.variation!.size = value!.replaceAll('Tamanho: ', '');
+                                                      });
+
+                                                      ProductsController.instance.getProduct(snapshot.data![snapshot.data!.indexWhere((element) => element.variation!.size == value)].id).then((value) {
+                                                        setState(() {
+                                                          productSelect = value;
+                                                          nameProduct = productSelect.name;
+                                                          priceProduct = productSelect.price;
+                                                          descriptionProduct = productSelect.description;
+                                                          urlImageProduct = productSelect.linkImage;
+                                                          variation = productSelect.variation!;
+                                                          idVariation = variation.id ?? 0;
+                                                        });
+
+                                                        getList().then((value) {
+                                                          if (mounted) {
+                                                            setState(() {
+                                                              saveSubTotal = subTotal;
+                                                            });
+                                                          }
+                                                        });
+                                                      });
+                                                    },
+
+                                                    size: [
+                                                      MediaQuery.of(context).size.width - 125, 
+                                                      50
+                                                    ],
+                                                  );
+                                                } else if (snapshot.connectionState == ConnectionState.waiting) {
+                                                  return const CircularProgressIndicator();
+                                                } else {
+                                                  return const SizedBox();
+                                                }
+                                              },
                                             )
                                           :
                                             Container(),
