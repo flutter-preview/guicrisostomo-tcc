@@ -1148,68 +1148,68 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                           padding: const EdgeInsets.symmetric(horizontal: 20),
                           physics: const NeverScrollableScrollPhysics(),
                           itemBuilder: (context, index) {
-                            return StatefulBuilder(
-                              builder: (context, setState) {
-                                return Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    color: globals.primary,
-                                  ),
+                            return Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: globals.primary,
+                              ),
 
-                                  margin: const EdgeInsets.only(bottom: 10),
+                              margin: const EdgeInsets.only(bottom: 10),
 
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10),
-                        
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      mainAxisSize: MainAxisSize.min,
+                              child: Padding(
+                                padding: const EdgeInsets.all(10),
+                    
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisSize: MainAxisSize.min,
 
+                                  children: [
+                                    Flexible(
+                                      child: Text(
+                                        items[index].name!,
+                                        style: const TextStyle(
+                                          fontSize: 20,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+
+                                    Row(
                                       children: [
-                                        Flexible(
-                                          child: Text(
-                                            items[index].name!,
-                                            style: const TextStyle(
-                                              fontSize: 20,
-                                              color: Colors.white,
-                                            ),
+                                        Text(
+                                          'R\$ ${items[index].price?.toStringAsFixed(2).replaceFirst('.', ',')}',
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20,
                                           ),
                                         ),
+                    
+                                        const SizedBox(width: 10),
+                    
+                                        IconButton(
+                                          onPressed: () async {
+                                            GoRouter.of(context).push('/loading');
 
-                                        Row(
-                                          children: [
-                                            Text(
-                                              'R\$ ${items[index].price?.toStringAsFixed(2).replaceFirst('.', ',')}',
-                                              style: const TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 20,
-                                              ),
-                                            ),
-                        
-                                            const SizedBox(width: 10),
-                        
-                                            IconButton(
-                                              onPressed: () async {
-                                                setState(() {
-                                                  items.removeAt(index);
-                                                });
+                                            await ProductsCartController.instance.deleteItem(items[index].id!, context);
+                                            
+                                            setState(() {
+                                              items.removeAt(index);
+                                              saveSubTotal = 0;
+                                            });
 
-                                                await ProductsCartController.instance.deleteItem(items[index].id!, context);
-                                                await getList();
-                                              },
-                                              icon: const Icon(
-                                                Icons.delete,
-                                                color: Colors.white,
-                                                size: 30,
-                                              ),
-                                            ),
-                                          ],
+                                            GoRouter.of(context).pop();
+                                          },
+                                          icon: const Icon(
+                                            Icons.delete,
+                                            color: Colors.white,
+                                            size: 30,
+                                          ),
                                         ),
                                       ],
                                     ),
-                                  ),
-                                );
-                              }
+                                  ],
+                                ),
+                              ),
                             );
                           },
                         )
