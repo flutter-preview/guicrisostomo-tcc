@@ -554,56 +554,71 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                                     bool isActivated = snapshot.data!.contains(numberTable);
                                     
                                     return InkWell(
-                                      onTap: () {
-                                        setState(() {
-                                          globals.numberTable = numberTable;
-                                        });
-                                        (isActivated) ?
+                                      onTap: () async {
+                                        
+                                        if (isActivated) {
+                                          setState(() {
+                                            globals.numberTable = numberTable;
+                                          });
+
                                           GoRouter.of(context).push(
                                             '/table/info',
                                             extra: numberTable,
-                                          )
-                                        : showDialog(
+                                          );
+
+                                          SalesController.instance.idSale().then((idSale) async {
+                                            await SalesController.instance.verifyRelationUserOrder(idSale);
+                                          });
+
+                                        } else {
+                                          showDialog(
                                             context: context,
                                             builder: (context) { 
                                               return AlertDialog(
-                                              title: Text('Mesa $numberTable'),
-                                              content: const Text('Deseja ativar a mesa?'),
-                                              actions: [
-                                                TextButton(
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-
-                                                    globals.idSaleSelected = null;
-                                                     
-                                                    // Navigator.pushNamed(context, 'home_employee');
-                                                  },
-                                                  child: const Text('Não'),
-                                                ),
-                                                TextButton(
-                                                  onPressed: () {
-                                                    // await TablesController.instance.activateTable(context, numberTable);
-                                                    setState(() {
-                                                      globals.numberTable = numberTable;
-                                                    });
-
-                                                    globals.idSaleSelected = null;
-
-                                                    SalesController.instance.idSale().whenComplete(() {
+                                                title: Text('Mesa $numberTable'),
+                                                content: const Text('Deseja ativar a mesa?'),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () {
                                                       Navigator.pop(context);
-                                                      GoRouter.of(context).go(
-                                                        '/products',
+                                                      
+                                                      // Navigator.pushNamed(context, 'home_employee');
+                                                    },
+                                                    child: const Text('Não'),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () async {
+                                                      setState(() {
+                                                        globals.numberTable = numberTable;
+                                                        globals.idSaleSelected = null;
+                                                      });
+                                                      // await TablesController.instance.activateTable(context, numberTable);
+                                                      
+                                                      GoRouter.of(context).push(
+                                                        '/loading',
                                                       );
-                                                    });
-                                                    
-                                                    
-                                                  },
-                                                  child: const Text('Sim'),
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                        );
+
+                                                      await SalesController.instance.idSale().then((idSale) async {
+                                                        // print(idSale);
+                                                        await SalesController.instance.verifyRelationUserOrder(idSale).whenComplete(() {
+                                                          
+                                                          GoRouter.of(context).go(
+                                                            '/products',
+                                                          );
+
+                                                          // Navigator.pop(context);
+                                                        });
+                                                      });
+                                                      
+                                                      
+                                                    },
+                                                    child: const Text('Sim'),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        }
                                       },
                                       child: Card(
                                         color: isActivated ? globals.primary : globals.primaryBlack,
@@ -640,11 +655,15 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                                         setState(() {
                                           globals.numberTable = numberTable;
                                         });
-                                        
+
                                         GoRouter.of(context).push(
                                           '/table/info',
                                           extra: numberTable,
                                         );
+
+                                        SalesController.instance.idSale().then((idSale) async {
+                                          await SalesController.instance.verifyRelationUserOrder(idSale);
+                                        });
                                       },
                                       child: Card(
                                         color: globals.primary,
@@ -687,9 +706,6 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                       
                                         return InkWell(
                                           onTap: () {
-                                            setState(() {
-                                              globals.numberTable = numberTable;
-                                            });
                                             
                                             // GoRouter.of(context).push(
                                             //   '/table/info',
@@ -710,18 +726,29 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                                                     child: const Text('Não'),
                                                   ),
                                                   TextButton(
-                                                    onPressed: () {
+                                                    onPressed: () async {
                                                       // await TablesController.instance.activateTable(context, numberTable);
                                                       
                                                       setState(() {
                                                         globals.numberTable = numberTable;
+                                                        globals.idSaleSelected = null;
                                                       });
+                                                      // await TablesController.instance.activateTable(context, numberTable);
+                                                      
+                                                      GoRouter.of(context).push(
+                                                        '/loading',
+                                                      );
 
-                                                      SalesController.instance.idSale().whenComplete(() {
-                                                        Navigator.pop(context);
-                                                        GoRouter.of(context).go(
-                                                          '/products',
-                                                        );
+                                                      await SalesController.instance.idSale().then((idSale) async {
+                                                        // print(idSale);
+                                                        await SalesController.instance.verifyRelationUserOrder(idSale).whenComplete(() {
+                                                          
+                                                          GoRouter.of(context).go(
+                                                            '/products',
+                                                          );
+
+                                                          // Navigator.pop(context);
+                                                        });
                                                       });
                                                     },
                                                     child: const Text('Sim'),
