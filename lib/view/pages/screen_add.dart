@@ -115,7 +115,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
     variation = productSelect.variation!;
     idVariation = variation.id ?? 0;
 
-    ProductsController.instance.getSizesAndDifferencePriceProducts(priceProduct, nameProduct);
+    ProductsController.instance.getSizesAndDifferencePriceProducts(priceProduct, nameProduct, idVariation);
   }
 
   void resetSubTotal() {
@@ -685,7 +685,6 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
     await listItemsMain();
 
     await listItemsVariations();
-
   }
 
 
@@ -1029,7 +1028,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                                           
                                           (productSelect.variation!.size != 'UNICO') ?
                                             FutureBuilder(
-                                              future: ProductsController.instance.getSizesAndDifferencePriceProducts(priceProduct, nameProduct),
+                                              future: ProductsController.instance.getSizesAndDifferencePriceProducts(priceProduct, nameProduct, idVariation),
                                               builder: (context, snapshot) {
                                                 if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
                                                   return DropDown(
@@ -1064,14 +1063,7 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
                                                           urlImageProduct = productSelect.linkImage;
                                                           variation = productSelect.variation!;
                                                           idVariation = variation.id ?? 0;
-                                                        });
-
-                                                        getList().then((value) {
-                                                          if (mounted) {
-                                                            setState(() {
-                                                              saveSubTotal = subTotal;
-                                                            });
-                                                          }
+                                                          saveSubTotal = 0;
                                                         });
                                                       });
                                                     },
@@ -1144,85 +1136,86 @@ class _ScreenAddItemState extends State<ScreenAddItem> {
 
                 const SizedBox(height: 10),
 
-                SectionVisible(
-                  nameSection: 'Itens do produto', 
-                  isShowPart: true,
-                  child: Column(
-                    children: [
-                      ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: items.length,
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          return StatefulBuilder(
-                            builder: (context, setState) {
-                              return Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  color: globals.primary,
-                                ),
+                if (items.isNotEmpty)
+                  SectionVisible(
+                    nameSection: 'Itens do produto', 
+                    isShowPart: true,
+                    child: Column(
+                      children: [
+                        ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: items.length,
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return StatefulBuilder(
+                              builder: (context, setState) {
+                                return Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: globals.primary,
+                                  ),
 
-                                margin: const EdgeInsets.only(bottom: 10),
+                                  margin: const EdgeInsets.only(bottom: 10),
 
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10),
-                      
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    mainAxisSize: MainAxisSize.min,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10),
+                        
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisSize: MainAxisSize.min,
 
-                                    children: [
-                                      Flexible(
-                                        child: Text(
-                                          items[index].name!,
-                                          style: const TextStyle(
-                                            fontSize: 20,
-                                            color: Colors.white,
+                                      children: [
+                                        Flexible(
+                                          child: Text(
+                                            items[index].name!,
+                                            style: const TextStyle(
+                                              fontSize: 20,
+                                              color: Colors.white,
+                                            ),
                                           ),
                                         ),
-                                      ),
 
-                                      Row(
-                                        children: [
-                                          Text(
-                                            'R\$ ${items[index].price?.toStringAsFixed(2).replaceFirst('.', ',')}',
-                                            style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 20,
+                                        Row(
+                                          children: [
+                                            Text(
+                                              'R\$ ${items[index].price?.toStringAsFixed(2).replaceFirst('.', ',')}',
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 20,
+                                              ),
                                             ),
-                                          ),
-                      
-                                          const SizedBox(width: 10),
-                      
-                                          IconButton(
-                                            onPressed: () async {
-                                              setState(() {
-                                                items.removeAt(index);
-                                              });
+                        
+                                            const SizedBox(width: 10),
+                        
+                                            IconButton(
+                                              onPressed: () async {
+                                                setState(() {
+                                                  items.removeAt(index);
+                                                });
 
-                                              await ProductsCartController.instance.deleteItem(items[index].id!, context);
-                                              await getList();
-                                            },
-                                            icon: const Icon(
-                                              Icons.delete,
-                                              color: Colors.white,
-                                              size: 30,
+                                                await ProductsCartController.instance.deleteItem(items[index].id!, context);
+                                                await getList();
+                                              },
+                                              icon: const Icon(
+                                                Icons.delete,
+                                                color: Colors.white,
+                                                size: 30,
+                                              ),
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              );
-                            }
-                          );
-                        },
-                      )
-                    ],
+                                );
+                              }
+                            );
+                          },
+                        )
+                      ],
+                    ),
                   ),
-                ),
 
                 const SizedBox(height: 20),
           
