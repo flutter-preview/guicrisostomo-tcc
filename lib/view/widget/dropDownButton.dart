@@ -5,16 +5,19 @@ import 'package:tcc/globals.dart' as globals;
 import 'package:tcc/model/standardListDropDown.dart';
 
 class DropDown extends StatefulWidget {
-  final String text;
+  final String? text;
   final List<DropDownList> itemsDropDownButton;
   final void Function(String?)? callback;
   String? variavel;
+  final List<double>? size;
+
   DropDown({
     super.key,
-    required this.text,
+    this.text,
     required this.itemsDropDownButton,
     required this.variavel,
     required this.callback,
+    this.size,
   });
 
   @override
@@ -25,14 +28,15 @@ class _DropDownState extends State<DropDown> {
 
   Widget dropDownGeneral() {
     return SizedBox(
-      width: MediaQuery.of(context).size.width * 0.8,
+      height: widget.size?[1],
+      width: widget.size != null ? widget.size![0] : MediaQuery.of(context).size.width * 0.8,
       child: DropdownButtonFormField(
         dropdownColor: Colors.white,
         iconEnabledColor: globals.primary,
         borderRadius: BorderRadius.circular(10),
-        decoration: InputDecoration(
+        decoration: widget.text != null ? InputDecoration(
           label: Text(
-            widget.text,
+            widget.text!,
             style: const TextStyle(
               color: Colors.black,
               fontSize: 20,
@@ -40,11 +44,11 @@ class _DropDownState extends State<DropDown> {
             ),
           ),
       
-          hintText: 'Selecione o(a) ${widget.text.toLowerCase()}',
+          hintText: 'Selecione o(a) ${widget.text!.toLowerCase()}',
           filled: true,
           fillColor: Colors.transparent,
           errorStyle: TextStyle(color: globals.primaryBlack),
-        ),
+        ) : null,
         isExpanded: true,
         value: widget.variavel,
         items: widget.itemsDropDownButton.map((map) {
@@ -64,10 +68,12 @@ class _DropDownState extends State<DropDown> {
                     ),
                   ),
 
-                  Icon(
-                    map.icon,
-                    color: globals.primaryBlack,
-                  ),
+                  (map.icon != null) ?
+                    Icon(
+                      map.icon,
+                      color: globals.primaryBlack,
+                    )
+                  : map.widget!,
                 ],
               ),
             ),
