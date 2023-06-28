@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
 import 'dart:async';
-import 'dart:math';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tcc/controller/postgres/Lists/businessInfo.dart';
@@ -561,8 +560,9 @@ class SalesController {
                   ) AS max
               ) AS qtd,
               (
-                SELECT oea.id_order = o.id
+                SELECT true
                   FROM order_employee oea
+                  where oea.uid = uo.uid and oea.id_order = o.id
               ) as verify_employee
               FROM orders o
               INNER JOIN business b ON b.cnpj = o.cnpj
@@ -592,8 +592,9 @@ class SalesController {
                   ) AS max
               ) AS qtd,
               (
-                SELECT oea.id_order = o.id
+                SELECT true
                   FROM order_employee oea
+                  where oea.uid = uo.uid and oea.id_order = o.id
               ) as verify_employee
               FROM orders o
               INNER JOIN business b ON b.cnpj = o.cnpj
@@ -620,7 +621,7 @@ class SalesController {
         }
 
         for (var element in value) {
-          if (element[13] == isEmployee) {
+          if (element[13] ?? false == isEmployee) {
             sales.add(
               Sales(
                 id: element[0],
