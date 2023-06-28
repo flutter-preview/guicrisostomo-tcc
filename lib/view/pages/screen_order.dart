@@ -131,11 +131,6 @@ class _ScreenOrderState extends State<ScreenOrder> {
                         onTap: () {
                           setState(() {
                             buttonStatusSelected = '';
-                            getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected).then((value) {
-                              setState(() {
-                                listSales = value;
-                              });
-                            });
                           });
                         },
                         child: Container(
@@ -164,11 +159,6 @@ class _ScreenOrderState extends State<ScreenOrder> {
                         onTap: () {
                           setState(() {
                             buttonStatusSelected = 'Andamento';
-                            getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected).then((value) {
-                              setState(() {
-                                listSales = value;
-                              });
-                            });
                           });
                         },
                         child: Container(
@@ -197,11 +187,6 @@ class _ScreenOrderState extends State<ScreenOrder> {
                         onTap: () {
                           setState(() {
                             buttonStatusSelected = 'Ativo';
-                            getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected).then((value) {
-                              setState(() {
-                                listSales = value;
-                              });
-                            });
                           });
                         },
                         child: Container(
@@ -230,11 +215,6 @@ class _ScreenOrderState extends State<ScreenOrder> {
                         onTap: () {
                           setState(() {
                             buttonStatusSelected = 'Finalizado';
-                            getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected).then((value) {
-                              setState(() {
-                                listSales = value;
-                              });
-                            });
                           });
                         },
                         child: Container(
@@ -263,11 +243,6 @@ class _ScreenOrderState extends State<ScreenOrder> {
                         onTap: () {
                           setState(() {
                             buttonStatusSelected = 'Cancelado';
-                            getSales(txtCode.text, txtDropDown, txtDateFilter.text, buttonStatusSelected).then((value) {
-                              setState(() {
-                                listSales = value;
-                              });
-                            });
                           });
                         },
                         child: Container(
