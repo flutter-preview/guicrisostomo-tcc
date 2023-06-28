@@ -179,10 +179,12 @@ class _CartInfoState extends State<CartInfo> {
   void initState() {
     super.initState();
     getInfo().then((value) {
-      setState(() {
-        total = value;
-        globals.totalSale = value;
-      });
+      if (mounted) {
+        setState(() {
+          total = value;
+          globals.totalSale = value;
+        });
+      }
     });
   }
 
