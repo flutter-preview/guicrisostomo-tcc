@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tcc/controller/auth/auth.dart';
 import 'package:tcc/controller/postgres/Lists/productsCart.dart';
 import 'package:tcc/controller/postgres/Lists/sales.dart';
 import 'package:tcc/controller/postgres/Lists/table.dart';
@@ -36,11 +37,12 @@ class _ScreenCallWaiterState extends State<ScreenCallWaiter> {
   Future<void> getInfoTable() async {
     await SalesController.instance.listSalesOnDemand().then((value) {
       if (value == null) {
-        SalesController.instance.add().then((value) => getInfoTable());
+        // SalesController.instance.add().then((value) => getInfoTable());
       } else {
         setState(() {
           idSale = value.id;
           listSale = value;
+          globals.idSaleSelected = value.id;
         });
       }
     }).then((value) {
@@ -61,15 +63,16 @@ class _ScreenCallWaiterState extends State<ScreenCallWaiter> {
   @override
   void initState() {
     super.initState();
-    getInfoTable().then((value) async {
-      await getTotalTable().then((value) {
-        setState(() {
-          listSale!.total = value;
+
+    if (globals.idSaleSelected != null) {
+      getInfoTable().then((value) async {
+        await getTotalTable().then((value) {
+          setState(() {
+            listSale!.total = value;
+          });
         });
       });
-    }).whenComplete(() {
-      setState(() {});
-    });
+    }
     
   }
   
@@ -85,24 +88,32 @@ class _ScreenCallWaiterState extends State<ScreenCallWaiter> {
         ),
       ),
 
-      body: idSale != 0 ? SingleChildScrollView(
+      body: globals.idSaleSelected != null ? SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
             imgCenter('lib/images/imgTable.svg'),
 
-            const SizedBox(height: 30),
+            if (globals.userType == 'customer')
+              Column(
+                children: [
+                  const SizedBox(height: 30),
 
-            button('Chamar garçom', 300, 50, Icons.person, () {
-              TablesController.instance.callWaiter(context, idSale);
-            }),
+                  button('Chamar garçom', 300, 50, Icons.person, () {
+                    TablesController.instance.callWaiter(context, idSale);
+                  }),
+                ],
+              ),
 
             const SizedBox(height: 30),
 
             button('Desvincular da mesa', 300, 50, Icons.close, () async {
+              GoRouter.of(context).push('/loading');
+              
               await SalesController.instance.removeRelationUserOrder(idSale).then((value) async {
                 setState(() {
                   globals.numberTable = null;
+                  globals.idSaleSelected = null;
                 });
                 await SalesController.instance.idSale().then((value) {
                   setState(() {
@@ -112,7 +123,8 @@ class _ScreenCallWaiterState extends State<ScreenCallWaiter> {
 
                 
                 success(context, 'Desvinculado com sucesso');
-                GoRouter.of(context).go('/table');
+
+                await LoginController.instance.redirectUser(context);
               });
             }),
 

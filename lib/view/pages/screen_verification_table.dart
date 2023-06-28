@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:tcc/controller/postgres/Lists/productsCart.dart';
 import 'package:tcc/controller/postgres/Lists/sales.dart';
 import 'package:tcc/validators.dart';
@@ -91,8 +92,8 @@ class _ScreenVerificationTableState extends State<ScreenVerificationTable> {
     await TablesController.instance.verifyCode(code).then((tableNumber) async {
       if (tableNumber != 0) {
 
-        
-        GoRouter.of(context).go('/waiter');
+        globals.numberTable = tableNumber;
+        globals.idSaleSelected = null;
 
         await SalesController.instance.idSale().then((idOrder) async {
           await ProductsCartController.instance.listItemCurrent(idOrder).then((value) async {
@@ -123,7 +124,8 @@ class _ScreenVerificationTableState extends State<ScreenVerificationTable> {
                         });
 
                         await ProductsCartController.instance.updateAllItemsIdOrder(idOrder, newIdOrder);
-                        
+
+                        // GoRouter.of(context).go('/waiter');
                       },
                       child: const Text('Sim'),
                     ),
@@ -132,8 +134,7 @@ class _ScreenVerificationTableState extends State<ScreenVerificationTable> {
               );
             }
           }).then((value) async {
-            globals.numberTable = tableNumber;
-            await SalesController.instance.idSale();
+            GoRouter.of(context).go('/waiter');
           });
         });
 
@@ -142,6 +143,12 @@ class _ScreenVerificationTableState extends State<ScreenVerificationTable> {
       }
     });
   }
+
+  MaskTextInputFormatter codeTableFormat = MaskTextInputFormatter(
+    mask: '########-####-####-####-############', 
+    filter: { "#": RegExp(r'[a-zA-Z0-9_]') },
+    type: MaskAutoCompletionType.lazy,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -156,7 +163,7 @@ class _ScreenVerificationTableState extends State<ScreenVerificationTable> {
         ),
       ),
 
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
@@ -207,6 +214,18 @@ class _ScreenVerificationTableState extends State<ScreenVerificationTable> {
               ico: Icons.qr_code_2,
               validator: (value) {
                 return validatorString(value!);
+              },
+              inputFormatter: [
+                codeTableFormat,
+              ],
+
+              onChanged: (p0) {
+                setState(() {
+                  txtCodeTable.value = TextEditingValue(
+                    text: txtCodeTable.text.toLowerCase(),
+                    selection: txtCodeTable.selection,
+                  );
+                });
               },
             ),
 
