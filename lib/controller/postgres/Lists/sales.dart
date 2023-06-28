@@ -364,7 +364,6 @@ class SalesController {
                 INNER JOIN user_order uoa ON uoa.uid = ua.uid
                 WHERE uoa.id_order = o.id and uoa.fg_ativo = true
                 ORDER BY uoa.id
-                LIMIT 1
             )
               FROM orders o
               INNER JOIN user_order uo ON uo.id_order = o.id
@@ -394,6 +393,9 @@ class SalesController {
               
               return sale;
             }
+          }).catchError((e) {
+            print(e);
+            return null;
           });
         } else {
           return await conn.query('''
@@ -412,7 +414,6 @@ class SalesController {
                 INNER JOIN user_order uoa ON uoa.uid = ua.uid
                 WHERE uoa.id_order = o.id and uoa.fg_ativo = true
                 ORDER BY uoa.id
-                LIMIT 1
             )
               FROM orders o
               INNER JOIN user_order uo ON uo.id_order = o.id
@@ -454,11 +455,10 @@ class SalesController {
               INNER JOIN user_order uoa ON uoa.uid = ua.uid
               WHERE uoa.id_order = o.id and uoa.fg_ativo = true
               ORDER BY uoa.id
-              LIMIT 1
           )
           FROM orders o
           INNER JOIN user_order uo ON uo.id_order = o.id
-          WHERE uo.uid = @uid and o.status = @status and coalesce(o.table_number, 0) = @table and uo.fg_ativo = true and o.id = @idSale
+          WHERE uo.uid = @uid and o.status = @status and coalesce(o.table_number, 0) = @table and uo.fg_ativo = true
         ''', substitutionValues: {
         'uid': FirebaseAuth.instance.currentUser!.uid,
         'status': 'Andamento',
