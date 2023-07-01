@@ -588,10 +588,8 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
                                                   ),
                                                   TextButton(
                                                     onPressed: () async {
-                                                      setState(() {
-                                                        globals.numberTable = numberTable;
-                                                        globals.idSaleSelected = null;
-                                                      });
+                                                      globals.numberTable = numberTable;
+                                                      globals.idSaleSelected = null;
                                                       // await TablesController.instance.activateTable(context, numberTable);
                                                       
                                                       GoRouter.of(context).push(
@@ -600,14 +598,11 @@ class _ScreenHomeEmployeeState extends State<ScreenHomeEmployee> {
 
                                                       await SalesController.instance.idSale().then((idSale) async {
                                                         // print(idSale);
-                                                        await SalesController.instance.verifyRelationUserOrder(idSale).whenComplete(() {
-                                                          
-                                                          GoRouter.of(context).go(
-                                                            '/products',
-                                                          );
-
-                                                          // Navigator.pop(context);
-                                                        });
+                                                        globals.idSaleSelected = idSale;
+                                                        
+                                                        GoRouter.of(context).go(
+                                                          '/products',
+                                                        );
                                                       });
                                                       
                                                       
