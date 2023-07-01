@@ -296,7 +296,7 @@ class LoginController {
   }
 
   Future<void> logout(context) async {
-    GoRouter.of(context).push('/loading');
+    GoRouter.of(context).go('/loading');
 
     final GoogleSignIn googleSignIn = GoogleSignIn();
 
@@ -310,12 +310,6 @@ class LoginController {
     }
     
     await FirebaseAuth.instance.signOut();
-
-    try {
-      GoRouter.of(context).pop();
-    } catch (e) {
-      print(e);
-    }
 
     clearGlobalVariables();
     
