@@ -271,7 +271,7 @@ class ProductsCartController {
           return list;
         });
       } else {
-        return await conn.query("SELECT p.price, p.id_variation, p.name, p.id, i.qtd, i.id FROM items i INNER JOIN products p ON p.id = i.id_product WHERE i.id_order = @idOrder AND i.status = 'Andamento' AND p.id_variation = @idVariation ORDER BY i.id", substitutionValues: {
+        return await conn.query("SELECT p.price, p.id_variation, p.name, p.id, i.qtd, i.id FROM items i INNER JOIN products p ON p.id = i.id_product WHERE i.id_order = @idOrder AND i.status = 'Andamento' AND i.id_variation = @idVariation ORDER BY i.id", substitutionValues: {
           'idOrder': idSale,
           'idVariation': idVariation
         }).then((List<List<dynamic>> value) {
