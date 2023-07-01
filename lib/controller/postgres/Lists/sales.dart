@@ -2,6 +2,7 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:postgres/postgres.dart';
 import 'package:tcc/controller/postgres/Lists/businessInfo.dart';
 import 'package:tcc/controller/postgres/utils.dart';
 import 'package:tcc/globals.dart' as globals;
@@ -18,104 +19,97 @@ class SalesController {
     
   );
 
-  
+  static PostgreSQLConnection? conn;
+
+  static PostgreSQLConnection? get getConn => conn;
+  static set setConn(PostgreSQLConnection? conn) => SalesController.conn = conn;
+
+  static closeConn() {
+    if (conn != null) {
+      conn!.close();
+      conn = null;
+    }
+  }
+
   Stream<List<int>> get tablesActivated => _tablesActivated.stream;
   StreamSubscription? _subscriptionTablesActivated;
   
-  static Future<int> add() async {
+  static Future<int> add(PostgreSQLConnection conn) async {
 
-    return await connectSupadatabase().then((conn) async {
-      DateTime now = DateTime.now();
+    DateTime now = DateTime.now();
       
-      await conn.query('insert into orders (status, datetime, cnpj, table_number, type) values (@status, @datetime, @cnpj, @tableNumber, @type)', substitutionValues: {
-        'status': 'Aguardando usuário',
+    await conn.query('insert into orders (status, datetime, cnpj, table_number, type) values (@status, @datetime, @cnpj, @tableNumber, @type)', substitutionValues: {
+      'status': 'Aguardando usuário',
+      'datetime': now,
+      'cnpj': globals.businessId,
+      'tableNumber': globals.numberTable,
+      'type': globals.numberTable != null ? 'Mesa' : null,
+    });
+
+    return await conn.query(
+      '''
+        select id from orders where datetime = @datetime and cnpj = @cnpj and status = @status and coalesce(type, 'Vazio') = @type
+      ''', substitutionValues: {
         'datetime': now,
         'cnpj': globals.businessId,
-        'tableNumber': globals.numberTable,
-        'type': globals.numberTable != null ? 'Mesa' : null,
-      });
+        'status': 'Aguardando usuário',
+        'type': globals.numberTable != null ? 'Mesa' : 'Vazio',
+      },
+    ).then((List value) {
+      List list = value;
 
-      return await conn.query(
-        '''
-          select id from orders where datetime = @datetime and cnpj = @cnpj and status = @status and coalesce(type, 'Vazio') = @type
-        ''', substitutionValues: {
-          'datetime': now,
-          'cnpj': globals.businessId,
-          'status': 'Aguardando usuário',
-          'type': globals.numberTable != null ? 'Mesa' : 'Vazio',
-        },
-      ).then((List value) {
-        conn.close();
-        List list = value;
-
-        if (list.isNotEmpty) {
-          return list[0][0];
-        }
-      }).catchError((e) {
-      });
+      if (list.isNotEmpty) {
+        return list[0][0];
+      }
+    }).catchError((e) {
     });
   }
 
   Future<void> addOrderEmployee(int idOrder) async {
-    await connectSupadatabase().then((conn) async {
-      await conn.query('insert into order_employee (uid, id_order) values (@uid, @idOrder)', substitutionValues: {
-        'uid': FirebaseAuth.instance.currentUser!.uid,
-        'idOrder': idOrder,
-      }).catchError((e) {
-      });
-
-      conn.close();
+    await getConn!.query('insert into order_employee (uid, id_order) values (@uid, @idOrder)', substitutionValues: {
+      'uid': FirebaseAuth.instance.currentUser!.uid,
+      'idOrder': idOrder,
+    }).catchError((e) {
     });
   }
 
   Future<int?> getOrderEmployee() async {
-    return await connectSupadatabase().then((conn) async {
-      return await conn.query('''
-        select oe.id_order 
-          from order_employee oe
-          inner join orders o on o.id = oe.id_order
-          where oe.uid = @uid and o.status = @status and o.cnpj = @cnpj and coalesce(o.table_number, 0) = @table
-      ''', substitutionValues: {
-        'uid': FirebaseAuth.instance.currentUser!.uid,
-        'status': 'Andamento',
-        'cnpj': globals.businessId,
-        'table': globals.numberTable ?? 0,
-      }).then((value) {
-        conn.close();
-        List list = value;
+    return await getConn!.query('''
+      select oe.id_order 
+        from order_employee oe
+        inner join orders o on o.id = oe.id_order
+        where oe.uid = @uid and o.status = @status and o.cnpj = @cnpj and coalesce(o.table_number, 0) = @table
+    ''', substitutionValues: {
+      'uid': FirebaseAuth.instance.currentUser!.uid,
+      'status': 'Andamento',
+      'cnpj': globals.businessId,
+      'table': globals.numberTable ?? 0,
+    }).then((value) {
+      List list = value;
 
-        if (list.isEmpty) {
-          return null;
-        }
+      if (list.isEmpty) {
+        return null;
+      }
 
-        return list.first[0];
+      return list.first[0];
 
-      }).catchError((e) {
-      });
+    }).catchError((e) {
     });
   }
 
   Future<void> updateStatus(String status, int id) async {
-    await connectSupadatabase().then((conn) async {
-      await conn.query('update orders set status = @status where id = @id', substitutionValues: {
-        'status': status,
-        'id': id,
-      }).catchError((e) {
-      });
-
-      conn.close();
+    await getConn!.query('update orders set status = @status where id = @id', substitutionValues: {
+      'status': status,
+      'id': id,
+    }).catchError((e) {
     });
   }
 
   Future<void> addRelationUserOrder(int idOrder) async {
-    await connectSupadatabase().then((conn) async {
-      await conn.query('insert into user_order (uid, id_order) values (@id_user, @id_order)', substitutionValues: {
-        'id_user': FirebaseAuth.instance.currentUser!.uid,
-        'id_order': idOrder,
-      }).catchError((e) {
-      });
-
-      conn.close();
+    await getConn!.query('insert into user_order (uid, id_order) values (@id_user, @id_order)', substitutionValues: {
+      'id_user': FirebaseAuth.instance.currentUser!.uid,
+      'id_order': idOrder,
+    }).catchError((e) {
     });
   }
 
@@ -165,24 +159,30 @@ class SalesController {
   Future<int> idSale() async {
     if (globals.idSaleSelected == null) {
       return await connectSupadatabase().then((conn) async {
-      
+        setConn = conn;
+        
         return (globals.userType == 'employee' || globals.userType == 'manager') ?
           await getOrderEmployee().then((value) async {
             if (value == null) {
-              return await add().then((idSaleVar) async {
+              return await add(getConn!).then((idSaleVar) async {
                 await addOrderEmployee(idSaleVar);
                 await addRelationUserOrder(idSaleVar);
 
                 await updateStatus('Andamento', idSaleVar);
 
+                closeConn();
+
                 return idSaleVar;
               });
             } else {
               globals.idSaleSelected = value;
+
+              closeConn();
+
               return value;
             }
           })
-        : await conn.query('''
+        : await getConn!.query('''
           SELECT orders.id 
             FROM orders 
             INNER JOIN user_order ON user_order.id_order = orders.id
@@ -193,17 +193,20 @@ class SalesController {
           'status': 'Andamento',
           'table': globals.numberTable ?? 0,
         }).then((List? value) async {
-          conn.close();
 
           List list = value ?? [];
 
           if (list.isEmpty) {
-            await add().then((value) async {
-              await addRelationUserOrder(value);
-              await updateStatus('Andamento', value);
+            return add(getConn!).then((idSale) async {
+              await addRelationUserOrder(idSale);
+              await updateStatus('Andamento', idSale);
+
+              closeConn();
+
+              return idSale;
             });
-            return await idSale();
           } else {
+            closeConn();
             globals.idSaleSelected = list.first[0];
             return list.first[0];
           }
