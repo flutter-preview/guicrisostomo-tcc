@@ -136,11 +136,21 @@ class ProductsController {
     });
   }
 
-  Future<List<ProductItemList>> getSizesAndDifferencePriceProducts(num price, String nameProduct) async {
+  Future<List<ProductItemList>> getSizesAndDifferencePriceProducts(num price, String nameProduct, int idVariation) async {
     return await connectSupadatabase().then((conn) async {
       return await conn.query(
         '''
-          SELECT DISTINCT ON (v.size) v.size, ROUND(p.price::numeric - @price, 2), p.id
+          SELECT DISTINCT ON (v.size) v.size, ROUND(p.price::numeric - GREATEST(@price::numeric, (
+              SELECT coalesce(SUM(MAX.MAX), 0) FROM (
+                  SELECT MAX(p.price * i.qtd) from items i 
+                    INNER JOIN products p ON p.id = i.id_product 
+                    INNER JOIN orders o ON o.id = i.id_order 
+                    INNER JOIN user_order u ON u.id_order = o.id
+                    INNER JOIN variations v ON v.id = p.id_variation
+                    where u.uid = @uid and o.status = 'Andamento' and i.status = 'Ativo' and o.id = @idOrder and u.fg_ativo = true AND v.id = @idVariation
+                    GROUP BY (i.relation_id, i.id_variation)
+                  ) AS max
+            )::numeric), 2), p.id
             FROM products p
             INNER JOIN variations v ON v.id = p.id_variation
             WHERE p.fg_ativo = true AND v.fg_ativo = true AND v.is_show_home = true AND p.name = @name_product
@@ -148,7 +158,11 @@ class ProductsController {
         substitutionValues: {
           'business': globals.businessId,
           'price': price,
-          'name_product': nameProduct
+          'name_product': nameProduct,
+          'uid': FirebaseAuth.instance.currentUser!.uid,
+          'table': globals.numberTable ?? 0,
+          'idVariation': idVariation,
+          'idOrder': globals.idSaleSelected ?? 0
         }
       ).then((List value) {
         conn.close();
