@@ -27,26 +27,28 @@ class ProductsController {
     });
   }
 
-  Future<int> getLimitItemVariation(int idVariation) async {
-    return await connectSupadatabase().then((conn) async {
-      return await conn.query('SELECT limit_items FROM variations WHERE id = @id AND business = @business AND fg_ativo = true', substitutionValues: {
-        'id': idVariation,
-        'business': globals.businessId
-      }).then((List value) {
-        conn.close();
-        return value[0][0];
-      });
+  Future<int> getLimitItemVariation(int idVariation, [PostgreSQLConnection? connParar, bool closeConnection = true]) async {
+    connParar ??= await connectSupadatabase();
+    return await connParar.query('SELECT limit_items FROM variations WHERE id = @id AND business = @business AND fg_ativo = true', substitutionValues: {
+      'id': idVariation,
+      'business': globals.businessId
+    }).then((List value) {
+      if (closeConnection) {
+        connParar!.close();
+      }
+      return value[0][0];
     });
   }
 
-  Future<int> getLimitItemProduct(int idProduct) async {
-    return await connectSupadatabase().then((conn) async {
-      return await conn.query('SELECT stock FROM products WHERE id = @id AND fg_ativo = true', substitutionValues: {
-        'id': idProduct,
-      }).then((List value) {
-        conn.close();
-        return value[0][0];
-      });
+  Future<int> getLimitItemProduct(int idProduct, [PostgreSQLConnection? connParar, bool hasCloseConnection = true]) async {
+    connParar ??= await connectSupadatabase();
+    return await connParar.query('SELECT stock FROM products WHERE id = @id AND fg_ativo = true', substitutionValues: {
+      'id': idProduct,
+    }).then((List value) {
+      if (hasCloseConnection) {
+        connParar!.close();
+      }
+      return value[0][0];
     });
   }
 

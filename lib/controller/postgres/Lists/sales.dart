@@ -156,62 +156,70 @@ class SalesController {
     });
   }
 
-  Future<int> idSale() async {
+  Future<int> idSale([PostgreSQLConnection? connParar, bool closeConnection = true]) async {
     if (globals.idSaleSelected == null) {
-      return await connectSupadatabase().then((conn) async {
-        setConn = conn;
+      connParar ??= conn ??= await connectSupadatabase();
+      // setConn = conn;
         
-        return (globals.userType == 'employee' || globals.userType == 'manager') ?
-          await getOrderEmployee().then((value) async {
-            if (value == null) {
-              return await add(getConn!).then((idSaleVar) async {
-                await addOrderEmployee(idSaleVar);
-                await addRelationUserOrder(idSaleVar);
+      return (globals.userType == 'employee' || globals.userType == 'manager') ?
+        await getOrderEmployee().then((value) async {
+          if (value == null) {
+            return await add(getConn!).then((idSaleVar) async {
+              await addOrderEmployee(idSaleVar);
+              await addRelationUserOrder(idSaleVar);
 
-                await updateStatus('Andamento', idSaleVar);
+              await updateStatus('Andamento', idSaleVar);
 
+              if (closeConnection) {
                 closeConn();
+              }
 
-                return idSaleVar;
-              });
-            } else {
-              globals.idSaleSelected = value;
-
-              closeConn();
-
-              return value;
-            }
-          })
-        : await getConn!.query('''
-          SELECT orders.id 
-            FROM orders 
-            INNER JOIN user_order ON user_order.id_order = orders.id
-            INNER JOIN order_employee ON order_employee.id_order <> orders.id
-            WHERE user_order.uid = @uid and orders.status = @status and user_order.fg_ativo = true and coalesce(orders.table_number, 0) = @table
-        ''', substitutionValues: {
-          'uid': FirebaseAuth.instance.currentUser?.uid,
-          'status': 'Andamento',
-          'table': globals.numberTable ?? 0,
-        }).then((List? value) async {
-
-          List list = value ?? [];
-
-          if (list.isEmpty) {
-            return add(getConn!).then((idSale) async {
-              await addRelationUserOrder(idSale);
-              await updateStatus('Andamento', idSale);
-
-              closeConn();
-
-              return idSale;
+              return idSaleVar;
             });
           } else {
-            closeConn();
-            globals.idSaleSelected = list.first[0];
-            return list.first[0];
+            globals.idSaleSelected = value;
+
+            if (closeConnection) {
+              closeConn();
+            }
+
+            return value;
           }
-        }).catchError((e) {
-        });
+        })
+      : await getConn!.query('''
+        SELECT orders.id 
+          FROM orders 
+          INNER JOIN user_order ON user_order.id_order = orders.id
+          INNER JOIN order_employee ON order_employee.id_order <> orders.id
+          WHERE user_order.uid = @uid and orders.status = @status and user_order.fg_ativo = true and coalesce(orders.table_number, 0) = @table
+      ''', substitutionValues: {
+        'uid': FirebaseAuth.instance.currentUser?.uid,
+        'status': 'Andamento',
+        'table': globals.numberTable ?? 0,
+      }).then((List? value) async {
+
+        List list = value ?? [];
+
+        if (list.isEmpty) {
+          return add(getConn!).then((idSale) async {
+            await addRelationUserOrder(idSale);
+            await updateStatus('Andamento', idSale);
+
+            if (closeConnection) {
+              closeConn();
+            }
+
+            return idSale;
+          });
+        } else {
+          if (closeConnection) {
+            closeConn();
+          }
+          
+          globals.idSaleSelected = list.first[0];
+          return list.first[0];
+        }
+      }).catchError((e) {
       });
     } else {
       return globals.idSaleSelected!;

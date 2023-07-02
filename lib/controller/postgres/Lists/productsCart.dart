@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:postgres/postgres.dart';
 import 'package:tcc/controller/postgres/Lists/businessInfo.dart';
 import 'package:tcc/controller/postgres/Lists/products.dart';
 import 'package:tcc/controller/postgres/Lists/sales.dart';
@@ -238,68 +239,70 @@ class ProductsCartController {
     });
   }
 
-  Future<List<ProductsCartList>> listItemCurrent(int idSale, [int idVariation = 0]) async {
+  Future<List<ProductsCartList>> listItemCurrent(int idSale, [int idVariation = 0, PostgreSQLConnection? connParar, bool closeConnection = true]) async {
     List<ProductsCartList> list = [];
     
-    return await connectSupadatabase().then((conn) async {
+    connParar ??= await connectSupadatabase();
+    if (idVariation == 0) {
+      return await connParar.query("SELECT p.price, p.id_variation, p.name, p.id, i.qtd, i.id FROM items i INNER JOIN products p ON p.id = i.id_product WHERE i.id_order = @idOrder AND i.status = 'Andamento' ORDER BY i.id", substitutionValues: {
+        'idOrder': idSale,
+      }).then((List<List<dynamic>> value) {
+        if (closeConnection) {
+          connParar!.close();
+        }
 
-      if (idVariation == 0) {
-        return await conn.query("SELECT p.price, p.id_variation, p.name, p.id, i.qtd, i.id FROM items i INNER JOIN products p ON p.id = i.id_product WHERE i.id_order = @idOrder AND i.status = 'Andamento' ORDER BY i.id", substitutionValues: {
-          'idOrder': idSale,
-        }).then((List<List<dynamic>> value) {
-          conn.close();
+        if (value.isEmpty) {
+          return [];
+        }
 
-          if (value.isEmpty) {
-            return [];
-          }
+        for(var row in value) {
+          list.add(
+            ProductsCartList(
+              price: row[0],
+              variation: Variation(
+                id: row[1],
+              ),
+              name: row[2],
+              idProduct: row[3],
+              qtd: row[4],
+              id: row[5],
+            )
+          );
+        }
 
-          for(var row in value) {
-            list.add(
-              ProductsCartList(
-                price: row[0],
-                variation: Variation(
-                  id: row[1],
-                ),
-                name: row[2],
-                idProduct: row[3],
-                qtd: row[4],
-                id: row[5],
-              )
-            );
-          }
+        return list;
+      });
+    } else {
+      return await connParar.query("SELECT p.price, p.id_variation, p.name, p.id, i.qtd, i.id FROM items i INNER JOIN products p ON p.id = i.id_product WHERE i.id_order = @idOrder AND i.status = 'Andamento' AND i.id_variation = @idVariation ORDER BY i.id", substitutionValues: {
+        'idOrder': idSale,
+        'idVariation': idVariation
+      }).then((List<List<dynamic>> value) {
+        if (closeConnection) {
+          connParar!.close();
+        }
 
-          return list;
-        });
-      } else {
-        return await conn.query("SELECT p.price, p.id_variation, p.name, p.id, i.qtd, i.id FROM items i INNER JOIN products p ON p.id = i.id_product WHERE i.id_order = @idOrder AND i.status = 'Andamento' AND i.id_variation = @idVariation ORDER BY i.id", substitutionValues: {
-          'idOrder': idSale,
-          'idVariation': idVariation
-        }).then((List<List<dynamic>> value) {
-          conn.close();
+        if (value.isEmpty) {
+          return [];
+        }
 
-          if (value.isEmpty) {
-            return [];
-          }
+        for(var row in value) {
+          list.add(
+            ProductsCartList(
+              price: row[0],
+              variation: Variation(
+                id: row[1],
+              ),
+              name: row[2],
+              idProduct: row[3],
+              qtd: row[4],
+              id: row[5],
+            )
+          );
+        }
 
-          for(var row in value) {
-            list.add(
-              ProductsCartList(
-                price: row[0],
-                variation: Variation(
-                  id: row[1],
-                ),
-                name: row[2],
-                idProduct: row[3],
-                qtd: row[4],
-                id: row[5],
-              )
-            );
-          }
-
-          return list;
-        });
-      }
-    });
+        return list;
+      });
+    }
 
     // return list;
   }
@@ -312,19 +315,63 @@ class ProductsCartController {
     });
   }
 
-  Future<int> getVariationItem(int idSale) async {
-    
-    return await connectSupadatabase().then((conn) async {
-      // var querySelect = 'SELECT p.id_variation';
-      // querySelect += ' FROM items i';
-      // querySelect += ' INNER JOIN products p ON p.id = i.id_product';
-      // querySelect += ' WHERE i.id_order = ? AND i.fg_current = ?';
-      // querySelect += ' ORDER BY i.id';
-      
-      return await conn.query("SELECT i.id_variation FROM items i WHERE i.id_order = @idOrder AND i.status = 'Andamento' ORDER BY i.id", substitutionValues: {
+  Future<int> getVariationItem(int idSale, [PostgreSQLConnection? connParar, bool closeConnection = true]) async {
+    return (connParar == null) ?
+      connectSupadatabase().then((conn) async {
+        // var querySelect = 'SELECT p.id_variation';
+        // querySelect += ' FROM items i';
+        // querySelect += ' INNER JOIN products p ON p.id = i.id_product';
+        // querySelect += ' WHERE i.id_order = ? AND i.fg_current = ?';
+        // querySelect += ' ORDER BY i.id';
+        
+        return await conn.query("SELECT i.id_variation FROM items i WHERE i.id_order = @idOrder AND i.status = 'Andamento' ORDER BY i.id", substitutionValues: {
+          'idOrder': idSale,
+        }).then((List value) {
+          conn.close();
+
+          if (value.isEmpty) {
+            return 0;
+          }
+
+          ProductsCartList product = value.map((e) => ProductsCartList(
+            variation: Variation(
+              id: e[0],
+            ),
+          )).toList().first;
+
+          return product.variation!.id!;
+        });
+        // return await conn.from('items').select('''
+        //   id_variation
+        // ''').eq('id_order', idSale).eq('fg_current', true).then((value) {
+        //   List list = value;
+
+        //   if (list.isEmpty) {
+        //     return 0;
+        //   }
+
+        //   ProductsCartList product = list.map((e) => ProductsCartList(
+        //     idVariation: e['id_variation'],
+        //   )).toList().first;
+
+        //   return product.idVariation!;
+        // });
+        // var results = await conn.query(querySelect, [idSale, true]);
+        // await conn.close();
+
+        // if (results.isEmpty) {
+        //   return null;
+        // }
+
+        // return results.first[0];
+      })
+      :
+      connParar.query("SELECT i.id_variation FROM items i WHERE i.id_order = @idOrder AND i.status = 'Andamento' ORDER BY i.id", substitutionValues: {
         'idOrder': idSale,
       }).then((List value) {
-        conn.close();
+        if (closeConnection) {
+          connParar.close();
+        }
 
         if (value.isEmpty) {
           return 0;
@@ -338,30 +385,6 @@ class ProductsCartController {
 
         return product.variation!.id!;
       });
-      // return await conn.from('items').select('''
-      //   id_variation
-      // ''').eq('id_order', idSale).eq('fg_current', true).then((value) {
-      //   List list = value;
-
-      //   if (list.isEmpty) {
-      //     return 0;
-      //   }
-
-      //   ProductsCartList product = list.map((e) => ProductsCartList(
-      //     idVariation: e['id_variation'],
-      //   )).toList().first;
-
-      //   return product.idVariation!;
-      // });
-      // var results = await conn.query(querySelect, [idSale, true]);
-      // await conn.close();
-
-      // if (results.isEmpty) {
-      //   return null;
-      // }
-
-      // return results.first[0];
-    });
 
 
   }
@@ -638,8 +661,8 @@ class ProductsCartController {
     });
   }
 
-  Future<Map<bool, int>> getVariationItemPreSelected(BuildContext context, int itemVariationSelected, int idOrder) async {
-    return await ProductsCartController.instance.getVariationItem(idOrder).then((value) {
+  Future<Map<bool, int>> getVariationItemPreSelected(BuildContext context, int itemVariationSelected, int idOrder, PostgreSQLConnection connParar) async {
+    return await ProductsCartController.instance.getVariationItem(idOrder, connParar, false).then((value) {
       if (itemVariationSelected != value && value != 0) {
         error(context, 'Não é possível adicionar produtos de variações diferentes no mesmo item');
         
@@ -662,12 +685,12 @@ class ProductsCartController {
     return true;
   }
 
-  Future<bool> isLimitedItemVariationOrProduct(BuildContext context, ProductItemList item, int idOrder, [int qtd = -1]) async {
+  Future<bool> isLimitedItemVariationOrProduct(BuildContext context, ProductItemList item, int idOrder, [int qtd = -1, PostgreSQLConnection? conn]) async {
   
     int limitVariation = -1;
     int limitProduct = -1;
     if (qtd == -1) {
-      await ProductsController.instance.getLimitItemVariation(item.variation!.id!).then((limit) async {
+      await ProductsController.instance.getLimitItemVariation(item.variation!.id!, conn).then((limit) async {
         limitVariation = limit;
 
         if (limitVariation == 0) {
@@ -676,11 +699,11 @@ class ProductsCartController {
       });
     }
 
-    await ProductsController.instance.getLimitItemProduct(item.id).then((limit) async {
+    await ProductsController.instance.getLimitItemProduct(item.id, conn, false).then((limit) async {
       limitProduct = limit;
     });
 
-    return await ProductsCartController.instance.listItemCurrent(idOrder).then((value) {
+    return await ProductsCartController.instance.listItemCurrent(idOrder, 0, conn!, false).then((value) {
       
       if (verifyItemEqual(context, item, value) == false) {
         return false;
@@ -709,12 +732,18 @@ class ProductsCartController {
   }
 
   Future<void> verifyItemSelected(BuildContext context, ProductItemList item) async {
-    await SalesController.instance.idSale().then((idOrder) async {
+    PostgreSQLConnection? conn;
+    
+    connectSupadatabase().then((value) {
+      conn = value;
+    });
+
+    await SalesController.instance.idSale(conn, false).then((idOrder) async {
     
       int idItemVariationSelected = item.variation!.id!;
-      await getVariationItemPreSelected(context, idItemVariationSelected, idOrder).then((value) async {
+      await getVariationItemPreSelected(context, idItemVariationSelected, idOrder, conn!).then((value) async {
         if (value.keys.first) {
-          await isLimitedItemVariationOrProduct(context, item, idOrder).then((value) {
+          await isLimitedItemVariationOrProduct(context, item, idOrder, -1, conn!).then((value) {
             if (!value) {
               GoRouter.of(context).pop();
             }
