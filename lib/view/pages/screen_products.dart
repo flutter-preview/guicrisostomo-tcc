@@ -1,6 +1,7 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:postgres/postgres.dart';
 import 'package:tcc/controller/postgres/Lists/products.dart';
+import 'package:tcc/controller/postgres/utils.dart';
 import 'package:tcc/model/ProductItemList.dart';
 import 'package:tcc/model/standardSlideShow.dart';
 import 'package:tcc/utils.dart';
@@ -29,8 +30,10 @@ class _ScreenProductsState extends State<ScreenProducts> {
 
   final GlobalKey<ScaffoldState> _key = GlobalKey();
 
+  static PostgreSQLConnection? conn;
+
   Future<List<ProductItemList>> getProduct(category, size) async {
-    return await ProductsController.instance.list(category, size, txtProd.text).then((value) {
+    return await ProductsController.instance.list(category, size, txtProd.text, conn).then((value) {
       return value;
     });
   } 
@@ -38,13 +41,13 @@ class _ScreenProductsState extends State<ScreenProducts> {
   Future<List<String>> getCategories() async {
     globals.sizesCategoryBusiness = [];
 
-    return await ProductsController.instance.listCategories().then((value) {
+    return await ProductsController.instance.listCategories(conn).then((value) {
       return value;
     });
   }
 
   Future<List<String>> getSize() async {
-    return await ProductsController.instance.listSizes(globals.categorySelected).then((value) {
+    return await ProductsController.instance.listSizes(globals.categorySelected, conn).then((value) {
       return value;
     });
   }
@@ -83,6 +86,11 @@ class _ScreenProductsState extends State<ScreenProducts> {
   Future<Widget?> listProduct() async {
     List<Widget> listWidget = [];
     List<ProductItemList> list = [];
+
+    connectSupadatabase().then((value) {
+      
+      conn = value;
+    });
 
     if (globals.categoriesBusiness.isEmpty) {
       await getCategories().then((value) {
@@ -169,6 +177,9 @@ class _ScreenProductsState extends State<ScreenProducts> {
           }
         }
       }
+
+      conn!.close();
+      conn = null;
 
       if (listWidget.isNotEmpty) {
         return Column(

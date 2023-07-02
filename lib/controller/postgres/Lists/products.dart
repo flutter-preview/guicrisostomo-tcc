@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:postgres/postgres.dart';
 import 'package:tcc/controller/postgres/utils.dart';
 import 'package:tcc/model/Comments.dart';
 import 'package:tcc/model/ProductItemList.dart';
@@ -193,12 +194,41 @@ class ProductsController {
     });
   }
 
-  Future<List<String>> listCategories() async {
+  Future<List<String>> listCategories([PostgreSQLConnection? connParar]) async {
     List<String> listCategories = [];
 
-    return await connectSupadatabase().then((conn) async {
-      
-      return await conn.query('''
+    return connParar == null ?
+      await connectSupadatabase().then((conn) async {
+        
+        return await conn.query('''
+          SELECT v.category
+          FROM products p
+          INNER JOIN variations v ON v.id = p.id_variation
+          WHERE v.business = @business AND p.fg_ativo = true AND v.fg_ativo = true AND v.is_show_home = true
+          GROUP BY v.category
+          ORDER BY v.category
+        ''', substitutionValues: {
+          'business': globals.businessId
+        }).then((List value) {
+          conn.close();
+          for (var row in value) {
+            listCategories.add(row[0]);
+          }
+
+          return listCategories;
+        });
+        // if (results.isEmpty) {
+        //   return [];
+        // }
+        
+        // List<ProductItemList> list = results.map((e) => ProductItemList.fromJson(
+        //   e.toJson()
+        // )).toList();
+
+        // return list.map((e) => e.category).toList();
+
+      }) :
+      await connParar.query('''
         SELECT v.category
         FROM products p
         INNER JOIN variations v ON v.id = p.id_variation
@@ -208,32 +238,41 @@ class ProductsController {
       ''', substitutionValues: {
         'business': globals.businessId
       }).then((List value) {
-        conn.close();
         for (var row in value) {
           listCategories.add(row[0]);
         }
 
         return listCategories;
       });
-      // if (results.isEmpty) {
-      //   return [];
-      // }
-      
-      // List<ProductItemList> list = results.map((e) => ProductItemList.fromJson(
-      //   e.toJson()
-      // )).toList();
-
-      // return list.map((e) => e.category).toList();
-
-    });
   }
 
-  Future<List<String>> listSizes(category) async {
+  Future<List<String>> listSizes(category, [PostgreSQLConnection? connParar]) async {
     List<String> listSizes = [];
 
-    return await connectSupadatabase().then((conn) async {
-      
-      return await conn.query('''
+    return connParar == null ?
+      await connectSupadatabase().then((conn) async {
+        
+        return await conn.query('''
+          SELECT v.size
+          FROM products p
+          INNER JOIN variations v ON v.id = p.id_variation
+          WHERE v.category = @category AND p.fg_ativo = true AND v.fg_ativo = true AND v.business = @business
+          GROUP BY v.size
+          ORDER BY v.size
+        ''', substitutionValues: {
+          'category': category,
+          'business': globals.businessId
+        }).then((List value) {
+          conn.close();
+          for (var row in value) {
+            listSizes.add(row[0]);
+          }
+
+          return listSizes;
+        });
+      })
+    :
+      await connParar.query('''
         SELECT v.size
         FROM products p
         INNER JOIN variations v ON v.id = p.id_variation
@@ -244,20 +283,19 @@ class ProductsController {
         'category': category,
         'business': globals.businessId
       }).then((List value) {
-        conn.close();
         for (var row in value) {
           listSizes.add(row[0]);
         }
 
         return listSizes;
       });
-    });
   }
 
-  Future<List<ProductItemList>> list(String categorySelected, String sizeSelected, String searchProduct) async {
+  Future<List<ProductItemList>> list(String categorySelected, String sizeSelected, String searchProduct, [PostgreSQLConnection? connParar]) async {
     searchProduct = '%${searchProduct.toUpperCase()}%';
     
-    return await connectSupadatabase().then((conn) async {
+    return (connParar == null) ?
+    await connectSupadatabase().then((conn) async {
       
       return await conn.query('''
           SELECT p.id, p.name, p.price, p.description, p.link_image, v.category, v.size, p.id_variation, v.limit_items, COALESCE(
@@ -299,7 +337,45 @@ class ProductsController {
         return results;
       });
       
-    });
+    }) :
+      await connParar.query('''
+          SELECT p.id, p.name, p.price, p.description, p.link_image, v.category, v.size, p.id_variation, v.limit_items, COALESCE(
+          (SELECT f.id
+            FROM favorites f 
+            WHERE f.id_product = p.id AND f.uid = @uid
+          ), 0)
+          FROM products p
+          INNER JOIN variations v ON v.id = p.id_variation
+          WHERE v.category = @category AND v.size = @size AND v.business = @business AND p.name LIKE @search AND p.fg_ativo = true
+          ORDER BY p.name
+        ''', substitutionValues: {
+          'category': categorySelected,
+          'size': sizeSelected,
+          'business': globals.businessId,
+          'search': searchProduct,
+          'uid': FirebaseAuth.instance.currentUser!.uid
+        }).then((List value) {
+
+          List<ProductItemList> results = [];
+          for(final row in value) {
+            results.add(ProductItemList(
+              id: row[0],
+              name: row[1],
+              price: row[2],
+              description: row[3],
+              linkImage: row[4],
+              variation: Variation(
+                category: row[5],
+                size: row[6],
+                id: row[7],
+                limitItems: row[8]
+              ),
+              isFavorite: row[9] != 0
+            ));
+          }
+
+        return results;
+        });
   }
 
   Future<void> add(String name, num price, String description, String category, String size, String urlImage) async {
