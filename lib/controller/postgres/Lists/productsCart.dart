@@ -734,7 +734,7 @@ class ProductsCartController {
   Future<void> verifyItemSelected(BuildContext context, ProductItemList item) async {
     PostgreSQLConnection? conn;
     
-    connectSupadatabase().then((value) {
+    await connectSupadatabase().then((value) {
       conn = value;
     });
 
